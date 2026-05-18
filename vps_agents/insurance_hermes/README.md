@@ -2,6 +2,10 @@
 
 Hermes agent running on a Hostinger VPS, managed via Docker.
 
+> Current runtime status, VPS paths, enabled/disabled tools, and CLI
+> cheatsheet live in [`INSTALL_STATE.md`](./INSTALL_STATE.md). Update that
+> file when the install changes.
+
 ## Setup
 
 1. Copy the env template:
