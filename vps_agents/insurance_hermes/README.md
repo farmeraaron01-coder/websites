@@ -14,6 +14,8 @@ Hermes agent running on a Hostinger VPS, managed via Docker.
    - `VPS_PORT` — SSH port (default `22`)
    - `VPS_SSH_KEY_PATH` — absolute path to the private key on your machine
    - `DOCKER_MANAGER_URL` — URL of the Docker management UI on the VPS
+   - `TELEGRAM_BOT_TOKEN` — token from @BotFather (see "Telegram bot" below)
+   - `TELEGRAM_ADMIN_CHAT_ID` — your Telegram numeric ID (from @userinfobot)
 3. Verify SSH works:
    ```bash
    ssh -i "$VPS_SSH_KEY_PATH" -p "$VPS_PORT" "$VPS_USER@$VPS_HOST"
@@ -25,6 +27,19 @@ Hermes agent running on a Hostinger VPS, managed via Docker.
 - SSH private keys live under `~/.ssh/`, never inside this repo.
 - If a secret leaks into a commit, rotate it immediately on Hostinger
   before scrubbing history.
+
+## Telegram bot
+
+The hermes agent talks to its operator over Telegram. Create the bot once
+via [@BotFather](https://t.me/BotFather):
+
+1. `/newbot` → pick a display name and a username ending in `bot`.
+2. Copy the HTTP API token BotFather returns into `TELEGRAM_BOT_TOKEN` in `.env`.
+3. Message [@userinfobot](https://t.me/userinfobot) to get your numeric user ID,
+   put it in `TELEGRAM_ADMIN_CHAT_ID` so the bot only responds to you.
+4. Optional: `/setdescription`, `/setuserpic`, `/setcommands` in BotFather later.
+
+If the token leaks, run `/revoke` in BotFather to rotate it.
 
 ## What lives here later
 
