@@ -1,0 +1,8 @@
+# Never commit real credentials or downloaded audio
+.env
+Recordings/
+*.mp3
+*.wav
+recordings_manifest.csv
+__pycache__/
+*.pyc
