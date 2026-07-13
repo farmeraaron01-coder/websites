@@ -34,6 +34,11 @@ Live posts currently render only H2s — no `<h1>` in the HTML. This is the Divi
 3. If there is **no** post template in Theme Builder (posts use the default Divi template): go to **Divi → Theme Options** and check the Blog settings; if no H1 option exists, the fallback is to open each of the 6 blog posts and make the first text element inside the content an H1 matching the title — but try the Theme Builder route first, it fixes all posts at once.
 4. **Verify:** open `/earthquake-insurance-california-2026/` logged-out → View Source → exactly one `<h1>` containing the post title. Spot-check one older post too.
 
+**A2 addendum (July 13) — Divi builder times out and won't open the All Posts template.** Verified blocker: the visual builder fails in the Theme Builder modal, standalone layout URL, and per-post builder; the timeout dialog cites the pending WordPress 7.0.1 update and Divi 4.27.5 → 4.27.7. Titles are injected by the template's Post Title module (as H2), so per-post edits can't fix it. Do this instead:
+
+- **A2-alt (do now, no builder needed):** install the snippet `fixes/post-title-h1-snippet.php` via WPCode (Code Snippets → Add New → PHP Snippet → paste → Auto Insert / Frontend Only → Activate). It rewrites only the `<h2 class="entry-title">` on single posts to `<h1>`, skips pages that already have an H1 title, and touches nothing else. If a caching plugin is active, clear the cache after activating. **Verify** as in step 4 above.
+- **A2-proper (needs Aaron's go-ahead — do NOT run updates unprompted):** with a full backup/snapshot first (host panel or UpdraftPlus), update Divi to 4.27.7 (Dashboard → Updates or Divi theme update; requires the Elegant Themes license to be active), then WordPress 7.0.1. These updates should be run soon regardless — an outdated core/theme on a lead-gen site is a security exposure, and the Divi patch very likely clears the builder timeout. Once the builder opens: All Posts template → Post Title module → Design → Title Text → Title Heading Level → H1, save — then **deactivate the WPCode snippet** so the fix lives in one place.
+
 ### Task A3 — Add FAQ schema to the existing earthquake post (10 min) 🟠
 
 1. **Posts → Earthquake Insurance in California 2026 → Edit** (with Divi builder).
