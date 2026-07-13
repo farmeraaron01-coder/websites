@@ -50,7 +50,9 @@ Also confirmed: `/seo-geo` returns 404 — it was never a page on the site.
 4. **Earthquake post CTA** — add the CheapEarthquakeInsurance.com quote link (see FIX 9 note on avoiding duplicate content).
 5. **Hosting headers** — HSTS, nosniff, `server_tokens off` (FIX 7 header portion + FIX 8).
 6. **Confirm noindex** on the FIX 2 utility pages.
-7. Then move to the content program (assessment §5): Q&A restructure of money pages (auto page verified: good H1/H2 structure, but 0 FAQ schema), 4 local pages, 2-posts/month pipeline.
+7. Then move to the content program (assessment §5): Q&A restructure of money pages (auto page verified: good H1/H2 structure, but 0 FAQ schema), San Diego local content, 2-posts/month pipeline. *(Palm Desert local pages dropped per Aaron — San Diego only.)*
+
+> **Executable version:** the browser-ready, click-by-click version of this punch list (including publishing the 3 new San Diego posts and the CheapEarthquakeInsurance.com additions) is in the repo root: `CLAUDE-CHROME-TASKS.md`.
 
 ---
 
