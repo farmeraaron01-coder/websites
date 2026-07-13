@@ -1,0 +1,38 @@
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Does homeowners insurance cover earthquakes in California?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. Earthquake damage is specifically excluded from standard California homeowners policies. To cover earthquake damage you need a separate earthquake insurance policy, available through the California Earthquake Authority (CEA) or private carriers."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How much does earthquake insurance cost in California?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "A typical California homeowner pays roughly $800 to $3,000+ per year depending on location, home construction, deductible, and coverage limits. Homes near active fault lines or on soft soil are at the higher end."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is private earthquake insurance better than the CEA?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Often, yes. Private carriers can offer deductibles as low as 2.5–5% of dwelling coverage versus the CEA's typical 10–25%, plus higher limits and broader personal property coverage. An independent agent representing both markets can run a real side-by-side comparison."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What deductible does California earthquake insurance have?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Earthquake deductibles are a percentage of your dwelling coverage, not a flat dollar amount. CEA policies typically run 5–25%. On a $600,000 home with a 15% deductible, you pay the first $90,000 of damage out of pocket."
+      }
+    }
+  ]
+}

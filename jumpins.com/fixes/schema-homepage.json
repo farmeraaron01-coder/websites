@@ -1,0 +1,63 @@
+{
+  "@context": "https://schema.org",
+  "@type": ["InsuranceAgency", "LocalBusiness"],
+  "name": "Jump Insurance Services",
+  "alternateName": "Jump Insurance",
+  "url": "https://jumpins.com/",
+  "logo": {
+    "@type": "ImageObject",
+    "url": "https://jumpins.com/wp-content/uploads/2021/06/final-logo.png",
+    "width": 300,
+    "height": 100
+  },
+  "image": "https://jumpins.com/wp-content/uploads/2021/06/final-logo.png",
+  "description": "Jump Insurance Services is an independent insurance agency in California offering auto, home, business, life, earthquake, flood, and specialty insurance. We work with top-rated carriers to find the best coverage at the lowest cost.",
+  "telephone": "+18887247242",
+  "priceRange": "$$",
+  "currenciesAccepted": "USD",
+  "paymentAccepted": "Cash, Credit Card, Check",
+  "areaServed": [
+    {
+      "@type": "State",
+      "name": "California",
+      "sameAs": "https://en.wikipedia.org/wiki/California"
+    }
+  ],
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "7960 Silverton Ave STE 202",
+    "addressLocality": "San Diego",
+    "addressRegion": "CA",
+    "postalCode": "92126",
+    "addressCountry": "US"
+  },
+  "geo": {
+    "@type": "GeoCoordinates",
+    "latitude": 32.8868,
+    "longitude": -117.1531
+  },
+  "openingHoursSpecification": [
+    {
+      "@type": "OpeningHoursSpecification",
+      "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+      "opens": "09:00",
+      "closes": "17:00"
+    }
+  ],
+  "contactPoint": [
+    {
+      "@type": "ContactPoint",
+      "telephone": "+18887247242",
+      "contactType": "customer service",
+      "areaServed": "US",
+      "availableLanguage": ["English", "Spanish"]
+    }
+  ],
+  "sameAs": [
+    "REPLACE-WITH-REAL-FACEBOOK-PAGE-URL",
+    "REPLACE-WITH-REAL-LINKEDIN-PAGE-URL",
+    "REPLACE-WITH-REAL-YELP-LISTING-URL",
+    "REPLACE-WITH-REAL-GOOGLE-BUSINESS-PROFILE-URL"
+  ],
+  "hasMap": "https://maps.google.com/?q=7960+Silverton+Ave+STE+202+San+Diego+CA+92126"
+}
