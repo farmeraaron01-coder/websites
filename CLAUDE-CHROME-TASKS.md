@@ -76,7 +76,9 @@ For **each** post:
 7. **FAQ schema:** add a Code module at the bottom of the body, paste the `<script type="application/ld+json">…</script>` block from the end of the file.
 8. **Featured image:** pick something appropriate from the Media Library (flood/border/wildfire themed). Set alt text.
 9. Publish.
-10. **Verify:** logged-out — byline shows Aaron Farmer, one `<h1>`, internal links work, Rich Results Test detects FAQ.
+10. **Verify:** logged-out — byline shows Aaron Farmer, one `<h1>`, internal links work, and the FAQPage JSON-LD is present and parses as valid JSON in the live HTML.
+
+> **FAQ verification standard (corrected July 13):** Google retired FAQ rich results for general commercial sites, so the Rich Results Test will show "Articles + Breadcrumbs" and will NOT list FAQ — that is expected, not an error. The pass criterion for FAQ schema everywhere in this file is: valid FAQPage JSON-LD present in the live server-rendered HTML. The markup's purpose is AI-engine/GEO citation (and Bing), not a Google rich snippet.
 
 After all three are live: **Yoast should auto-update the sitemap.** Then in **Google Search Console** → URL Inspection → paste each new URL → Request Indexing.
 
@@ -99,13 +101,13 @@ Source: `cheapearthquakeinsurance.com/content/homepage-faq.md`
    - H2: **Earthquake Insurance Questions, Answered**
    - The 6 questions as **H3** headings, each with its answer paragraph, exactly as in the file.
 2. Add a Code/Custom HTML module at the bottom of the page with the FAQPage JSON-LD block from the end of the file.
-3. **Verify:** Rich Results Test on the homepage → FAQ detected, no errors.
+3. **Verify:** the FAQPage JSON-LD is present and parses as valid JSON in the live homepage HTML (see the FAQ verification standard note in Task A5 — the Rich Results Test will not list FAQ, which is expected).
 
 ### Task B2 — Publish the commercial earthquake article (45 min) 🟠
 
 Source: `cheapearthquakeinsurance.com/content/commercial-earthquake-insurance-california.md`
 Same procedure as Task A5: title, slug from header, body without the schema section, byline **Aaron Farmer / CA License #0F09648**, Yoast meta description from the header, FAQ schema in a Code module at the bottom. Keep the outbound link to `https://jumpins.com/business-insurance/`.
-**Verify:** logged-out — H1 renders, byline + license visible, jumpins.com link works, FAQ passes Rich Results Test.
+**Verify:** logged-out — H1 renders, byline + license visible, jumpins.com link works, valid FAQPage JSON-LD present in the live HTML.
 
 ### Task B3 — E-E-A-T block: name the humans (30 min) 🟠
 
@@ -138,7 +140,7 @@ These require server access — send `jumpins.com/fixes/nginx-snippet.conf` to t
 - [ ] All 6 jumpins.com posts show Aaron Farmer byline + render one `<h1>`
 - [ ] 3 new San Diego posts live, indexed request submitted in GSC
 - [ ] Earthquake post links to CheapEarthquakeInsurance.com
-- [ ] FAQ rich results pass on: earthquake post, 3 new posts, CEI homepage, CEI commercial article
+- [ ] Valid FAQPage JSON-LD present on: earthquake post, 3 new posts, CEI homepage, CEI commercial article (Google no longer shows FAQ in Rich Results Test — expected)
 - [ ] CEI homepage names Aaron Farmer + CA License #0F09648
 - [ ] Utility pages noindexed
 - [ ] Hosting ticket submitted for the 3 headers
