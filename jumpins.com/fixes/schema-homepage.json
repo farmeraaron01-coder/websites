@@ -59,5 +59,12 @@
     "REPLACE-WITH-REAL-YELP-LISTING-URL",
     "REPLACE-WITH-REAL-GOOGLE-BUSINESS-PROFILE-URL"
   ],
-  "hasMap": "https://maps.google.com/?q=7960+Silverton+Ave+STE+202+San+Diego+CA+92126"
+  "hasMap": "https://maps.google.com/?q=7960+Silverton+Ave+STE+202+San+Diego+CA+92126",
+  "aggregateRating": {
+    "@type": "AggregateRating",
+    "ratingValue": "4.9",
+    "reviewCount": "75",
+    "bestRating": "5",
+    "worstRating": "1"
+  }
 }

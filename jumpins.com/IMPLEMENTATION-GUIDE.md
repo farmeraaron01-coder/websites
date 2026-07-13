@@ -56,7 +56,7 @@ The homepage and all blog posts render **zero H1/H2 tags** in crawlable HTML (Di
 ## FIX 5 — Schema JSON-LD (1.5 hrs) 🟠 HIGH
 
 ⚠️ **Before publishing:** replace the `REPLACE-WITH-…` placeholders in the schema files with the real Facebook / LinkedIn / Yelp / Google Business Profile URLs, and the Palm Desert street address + ZIP.
-⚠️ **Do not add an AggregateRating block** unless the page visibly displays real reviews with a matching count/score (e.g., via a Google Reviews widget). Fabricated review markup risks a Google manual action. Add it later, from the widget, with real numbers.
+ℹ️ **AggregateRating:** the homepage schema includes the Google review rating (4.9 / 75 reviews, shown on-site via the reviews plugin). Before pasting, update `ratingValue` and `reviewCount` to match the current live Google numbers, and keep them roughly in sync going forward — Google requires the markup to reflect reviews actually displayed on the page. If the reviews plugin already outputs its own AggregateRating schema, remove the block from this file instead so the page doesn't declare it twice.
 
 For each page, add a Divi Code module (or Custom HTML block) at the bottom containing:
 
