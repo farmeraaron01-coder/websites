@@ -135,6 +135,22 @@ These require server access — send `jumpins.com/fixes/nginx-snippet.conf` to t
 
 ---
 
+## PART D — Deferred (parked by Aaron, July 13)
+
+### D1 — Google Search Console setup for jumpins.com (and cheapearthquakeinsurance.com)
+jumpins.com has no GSC property yet. Aaron's Google account already has GSC (californiafloodinsurance.com is verified there), so add under the same login:
+1. GSC → Add property → **URL prefix** → `https://jumpins.com/` (no www)
+2. Verify via **HTML tag** method → paste token into WP admin → Yoast SEO → Settings → Site connections → Google → save → Verify
+3. Indexing → Sitemaps → submit `sitemap_index.xml`
+4. URL Inspection → **Request Indexing** for the 3 new San Diego posts + the updated earthquake post
+5. Repeat for `https://cheapearthquakeinsurance.com/` (after Part B content is live)
+Until this is done, Google discovers the new posts via the sitemap on its own schedule — slower, but nothing is blocked.
+
+### D2 — Divi builder repair (the "reading 'red'" startup crash)
+Safe Mode diagnosis first (Divi → Support Center → Safe Mode — affects only the logged-in session). Prime suspect: WP Fastest Cache minify/combine JS settings. Once fixed: All Posts template title Text module → proper H1 heading, then deactivate the WPCode H1 snippet.
+
+---
+
 ## Final verification sweep (after everything above)
 
 - [ ] All 6 jumpins.com posts show Aaron Farmer byline + render one `<h1>`
