@@ -137,8 +137,8 @@ These require server access — send `jumpins.com/fixes/nginx-snippet.conf` to t
 
 ## PART D — Deferred (parked by Aaron, July 13)
 
-### D1 — Google Search Console setup for jumpins.com (and cheapearthquakeinsurance.com)
-jumpins.com has no GSC property yet. Aaron's Google account already has GSC (californiafloodinsurance.com is verified there), so add under the same login:
+### D1 — Google Search Console setup — ✅ DONE July 13 (both properties verified, sitemaps submitted; token verified in live HTML on both sites)
+Remaining tail: Request Indexing on the 3 San Diego posts + updated earthquake post (jumpins property), and on the Part B URLs once live (CEI property). Original steps kept for reference:
 1. GSC → Add property → **URL prefix** → `https://jumpins.com/` (no www)
 2. Verify via **HTML tag** method → paste token into WP admin → Yoast SEO → Settings → Site connections → Google → save → Verify
 3. Indexing → Sitemaps → submit `sitemap_index.xml`
