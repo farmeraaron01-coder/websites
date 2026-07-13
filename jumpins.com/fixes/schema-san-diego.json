@@ -1,0 +1,40 @@
+{
+  "@context": "https://schema.org",
+  "@type": ["InsuranceAgency", "LocalBusiness"],
+  "name": "Jump Insurance Services — San Diego",
+  "url": "https://jumpins.com/contact-us/san-diego-office/",
+  "logo": "https://jumpins.com/wp-content/uploads/2021/06/final-logo.png",
+  "description": "Jump Insurance Services San Diego office — independent insurance agents for auto, home, business, life, earthquake, and flood insurance in San Diego County.",
+  "telephone": "+18582957242",
+  "priceRange": "$$",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "7960 Silverton Ave STE 202",
+    "addressLocality": "San Diego",
+    "addressRegion": "CA",
+    "postalCode": "92126",
+    "addressCountry": "US"
+  },
+  "geo": {
+    "@type": "GeoCoordinates",
+    "latitude": 32.8868,
+    "longitude": -117.1531
+  },
+  "openingHoursSpecification": [
+    {
+      "@type": "OpeningHoursSpecification",
+      "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+      "opens": "09:00",
+      "closes": "17:00"
+    }
+  ],
+  "areaServed": {
+    "@type": "City",
+    "name": "San Diego"
+  },
+  "parentOrganization": {
+    "@type": "InsuranceAgency",
+    "name": "Jump Insurance Services",
+    "url": "https://jumpins.com/"
+  }
+}

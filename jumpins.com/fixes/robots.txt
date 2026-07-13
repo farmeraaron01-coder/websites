@@ -1,0 +1,20 @@
+User-agent: *
+Allow: /wp-content/uploads/
+Disallow: /wp-content/plugins/
+Disallow: /wp-admin/
+Allow: /wp-admin/admin-ajax.php
+
+# AI crawlers — explicitly allowed for AI search citation (GEO)
+User-agent: GPTBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+Sitemap: https://jumpins.com/sitemap_index.xml

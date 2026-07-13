@@ -1,0 +1,38 @@
+{
+  "@context": "https://schema.org",
+  "@type": ["InsuranceAgency", "LocalBusiness"],
+  "name": "Jump Insurance Services — Palm Desert",
+  "url": "https://jumpins.com/palm-desert-office/",
+  "logo": "https://jumpins.com/wp-content/uploads/2021/06/final-logo.png",
+  "description": "Jump Insurance Services Palm Desert office — independent insurance agents serving the Coachella Valley for auto, home, business, life, earthquake, and flood insurance.",
+  "telephone": "+17606106145",
+  "priceRange": "$$",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "REPLACE-WITH-PALM-DESERT-STREET-ADDRESS",
+    "addressLocality": "Palm Desert",
+    "addressRegion": "CA",
+    "postalCode": "REPLACE-WITH-ZIP",
+    "addressCountry": "US"
+  },
+  "openingHoursSpecification": [
+    {
+      "@type": "OpeningHoursSpecification",
+      "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+      "opens": "09:00",
+      "closes": "17:00"
+    }
+  ],
+  "areaServed": [
+    { "@type": "City", "name": "Palm Desert" },
+    { "@type": "City", "name": "Palm Springs" },
+    { "@type": "City", "name": "La Quinta" },
+    { "@type": "City", "name": "Indio" },
+    { "@type": "City", "name": "Rancho Mirage" }
+  ],
+  "parentOrganization": {
+    "@type": "InsuranceAgency",
+    "name": "Jump Insurance Services",
+    "url": "https://jumpins.com/"
+  }
+}
