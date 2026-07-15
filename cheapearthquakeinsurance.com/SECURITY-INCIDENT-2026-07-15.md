@@ -1,5 +1,10 @@
 # cheapearthquakeinsurance.com — Spam Link Injection Incident (found July 15, 2026)
 
+## ✅ STATUS UPDATE — Phase A complete, both sites certified clean (July 15)
+All three injections removed via WP admin (template Code module deleted from the "Stone Factory all posts template"; hidden image-links stripped from both service pages; site-wide search of Pages/Posts/Divi Library/Media found no stragglers). Post-cleanup verification: full 104-URL rescan of both sites = **0 spam hits**, and a Googlebot user-agent check on the three previously infected URLs = clean (no cloaking).
+
+**Key forensic finding:** revision history on /commercial-earthquake/ shows NO trace of the spam in any revision (2022 → present). The injection was never saved through the WordPress editor — it was written directly to the database (wp_posts). Root cause is therefore server/DB-level: compromised credentials (DB, FTP, cPanel), an SQL-injection-vulnerable plugin, or a rogue script. **Phase B (below) is not optional** — the write path may still be open. Host access logs are the place to establish when/how.
+
 ## Summary
 While editing `/commercial-earthquake/`, hidden spam backlinks were discovered in the page content. A full crawl of all 104 sitemap URLs across both sites (July 15) confirmed a spam SEO injection compromise on **cheapearthquakeinsurance.com only** — **jumpins.com is clean** (its two flagged pages were a false positive: "cialis" inside the word "specialists").
 
