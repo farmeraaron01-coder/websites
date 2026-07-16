@@ -5,6 +5,20 @@ All three injections removed via WP admin (template Code module deleted from the
 
 **Key forensic finding:** revision history on /commercial-earthquake/ shows NO trace of the spam in any revision (2022 → present). The injection was never saved through the WordPress editor — it was written directly to the database (wp_posts). Root cause is therefore server/DB-level: compromised credentials (DB, FTP, cPanel), an SQL-injection-vulnerable plugin, or a rogue script. **Phase B (below) is not optional** — the write path may still be open. Host access logs are the place to establish when/how.
 
+## 🔴 WORDFENCE SCAN — malware located (July 16, High Sensitivity, 16,998 files)
+
+The visible spam was only the output. Wordfence found the mechanism: **~63 malware files across 11 fake plugin folders** in `wp-content/plugins/`, all flagged Critical as `IOC:TXT/b64.fakeimage` (image header followed by base64-encoded code — the signature of rogue WP plugins). Hosting account path: `/home/mrtaco5/cheapearthquakeinsurance.com/`.
+
+**Rogue plugin folders to remove (entire directory each):**
+`ytydomice` · `ygopyt` · `tusuzeqo` · `omifat` · `lecovybym` · `hisubajy` · `egajow` · `apoleco` · `achykythuti` · `achaqes` · `OFF.lotafoxa`
+
+Notes:
+- `OFF.lotafoxa` — the `OFF.` prefix means someone previously tried to neutralize it by renaming; the payload files are still on disk.
+- These are almost certainly the write-path that injected spam straight into `wp_posts` (matches the "no revision history" forensic finding). Random-word folder names + fake-image base64 files = malware, no legitimate function.
+- Also flagged **High**: `wp-content/plugins/hello.php` "core file modified" — Hello Dolly, a common injection target. Useless plugin; delete it rather than repair.
+
+**Remediation status: NOT clean.** Phase A removed the visible spam; the malware files that regenerate it are still on the server. Reinfection is likely until every rogue folder is removed AND the entry point is closed.
+
 ## Summary
 While editing `/commercial-earthquake/`, hidden spam backlinks were discovered in the page content. A full crawl of all 104 sitemap URLs across both sites (July 15) confirmed a spam SEO injection compromise on **cheapearthquakeinsurance.com only** — **jumpins.com is clean** (its two flagged pages were a false positive: "cialis" inside the word "specialists").
 
@@ -46,14 +60,29 @@ Same pattern:
 4. Search ALL other pages/posts in WP admin (Posts/Pages list → search "replica", "vapes", "watchesbuy", "wellreplicas") for further instances.
 5. Clear cache; verify with fresh crawl (Claude Code re-runs the 104-URL scan).
 
-### Phase B — Root cause & hardening (Aaron + host; needs approvals)
-1. WP Admin → Users (on CEI): look for unknown administrator accounts — delete any not recognized (screenshot first).
-2. Check post REVISIONS on /commercial-earthquake/ to date the injection and identify the user account that made it.
-3. Install Wordfence (free) on CEI → full scan (compares core/plugin/theme files against wordpress.org originals; finds webshells). [Plugin install = Aaron's approval]
-4. Ask InMotion support to run an account-level malware scan (covers both sites' files) — can go in the same ticket as the pending security-headers request.
-5. Change passwords: all WP admin users on CEI, cPanel/InMotion, FTP, database. Enable 2FA on WP admin and InMotion.
-6. Update everything on CEI (core, theme, all 15 plugins); delete any plugins/themes not in use.
-7. Google Search Console (CEI property, verified July 13): check Security & Manual Actions → both sections; after cleanup, request re-indexing of the cleaned URLs.
+### Phase B — Malware removal (needs Aaron's go-ahead; filesystem-level)
+Wordfence "Delete"/"Repair" buttons act one file at a time and won't remove whole rogue folders cleanly — do this at the filesystem level via **cPanel → File Manager** (or FTP/SSH):
+1. **Back up first** — UpdraftPlus is installed on CEI. Take a full backup and download it locally before deleting anything (so removal is reversible). Note: the backup will contain the malware — it's a rollback safety net, not a clean image.
+2. cPanel → File Manager → `/home/mrtaco5/cheapearthquakeinsurance.com/wp-content/plugins/` → delete each of the 11 rogue folders listed above, entirely. Also delete `hello.php`.
+3. Do NOT click Wordfence "Repair" on hello.php (repair restores a file; we want it gone).
+4. Re-run Wordfence scan → expect 0 Critical. Then Claude Code re-runs the 104-URL crawl to confirm no spam regenerates over the next day.
+5. ⚠️ Persistence: spam malware usually plants a re-infector (a mu-plugin, a wp-config/functions.php snippet, a cron job, or a modified core file) that recreates deleted folders. If the folders come back after deletion, the entry point is still open — go straight to professional remediation (below).
+
+### Phase B2 — Root cause & hardening (Aaron + host)
+1. **Confirm blast radius:** the cPanel account is `mrtaco5`. List every domain/addon under that one account (they share the filesystem — likely includes mrtacoshop.com and possibly others). Every site on that account needs scanning. Verify whether jumpins.com is on this same account or a separate one.
+2. **Scan jumpins.com with Wordfence too** — its pages are clean, but if it shares the `mrtaco5` filesystem the malware files may be present there as well.
+3. **Change all credentials:** every WP admin user, cPanel/InMotion, FTP, and database password. Enable 2FA on WP admin + InMotion.
+4. WP Admin → Users: delete any admin account not recognized (screenshot first).
+5. InMotion support ticket: request an account-level malware scan + ask them to review access logs to date the intrusion — same ticket as the pending security-headers request.
+6. Update WordPress core, theme, and all 15 plugins; delete unused plugins/themes (stale/nulled plugins are the most common entry point).
+7. GSC (CEI property): check **Security & Manual Actions** → both sections; request re-indexing of cleaned URLs once verified clean.
+
+### Professional-remediation option (recommended given a live, persistent compromise)
+DIY cleanup that misses one backdoor file = reinfection within days. Given this is a business lead-gen site, strongly consider paying for expert cleanup rather than chasing files manually:
+- **Wordfence Care** (~$490/yr) — already have Wordfence installed; their team cleans the site and finds the entry point.
+- **InMotion malware removal** — the host can clean at the server level and check logs.
+- **Sucuri** — alternative, includes a cleanup SLA.
+Any of these will be faster and more certain than manual folder-deletion whack-a-mole.
 
 ### Phase C — Post-cleanup verification
 - Re-run the full two-site crawl for spam patterns (Claude Code).
