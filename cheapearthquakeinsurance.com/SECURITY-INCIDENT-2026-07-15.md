@@ -5,6 +5,20 @@ All three injections removed via WP admin (template Code module deleted from the
 
 **Key forensic finding:** revision history on /commercial-earthquake/ shows NO trace of the spam in any revision (2022 → present). The injection was never saved through the WordPress editor — it was written directly to the database (wp_posts). Root cause is therefore server/DB-level: compromised credentials (DB, FTP, cPanel), an SQL-injection-vulnerable plugin, or a rogue script. **Phase B (below) is not optional** — the write path may still be open. Host access logs are the place to establish when/how.
 
+## ✅ RESOLUTION STATUS (July 16) — visible spam eliminated account-wide
+
+- **cheapearthquakeinsurance.com:** 11 rogue plugin folders + hello.php deleted (verified via HTTP: all malware paths 404). Template injection + page injections gone. Full re-crawl + Googlebot check = 0 spam.
+- **californiafloodinsurance.com:** hidden spam div removed from the live /faqs/ page via a single-row phpMyAdmin edit to `wp_posts` ID 242025 (post_content is plain longtext, not serialized — safe). Verified: /faqs/ clean for both normal and Googlebot user agents; full 130-URL re-crawl = 0 spam.
+- **Other 5 sites on the account** (mrtacoshop, restaurant-insurance, cheapsoberlivinginsurance, topdogpetinsurance, statewideflood): no visible spam in content crawls (caveat: content-crawl can't prove file-level clean).
+
+⚠️ **Process note (July 16):** during californiaflood scope-mapping, a Better Search Replace action fired a live write instead of a dry run (stripped "fakecrr" from 8 cells). No real damage — "fakecrr" is a spam-only string, so it only touched spam content (inside the doomed hidden div) + audit-log rows; visible pages intact, no restore needed. **Lesson: do not use Better Search Replace for this cleanup** — use per-row phpMyAdmin edits or (best) let InMotion do server-side DB work.
+
+### Still open → InMotion ticket (account-wide, server-side)
+- Revision rows (~4 in californiaflood wp_posts) and wp_simple_history audit rows still contain old spam — not served/indexed, low priority, clean in the account sweep.
+- Root cause / entry point: CEI had a file backdoor (deleted); californiaflood had DB injection with NO file backdoor Wordfence could see → write-path unknown → needs access-log + DB review.
+- File + DB scan across all 7 sites AND the stale .old/dev copies.
+- Credential rotation (WP admins, cPanel, FTP, DB) + 2FA; security headers (HSTS, nosniff, server_tokens off).
+
 ## 🔴 WORDFENCE SCAN — malware located (July 16, High Sensitivity, 16,998 files)
 
 The visible spam was only the output. Wordfence found the mechanism: **~63 malware files across 11 fake plugin folders** in `wp-content/plugins/`, all flagged Critical as `IOC:TXT/b64.fakeimage` (image header followed by base64-encoded code — the signature of rogue WP plugins). Hosting account path: `/home/mrtaco5/cheapearthquakeinsurance.com/`.
