@@ -19,6 +19,20 @@ Notes:
 
 **Remediation status: NOT clean.** Phase A removed the visible spam; the malware files that regenerate it are still on the server. Reinfection is likely until every rogue folder is removed AND the entry point is closed.
 
+## 🌐 ACCOUNT-WIDE SCOPE (July 16) — this is bigger than one site
+
+The cPanel account **`mrtaco5`** hosts **7 WordPress installs**, all sharing one filesystem:
+mrtacoshop.com · restaurant-insurance.com · californiafloodinsurance.com · cheapearthquakeinsurance.com · cheapsoberlivinginsurance.com · topdogpetinsurance.com · statewidefloodinsurance.com
+(plus stale copies: cheapsoberlivinginsurance.com.old, restaurant-insurance.com.old, statewidefloodinsurance.com.old, dev.californiafloodinsurance.com, dev.cheapearthquakeinsurance.com, dev.statewidefloodinsurance.com — stale/dev installs are prime entry points and must be scanned or deleted too.)
+
+**jumpins.com is NOT on this account** (separate hosting) — consistent with its clean crawl.
+
+Visible-content crawl of the other 6 sites (363 URLs, July 16):
+- **californiafloodinsurance.com — CONFIRMED infected**: replica-watch spam links (watchesbuy.pl, tomfordreplica.ru, bestreplicawatch) in `/faqs/` content. Only 1 of 130 pages shows visible spam, but see the caveat below.
+- restaurant-insurance.com, cheapsoberlivinginsurance.com, topdogpetinsurance.com, statewidefloodinsurance.com, mrtacoshop.com — no visible spam found (2 earlier "hits" were false positives: legit featured-image links whose responsive `sizes="(min-width: 0px)…"` tripped the hidden-pixel pattern; and a Nevada-flood page's legit "Las Vegas casinos" editorial text).
+
+⚠️ **Caveat that drives the remediation:** a content crawl only sees the *visible output*, which the malware emits intermittently and per-page. It does NOT prove a site is clean. Because all 7 sites share the `mrtaco5` filesystem, the fake-plugin malware folders are very likely present on ALL of them regardless of what's currently rendered. **The definitive per-site check is Wordfence (or a File Manager look at each site's `wp-content/plugins/` for the same random-name folders), or — most efficient — the InMotion account-level scan.**
+
 ## Summary
 While editing `/commercial-earthquake/`, hidden spam backlinks were discovered in the page content. A full crawl of all 104 sitemap URLs across both sites (July 15) confirmed a spam SEO injection compromise on **cheapearthquakeinsurance.com only** — **jumpins.com is clean** (its two flagged pages were a false positive: "cialis" inside the word "specialists").
 
