@@ -78,11 +78,15 @@ The owner wants "the same Kadence theme as cheaplandlord.com." The cheaplandlord
 palette, customizer contact settings) plus a **`cli-instant-quote` plugin** (Steadily rater
 proxy with email lead-capture fallback when no API key is configured) — not Kadence.
 
-Two viable paths for the flood sites:
-- **A (recommended): replicate the cheaplandlord architecture** — same custom-theme skeleton,
-  re-tokened to this design. Native video hero, no builder overhead, and the instant-quote
-  plugin's "estimate now / agent follows up" pattern is exactly the future the owner described
-  ("we may later have the ability for someone to get their price online but not yet").
-- **B: Kadence + Kadence Blocks** — everything in this concept maps to Kadence (palette slots,
-  header builder, blocks); choose this if in-dashboard drag-and-drop editing by non-developers
-  matters more than the leaner custom stack.
+**Decision (July 22): Kadence.** The owner is using Kadence on another current rebuild and
+values it for the light, fast build. The flood sites will be built on Kadence + Kadence Blocks,
+following the mapping table in the concept's appendix. Speed disciplines that made the
+cheaplandlord build fast carry over regardless of theme:
+
+- Local-hosted fonts (two subset woff2 files), no Google Fonts CDN calls
+- Native `<video>` hero with poster + reserved height; no sliders/carousels
+- Kadence settings: CSS loaded per-page, disable unused block CSS, minimal header scripts
+- AVIF/WebP images with explicit dimensions; lazy-load everything below the hero
+- Few plugins — the theme is rarely what makes a WordPress site slow; plugins and media are
+- The `cli-instant-quote` plugin pattern (estimate now / agent follows up) remains available
+  later as a standalone plugin — it is theme-agnostic and would work under Kadence unchanged.
