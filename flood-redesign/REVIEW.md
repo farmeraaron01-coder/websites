@@ -57,3 +57,32 @@ best of both.
 - Verify the 40,000+ / 900+ / 4.9 numbers and the exact private-market count before launch, and
   the agency/coverholder wording with counsel (audit §Trust and compliance risks).
 - Final raindrop asset: compress to WebM+MP4 720p with an optimized poster and reserved height.
+
+## v3 revisions (owner feedback, July 22)
+
+1. **Gold dropped.** CTA color is now the brand cyan (`#25C1EE`, navy text for contrast),
+   reserved exclusively for quote actions; supporting blues stay deeper so the CTA remains the
+   brightest element. Review stars keep Google's amber by convention only.
+2. **Real raindrop video embedded.** The hero now plays the actual `raindrops-hero.mp4`
+   (720p H.264) with a real extracted frame as poster; video hides on mobile and under
+   reduced-motion per DECISIONS.md. The earlier ChatGPT-generated rain photo is gone.
+3. **Quote card is a pure click-through.** No embedded fields — benefits list + "Start My Quote"
+   linking to the existing Cognito quote page, mirroring the current short-form flow. Copy leaves
+   room to add online pricing later without a redesign.
+
+## Build architecture note (cheaplandlordinsurance.com)
+
+The owner wants "the same Kadence theme as cheaplandlord.com." The cheaplandlord build
+(Dropbox: `Claude CoWork Files/cheaplandlordinsurance.com-build/`) is actually a
+**dependency-free custom WordPress theme** (v1.1.1: front-page.php video hero, theme.json
+palette, customizer contact settings) plus a **`cli-instant-quote` plugin** (Steadily rater
+proxy with email lead-capture fallback when no API key is configured) — not Kadence.
+
+Two viable paths for the flood sites:
+- **A (recommended): replicate the cheaplandlord architecture** — same custom-theme skeleton,
+  re-tokened to this design. Native video hero, no builder overhead, and the instant-quote
+  plugin's "estimate now / agent follows up" pattern is exactly the future the owner described
+  ("we may later have the ability for someone to get their price online but not yet").
+- **B: Kadence + Kadence Blocks** — everything in this concept maps to Kadence (palette slots,
+  header builder, blocks); choose this if in-dashboard drag-and-drop editing by non-developers
+  matters more than the leaner custom stack.
