@@ -90,3 +90,26 @@ cheaplandlord build fast carry over regardless of theme:
 - Few plugins — the theme is rarely what makes a WordPress site slow; plugins and media are
 - The `cli-instant-quote` plugin pattern (estimate now / agent follows up) remains available
   later as a standalone plugin — it is theme-agnostic and would work under Kadence unchanged.
+
+## v4 revisions (owner feedback, July 22 — round 2)
+
+1. **1-2-3 cards replaced.** "How it works" is now a single dark-navy timeline panel
+   ("What happens after you click Start My Quote") with time markers — First 2 minutes /
+   Same business day / When you say go — giving the section real contrast against the
+   coverage cards below, which now sit on the tinted mist ground.
+2. **Zone lookup tool cut.** Visitors arrive already knowing their zone; the section now
+   sends them to the zone guides (internal links, nobody leaves the site) next to a
+   plain-English "What actually decides your premium" card that ends on the reason to call:
+   the same house prices differently carrier to carrier.
+3. **BFE waterline motif removed everywhere.** No jargon graphics; the raindrop video is
+   the signature element and the only thing that moves.
+4. **Hero quote card slimmed and shifted** (narrower, lower, lighter gradient on the video
+   side) so the raindrops are actually visible.
+
+## Kadence child theme (kadence-child/)
+
+`cfi-kadence-child/` implements the v4 homepage as a coded `front-page.php` under the
+Kadence theme (owner decision: PHP templates, no page builder). Self-hosted fonts, the
+raindrop video with poster fallback, guides pulled from real posts via WP_Query, and all
+brand facts as constants in functions.php. Install steps and the edit checklist are in the
+theme's readme.txt; `cfi-kadence-child-v1.0.0.zip` is ready to upload to WordPress.

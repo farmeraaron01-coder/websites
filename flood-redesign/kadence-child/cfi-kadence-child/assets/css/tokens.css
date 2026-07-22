@@ -1,0 +1,191 @@
+/*
+ * California Flood Insurance — design tokens + front-page components.
+ * Kadence child theme. For StatewideFloodInsurance.com change only the
+ * :root block (teal palette values are commented beside each token).
+ */
+
+@font-face{font-family:'Bricolage Grotesque';font-style:normal;font-weight:200 800;font-stretch:100%;src:url(../fonts/bricolage.woff2) format('woff2');font-display:swap}
+@font-face{font-family:'Public Sans';font-style:normal;font-weight:100 900;src:url(../fonts/publicsans.woff2) format('woff2');font-display:swap}
+
+:root{
+  --cfi-accent:#0891C7;        /* swfi: #0E8E8A */
+  --cfi-accent-bright:#38C6F4; /* swfi: #35CFC9 */
+  --cfi-accent-deep:#066D96;   /* swfi: #0A6B68 */
+  --cfi-cta:#25C1EE;           /* swfi: #35CFC9 — quote CTAs only */
+  --cfi-cta-hover:#0FAAD8;     /* swfi: #1FB5AF */
+  --cfi-cta-ink:#0A2540;
+  --cfi-star:#F2B01E;          /* review stars only (Google convention) */
+  --cfi-navy:#0A2540;          /* swfi: #092C35 */
+  --cfi-navy-2:#0E2E4F;        /* swfi: #0D3944 */
+  --cfi-paper:#F7FAFC;
+  --cfi-mist:#E7F0F6;
+  --cfi-card:#FFFFFF;
+  --cfi-line:#D5E3EC;
+  --cfi-ink:#12283F;
+  --cfi-ink-2:#44607A;
+  --cfi-ink-3:#6E8AA3;
+  --cfi-on-navy:#EAF4FB;
+  --cfi-on-navy-2:#9FBDD4;
+  --cfi-good:#1E9E6A;
+  --cfi-radius:10px;
+  --cfi-shadow:0 1px 2px rgba(10,37,64,.06),0 12px 32px -12px rgba(10,37,64,.18);
+  --cfi-shadow-big:0 2px 4px rgba(10,37,64,.08),0 24px 64px -16px rgba(10,37,64,.35);
+  --cfi-display:'Bricolage Grotesque',Georgia,serif;
+  --cfi-body:'Public Sans',-apple-system,'Segoe UI',sans-serif;
+}
+
+/* ---- front-page scope ---- */
+.cfi-home{background:var(--cfi-paper);color:var(--cfi-ink);font-family:var(--cfi-body);font-size:16.5px;line-height:1.65;-webkit-font-smoothing:antialiased}
+.cfi-home h1,.cfi-home h2,.cfi-home h3{font-family:var(--cfi-display);line-height:1.12;margin:0;text-wrap:balance;font-weight:800}
+.cfi-home p{margin:0}
+.cfi-home a{color:var(--cfi-accent);text-decoration:none}
+.cfi-home a:hover{color:var(--cfi-accent-deep)}
+.cfi-home :focus-visible{outline:3px solid var(--cfi-accent-bright);outline-offset:2px;border-radius:4px}
+.cfi-wrap{max-width:1160px;margin:0 auto;padding:0 24px}
+.cfi-eyebrow{font-size:12px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--cfi-accent)}
+.cfi-sec{padding:88px 0;position:relative}
+.cfi-sec-head{max-width:640px;margin-bottom:48px}
+.cfi-sec-head h2{font-size:clamp(28px,3.4vw,40px);margin:10px 0 14px}
+.cfi-sec-head p{color:var(--cfi-ink-2)}
+@media (prefers-reduced-motion:reduce){.cfi-home *{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+
+/* ---- buttons ---- */
+.cfi-btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;font-family:var(--cfi-body);font-weight:600;font-size:16px;border-radius:var(--cfi-radius);padding:15px 26px;border:0;cursor:pointer;white-space:nowrap;transition:transform .15s ease,background .15s ease}
+.cfi-btn:active{transform:translateY(1px)}
+.cfi-btn-cta{background:var(--cfi-cta);color:var(--cfi-cta-ink);box-shadow:0 2px 0 rgba(0,0,0,.12),0 10px 28px -8px rgba(37,193,238,.5)}
+.cfi-btn-cta:hover{background:var(--cfi-cta-hover);color:var(--cfi-cta-ink)}
+.cfi-btn-ghost{background:transparent;color:var(--cfi-on-navy);border:1.5px solid rgba(234,244,251,.35)}
+.cfi-btn-ghost:hover{border-color:var(--cfi-accent-bright);color:#fff}
+
+/* ---- hero ---- */
+.cfi-hero{background:var(--cfi-navy);color:var(--cfi-on-navy);overflow:hidden;position:relative}
+.cfi-hero .bg{position:absolute;inset:0;z-index:0}
+.cfi-hero .bg video,.cfi-hero .bg img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.cfi-hero .bg::after{content:"";position:absolute;inset:0;background:linear-gradient(92deg,rgba(10,37,64,.96) 8%,rgba(10,37,64,.78) 44%,rgba(10,37,64,.24) 78%,rgba(10,37,64,.12) 100%)}
+@media (prefers-reduced-motion:reduce),(max-width:720px){.cfi-hero .bg video{display:none}}
+.cfi-hero .cfi-wrap{display:grid;grid-template-columns:1.2fr minmax(320px,370px);gap:64px;padding-top:76px;padding-bottom:96px;position:relative;z-index:2;align-items:start}
+@media (max-width:980px){.cfi-hero .cfi-wrap{grid-template-columns:1fr;padding-top:56px;padding-bottom:72px}}
+.cfi-hero h1{font-size:clamp(38px,5.2vw,60px);letter-spacing:-.015em;color:#fff;margin-top:14px}
+.cfi-hero h1 em{font-style:normal;color:var(--cfi-accent-bright)}
+.cfi-hero .sub{margin:22px 0 30px;font-size:18px;max-width:52ch;color:var(--cfi-on-navy-2)}
+.cfi-hero .sub strong{color:var(--cfi-on-navy);font-weight:600}
+.cfi-hero .eyebrow-light{color:var(--cfi-accent-bright)}
+.cfi-hero .ctas{display:flex;gap:14px;flex-wrap:wrap}
+.cfi-chips{display:flex;gap:10px;flex-wrap:wrap;margin-top:34px}
+.cfi-chip{display:inline-flex;align-items:center;gap:8px;font-size:13.5px;font-weight:600;color:var(--cfi-on-navy);background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.14);border-radius:999px;padding:7px 14px}
+.cfi-chip .star{color:var(--cfi-star);letter-spacing:1px}
+
+/* ---- quote card ---- */
+.cfi-qcard{position:relative;background:var(--cfi-card);color:var(--cfi-ink);border-radius:14px;box-shadow:var(--cfi-shadow-big);padding:24px;align-self:start;justify-self:end;width:100%;margin-top:48px}
+@media (max-width:980px){.cfi-qcard{margin-top:0;justify-self:stretch}}
+.cfi-qcard h2{font-size:21px;margin-bottom:4px}
+.cfi-qcard .qsub{font-size:14px;color:var(--cfi-ink-3);margin-bottom:16px}
+.cfi-qcard .ribbon{position:absolute;top:-13px;left:24px;background:var(--cfi-cta);color:var(--cfi-cta-ink);font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:5px 12px;border-radius:6px}
+.cfi-qlist{margin:0 0 18px;padding:0;list-style:none;display:flex;flex-direction:column;gap:9px;font-size:15px;color:var(--cfi-ink-2)}
+.cfi-qlist li{padding-left:24px;position:relative}
+.cfi-qlist li::before{content:"\2713";position:absolute;left:0;color:var(--cfi-good);font-weight:700}
+.cfi-qcard .cfi-btn-cta{width:100%}
+.cfi-qmicro{margin-top:12px;font-size:13px;color:var(--cfi-ink-3);text-align:center}
+.cfi-qtrust{display:flex;justify-content:center;gap:14px;margin-top:14px;padding-top:14px;border-top:1px solid var(--cfi-line);font-size:12.5px;color:var(--cfi-ink-2);flex-wrap:wrap}
+.cfi-qtrust b{color:var(--cfi-ink)}
+
+/* ---- markets bar ---- */
+.cfi-markets{background:var(--cfi-mist);border-bottom:1px solid var(--cfi-line)}
+.cfi-markets .cfi-wrap{display:flex;align-items:center;gap:12px 28px;padding:20px 24px;flex-wrap:wrap;justify-content:center}
+.cfi-markets .m-label{font-size:12.5px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--cfi-ink-3)}
+.cfi-markets .mk{font-family:var(--cfi-display);font-weight:600;font-size:16.5px;color:var(--cfi-ink-2)}
+.cfi-markets .mk.nfip{display:inline-flex;align-items:center;gap:7px}
+.cfi-markets .mk.nfip::before{content:"";width:9px;height:9px;border-radius:50%;background:var(--cfi-accent)}
+.cfi-markets .m-note{font-size:13px;color:var(--cfi-ink-3)}
+
+/* ---- process flow ---- */
+.cfi-flow{background:var(--cfi-navy);border-radius:16px;box-shadow:var(--cfi-shadow-big);padding:14px 0;color:var(--cfi-on-navy);overflow:hidden}
+.cfi-flow-row{display:grid;grid-template-columns:190px 1fr;gap:28px;padding:30px 40px;position:relative}
+.cfi-flow-row + .cfi-flow-row{border-top:1px solid rgba(255,255,255,.08)}
+.cfi-flow-when{font-size:12.5px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--cfi-accent-bright);padding-top:5px;display:flex;align-items:flex-start;gap:12px}
+.cfi-flow-when::before{content:"";width:11px;height:11px;border-radius:50%;background:var(--cfi-accent-bright);flex:0 0 auto;margin-top:2px;box-shadow:0 0 0 4px rgba(56,198,244,.25)}
+.cfi-flow-row::before{content:"";position:absolute;left:45px;top:0;bottom:0;border-left:2px dashed rgba(56,198,244,.3)}
+.cfi-flow-row:first-child::before{top:38px}
+.cfi-flow-row:last-child::before{bottom:calc(100% - 38px)}
+.cfi-flow-body h3{font-size:20px;margin-bottom:8px;color:#fff}
+.cfi-flow-body p{font-size:15.5px;color:var(--cfi-on-navy-2);max-width:62ch}
+@media (max-width:760px){.cfi-flow-row{grid-template-columns:1fr;gap:10px;padding:24px 22px}.cfi-flow-row::before{display:none}}
+
+/* ---- coverage cards ---- */
+.cfi-covers{display:grid;grid-template-columns:repeat(3,1fr);gap:28px}
+@media (max-width:860px){.cfi-covers{grid-template-columns:1fr}}
+.cfi-cover{background:var(--cfi-card);border:1px solid var(--cfi-line);border-radius:var(--cfi-radius);padding:30px 26px;box-shadow:var(--cfi-shadow);display:flex;flex-direction:column;gap:12px}
+.cfi-cover .ic{width:46px;height:46px;border-radius:10px;background:rgba(8,145,199,.12);display:grid;place-items:center;color:var(--cfi-accent)}
+.cfi-cover h3{font-size:20px}
+.cfi-cover ul{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:7px;font-size:14.5px;color:var(--cfi-ink-2)}
+.cfi-cover li{padding-left:20px;position:relative}
+.cfi-cover li::before{content:"\2713";position:absolute;left:0;color:var(--cfi-good);font-weight:700}
+.cfi-cover a{margin-top:auto;font-weight:600;font-size:15px}
+
+/* ---- NFIP comparison ---- */
+.cfi-compare{background:var(--cfi-navy);color:var(--cfi-on-navy)}
+.cfi-compare .cfi-eyebrow{color:var(--cfi-accent-bright)}
+.cfi-compare h2{color:#fff}
+.cfi-compare .cfi-sec-head p{color:var(--cfi-on-navy-2)}
+.cfi-compare-grid{display:grid;grid-template-columns:.9fr 1.1fr;gap:56px;align-items:center}
+@media (max-width:980px){.cfi-compare-grid{grid-template-columns:1fr}}
+.cfi-bignum{font-family:var(--cfi-display);font-weight:800;font-size:clamp(56px,7vw,84px);color:#fff;line-height:1}
+.cfi-bignum small{font-size:.38em;color:var(--cfi-accent-bright);font-weight:600;display:block;margin-top:10px}
+.cfi-compare .note{margin-top:18px;color:var(--cfi-on-navy-2);font-size:15px;max-width:38ch}
+table.cfi-rates{width:100%;border-collapse:collapse;background:var(--cfi-navy-2);border:1px solid rgba(255,255,255,.12);border-radius:12px;overflow:hidden;font-size:15px}
+table.cfi-rates caption{caption-side:bottom;text-align:left;font-size:12.5px;color:var(--cfi-on-navy-2);padding:10px 4px 0}
+.cfi-rates th{font-family:var(--cfi-body);font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--cfi-on-navy-2);text-align:left;padding:14px 18px;border-bottom:1px solid rgba(255,255,255,.12);font-weight:600}
+.cfi-rates td{padding:14px 18px;border-bottom:1px solid rgba(255,255,255,.07);color:var(--cfi-on-navy)}
+.cfi-rates tr:last-child td{border-bottom:0}
+.cfi-rates td.num,.cfi-rates th.num{text-align:right;font-variant-numeric:tabular-nums}
+.cfi-rates .hi{color:#fff;font-weight:700}
+
+/* ---- zones + premium factors ---- */
+.cfi-zones .z-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:56px;align-items:center}
+@media (max-width:980px){.cfi-zones .z-grid{grid-template-columns:1fr}}
+.cfi-zchips{display:flex;flex-wrap:wrap;gap:10px;margin-top:22px}
+.cfi-zchip{font-size:14px;font-weight:600;color:var(--cfi-accent);background:var(--cfi-card);border:1.5px solid var(--cfi-line);padding:9px 16px;border-radius:999px}
+.cfi-zchip:hover{border-color:var(--cfi-accent)}
+.cfi-price-card{background:var(--cfi-card);border:1px solid var(--cfi-line);border-radius:14px;box-shadow:var(--cfi-shadow-big);padding:30px 28px}
+.cfi-price-card h3{font-size:20px;margin-bottom:6px}
+.cfi-price-card .pc-sub{font-size:14px;color:var(--cfi-ink-3);margin-bottom:18px}
+.cfi-price-card ol{margin:0;padding:0;list-style:none;counter-reset:pc;display:flex;flex-direction:column}
+.cfi-price-card li{counter-increment:pc;display:grid;grid-template-columns:auto 1fr;gap:14px;padding:13px 0;border-top:1px solid var(--cfi-line);font-size:15px;color:var(--cfi-ink-2);align-items:baseline}
+.cfi-price-card li::before{content:counter(pc);font-family:var(--cfi-display);font-weight:800;font-size:15px;color:var(--cfi-accent);width:26px;height:26px;border-radius:50%;background:rgba(8,145,199,.10);display:inline-flex;align-items:center;justify-content:center}
+.cfi-price-card li b{color:var(--cfi-ink);font-weight:600}
+.cfi-price-card .pc-note{margin-top:16px;font-size:14px;color:var(--cfi-ink-2);background:var(--cfi-mist);border-radius:8px;padding:14px 16px}
+.cfi-price-card .pc-note b{color:var(--cfi-ink)}
+
+/* ---- reviews ---- */
+.cfi-reviews{background:var(--cfi-mist)}
+.cfi-rev-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:28px}
+@media (max-width:860px){.cfi-rev-grid{grid-template-columns:1fr}}
+.cfi-rev{background:var(--cfi-card);border:1px solid var(--cfi-line);border-radius:var(--cfi-radius);padding:26px;box-shadow:var(--cfi-shadow);display:flex;flex-direction:column;gap:12px}
+.cfi-rev .stars{color:var(--cfi-star);font-size:15px;letter-spacing:2px}
+.cfi-rev blockquote{margin:0;font-size:15.5px;color:var(--cfi-ink-2)}
+.cfi-rev cite{font-style:normal;font-size:13.5px;font-weight:600;color:var(--cfi-ink)}
+.cfi-rev cite span{display:block;font-weight:400;color:var(--cfi-ink-3);font-size:12.5px;margin-top:2px}
+
+/* ---- expert ---- */
+.cfi-expert .x-grid{display:grid;grid-template-columns:auto 1fr;gap:44px;align-items:center;background:var(--cfi-card);border:1px solid var(--cfi-line);border-radius:16px;padding:44px;box-shadow:var(--cfi-shadow)}
+@media (max-width:860px){.cfi-expert .x-grid{grid-template-columns:1fr}}
+.cfi-xphoto{width:132px;height:132px;border-radius:50%;object-fit:cover;border:4px solid var(--cfi-mist)}
+.cfi-xcreds{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
+.cfi-xcred{font-size:12.5px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:var(--cfi-accent);background:rgba(8,145,199,.09);border:1px solid rgba(8,145,199,.3);padding:6px 12px;border-radius:6px}
+
+/* ---- guides ---- */
+.cfi-guides-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:22px}
+@media (max-width:980px){.cfi-guides-grid{grid-template-columns:repeat(2,1fr)}}
+@media (max-width:640px){.cfi-guides-grid{grid-template-columns:1fr}}
+.cfi-guide{background:var(--cfi-card);border:1px solid var(--cfi-line);border-radius:var(--cfi-radius);padding:24px;box-shadow:var(--cfi-shadow);display:flex;flex-direction:column;gap:10px}
+.cfi-guide .g-tag{font-size:11.5px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--cfi-accent)}
+.cfi-guide h3{font-size:17px;line-height:1.3;font-weight:600;font-family:var(--cfi-body)}
+.cfi-guide p{font-size:14px;color:var(--cfi-ink-3)}
+.cfi-guide a{margin-top:auto;font-size:14px;font-weight:600}
+
+/* ---- CTA band ---- */
+.cfi-ctaband{background:var(--cfi-navy);color:var(--cfi-on-navy)}
+.cfi-ctaband .cfi-wrap{padding:72px 24px;display:flex;align-items:center;justify-content:space-between;gap:32px;flex-wrap:wrap}
+.cfi-ctaband h2{font-size:clamp(26px,3.4vw,38px);color:#fff;max-width:20ch}
+.cfi-ctaband p{color:var(--cfi-on-navy-2);margin-top:10px;max-width:44ch}
+.cfi-ctaband p b{color:#fff}

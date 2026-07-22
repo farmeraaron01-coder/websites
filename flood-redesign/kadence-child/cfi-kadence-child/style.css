@@ -1,0 +1,15 @@
+/*
+Theme Name: California Flood Insurance (Kadence Child)
+Theme URI: https://www.californiafloodinsurance.com/
+Template: kadence
+Author: Farmer Agency
+Description: Kadence child theme for CaliforniaFloodInsurance.com and StatewideFloodInsurance.com. Designed pages are coded PHP templates; global styles live in assets/css/tokens.css.
+Version: 1.0.0
+Requires at least: 6.4
+Requires PHP: 8.0
+Text Domain: cfi-kadence-child
+License: GNU General Public License v2 or later
+License URI: https://www.gnu.org/licenses/gpl-2.0.html
+*/
+
+/* Intentionally empty — all styles are in assets/css/tokens.css (enqueued by functions.php). */
