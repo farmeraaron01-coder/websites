@@ -37,9 +37,13 @@ the hero, the zone badge, and the CTA band, and it is literally what flood prici
 5. **Performance-first** — no sliders, no video, text LCP, two subset font files; targets 95+
    mobile PageSpeed on Kadence.
 
-## Status
+## Status (updated)
 
 The ChatGPT prototype (california-flood-insurance-kadence.farmeraaron01.chatgpt.site) requires
 the owner's ChatGPT sign-in and could not be reviewed from this session; only `HANDOFF.md` from
 the handoff folder was received. The side-by-side "best of both" comparison is pending access
 to `prototype-source/`, `audit/`, and `DECISIONS.md`.
+
+**Update:** The ChatGPT handoff folder was located in Dropbox and fully reviewed (DECISIONS.md,
+audit, and prototype source, rendered locally). `concept-homepage.html` is now the merged v2 —
+see `REVIEW.md` for the side-by-side comparison and what was taken from each design.
