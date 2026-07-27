@@ -13,9 +13,19 @@ $theme_uri = get_stylesheet_directory_uri();
 	<section class="cfi-hero">
 		<div class="bg" aria-hidden="true">
 			<img src="<?php echo esc_url( $theme_uri . '/assets/media/hero-poster.jpg' ); ?>" alt="" width="1280" height="720" fetchpriority="high">
-			<video autoplay muted loop playsinline preload="metadata" poster="<?php echo esc_url( $theme_uri . '/assets/media/hero-poster.jpg' ); ?>">
-				<source src="<?php echo esc_url( $theme_uri . '/assets/media/raindrops-hero.mp4' ); ?>" type="video/mp4">
-			</video>
+			<video muted loop playsinline preload="none" poster="<?php echo esc_url( $theme_uri . '/assets/media/hero-poster.jpg' ); ?>" data-src="<?php echo esc_url( $theme_uri . '/assets/media/raindrops-hero.mp4' ); ?>"></video>
+			<script>
+			/* Load the hero video only on desktop, and never for reduced-motion visitors —
+			   keeps the 1.8 MB file entirely off mobile connections. */
+			(function () {
+				var v = document.currentScript.previousElementSibling;
+				if ( window.matchMedia('(min-width: 721px)').matches && ! window.matchMedia('(prefers-reduced-motion: reduce)').matches ) {
+					v.src = v.dataset.src;
+					v.autoplay = true;
+					v.load();
+				}
+			})();
+			</script>
 		</div>
 		<div class="cfi-wrap">
 			<div>
