@@ -190,8 +190,15 @@ table.cfi-rates caption{caption-side:bottom;text-align:left;font-size:12.5px;col
 /* ---- expert ---- */
 .cfi-expert .x-grid{display:grid;grid-template-columns:auto 1fr;gap:48px;align-items:center;background:var(--cfi-card);border:1px solid var(--cfi-line);border-radius:16px;padding:44px;box-shadow:var(--cfi-shadow)}
 @media (max-width:860px){.cfi-expert .x-grid{grid-template-columns:1fr}}
-.cfi-xphoto{width:100%;max-width:260px;aspect-ratio:4/5;border-radius:14px;object-fit:cover;object-position:center top;background:var(--cfi-mist);box-shadow:var(--cfi-shadow)}
-@media (max-width:860px){.cfi-xphoto{max-width:200px}}
+/* The photo sits in an `auto` grid column and is lazy-loaded, so the column
+   needs a definite width at parse time. Without one, <picture> (display:inline
+   by default) resolved to 72x72 and then jumped to 332x238 when the image
+   arrived, shoving the text column 260px sideways — a measured 0.043 CLS hit
+   that Lighthouse never sees, because it does not scroll this far. Sizing the
+   <picture> rather than the <img> fixes the column before load. */
+.cfi-expert picture{display:block;width:260px;max-width:100%}
+@media (max-width:860px){.cfi-expert picture{width:200px}}
+.cfi-xphoto{display:block;width:100%;aspect-ratio:4/5;border-radius:14px;object-fit:cover;object-position:center top;background:var(--cfi-mist);box-shadow:var(--cfi-shadow)}
 .cfi-xcreds{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
 .cfi-xcred{font-size:13px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:var(--cfi-link);background:rgba(8,145,199,.09);border:1px solid rgba(8,145,199,.3);padding:6px 12px;border-radius:6px}
 

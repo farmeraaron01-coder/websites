@@ -194,6 +194,47 @@ SEO scores 61 on both. Two causes, both explainable: `is-crawlable` fails becaus
 is intentionally noindex, and `meta-description` fails because no homepage description is
 set yet — that lands when Rank Math goes in.
 
+## 5g. CLS — slider autoplay must be turned OFF
+
+**This is the one setting that matters most, and Lighthouse cannot see it.**
+
+Lighthouse reports CLS 0 / 0.001 because the widget never loads during a lab run (no
+scrolling). Measured in a real browser, scrolled to the section and then left completely
+idle with no input at all:
+
+| Idle time | CLS | Shifts |
+|---|---|---|
+| widget just loaded | 0.043 | 1 |
+| +8s | 0.091 | 55 |
+| +16s | 0.182 | 151 |
+| +24s | **0.228** | 201 |
+
+Cause: Slider I animates each card with `left` (`position:relative; left:-1461px;
+transition:all`). `left` is a **layout** property, so every frame of every rotation is a
+layout shift, and autoplay means it never stops. CLS is effectively unbounded — it grows
+for as long as a visitor stays on the page. Good is <0.1, Poor is >0.25; 24 seconds of
+reading crosses into Poor.
+
+Chrome's field data (CrUX) measures CLS across the whole page lifetime, so this counts
+against real Core Web Vitals even though every lab test says 0.
+
+**Fix: turn off auto-rotation / autoplay in the widget settings.** Verified by stopping
+the widget's timers in a live page — CLS then measured **exactly 0 over 20 seconds idle**.
+The arrows still work; user-initiated shifts set `hadRecentInput` and are excluded from
+CLS by design, so a visitor clicking through slides costs nothing.
+
+If the free tier will not let autoplay be disabled, switch the layout to a static grid
+instead. Do not leave autoplay on.
+
+### Aaron's photo — CLS (fixed in v1.0.13)
+
+The 0.043 one-time shift above was **not** the widget. `.cfi-xphoto` was `width:100%`
+inside a `grid-template-columns:auto` column, wrapped in a `<picture>` that is
+`display:inline` by default. With the image lazy-loaded, the column had no definite width:
+the box resolved to 72×72, then jumped to 332×238 on load, pushing the text column 260px
+sideways. Fixed by sizing the `<picture>` (260px, 200px under 860px) so the column is
+definite at parse time. Lighthouse never caught this either — it does not scroll that far.
+
 ### Widget height reservation (fixed in v1.0.12)
 
 `.cfi-trustindex` reserved `min-height:340px`, set before the widget existed. Real
