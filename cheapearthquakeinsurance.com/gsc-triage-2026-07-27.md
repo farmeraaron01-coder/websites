@@ -1,7 +1,8 @@
 # cheapearthquakeinsurance.com — GSC Indexing Triage
 
 **Date:** July 28, 2026
-**Source:** 5 GSC Coverage drill-down exports (2026-07-27) + GSC alert email of 2026-07-28
+**Source:** 6 GSC Coverage drill-down exports (2026-07-27) + GSC alert email of 2026-07-28
+**Status:** 403 alarm resolved — benign. Real issue is the 161 spam 404s + content quality.
 
 ## Verdict
 
@@ -24,11 +25,24 @@ that spam pages are still being served.
 | Crawled – currently not indexed | 22 | Mix: feeds/author archive (fine) + **real content pages** incl. `/should-you-buy-earthquake-insurance-in-california/`, `/residential-earthquake-quote/`, `/service/faq/`, `/benefits-of-multiple-insurance-carriers/` | Content quality problem — real pages Google won't index |
 | Excluded by 'noindex' (×2 duplicate exports) | 6 | `wp-login.php` variants + one `/feed/` | Intentional, no action |
 | Blocked due to other 4xx | 1 | `/wp-admin/admin-ajax.php` | Normal, no action |
-| **Blocked due to access forbidden (403)** | ? | **Export not received** — this was the headline issue in the GSC email | **Need this export** |
+| Blocked due to access forbidden (403) | 4 | Asset **directory** paths only — `/wp-includes/js/mediaelement/`, `/wp-content/themes/Divi/images`, `/wp-content/themes/Divi/includes/builder/images`, `…/frontend-builder/assets/vendors` | **Benign — no action** |
 
-Notable: `/?wordfence_logHuman=…` appears in the crawl list → **Wordfence is installed**.
-Wordfence (or its rate limiting) is the most likely cause of the "403 Forbidden" issue in
-the GSC email — it sometimes blocks Googlebot after aggressive-crawl false positives.
+### The 403 issue is a non-issue (resolved)
+
+All 4 URLs are **directory paths**, not pages. The server returns 403 because directory
+browsing is disabled — which is correct, standard hardening. Googlebot found the directory
+paths (typically inferred from asset URLs in CSS/JS) and got told "no listing for you."
+Nothing is wrong and no real page is affected.
+
+An earlier hypothesis in this file was that Wordfence was blocking Googlebot. **That was
+wrong** — the export shows no page URLs and no crawler blocking. Wordfence is installed
+(`/?wordfence_logHuman=…` appears in the crawl data) but there is no evidence it is
+interfering with Googlebot.
+
+⚠️ **Do not "fix" this by adding `Disallow: /wp-content/themes/` or `Disallow: /wp-includes/`
+to robots.txt.** That would block the CSS and JavaScript files Google needs to render the
+site, which would actively damage rendering assessment and Core Web Vitals reporting. The
+correct action for these 4 URLs is to leave them exactly as they are.
 
 ## Immediate actions (security first)
 
@@ -40,9 +54,8 @@ the GSC email — it sometimes blocks Googlebot after aggressive-crawl false pos
    enters through an outdated plugin.
 4. **Check the sitemap** (`/sitemap_index.xml` or Yoast equivalent) — confirm no
    `/products/` URLs are listed in any sitemap.
-5. **Wordfence → Firewall → check whether verified Googlebot is being blocked/throttled**
-   (Live Traffic → filter by Googlebot; also Blocking log). If Googlebot appears there,
-   allowlist verified Google crawlers. This is the fix for the 403 email.
+5. ~~Check whether Wordfence is blocking Googlebot~~ — **not needed**, see the 403 section
+   above. The 403s are disabled directory listings, not crawler blocks.
 
 ## What NOT to do
 
