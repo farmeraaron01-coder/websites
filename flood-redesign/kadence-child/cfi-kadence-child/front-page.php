@@ -239,9 +239,29 @@ $theme_uri = get_stylesheet_directory_uri();
 				</span>
 			</div>
 			<!-- Live Google reviews via Trust Index (same widget as the current site) -->
-			<div class="cfi-trustindex">
+			<div class="cfi-trustindex" id="cfi-reviews">
 				<div data-src="https://cdn.trustindex.io/loader.js?1e9552d4458412053506ba969a9"></div>
+				<noscript><p style="color:var(--cfi-ink-2)">Read our reviews on <a href="https://www.google.com/search?q=California+Flood+Insurance+reviews">Google</a>.</p></noscript>
 			</div>
+			<script>
+			/* Load the Trust Index script only when the reviews section nears the
+			   viewport, so its third-party JS never delays first paint. */
+			(function () {
+				var host = document.getElementById('cfi-reviews');
+				if ( ! host || ! ('IntersectionObserver' in window) ) { load(); return; }
+				var seen = false;
+				var io = new IntersectionObserver(function (entries) {
+					if ( entries[0].isIntersecting && ! seen ) { seen = true; io.disconnect(); load(); }
+				}, { rootMargin: '400px 0px' });
+				io.observe(host);
+				function load() {
+					var s = document.createElement('script');
+					s.src = 'https://cdn.trustindex.io/loader.js?1e9552d4458412053506ba969a9';
+					s.async = true; s.defer = true;
+					document.body.appendChild(s);
+				}
+			})();
+			</script>
 		</div>
 		</div>
 	</section>
