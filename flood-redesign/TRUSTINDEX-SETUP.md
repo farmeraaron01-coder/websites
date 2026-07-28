@@ -133,20 +133,30 @@ implements it — one widget, both sites. Consequences:
 The "Verified by Trustindex" badge renders on production today, so the current plan does
 not allow hiding it. Expect it on the new homepage. Not worth upgrading to remove.
 
-## 5d. STILL OPEN — rich snippet on the production widget
+## 5d. RESOLVED — rich snippet on the production widget
 
-The duplicate has rich snippet off. **The production widget still has it on**, confirmed
-July 28 2026: `1e9552d4458412053506ba969a9` requests both `richsnippet.js` and
-`richsnippet.json` and injects a `Product`-typed block with `aggregateRating` and
-individual `review` nodes at runtime.
+`1e9552d4458412053506ba969a9` was requesting `richsnippet.js` + `richsnippet.json` and
+injecting a `Product`-typed block with `aggregateRating` and individual `review` nodes at
+runtime — self-serving review markup on a mistyped entity, live on both production
+homepages. Turned off July 28 2026.
 
-That is self-serving review markup on a mistyped entity, live on both production
-homepages, and Googlebot renders JS so it is being read. Turning the toggle off on that
-one widget fixes both sites at once and changes nothing a visitor sees — Google stopped
-displaying self-serving review stars for `LocalBusiness`/`Organization` types in 2019, so
-they were never rendering in results.
+The control is **MAIN SETTINGS → OTHER → "Rich snippet"**, a **per-widget** switch. The
+company-level setting chooses the snippet *type*; this switch decides whether anything is
+emitted at all. Only the widget switch was changed; the company setting was left alone.
 
-This is the only remaining Trust Index action, and it is on production, not staging.
+Verified by rendering both live homepages in headless Chromium after the change:
+
+| | `data-rich-snippet` | `richsnippet` requests | `Product` JSON-LD | microdata |
+|---|---|---|---|---|
+| californiafloodinsurance.com | absent | 0 | none | 0 |
+| statewidefloodinsurance.com | absent | 0 | none | 0 |
+
+Remaining JSON-LD is legitimate and untouched: `AboutPage,WebSite,Organization` on both,
+plus `InsuranceAgency` on CFI only. One toggle, both sites — as predicted, and now
+confirmed in served output rather than inferred.
+
+Visitors see no difference, and nothing was lost in search: Google stopped displaying
+self-serving review stars for `LocalBusiness`/`Organization` types in 2019.
 
 ## 5e. Related, but not a Trust Index problem
 
@@ -226,10 +236,30 @@ CLS by design, so a visitor clicking through slides costs nothing.
 If the free tier will not let autoplay be disabled, switch the layout to a static grid
 instead. Do not leave autoplay on.
 
-**Status after v1.0.13 (verified July 28 2026):** the theme side is clean — the widget now
-loads with **0** layout shift, confirming the 0.043 was entirely the expert photo. Autoplay
-is still enabled, and idle CLS still climbs: 0.089 at 8s, 0.138 at 16s, 0.184 at 24s.
-This is the last open CLS item and it cannot be fixed from the theme.
+### RESOLVED — July 28 2026
+
+The control is **NAVIGATION → SLIDER SETTINGS → "Rotate interval"** (in seconds). There is
+no on/off switch; it was changed **6 → 0**. The neighbouring "Loop" setting is not the
+autoplay control — it governs wrapping past the last card, and the widget still advanced
+with Loop off.
+
+Independently verified on the staging homepage, widget in view, no input for 24 seconds:
+
+| Checkpoint | CLS | Shifts |
+|---|---|---|
+| widget loaded | 0 | 0 |
+| +8s | 0 | 0 |
+| +16s | 0 | 0 |
+| +24s | **0** | **0** |
+
+`data-pager-autoplay-timeout="0"`, `data-pid=bcdff9477ef19568e30684fd16d`, 18 cards, no
+widget JSON-LD. Arrows still page through slides manually, and those shifts stay excluded
+from CLS via `hadRecentInput`.
+
+**Careful when re-verifying:** saving a widget warns that the CDN needs about a minute to
+propagate, and the browser will happily replay a cached `content.html` carrying the old
+`data-pager-autoplay-timeout="6"`. A first verification run showed CLS 0.0486 with visible
+rotation for exactly this reason. Force-refresh before concluding anything.
 
 ### Aaron's photo — CLS (fixed in v1.0.13)
 
