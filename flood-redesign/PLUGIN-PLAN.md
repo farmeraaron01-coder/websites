@@ -198,6 +198,36 @@ should see a trail. Kadence is not a competing source — the only breadcrumb re
 output is a dormant CSS rule (`.entry-hero .kadence-breadcrumbs`) with no markup behind it,
 consistent with Kadence Pro being inactive. One source, no duplication.
 
+### Verification protocol — a single post-save read of this site is not trustworthy
+
+Hit twice now, from two different caching layers, and it will recur constantly during content
+migration:
+
+1. **WordPress/nginx page cache.** Immediately after saving page 8, three consecutive fetches
+   of the same URL returned three *different* schema graphs — five nodes with `Service`, then
+   four without it, then `Service` absent — despite unique cache-busting query strings and
+   `cache: 'reload'`. It settled once the page cache finished writing.
+2. **Trust Index CDN.** Saving a widget warns that propagation takes about a minute; a stale
+   `content.html` replayed the old autoplay timeout and produced a false CLS reading of
+   0.0486 with visible rotation.
+
+**Protocol: never conclude from one read after a write.** Sample the same URL 3–5 times,
+confirm the result is stable, and only then record it. For markup checks, normalise the
+cache-buster before diffing — otherwise the `cb=` parameter echoes into the page and every
+sample looks different for no reason.
+
+### The Trust Index plugin does inject one thing (correction)
+
+Earlier note said it "enqueues nothing on the front end." Precisely: it enqueues no script and
+no CSS, but it does emit a `<meta name="ti-site-data">` tag on **every** page — roughly 300
+bytes of base64 containing a `_wpnonce` and a `ti-online-users-google=1` URL. Measured: it
+fires **zero** requests on pages without the widget, so it is inert rather than costly.
+
+Two notes. A WordPress nonce baked into cached HTML goes stale when the nonce window rotates,
+which is untidy though harmless while nothing consumes it. And the tag appears on the quote
+landing page, which shows no reviews at all. Neither is a problem today; both add to the case
+for deleting the plugin once migration confirms no content depends on its shortcode.
+
 ### Refinement for when content lands (not now)
 
 `Article` is right for the zone pages, city pages and guides — the bulk of the site. But
