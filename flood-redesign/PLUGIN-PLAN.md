@@ -55,6 +55,63 @@ Nginx Helper · EWWW Image Optimizer · (Site Kit, after launch)
 That's a deliberately short list. Plugin count is the single biggest predictor of a slow
 WordPress site, and the 98/100 desktop score depends on keeping it short.
 
+## Status — verified July 28 2026
+
+Fingerprinted by requesting plugin directories directly (no auth needed):
+
+| Plugin | State |
+|---|---|
+| Wordfence | installed ✓ |
+| Rank Math (`seo-by-rank-math`) | installed ✓ — **but not configured, see below** |
+| EWWW Image Optimizer | installed ✓ |
+| Nginx Helper | present ✓ |
+| Trust Index (`wp-reviews-plugin-for-google`) | installed — **redundant, see below** |
+| Akismet, FormLayer, FormLayer Pro, Hello Dolly | gone ✓ |
+| AIOSEO | never on staging ✓ |
+
+### The three new plugins cost nothing
+
+| | Perf | A11y | BP | LCP | CLS | TBT | Requests |
+|---|---|---|---|---|---|---|---|
+| Mobile | **97** | 100 | 100 | 2.6s | 0 | 10ms | 15 |
+| Desktop | **100** | 100 | 100 | 0.6s | 0.001 | 0ms | 16 |
+
+Mobile went 96 → 97 and TBT 100ms → 10ms; request count unchanged. That is the expected
+result and confirms the picks: Wordfence is admin-side, Rank Math emits meta tags only, and
+EWWW works at upload time. None of them add front-end weight.
+
+Desktop transfer reads 2.1MB against mobile's 359KB — that is the 1.8MB hero video, which
+is gated to desktop by design and does not touch LCP (0.6s).
+
+### Rank Math is installed but unconfigured
+
+The homepage emits **no meta description, no OG tags, and no JSON-LD schema**. The setup
+wizard has not been run. Consequences:
+
+- Lighthouse SEO sits at 61: `meta-description` missing (real) plus `is-crawlable`
+  (intentional — staging noindex, resolves at launch).
+- Core WordPress is still emitting the noindex meta itself
+  (`<meta name='robots' content='noindex, nofollow' />`, single quotes). Rank Math has not
+  taken over robots output yet. Re-check this after running the wizard — an SEO plugin
+  assuming control of robots meta is exactly the moment a staging site can become
+  indexable by accident.
+
+To do: run the setup wizard, then set the homepage title and description. The title is
+currently just site name + tagline. It does **not** carry production's "Save 30–50%" claim,
+which is the correct outcome per DECISIONS.md — do not reintroduce it.
+
+### The Trust Index plugin is redundant here
+
+Verified: it enqueues **nothing** on the front end. The only two references to
+`cdn.trustindex.io` on the homepage are the theme's own — the `data-src` container and the
+IntersectionObserver loader. There is no plugin-injected `trustindex-loader-js-js` script
+of the kind production carries.
+
+The widget's configuration lives in Trust Index's dashboard and its content is served from
+their CDN, so the plugin adds no capability the theme does not already have. It can be
+deleted, taking the target stack to 5 active plugins. Optional, not urgent — it costs
+nothing while it sits there inactive on the front end.
+
 ## Order of operations on staging
 
 1. Deactivate + delete FormLayer, FormLayer Pro, Hello Dolly, Akismet.
