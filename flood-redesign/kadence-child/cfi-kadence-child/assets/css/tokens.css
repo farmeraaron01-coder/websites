@@ -25,7 +25,7 @@
   --cfi-line:#D5E3EC;
   --cfi-ink:#12283F;
   --cfi-ink-2:#44607A;
-  --cfi-ink-3:#6E8AA3;
+  --cfi-ink-3:#54708A;   /* AA-safe for small text on white and mist */
   --cfi-on-navy:#EAF4FB;
   --cfi-on-navy-2:#9FBDD4;
   --cfi-good:#1E9E6A;
@@ -55,10 +55,10 @@
 /* ---- buttons ---- */
 .cfi-btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;font-family:var(--cfi-body);font-weight:600;font-size:16px;border-radius:var(--cfi-radius);padding:15px 26px;border:0;cursor:pointer;white-space:nowrap;transition:transform .15s ease,background .15s ease}
 .cfi-btn:active{transform:translateY(1px)}
-.cfi-btn-cta{background:var(--cfi-cta);color:var(--cfi-cta-ink);box-shadow:0 2px 0 rgba(0,0,0,.12),0 10px 28px -8px rgba(37,193,238,.5)}
-.cfi-btn-cta:hover{background:var(--cfi-cta-hover);color:var(--cfi-cta-ink)}
-.cfi-btn-ghost{background:transparent;color:var(--cfi-on-navy);border:1.5px solid rgba(234,244,251,.35)}
-.cfi-btn-ghost:hover{border-color:var(--cfi-accent-bright);color:#fff}
+a.cfi-btn-cta,.cfi-btn-cta{background:var(--cfi-cta);color:var(--cfi-cta-ink);box-shadow:0 2px 0 rgba(0,0,0,.12),0 10px 28px -8px rgba(37,193,238,.5)}
+a.cfi-btn-cta:hover,.cfi-btn-cta:hover{background:var(--cfi-cta-hover);color:var(--cfi-cta-ink)}
+a.cfi-btn-ghost,.cfi-btn-ghost{background:transparent;color:var(--cfi-on-navy);border:1.5px solid rgba(234,244,251,.35)}
+a.cfi-btn-ghost:hover,.cfi-btn-ghost:hover{border-color:var(--cfi-accent-bright);color:#fff}
 
 /* ---- hero ---- */
 .cfi-hero{background:var(--cfi-navy);color:var(--cfi-on-navy);overflow:hidden;position:relative}
@@ -174,6 +174,10 @@ table.cfi-rates caption{caption-side:bottom;text-align:left;font-size:12.5px;col
 .cfi-rev blockquote{margin:0;font-size:15.5px;color:var(--cfi-ink-2)}
 .cfi-rev cite{font-style:normal;font-size:13.5px;font-weight:600;color:var(--cfi-ink)}
 .cfi-rev cite span{display:block;font-weight:400;color:var(--cfi-ink-3);font-size:12.5px;margin-top:2px}
+
+/* ---- Trust Index reviews widget ---- */
+.cfi-trustindex{min-height:340px}
+.cfi-trustindex .ti-widget{--ti-font-family:var(--cfi-body)!important}
 
 /* ---- expert ---- */
 .cfi-expert .x-grid{display:grid;grid-template-columns:auto 1fr;gap:48px;align-items:center;background:var(--cfi-card);border:1px solid var(--cfi-line);border-radius:16px;padding:44px;box-shadow:var(--cfi-shadow)}

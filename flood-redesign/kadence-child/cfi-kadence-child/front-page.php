@@ -12,7 +12,10 @@ $theme_uri = get_stylesheet_directory_uri();
 	<!-- Hero: raindrop video (desktop) / poster frame (mobile, reduced motion) -->
 	<section class="cfi-hero">
 		<div class="bg" aria-hidden="true">
-			<img src="<?php echo esc_url( $theme_uri . '/assets/media/hero-poster.jpg' ); ?>" alt="" width="1280" height="720" fetchpriority="high">
+			<picture>
+				<source srcset="<?php echo esc_url( $theme_uri . '/assets/media/hero-poster.webp' ); ?>" type="image/webp">
+				<img src="<?php echo esc_url( $theme_uri . '/assets/media/hero-poster.jpg' ); ?>" alt="" width="1280" height="720" fetchpriority="high" decoding="async">
+			</picture>
 			<video muted loop playsinline preload="none" poster="<?php echo esc_url( $theme_uri . '/assets/media/hero-poster.jpg' ); ?>" data-src="<?php echo esc_url( $theme_uri . '/assets/media/raindrops-hero.mp4' ); ?>"></video>
 			<script>
 			/* Load the hero video only on desktop, and never for reduced-motion visitors —
@@ -235,23 +238,11 @@ $theme_uri = get_stylesheet_directory_uri();
 					<span class="r-sub">Across 900+ Google reviews</span>
 				</span>
 			</div>
-			<div class="cfi-rev-grid">
-				<div class="cfi-rev">
-					<span class="stars" aria-label="5 stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
-					<blockquote>&ldquo;Placeholder &mdash; pull three current verified reviews from the Google profile before launch.&rdquo;</blockquote>
-					<cite>M. G. <span>Sacramento &middot; Google review</span></cite>
-				</div>
-				<div class="cfi-rev">
-					<span class="stars" aria-label="5 stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
-					<blockquote>&ldquo;Placeholder &mdash; pull three current verified reviews from the Google profile before launch.&rdquo;</blockquote>
-					<cite>D. R. <span>Long Beach &middot; Google review</span></cite>
-				</div>
-				<div class="cfi-rev">
-					<span class="stars" aria-label="5 stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span>
-					<blockquote>&ldquo;Placeholder &mdash; pull three current verified reviews from the Google profile before launch.&rdquo;</blockquote>
-					<cite>S. T. <span>San Jose &middot; Google review</span></cite>
-				</div>
+			<!-- Live Google reviews via Trust Index (same widget as the current site) -->
+			<div class="cfi-trustindex">
+				<div data-src="https://cdn.trustindex.io/loader.js?1e9552d4458412053506ba969a9"></div>
 			</div>
+		</div>
 		</div>
 	</section>
 
