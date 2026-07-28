@@ -16,7 +16,7 @@ Akismet (inactive), Hello Dolly (inactive).
 | Plugin | Why | Notes |
 |---|---|---|
 | **Wordfence** (your paid plan) | Security. This site takes payments-adjacent traffic and personal property data. | Paid license usually allows more than one install; if it's single-site, activate the key on the live domain at cutover and run free on staging until then. Turn OFF the "live traffic" feature — it's the one part that costs real performance. |
-| **Rank Math (free)** | **Decision (July 28): switch from AIOSEO.** The AIOSEO Pro license has lapsed, and Rank Math's free tier includes what AIOSEO charges for: redirections, 404 monitor, full schema types (FAQPage, Article, LocalBusiness, Person), multiple focus keywords. | Install on staging → run Rank Math's built-in **AIOSEO importer** (brings titles, descriptions, settings). Do NOT run two SEO plugins at once. URLs are not changing, so no redirect mapping needed. |
+| **Rank Math (free)** | **Decision (July 28): switch from AIOSEO.** The AIOSEO Pro license has lapsed, and Rank Math's free tier includes what AIOSEO charges for: redirections, 404 monitor, full schema types (FAQPage, Article, LocalBusiness, Person), multiple focus keywords. | Installed ✓. Do NOT run two SEO plugins at once. URLs are not changing, so no redirect mapping needed. **The AIOSEO importer cannot run yet — see sequencing note below.** |
 | **Trust Index** | The reviews section on the new homepage embeds widget `bcdff9477ef19568e30684fd16d`, set by the `CFI_TRUSTINDEX_ID` constant in `functions.php`. | Done as of child theme v1.0.11. Both sister sites share one Google Business Profile (same parent company), so there is one review pool and no second connection to make. The staging widget is a duplicate; production's is untouched. The theme lazy-loads the script, so it costs nothing until scrolled into view. See TRUSTINDEX-SETUP.md. |
 | **Nginx Helper** | Already active — this is what purges the server-level cache when content is saved. | Keep. Settings → Nginx Helper → enable "Purge on post/page update." |
 | **EWWW Image Optimizer** | Compresses and WebP-converts every image the content migration brings over. Your live library is unoptimized JPEGs. | Enable WebP + lazy-load; skip its "exactdn/CDN" upsell. |
@@ -99,6 +99,49 @@ wizard has not been run. Consequences:
 To do: run the setup wizard, then set the homepage title and description. The title is
 currently just site name + tagline. It does **not** carry production's "Save 30–50%" claim,
 which is the correct outcome per DECISIONS.md — do not reintroduce it.
+
+### Sequencing correction — the AIOSEO importer can't run on staging yet
+
+The order of operations below says "install Rank Math → run the AIOSEO importer". That step
+is not executable as written: **AIOSEO has never been installed on staging**, so there is no
+AIOSEO data to import. Its importer reads AIOSEO's `postmeta` rows, which only exist
+wherever AIOSEO ran — production.
+
+Two viable paths, and the choice belongs with the content migration:
+
+1. **Import content with its meta, then convert.** Migrate production content via
+   WordPress export/import (or a database-level migration) so AIOSEO's `postmeta` rows come
+   across, *then* run Rank Math's AIOSEO importer on staging to convert them. Preserves
+   titles and descriptions for 100+ pages without retyping them.
+2. **Set meta during migration.** Write titles and descriptions as content lands. Total
+   control, but a lot of manual work across the zone pages, city pages, and articles.
+
+Recommended: path 1, then selectively rewrite. The import preserves everything, and the
+rewrites are then limited to the defects already identified — the `/san-diego/` canonical
+mismatch, the weak city titles, and the homepage's "Save 30–50%" claim. Doing it the other
+way round means retyping meta that was already fine.
+
+### Rank Math cannot be configured remotely
+
+Its REST namespace is not registered (`/wp-json/rankmath/v1` → 404) and its meta fields
+(`rank_math_title`, `rank_math_description`) are not exposed on the pages endpoint. Only
+Kadence's `_kad_post_*` meta is. So the setup wizard and per-page SEO fields have to be
+done in wp-admin — they cannot be scripted from here.
+
+### Site defaults corrected (July 28)
+
+`default_comment_status` and `default_ping_status` were both `open`. Every existing page
+already had comments closed, but the defaults apply to *new* content — so the content
+migration would have created dozens of pages with comment forms and pingbacks enabled, on a
+site with no comment UI and with Akismet deliberately removed. Both set to `closed` via
+REST. Timezone was already `America/Los_Angeles`, closing an earlier open item.
+
+### Wordfence blocks REST application-password auth by default
+
+Authenticated REST requests returned `rest_not_logged_in` — indistinguishable from
+anonymous — immediately after Wordfence was installed. Aaron cleared it from the Wordfence
+side and auth was restored. **Expect this again on production at cutover**, and record which
+Wordfence setting was responsible so it does not cost another debugging round.
 
 ### The Trust Index plugin is redundant here
 
