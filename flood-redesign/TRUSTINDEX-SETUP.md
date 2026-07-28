@@ -226,6 +226,11 @@ CLS by design, so a visitor clicking through slides costs nothing.
 If the free tier will not let autoplay be disabled, switch the layout to a static grid
 instead. Do not leave autoplay on.
 
+**Status after v1.0.13 (verified July 28 2026):** the theme side is clean — the widget now
+loads with **0** layout shift, confirming the 0.043 was entirely the expert photo. Autoplay
+is still enabled, and idle CLS still climbs: 0.089 at 8s, 0.138 at 16s, 0.184 at 24s.
+This is the last open CLS item and it cannot be fixed from the theme.
+
 ### Aaron's photo — CLS (fixed in v1.0.13)
 
 The 0.043 one-time shift above was **not** the widget. `.cfi-xphoto` was `width:100%`
