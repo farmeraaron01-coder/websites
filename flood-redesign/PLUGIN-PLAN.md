@@ -167,9 +167,43 @@ Target configuration:
 | Guides / zone pages / city pages / articles | Article, inherited from the default |
 
 Plus **enable breadcrumbs** so `BreadcrumbList` is emitted — valuable on deep zone and city
-pages. If Rank Math only emits that schema when the theme renders breadcrumbs, the call goes
-into the interior templates, which are being built anyway. Use **one** breadcrumb source —
-Kadence has its own; do not enable both.
+pages.
+
+### Why `None` collapsed the graph (root cause, confirmed)
+
+In Rank Math Free the sitewide `Organization`, `WebSite` and `WebPage` nodes on an interior
+page are emitted **as part of the content schema's graph, not independently**. Remove the
+content schema and the entire graph goes with it. The homepage is the exception — it emits
+the sitewide nodes unconditionally, which is why `/` looked healthy while every interior page
+was empty.
+
+So the global `None` setting and a per-page `None` override are the same defect at different
+scales. A page needs *some* content schema attached to carry the sitewide nodes.
+
+### Verified state, July 28 2026
+
+| Page | Graph |
+|---|---|
+| `/` | `[InsuranceAgency, Organization]`, `WebSite`, `WebPage` — no BreadcrumbList, correct for the trail root |
+| `/residential/` | `[InsuranceAgency, Organization]`, `WebSite`, `BreadcrumbList`, `WebPage`, `Person`, `Article` |
+| `/commercial/` | same as above |
+| `/guides/` | same as above |
+| `/get-a-quote/` | **`BreadcrumbList` only** → set to **Service** (decided; accurate for a quote-request page, restores the core nodes) |
+
+**Breadcrumb schema does not require the theme to render a trail.** Confirmed: `BreadcrumbList`
+is present on every interior page with zero `rank-math-breadcrumb` markup in the served HTML.
+The `rank_math_the_breadcrumbs()` / `[rank_math_breadcrumb]` calls the settings screen
+mentions govern the *visible* trail only. Add them to interior templates only if visitors
+should see a trail. Kadence is not a competing source — the only breadcrumb reference in the
+output is a dormant CSS rule (`.entry-hero .kadence-breadcrumbs`) with no markup behind it,
+consistent with Kadence Pro being inactive. One source, no duplication.
+
+### Refinement for when content lands (not now)
+
+`Article` is right for the zone pages, city pages and guides — the bulk of the site. But
+`/residential/`, `/commercial/` and `/hoa-master-flood-policies/` are service pages, not
+articles. Override those three to **Service** once their real content exists. Doing it now,
+against empty shells, would be churn with nothing to verify against.
 
 ### Migration consequence — Rank Math owns schema now
 
