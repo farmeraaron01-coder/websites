@@ -238,15 +238,18 @@ $theme_uri = get_stylesheet_directory_uri();
 					<span class="r-sub">Across 900+ Google reviews</span>
 				</span>
 			</div>
-			<!-- Live Google reviews via Trust Index (same widget as the current site) -->
+			<!-- Live Google reviews via Trust Index. Widget ID lives in functions.php. -->
+			<?php if ( CFI_TRUSTINDEX_ID ) :
+				$ti_loader = 'https://cdn.trustindex.io/loader.js?' . rawurlencode( CFI_TRUSTINDEX_ID ); ?>
 			<div class="cfi-trustindex" id="cfi-reviews">
-				<div data-src="https://cdn.trustindex.io/loader.js?1e9552d4458412053506ba969a9"></div>
+				<div data-src="<?php echo esc_url( $ti_loader ); ?>"></div>
 				<noscript><p style="color:var(--cfi-ink-2)">Read our reviews on <a href="https://www.google.com/search?q=California+Flood+Insurance+reviews">Google</a>.</p></noscript>
 			</div>
 			<script>
 			/* Load the Trust Index script only when the reviews section nears the
 			   viewport, so its third-party JS never delays first paint. */
 			(function () {
+				var src = <?php echo wp_json_encode( $ti_loader ); ?>;
 				var host = document.getElementById('cfi-reviews');
 				if ( ! host || ! ('IntersectionObserver' in window) ) { load(); return; }
 				var seen = false;
@@ -256,13 +259,15 @@ $theme_uri = get_stylesheet_directory_uri();
 				io.observe(host);
 				function load() {
 					var s = document.createElement('script');
-					s.src = 'https://cdn.trustindex.io/loader.js?1e9552d4458412053506ba969a9';
+					s.src = src;
 					s.async = true; s.defer = true;
 					document.body.appendChild(s);
 				}
 			})();
 			</script>
-		</div>
+			<?php else : ?>
+			<p style="color:var(--cfi-ink-2)">Read our reviews on <a href="https://www.google.com/search?q=California+Flood+Insurance+reviews">Google</a>.</p>
+			<?php endif; ?>
 		</div>
 	</section>
 

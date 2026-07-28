@@ -3,7 +3,7 @@
  * California Flood Insurance — Kadence child theme.
  *
  * Brand facts used across templates. For StatewideFloodInsurance.com,
- * change these five constants and the palette block at the top of
+ * change the constants below and the palette block at the top of
  * assets/css/tokens.css — nothing else differs between the sister sites.
  */
 
@@ -12,6 +12,20 @@ define( 'CFI_PHONE_TEL', '8552253566' );
 define( 'CFI_QUOTE_URL', 'https://www.californiafloodinsurance.com/get-a-quote/' );
 define( 'CFI_LICENSE', 'CA License #0L75450' );
 define( 'CFI_SISTER_NOTE', 'Looking for coverage outside California? <a href="https://www.statewidefloodinsurance.com/">Visit Statewide Flood Insurance</a>.' );
+
+/**
+ * Trust Index review widget.
+ *
+ * Both sister sites are the same parent company and draw from one Google
+ * Business Profile, so the review pool is shared. A widget ID identifies a
+ * *display configuration*, not a review source — duplicating a widget in
+ * Trust Index does not split or copy reviews. So either site may reuse this
+ * ID, or point at its own styled copy of the same feed.
+ *
+ * Set to '' to render the section without the live feed (the rating block
+ * and the "read our reviews on Google" fallback still show).
+ */
+define( 'CFI_TRUSTINDEX_ID', '1e9552d4458412053506ba969a9' );
 
 add_action( 'wp_enqueue_scripts', function () {
 	wp_enqueue_style(

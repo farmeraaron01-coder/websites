@@ -50,14 +50,37 @@ on the free tier.
 
 ## 5. After saving — one thing to report back
 
-Copy the widget's **embed code or loader ID** from the plugin and send it over.
+Copy the widget's **embed code or loader ID** and send it over.
 
-The theme currently hardcodes the production widget ID:
+As of child theme **v1.0.10** the ID is a single constant near the top of
+`functions.php`, so swapping it is a one-line change:
 
-    1e9552d4458412053506ba969a9
+    define( 'CFI_TRUSTINDEX_ID', '1e9552d4458412053506ba969a9' );
 
-If the plugin generates a **different** ID for this widget, the theme needs updating to
-match, otherwise the section will stay empty. If the ID is identical, nothing to do.
+That is currently the production widget's ID. Replace it with the duplicate's ID when
+it exists. Setting the constant to `''` renders the section with the rating block and a
+plain "read our reviews on Google" link instead of the live feed — useful if the widget
+is ever unavailable.
+
+## 5a. Why duplicate rather than edit the live widget
+
+The widget that production serves (`1e9552d4458412053506ba969a9`) is doing ~3,000
+views/30 days. Launch is still weeks out, so editing it in place would degrade the live
+homepage now for no benefit. Duplicate it, configure the copy, leave the original alone.
+
+A widget ID is a **display configuration**, not a review source. Duplicating one does not
+split, copy, or divide the 932 reviews — both widgets read the same connected Google
+Business Profile.
+
+## 5b. Both brands share one review pool
+
+CaliforniaFloodInsurance.com and StatewideFloodInsurance.com are the same parent company
+and share a single Google Business Profile. This is intentional. Consequences:
+
+- The Statewide build needs **no second Trust Index connection**. It can reuse this same
+  widget ID, or take its own styled copy of the same feed if the palette needs to differ.
+- Reviews earned under either brand count for both.
+- Nothing about the Trust Index account organization needs changing.
 
 ## 6. Verification
 
