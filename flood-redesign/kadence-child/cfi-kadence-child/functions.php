@@ -25,7 +25,7 @@ define( 'CFI_SISTER_NOTE', 'Looking for coverage outside California? <a href="ht
  * Set to '' to render the section without the live feed (the rating block
  * and the "read our reviews on Google" fallback still show).
  */
-define( 'CFI_TRUSTINDEX_ID', '1e9552d4458412053506ba969a9' );
+define( 'CFI_TRUSTINDEX_ID', 'bcdff9477ef19568e30684fd16d' );
 
 add_action( 'wp_enqueue_scripts', function () {
 	wp_enqueue_style(
