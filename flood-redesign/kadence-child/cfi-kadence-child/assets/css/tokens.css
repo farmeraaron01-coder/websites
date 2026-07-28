@@ -175,8 +175,16 @@ table.cfi-rates caption{caption-side:bottom;text-align:left;font-size:12.5px;col
 .cfi-rev cite{font-style:normal;font-size:13.5px;font-weight:600;color:var(--cfi-ink)}
 .cfi-rev cite span{display:block;font-weight:400;color:var(--cfi-ink-3);font-size:12.5px;margin-top:2px}
 
-/* ---- Trust Index reviews widget ---- */
-.cfi-trustindex{min-height:340px}
+/* ---- Trust Index reviews widget ----
+   min-height reserves the widget's box so loading it can never shift the page.
+   Measured on the live widget: 265px under 480px, 242px at 480px and up (the
+   widget's own breakpoint, not the theme's), card height a constant 236px
+   because "Read more" truncation caps it. Reserve a little over each so the
+   container never has to grow, and no more — the earlier 340px guess left
+   ~90px of dead space under the cards. Re-measure if the layout, review
+   count, or truncation setting changes. */
+.cfi-trustindex{min-height:272px}
+@media (min-width:480px){.cfi-trustindex{min-height:250px}}
 .cfi-trustindex .ti-widget{--ti-font-family:var(--cfi-body)!important}
 
 /* ---- expert ---- */

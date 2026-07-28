@@ -156,6 +156,51 @@ review-markup guideline, and turning off the widget's rich snippet does not touc
 That block additionally carries "rates 30–50% lower than the National Flood Insurance
 Program" in its `description`, contradicting DECISIONS.md. Statewide's source has neither.
 
+## 5f. Verified on staging after install (child theme v1.0.11, July 28 2026)
+
+Rendered in headless Chromium against `new.californiafloodinsurance.com`:
+
+| Check | Result |
+|---|---|
+| Widget renders | Yes — 18 `.ti-review-item` cards |
+| Card heights | **236px, every card, every width** — truncation + photos-off working |
+| Name / text colour | `rgb(18,40,63)` / `rgb(68,96,122)` — exact |
+| Font | `Inter, -apple-system, "Segoe UI", sans-serif`, inherited |
+| JSON-LD from widget | **0** — `richsnippet.js` never requested |
+| Microdata | 2 nodes, both Kadence's own (`<html> WebPage`, `<header> WPHeader`) — not Trust Index |
+| Trustindex badge | Absent |
+| Review photos | 0 |
+| Horizontal overflow | 0px at every width from 360 to 1600 |
+| Rating shown twice | No — one `.cfi-rating` block, widget header suppressed |
+
+### Lighthouse, staging homepage
+
+| | Perf | A11y | Best practices | LCP | CLS | TBT |
+|---|---|---|---|---|---|---|
+| Mobile | **96** | 100 | 100 | 2.6s | 0 | 80ms |
+| Desktop | **100** | 100 | 100 | 0.6s | 0.001 | 0ms |
+
+Previous: mobile 86, desktop 98. Divi baseline: mobile 58, desktop 79, 12.6s mobile LCP.
+
+**These scores do not include the widget.** It made zero requests during both runs — the
+theme's IntersectionObserver keeps it entirely off the initial load. Measured separately
+at 4× CPU throttle, scrolling to the section costs **9 requests, ~22KB, and 371ms of long
+tasks**. That 371ms is the reason the gating matters: unloaded on the critical path it
+would wreck an 80ms TBT. The trade is that the work lands while the visitor is scrolling,
+which is why the observer fires 400px early — the widget is usually done before the
+section is actually in view.
+
+SEO scores 61 on both. Two causes, both explainable: `is-crawlable` fails because staging
+is intentionally noindex, and `meta-description` fails because no homepage description is
+set yet — that lands when Rank Math goes in.
+
+### Widget height reservation (fixed in v1.0.12)
+
+`.cfi-trustindex` reserved `min-height:340px`, set before the widget existed. Real
+measured heights are 242px at ≥480px and 265px below, stable across 360–1600px. The
+340px guess left ~98px of dead space under the cards on desktop, ~75px on mobile. Now
+reserves 250px / 272px — enough that loading still cannot shift the page, and no more.
+
 ## 6. Verification
 
 1. Load `https://new.californiafloodinsurance.com/` in a logged-out/private window.
