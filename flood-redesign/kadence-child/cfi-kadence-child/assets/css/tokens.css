@@ -227,3 +227,14 @@ body.cfi-lp{margin:0;background:var(--cfi-paper);font-family:var(--cfi-body);col
 .cfi-lp-call .cfi-btn{width:100%}
 .cfi-lp-hours{font-size:13px;color:var(--cfi-ink-3);margin-top:10px}
 .cfi-lp-foot{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;padding:20px max(4vw,24px);background:var(--cfi-navy);color:var(--cfi-on-navy-2);font-size:13px}
+
+/* ---- accessibility: keyboard skip link + underlined inline links ---- */
+/* Kadence's skip link isn't reliably focusable; make it appear on focus. */
+.skip-link,a.skip-link{position:absolute!important;left:-9999px;top:0;z-index:9999;width:auto!important;height:auto!important;clip:auto!important;clip-path:none!important;overflow:visible!important}
+.skip-link:focus,a.skip-link:focus{left:8px!important;top:8px!important;padding:12px 18px;background:var(--cfi-navy);color:#fff!important;border-radius:8px;font-family:var(--cfi-body);font-weight:600;font-size:15px;text-decoration:none;outline:3px solid var(--cfi-accent-bright);outline-offset:2px}
+
+/* WCAG 1.4.1: inline links inside running text must not rely on color alone. */
+.cfi-home p a:not(.cfi-btn),.cfi-home li a:not(.cfi-btn),.cfi-home .bfe-cap a{text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px}
+.cfi-home p a:not(.cfi-btn):hover,.cfi-home li a:not(.cfi-btn):hover{text-decoration-thickness:2px}
+/* Standalone/UI links (cards, chips, nav-like) stay clean — they're not in text blocks. */
+.cfi-cover a,.cfi-guide a,.cfi-zchip,.cfi-rating a{text-decoration:none}
