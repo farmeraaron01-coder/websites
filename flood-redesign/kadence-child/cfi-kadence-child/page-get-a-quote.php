@@ -26,7 +26,7 @@
 	</a>
 </header>
 
-<main class="cfi-lp-main">
+<main id="main" class="cfi-lp-main">
 	<div class="cfi-lp-grid">
 		<section class="cfi-lp-form" aria-label="Flood quote request form">
 			<h1>Start your flood quote</h1>

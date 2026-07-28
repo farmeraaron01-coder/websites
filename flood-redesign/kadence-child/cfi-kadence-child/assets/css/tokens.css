@@ -234,7 +234,11 @@ body.cfi-lp{margin:0;background:var(--cfi-paper);font-family:var(--cfi-body);col
 .skip-link:focus,a.skip-link:focus{left:8px!important;top:8px!important;padding:12px 18px;background:var(--cfi-navy);color:#fff!important;border-radius:8px;font-family:var(--cfi-body);font-weight:600;font-size:15px;text-decoration:none;outline:3px solid var(--cfi-accent-bright);outline-offset:2px}
 
 /* WCAG 1.4.1: inline links inside running text must not rely on color alone. */
-.cfi-home p a:not(.cfi-btn),.cfi-home li a:not(.cfi-btn),.cfi-home .bfe-cap a{text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px}
+.cfi-home p a:not(.cfi-btn),.cfi-home li a:not(.cfi-btn){text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px}
+/* Footer widget/text links live outside .cfi-home — underline them too, and lift
+   the link color so it also passes against the surrounding footer text. */
+#colophon .textwidget a,#colophon p a,#colophon .footer-html a,.cfi-lp-foot a{color:#BFE6F8!important;text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px}
+#colophon .textwidget a:hover,#colophon p a:hover,.cfi-lp-foot a:hover{color:#fff!important;text-decoration-thickness:2px}
 .cfi-home p a:not(.cfi-btn):hover,.cfi-home li a:not(.cfi-btn):hover{text-decoration-thickness:2px}
 /* Standalone/UI links (cards, chips, nav-like) stay clean — they're not in text blocks. */
 .cfi-cover a,.cfi-guide a,.cfi-zchip,.cfi-rating a{text-decoration:none}

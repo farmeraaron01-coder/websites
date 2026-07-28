@@ -7,7 +7,7 @@
 get_header();
 $theme_uri = get_stylesheet_directory_uri();
 ?>
-<main id="primary" class="cfi-home">
+<main id="main" class="cfi-home">
 
 	<!-- Hero: raindrop video (desktop) / poster frame (mobile, reduced motion) -->
 	<section class="cfi-hero">
