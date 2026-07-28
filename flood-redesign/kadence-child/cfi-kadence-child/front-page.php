@@ -135,7 +135,7 @@ $theme_uri = get_stylesheet_directory_uri();
 						<li>Excess layers above NFIP caps</li>
 						<li>Multi-location portfolios welcome</li>
 					</ul>
-					<a href="/commercial/">Explore commercial &rarr;</a>
+					<a href="/commercial-flood-insurance/">Explore commercial &rarr;</a>
 				</article>
 				<article class="cfi-cover">
 					<span class="ic"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 21V9l6-4 6 4"/><path d="M15 21V9l6-4v16"/><path d="M7 12h1M7 16h1M11 12h1M11 16h1"/></svg></span>
@@ -145,7 +145,7 @@ $theme_uri = get_stylesheet_directory_uri();
 						<li>Gap coverage for unit owners</li>
 						<li>Board-ready proposals &amp; comparisons</li>
 					</ul>
-					<a href="/hoa-master-flood-policies/">RCBAP review &rarr;</a>
+					<a href="/homeownwers-association-flood-insurance/">RCBAP review &rarr;</a>
 				</article>
 			</div>
 		</div>
@@ -192,13 +192,13 @@ $theme_uri = get_stylesheet_directory_uri();
 						<?php
 						/* Adjust slugs to match the live zone-guide URLs. */
 						$zones = array(
-							'Zone X'               => '/flood-zone-x/',
-							'Zone A'               => '/flood-zone-a/',
-							'Zone AE'              => '/flood-zone-ae/',
-							'Zones AH &amp; AO'    => '/flood-zones-ah-ao/',
-							'Zones V &amp; VE'     => '/flood-zones-v-ve/',
-							'Base Flood Elevation' => '/base-flood-elevation-bfe/',
-							'Lender requirements'  => '/lender-requirements/',
+							'Zone X'                    => '/navigating-flood-zone-x/',
+							'Zone A'                    => '/flood-zone-a/',
+							'Zone AE'                   => '/flood-zone-ae/',
+							'Zones AH &amp; AO'         => '/flood-zone-ah-and-ao/',
+							'Zones V &amp; VE'          => '/flood-zone-v-and-ve/',
+							'Which zones need coverage?' => '/which-flood-zone-requires-flood-insurance/',
+							'When is it required?'      => '/when-is-flood-insurance-required/',
 						);
 						foreach ( $zones as $label => $url ) {
 							echo '<a class="cfi-zchip" href="' . esc_url( $url ) . '">' . wp_kses_post( $label ) . '</a>';
@@ -259,7 +259,7 @@ $theme_uri = get_stylesheet_directory_uri();
 	<section class="cfi-sec cfi-expert">
 		<div class="cfi-wrap">
 			<div class="x-grid">
-				<img class="cfi-xphoto" src="<?php echo esc_url( $theme_uri . '/assets/img/aaron.png' ); ?>" alt="Aaron J. Farmer, founder of California Flood Insurance" width="132" height="132" loading="lazy">
+				<img class="cfi-xphoto" src="<?php echo esc_url( $theme_uri . '/assets/img/aaron.png' ); ?>" alt="Aaron J. Farmer, founder of California Flood Insurance" width="260" height="330" loading="lazy">
 				<div>
 					<p class="cfi-eyebrow">Talk to a flood expert, not a call tree</p>
 					<h2 style="font-size:clamp(24px,3vw,32px);margin:10px 0 12px">Every quote is reviewed by a licensed flood specialist.</h2>
