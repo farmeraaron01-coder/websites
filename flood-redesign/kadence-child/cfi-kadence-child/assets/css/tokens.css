@@ -11,6 +11,8 @@
   --cfi-accent:#0891C7;        /* swfi: #0E8E8A */
   --cfi-accent-bright:#38C6F4; /* swfi: #35CFC9 */
   --cfi-accent-deep:#066D96;   /* swfi: #0A6B68 */
+  --cfi-link:#066D96;          /* AA-safe link/small-text blue (5.5:1 on paper) */
+  --cfi-link-hover:#04536F;
   --cfi-cta:#25C1EE;           /* swfi: #35CFC9 — quote CTAs only */
   --cfi-cta-hover:#0FAAD8;     /* swfi: #1FB5AF */
   --cfi-cta-ink:#0A2540;
@@ -39,11 +41,11 @@
 .cfi-home h1,.cfi-home h2{font-family:var(--cfi-display);line-height:1.14;margin:0;text-wrap:balance;font-weight:640}
 .cfi-home h3{font-family:var(--cfi-body);line-height:1.2;margin:0;text-wrap:balance;font-weight:700}
 .cfi-home p{margin:0}
-.cfi-home a{color:var(--cfi-accent);text-decoration:none}
-.cfi-home a:hover{color:var(--cfi-accent-deep)}
+.cfi-home a{color:var(--cfi-link);text-decoration:none}
+.cfi-home a:hover{color:var(--cfi-link-hover)}
 .cfi-home :focus-visible{outline:3px solid var(--cfi-accent-bright);outline-offset:2px;border-radius:4px}
 .cfi-wrap{max-width:1160px;margin:0 auto;padding:0 24px}
-.cfi-eyebrow{font-size:12px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--cfi-accent)}
+.cfi-eyebrow{font-size:12px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--cfi-link)}
 .cfi-sec{padding:88px 0;position:relative}
 .cfi-sec-head{max-width:640px;margin-bottom:48px}
 .cfi-sec-head h2{font-size:clamp(28px,3.4vw,40px);margin:10px 0 14px}
@@ -71,6 +73,8 @@
 .cfi-hero .sub{margin:22px 0 30px;font-size:18px;max-width:52ch;color:var(--cfi-on-navy-2)}
 .cfi-hero .sub strong{color:var(--cfi-on-navy);font-weight:600}
 .cfi-hero .eyebrow-light{color:var(--cfi-accent-bright)}
+.cfi-hero .microproof{margin:-14px 0 26px;font-size:14.5px;font-weight:600;color:var(--cfi-accent-bright);display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.cfi-hero .microproof .dot{opacity:.5}
 .cfi-hero .ctas{display:flex;gap:14px;flex-wrap:wrap}
 .cfi-chips{display:flex;gap:10px;flex-wrap:wrap;margin-top:34px}
 .cfi-chip{display:inline-flex;align-items:center;gap:8px;font-size:13.5px;font-weight:600;color:var(--cfi-on-navy);background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.14);border-radius:999px;padding:7px 14px}
@@ -78,7 +82,7 @@
 
 /* ---- quote card ---- */
 .cfi-qcard{position:relative;background:var(--cfi-card);color:var(--cfi-ink);border-radius:14px;box-shadow:var(--cfi-shadow-big);padding:24px;align-self:start;justify-self:end;width:100%;margin-top:48px}
-@media (max-width:980px){.cfi-qcard{margin-top:0;justify-self:stretch}}
+@media (max-width:980px){.cfi-qcard{margin-top:0;justify-self:stretch;padding:28px 24px;box-shadow:0 4px 8px rgba(10,37,64,.12),0 28px 70px -14px rgba(10,37,64,.55);border:2px solid var(--cfi-cta)}}
 .cfi-qcard h2{font-size:21px;margin-bottom:4px}
 .cfi-qcard .qsub{font-size:14px;color:var(--cfi-ink-3);margin-bottom:16px}
 .cfi-qcard .ribbon{position:absolute;top:-13px;left:24px;background:var(--cfi-cta);color:var(--cfi-cta-ink);font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:5px 12px;border-radius:6px}
@@ -103,7 +107,7 @@
 .cfi-flow{background:var(--cfi-navy);border-radius:16px;box-shadow:var(--cfi-shadow-big);padding:14px 0;color:var(--cfi-on-navy);overflow:hidden}
 .cfi-flow-row{display:grid;grid-template-columns:190px 1fr;gap:28px;padding:30px 40px;position:relative}
 .cfi-flow-row + .cfi-flow-row{border-top:1px solid rgba(255,255,255,.08)}
-.cfi-flow-when{font-size:12.5px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--cfi-accent-bright);padding-top:5px;display:flex;align-items:flex-start;gap:12px}
+.cfi-flow-when{font-size:13.5px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--cfi-accent-bright);padding-top:5px;display:flex;align-items:flex-start;gap:12px}
 .cfi-flow-when::before{content:"";width:11px;height:11px;border-radius:50%;background:var(--cfi-accent-bright);flex:0 0 auto;margin-top:2px;box-shadow:0 0 0 4px rgba(56,198,244,.25)}
 .cfi-flow-row::before{content:"";position:absolute;left:45px;top:0;bottom:0;border-left:2px dashed rgba(56,198,244,.3)}
 .cfi-flow-row:first-child::before{top:38px}
@@ -118,7 +122,7 @@
 .cfi-cover{background:var(--cfi-card);border:1px solid var(--cfi-line);border-radius:var(--cfi-radius);padding:30px 26px;box-shadow:var(--cfi-shadow);display:flex;flex-direction:column;gap:12px}
 .cfi-cover .ic{width:46px;height:46px;border-radius:10px;background:rgba(8,145,199,.12);display:grid;place-items:center;color:var(--cfi-accent)}
 .cfi-cover h3{font-size:20px}
-.cfi-cover ul{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:7px;font-size:14.5px;color:var(--cfi-ink-2)}
+.cfi-cover ul{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:10px;font-size:15px;color:var(--cfi-ink-2)}
 .cfi-cover li{padding-left:20px;position:relative}
 .cfi-cover li::before{content:"\2713";position:absolute;left:0;color:var(--cfi-good);font-weight:700}
 .cfi-cover a{margin-top:auto;font-weight:600;font-size:15px}
@@ -145,20 +149,24 @@ table.cfi-rates caption{caption-side:bottom;text-align:left;font-size:12.5px;col
 .cfi-zones .z-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:56px;align-items:center}
 @media (max-width:980px){.cfi-zones .z-grid{grid-template-columns:1fr}}
 .cfi-zchips{display:flex;flex-wrap:wrap;gap:10px;margin-top:22px}
-.cfi-zchip{font-size:14px;font-weight:600;color:var(--cfi-accent);background:var(--cfi-card);border:1.5px solid var(--cfi-line);padding:9px 16px;border-radius:999px}
+.cfi-zchip{font-size:14px;font-weight:600;color:var(--cfi-link);background:var(--cfi-card);border:1.5px solid var(--cfi-line);padding:9px 16px;border-radius:999px}
 .cfi-zchip:hover{border-color:var(--cfi-accent)}
 .cfi-price-card{background:var(--cfi-card);border:1px solid var(--cfi-line);border-radius:14px;box-shadow:var(--cfi-shadow-big);padding:30px 28px}
 .cfi-price-card h3{font-size:20px;margin-bottom:6px}
 .cfi-price-card .pc-sub{font-size:14px;color:var(--cfi-ink-3);margin-bottom:18px}
 .cfi-price-card ol{margin:0;padding:0;list-style:none;counter-reset:pc;display:flex;flex-direction:column}
 .cfi-price-card li{counter-increment:pc;display:grid;grid-template-columns:auto 1fr;gap:14px;padding:13px 0;border-top:1px solid var(--cfi-line);font-size:15px;color:var(--cfi-ink-2);align-items:baseline}
-.cfi-price-card li::before{content:counter(pc);font-family:var(--cfi-display);font-weight:800;font-size:15px;color:var(--cfi-accent);width:26px;height:26px;border-radius:50%;background:rgba(8,145,199,.10);display:inline-flex;align-items:center;justify-content:center}
+.cfi-price-card li::before{content:counter(pc);font-family:var(--cfi-display);font-weight:700;font-size:15px;color:var(--cfi-link);width:26px;height:26px;border-radius:50%;background:rgba(8,145,199,.10);display:inline-flex;align-items:center;justify-content:center}
 .cfi-price-card li b{color:var(--cfi-ink);font-weight:600}
 .cfi-price-card .pc-note{margin-top:16px;font-size:14px;color:var(--cfi-ink-2);background:var(--cfi-mist);border-radius:8px;padding:14px 16px}
 .cfi-price-card .pc-note b{color:var(--cfi-ink)}
 
 /* ---- reviews ---- */
 .cfi-reviews{background:var(--cfi-mist)}
+.cfi-rating{display:flex;align-items:center;gap:16px;margin:-24px 0 32px}
+.cfi-rating b{font-family:var(--cfi-display);font-weight:700;font-size:44px;line-height:1;color:var(--cfi-ink)}
+.cfi-rating .r-stars{color:var(--cfi-star);font-size:19px;letter-spacing:2px;display:block}
+.cfi-rating .r-sub{font-size:13.5px;color:var(--cfi-ink-2)}
 .cfi-rev-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:28px}
 @media (max-width:860px){.cfi-rev-grid{grid-template-columns:1fr}}
 .cfi-rev{background:var(--cfi-card);border:1px solid var(--cfi-line);border-radius:var(--cfi-radius);padding:26px;box-shadow:var(--cfi-shadow);display:flex;flex-direction:column;gap:12px}
@@ -168,18 +176,18 @@ table.cfi-rates caption{caption-side:bottom;text-align:left;font-size:12.5px;col
 .cfi-rev cite span{display:block;font-weight:400;color:var(--cfi-ink-3);font-size:12.5px;margin-top:2px}
 
 /* ---- expert ---- */
-.cfi-expert .x-grid{display:grid;grid-template-columns:auto 1fr;gap:44px;align-items:center;background:var(--cfi-card);border:1px solid var(--cfi-line);border-radius:16px;padding:44px;box-shadow:var(--cfi-shadow)}
+.cfi-expert .x-grid{display:grid;grid-template-columns:auto 1fr;gap:48px;align-items:center;background:var(--cfi-card);border:1px solid var(--cfi-line);border-radius:16px;padding:44px;box-shadow:var(--cfi-shadow)}
 @media (max-width:860px){.cfi-expert .x-grid{grid-template-columns:1fr}}
-.cfi-xphoto{width:132px;height:132px;border-radius:50%;object-fit:cover;border:4px solid var(--cfi-mist)}
+.cfi-xphoto{width:172px;height:172px;border-radius:50%;object-fit:cover;border:5px solid var(--cfi-mist);box-shadow:var(--cfi-shadow)}
 .cfi-xcreds{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
-.cfi-xcred{font-size:12.5px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:var(--cfi-accent);background:rgba(8,145,199,.09);border:1px solid rgba(8,145,199,.3);padding:6px 12px;border-radius:6px}
+.cfi-xcred{font-size:13px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:var(--cfi-link);background:rgba(8,145,199,.09);border:1px solid rgba(8,145,199,.3);padding:6px 12px;border-radius:6px}
 
 /* ---- guides ---- */
 .cfi-guides-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:22px}
 @media (max-width:980px){.cfi-guides-grid{grid-template-columns:repeat(2,1fr)}}
 @media (max-width:640px){.cfi-guides-grid{grid-template-columns:1fr}}
 .cfi-guide{background:var(--cfi-card);border:1px solid var(--cfi-line);border-radius:var(--cfi-radius);padding:24px;box-shadow:var(--cfi-shadow);display:flex;flex-direction:column;gap:10px}
-.cfi-guide .g-tag{font-size:11.5px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--cfi-accent)}
+.cfi-guide .g-tag{font-size:11.5px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--cfi-link)}
 .cfi-guide h3{font-size:17px;line-height:1.3;font-weight:600;font-family:var(--cfi-body)}
 .cfi-guide p{font-size:14px;color:var(--cfi-ink-3)}
 .cfi-guide a{margin-top:auto;font-size:14px;font-weight:600}
