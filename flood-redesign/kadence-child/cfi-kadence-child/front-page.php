@@ -259,7 +259,10 @@ $theme_uri = get_stylesheet_directory_uri();
 	<section class="cfi-sec cfi-expert">
 		<div class="cfi-wrap">
 			<div class="x-grid">
-				<img class="cfi-xphoto" src="<?php echo esc_url( $theme_uri . '/assets/img/aaron.png' ); ?>" alt="Aaron J. Farmer, founder of California Flood Insurance" width="260" height="330" loading="lazy">
+				<picture>
+					<source srcset="<?php echo esc_url( $theme_uri . '/assets/img/aaron.webp' ); ?>" type="image/webp">
+					<img class="cfi-xphoto" src="<?php echo esc_url( $theme_uri . '/assets/img/aaron.jpg' ); ?>" alt="Aaron J. Farmer, founder of California Flood Insurance" width="520" height="650" loading="lazy" decoding="async">
+				</picture>
 				<div>
 					<p class="cfi-eyebrow">Talk to a flood expert, not a call tree</p>
 					<h2 style="font-size:clamp(24px,3vw,32px);margin:10px 0 12px">Every quote is reviewed by a licensed flood specialist.</h2>
