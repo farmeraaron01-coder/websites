@@ -100,6 +100,48 @@ To do: run the setup wizard, then set the homepage title and description. The ti
 currently just site name + tagline. It does **not** carry production's "Save 30–50%" claim,
 which is the correct outcome per DECISIONS.md — do not reintroduce it.
 
+## Rank Math after the wizard (July 28) — 4 schema defects to fix
+
+Wizard run in Advanced mode. Verified good: exactly one robots meta, still
+`noindex, nofollow`, no `X-Robots-Tag`; homepage title 58 chars and description 157 chars,
+both live; OG and Twitter tags now present; no savings-claim patterns anywhere on the page;
+`meta-description` now passes in Lighthouse, leaving `is-crawlable` (intentional) as the
+only SEO failure. Performance unaffected — 97 mobile across two runs, CLS 0, TBT 20–30ms.
+
+The schema graph it now emits is `[LocalBusiness, Organization]`, `WebSite`, `WebPage`,
+`Person`, `Article`. Four things are wrong with it:
+
+1. **`Article` on the homepage.** The homepage is not an article. This is Rank Math's
+   default schema type for Pages. Set **Titles & Meta → Pages → Schema Type = WebPage**
+   (or None). It affects every page on the site, not just the homepage.
+2. **`Person` publishing the login handle.** The `Article` node's author resolved to
+   `AJFarmer` — a WordPress username — with a Gravatar image and `sameAs` pointing at the
+   site root. Fixed the underlying cause: the user's display name is now **Aaron J. Farmer**
+   with first/last name and a factual bio set via REST. The `Person` node should disappear
+   entirely once `Article` is removed, since it exists only as the article's author.
+3. **`openingHours` are wrong.** Rank Math defaulted to
+   `Monday–Sunday 09:00-17:00`. The site's own quote page states **Mon–Fri 8am–5pm PT**.
+   Publishing seven-day 9–5 hours contradicts the site and misleads visitors.
+4. **The LocalBusiness node is thin** — no `telephone`, no `address`, no `priceRange`. Add
+   the phone (`+1-855-225-3566`) at minimum. Address only if a physical location should be
+   published; do not invent one.
+
+Also worth aligning: Business Type is set to **Local Business**, but Rank Math offers
+**Insurance Agency** as a nested subtype — which is what production's hardcoded JSON-LD
+already uses. `InsuranceAgency` is a schema.org subtype of `LocalBusiness`, so it inherits
+everything and is strictly more specific. Recommend switching.
+
+Minor: Rank Math HTML-escapes inside the JSON-LD script, so the title reads
+`NFIP &amp; Private Flood Policies` rather than `&`. Common plugin behaviour, low priority.
+
+### Migration consequence — Rank Math owns schema now
+
+Production's homepage carries a **hardcoded** `InsuranceAgency` JSON-LD block containing the
+self-serving `aggregateRating` and the "rates 30–50% lower" claim. Do **not** carry that
+block across during migration. Rank Math is now the single schema source, so leaving the
+hardcoded block behind disposes of both defects at once and avoids the duplicate-schema
+problem that put 44 `SiteNavigationElement` nodes on the live homepage.
+
 ### Sequencing correction — the AIOSEO importer can't run on staging yet
 
 The order of operations below says "install Rank Math → run the AIOSEO importer". That step
@@ -136,12 +178,36 @@ migration would have created dozens of pages with comment forms and pingbacks en
 site with no comment UI and with Akismet deliberately removed. Both set to `closed` via
 REST. Timezone was already `America/Los_Angeles`, closing an earlier open item.
 
-### Wordfence blocks REST application-password auth by default
+### Wordfence and REST auth — cause not established
 
 Authenticated REST requests returned `rest_not_logged_in` — indistinguishable from
-anonymous — immediately after Wordfence was installed. Aaron cleared it from the Wordfence
-side and auth was restored. **Expect this again on production at cutover**, and record which
-Wordfence setting was responsible so it does not cost another debugging round.
+anonymous — immediately after Wordfence was installed, and worked again after Aaron
+intervened on the Wordfence side.
+
+**The responsible setting was never identified, and should not be guessed.** A read-only
+audit found `Firewall → Brute Force Protection → Additional Options → "Disable WordPress
+application passwords"` **unchecked**, which is Wordfence's default and permits app
+passwords — so that switch was not the blocker.
+
+Most likely explanation, unconfirmed: a Wordfence **brute-force lockout** on the account or
+the requesting IP rather than a configuration setting. A lockout causes Wordfence to reject
+the authentication attempt, so WordPress sees no valid user and returns exactly
+`rest_not_logged_in`. This is testable — Wordfence → Tools → Live Traffic, filtered to
+blocked logins around the time it started, and Wordfence → Blocking for an IP entry.
+
+Other auth-related states, all at defaults and untouched: 2FA Administrator "Optional",
+grace period 10 days, remember-device off, `"Disable XML-RPC authentication"` unchecked, and
+**`"Require 2FA for XML-RPC call authentication"` = REQUIRED**. That last one governs
+XML-RPC only and does not affect `/wp-json/` — but any migration tooling that speaks XML-RPC
+instead of REST will fail against it.
+
+### Wordfence launch checklist
+
+- Free license active now; **activate the paid license at cutover**.
+- Turn **Live Traffic OFF** — the one Wordfence feature with a real performance cost.
+- Change 2FA for Administrator from **Optional** to **Required**. It is currently optional
+  with a 10-day grace period; Aaron has enrolled, but future admin accounts would not be
+  required to.
 
 ### The Trust Index plugin is redundant here
 
