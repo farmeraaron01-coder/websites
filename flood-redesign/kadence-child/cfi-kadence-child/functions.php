@@ -29,8 +29,8 @@ add_action( 'wp_enqueue_scripts', function () {
  */
 add_action( 'wp_head', function () {
 	$base = get_stylesheet_directory_uri() . '/assets/fonts/';
-	echo '<link rel="preload" href="' . esc_url( $base . 'bricolage.woff2' ) . '" as="font" type="font/woff2" crossorigin>' . "\n";
-	echo '<link rel="preload" href="' . esc_url( $base . 'publicsans.woff2' ) . '" as="font" type="font/woff2" crossorigin>' . "\n";
+	echo '<link rel="preload" href="' . esc_url( $base . 'sourceserif4.woff2' ) . '" as="font" type="font/woff2" crossorigin>' . "\n";
+	echo '<link rel="preload" href="' . esc_url( $base . 'inter.woff2' ) . '" as="font" type="font/woff2" crossorigin>' . "\n";
 }, 5 );
 
 /* Trim scripts WordPress ships that this site never uses. */

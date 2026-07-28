@@ -4,8 +4,8 @@
  * :root block (teal palette values are commented beside each token).
  */
 
-@font-face{font-family:'Bricolage Grotesque';font-style:normal;font-weight:200 800;font-stretch:100%;src:url(../fonts/bricolage.woff2) format('woff2');font-display:swap}
-@font-face{font-family:'Public Sans';font-style:normal;font-weight:100 900;src:url(../fonts/publicsans.woff2) format('woff2');font-display:swap}
+@font-face{font-family:'Source Serif 4';font-style:normal;font-weight:200 900;font-stretch:100%;src:url(../fonts/sourceserif4.woff2) format('woff2');font-display:swap}
+@font-face{font-family:'Inter';font-style:normal;font-weight:100 900;src:url(../fonts/inter.woff2) format('woff2');font-display:swap}
 
 :root{
   --cfi-accent:#0891C7;        /* swfi: #0E8E8A */
@@ -30,13 +30,14 @@
   --cfi-radius:10px;
   --cfi-shadow:0 1px 2px rgba(10,37,64,.06),0 12px 32px -12px rgba(10,37,64,.18);
   --cfi-shadow-big:0 2px 4px rgba(10,37,64,.08),0 24px 64px -16px rgba(10,37,64,.35);
-  --cfi-display:'Bricolage Grotesque',Georgia,serif;
-  --cfi-body:'Public Sans',-apple-system,'Segoe UI',sans-serif;
+  --cfi-display:'Source Serif 4',Georgia,serif;
+  --cfi-body:'Inter',-apple-system,'Segoe UI',sans-serif;
 }
 
 /* ---- front-page scope ---- */
 .cfi-home{background:var(--cfi-paper);color:var(--cfi-ink);font-family:var(--cfi-body);font-size:16.5px;line-height:1.65;-webkit-font-smoothing:antialiased}
-.cfi-home h1,.cfi-home h2,.cfi-home h3{font-family:var(--cfi-display);line-height:1.12;margin:0;text-wrap:balance;font-weight:800}
+.cfi-home h1,.cfi-home h2{font-family:var(--cfi-display);line-height:1.14;margin:0;text-wrap:balance;font-weight:640}
+.cfi-home h3{font-family:var(--cfi-body);line-height:1.2;margin:0;text-wrap:balance;font-weight:700}
 .cfi-home p{margin:0}
 .cfi-home a{color:var(--cfi-accent);text-decoration:none}
 .cfi-home a:hover{color:var(--cfi-accent-deep)}
@@ -93,7 +94,7 @@
 .cfi-markets{background:var(--cfi-mist);border-bottom:1px solid var(--cfi-line)}
 .cfi-markets .cfi-wrap{display:flex;align-items:center;gap:12px 28px;padding:20px 24px;flex-wrap:wrap;justify-content:center}
 .cfi-markets .m-label{font-size:12.5px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--cfi-ink-3)}
-.cfi-markets .mk{font-family:var(--cfi-display);font-weight:600;font-size:16.5px;color:var(--cfi-ink-2)}
+.cfi-markets .mk{font-family:var(--cfi-body);font-weight:600;font-size:16.5px;color:var(--cfi-ink-2)}
 .cfi-markets .mk.nfip{display:inline-flex;align-items:center;gap:7px}
 .cfi-markets .mk.nfip::before{content:"";width:9px;height:9px;border-radius:50%;background:var(--cfi-accent)}
 .cfi-markets .m-note{font-size:13px;color:var(--cfi-ink-3)}
@@ -129,7 +130,7 @@
 .cfi-compare .cfi-sec-head p{color:var(--cfi-on-navy-2)}
 .cfi-compare-grid{display:grid;grid-template-columns:.9fr 1.1fr;gap:56px;align-items:center}
 @media (max-width:980px){.cfi-compare-grid{grid-template-columns:1fr}}
-.cfi-bignum{font-family:var(--cfi-display);font-weight:800;font-size:clamp(56px,7vw,84px);color:#fff;line-height:1}
+.cfi-bignum{font-family:var(--cfi-display);font-weight:700;font-size:clamp(56px,7vw,84px);color:#fff;line-height:1}
 .cfi-bignum small{font-size:.38em;color:var(--cfi-accent-bright);font-weight:600;display:block;margin-top:10px}
 .cfi-compare .note{margin-top:18px;color:var(--cfi-on-navy-2);font-size:15px;max-width:38ch}
 table.cfi-rates{width:100%;border-collapse:collapse;background:var(--cfi-navy-2);border:1px solid rgba(255,255,255,.12);border-radius:12px;overflow:hidden;font-size:15px}
@@ -200,7 +201,7 @@ body.cfi-lp{margin:0;background:var(--cfi-paper);font-family:var(--cfi-body);col
 .cfi-lp-main{max-width:1100px;margin:0 auto;padding:40px 24px 64px}
 .cfi-lp-grid{display:grid;grid-template-columns:1.5fr .9fr;gap:40px;align-items:start}
 @media (max-width:860px){.cfi-lp-grid{grid-template-columns:1fr}}
-.cfi-lp-form h1{font-family:var(--cfi-display);font-weight:800;font-size:clamp(28px,4vw,40px);margin:0 0 8px}
+.cfi-lp-form h1{font-family:var(--cfi-display);font-weight:640;font-size:clamp(28px,4vw,40px);margin:0 0 8px}
 .cfi-lp-sub{color:var(--cfi-ink-2);margin:0 0 24px;font-size:16px}
 .cfi-lp-embed{background:var(--cfi-card);border:1px solid var(--cfi-line);border-radius:12px;box-shadow:var(--cfi-shadow);padding:20px;min-height:760px}
 .cfi-lp-rail{display:flex;flex-direction:column;gap:18px}
