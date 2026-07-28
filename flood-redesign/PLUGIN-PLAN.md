@@ -112,8 +112,8 @@ The schema graph it now emits is `[LocalBusiness, Organization]`, `WebSite`, `We
 `Person`, `Article`. Four things are wrong with it:
 
 1. **`Article` on the homepage.** The homepage is not an article. This is Rank Math's
-   default schema type for Pages. Set **Titles & Meta → Pages → Schema Type = WebPage**
-   (or None). It affects every page on the site, not just the homepage.
+   default schema type for Pages. **See the correction below — do not simply set this to
+   None.** WebPage is a Rank Math PRO schema type and is not selectable on the free tier.
 2. **`Person` publishing the login handle.** The `Article` node's author resolved to
    `AJFarmer` — a WordPress username — with a Gravatar image and `sameAs` pointing at the
    site root. Fixed the underlying cause: the user's display name is now **Aaron J. Farmer**
@@ -133,6 +133,43 @@ everything and is strictly more specific. Recommend switching.
 
 Minor: Rank Math HTML-escapes inside the JSON-LD script, so the title reads
 `NFIP &amp; Private Flood Policies` rather than `&`. Common plugin behaviour, low priority.
+
+### Correction — `Schema Type: None` strips schema from every interior page
+
+Setting **Titles & Meta → Pages → Schema Type = None** fixed the homepage but emptied
+everything else. Verified in served HTML, July 28 2026:
+
+| Page | `ld+json` blocks |
+|---|---|
+| `/` | 1 — `[InsuranceAgency, Organization]`, `WebSite`, `WebPage` |
+| `/residential/` | **0** |
+| `/commercial/` | **0** |
+| `/guides/` | **0** |
+| `/hoa-master-flood-policies/` | **0** |
+| `/get-a-quote/` | **0** |
+
+No `BreadcrumbList` anywhere on the site either. Rank Math emits its core graph
+(`Organization`, `WebSite`, `WebPage`) on the **front page only**; with `None` set, interior
+pages get nothing at all — losing the sitewide entity nodes as well as the page type.
+
+**`Article` was never the wrong type — it was wrong on a homepage.** And the author node
+was only wrong because the display name was a login handle, which is now fixed. An `Article`
+node authored by *Aaron J. Farmer* on a 4,000-word city page or zone guide is precisely the
+E-E-A-T signal the design is built around.
+
+Target configuration:
+
+| Scope | Schema type |
+|---|---|
+| Pages default (Titles & Meta → Pages) | **Article** |
+| Homepage — page id 7, slug `home` | **None** (per-page Schema tab override) |
+| Quote landing page — page id 8, slug `get-a-quote` | **None** (a conversion LP is not an article) |
+| Guides / zone pages / city pages / articles | Article, inherited from the default |
+
+Plus **enable breadcrumbs** so `BreadcrumbList` is emitted — valuable on deep zone and city
+pages. If Rank Math only emits that schema when the theme renders breadcrumbs, the call goes
+into the interior templates, which are being built anyway. Use **one** breadcrumb source —
+Kadence has its own; do not enable both.
 
 ### Migration consequence — Rank Math owns schema now
 
