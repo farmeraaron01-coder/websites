@@ -50,7 +50,7 @@
 			<div class="cfi-lp-card cfi-lp-call">
 				<p><b>Prefer to talk it through?</b></p>
 				<a class="cfi-btn cfi-btn-cta" href="tel:<?php echo esc_attr( CFI_PHONE_TEL ); ?>">&#9742; <?php echo esc_html( CFI_PHONE_DISPLAY ); ?></a>
-				<p class="cfi-lp-hours">Mon&ndash;Fri 8am&ndash;5pm PT</p>
+				<p class="cfi-lp-hours">Mon&ndash;Fri 7:30am&ndash;5pm PT</p>
 			</div>
 		</aside>
 	</div>

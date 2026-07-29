@@ -350,3 +350,52 @@ Detected while inspecting current output:
    decision in DECISIONS.md. Rewrite at migration.
 4. **Duplicate schema.** The live site runs both AIOSEO and Schema & Structured Data for WP,
    producing 44 `SiteNavigationElement` blocks on the homepage. One schema source only.
+
+---
+
+## Google Business Profile — authoritative NAP data (pulled July 29 2026)
+
+Read from the GBP dashboard. **This is the source of truth for name, address, phone and
+hours.** Everything else — site copy, schema, Yelp — must match it.
+
+| Field | GBP value |
+|---|---|
+| Business name | **California Flood Insurance Services** |
+| Primary category | **Insurance agency** (secondary: Insurance broker, Insurance company) |
+| Address | **7960 Silverton Ave. #203, San Diego, CA 92126** (Silverton Business Center) |
+| Phone | **(855) 225-3566** |
+| Hours | **Mon–Fri 7:30 AM–5:00 PM**, Sat/Sun closed |
+| Opening date | January 1, 2012 |
+| Service area | United States |
+| Website | `http://www.californiafloodinsurance.com/` |
+| Social | LinkedIn, YouTube, Facebook |
+| Short name | CaliforniafloodInsurance |
+
+### Discrepancies this exposes
+
+1. **Hours were wrong everywhere.** GBP opens at **7:30**, not 8:00. The schema was set to
+   `08:00-17:00` and the theme said "8am–5pm" in two places. Both theme strings fixed in
+   **v1.0.14** (`page-get-a-quote.php`, `front-page.php`); the schema still needs changing to
+   `07:30-17:00`. Worth noting the schema value came from the site's own copy — which was
+   itself wrong — so verifying against the site was verifying against the wrong source.
+2. **Business name differs.** GBP says "California Flood Insurance **Services**"; the WordPress
+   site title, the schema `name`, and production's hardcoded JSON-LD all say "California Flood
+   Insurance". Name is the most heavily cross-checked NAP field. Fix: set Rank Math's Local SEO
+   business name to the GBP string exactly, and leave the WordPress site title alone for
+   display and page titles.
+3. **Primary category confirms the schema type.** "Insurance agency" — `InsuranceAgency` was
+   the right call.
+4. **Address confirmed as San Diego.** Escondido (`1835A S. Centre City Parkway #404`) is a
+   mailing address only and must **never** appear in schema — a mailbox in LocalBusiness markup
+   risks a GBP suspension. The contact page may keep both, labelled as it already is.
+5. **`sameAs` is incomplete.** Production's schema lists Facebook, Yelp and YouTube but omits
+   **LinkedIn**, which GBP carries. Add it.
+6. **GBP's website URL is `http://`, not `https://`.** Every click from Search or Maps eats a
+   redirect hop. One-field fix in GBP, worth doing.
+7. **Service area says United States, and the GBP description claims "leading nationwide
+   provider".** Decide whether the CFI site's schema `areaServed` should say California (matching
+   the site's content and brand) or the US. Recommend **California** for this site — Statewide
+   is the multi-state brand — and note that `areaServed` is not a field Google cross-checks the
+   way it does name/address/phone. Separately, "leading nationwide provider" is the same class of
+   unqualified superlative as the "Save 30–50%" claim retired in DECISIONS.md; it is GBP copy
+   rather than site copy, but the reasoning applies equally.

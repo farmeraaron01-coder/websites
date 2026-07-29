@@ -329,7 +329,7 @@ $theme_uri = get_stylesheet_directory_uri();
 		<div class="cfi-wrap">
 			<div>
 				<h2>Know your options before the next storm.</h2>
-				<p>The secure quote request takes about two minutes &mdash; online any time, or a licensed specialist at <b><?php echo esc_html( CFI_PHONE_DISPLAY ); ?></b>, Mon&ndash;Fri 8&ndash;5 PT.</p>
+				<p>The secure quote request takes about two minutes &mdash; online any time, or a licensed specialist at <b><?php echo esc_html( CFI_PHONE_DISPLAY ); ?></b>, Mon&ndash;Fri 7:30&ndash;5 PT.</p>
 			</div>
 			<a class="cfi-btn cfi-btn-cta" href="<?php echo esc_url( CFI_QUOTE_URL ); ?>">Start my quote</a>
 		</div>
