@@ -106,6 +106,46 @@ def dead_air(calls, connect_to=None):
     return reached, missed_entirely
 
 
+def queue_paths(calls, number=None):
+    """Enumerate every queue / destination a number's calls actually reach.
+
+    One published number often fans out across several queues, and some calls skip
+    queues entirely and die on an individual user's extension (personal voicemail,
+    where no queue rule applies). Losses concentrate in whichever destination has the
+    longest timer or the worst overflow — frequently not the one named after the
+    problem. This tells you which configs to go read.
+    """
+    tgt = ([r for r in calls if (r.get("to") or {}).get("phoneNumber") == number]
+           if number else calls)
+    stats = collections.defaultdict(lambda: {"t": 0, "l": 0, "dur": []})
+    for r in tgt:
+        seen = set()
+        for leg in (r.get("legs") or []):
+            name = (leg.get("to") or {}).get("name")
+            # The accepting target names the queue/person that owned the call.
+            if name and leg.get("legType") == "Accept":
+                seen.add(name)
+        for name in seen:
+            s = stats[name]
+            s["t"] += 1
+            if is_lost(r):
+                s["l"] += 1
+                s["dur"].append(int(r.get("duration") or 0))
+
+    print("\n=== DESTINATIONS IN THIS NUMBER'S PATH ===")
+    print(f"{'DESTINATION':38}{'CALLS':>6}{'LOST':>6}{'LOST%':>7}  lost-call durations")
+    for name, s in sorted(stats.items(), key=lambda kv: -kv[1]["l"]):
+        pct = 100 * s["l"] / s["t"] if s["t"] else 0
+        ds = sorted(s["dur"])
+        span = f"{ds[0]}-{ds[-1]}s (med {ds[len(ds)//2]}s)" if ds else ""
+        print(f"{name[:37]:38}{s['t']:6}{s['l']:6}{pct:6.0f}%  {span}")
+    print("\n  Read the config of every destination above, and compare their\n"
+          "  'maximum caller wait time' and overflow destination side by side.\n"
+          "  A lost-call duration that EXCEEDS a queue's cap proves the call was\n"
+          "  never in that queue — use that to eliminate paths fast.")
+    return stats
+
+
 def hangups(calls):
     ds = sorted(int(r.get("duration") or 0) for r in calls if is_lost(r))
     if not ds:
@@ -192,6 +232,7 @@ def main():
         print("\n---------- ANSWERED (for comparison) ----------")
         for r in [x for x in tgt if not is_lost(x)][:3]:
             trace(r, "[ OK ]")
+        queue_paths(calls, a.number)
         dead_air(tgt, a.connect_to)
         hangups(tgt)
         by_hour(tgt, a.tz_offset)

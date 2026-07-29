@@ -99,6 +99,27 @@ python scripts/analyze_routing.py --env <path-to-.env> --number +18555867467 --d
 Legs are the ordered story of one call. Compare a lost call against an answered one on the same
 number — the difference between them is your answer.
 
+**One number often traverses several queues.** A published number may hit a site, then a
+day/night rule, then land in any of a few queues, or bypass queues entirely and terminate on an
+individual user's extension (where the call dies in that person's personal voicemail and no queue
+rule applies). Enumerate every queue and destination that appears in the traces, then compare
+their timers and overflow destinations side by side:
+
+| Queue | Max wait | Overflow goes to |
+|---|---|---|
+| Flood Service | 30s | AI agent ✅ |
+| RB Operator Control | **3 min** | **voicemail** ❌ |
+
+The misconfigured one is rarely the one named after the problem. In the case above, both queues
+named "Flood" were configured correctly and the losses were all in a queue named after the
+agency's operator desk. Checking only the obviously-named queues would have found nothing wrong
+and produced a dead end.
+
+**A duration that exceeds a queue's cap is proof the call was never in that queue.** If a queue
+hands off at 30s and your lost calls ran 49–107s, they were governed by some other rule. Use this
+to eliminate queues quickly instead of guessing — it's the fastest way to find which of several
+plausible paths a call actually took.
+
 Leg types you'll see:
 
 | `legType` | Meaning |

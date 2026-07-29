@@ -153,6 +153,48 @@ not have saved a single one of them — only shortening the first ring would.
 
 ---
 
+## 4b. Worked example: the misconfigured queue wasn't the one named after the problem
+
+Same account, second investigation. Complaint: "check the dropped calls from flood."
+
+`+18552253566` (California Flood) was losing **218 of 678 calls in 10 days (32%)** — five times
+the volume of the first case. Unlike the impatient Jump Trucking callers, these people waited
+**49, 61, 83, 91, 107 seconds** and still ended in voicemail. Patient, motivated callers getting
+nothing.
+
+The obvious suspects were the two queues named **Flood Sales** and **Flood Service**. Both turned
+out to be configured correctly — 30s cap, overflow to the Brooke AI agent, Simultaneous ring.
+Reporting "the flood line has no AI backstop" was wrong, and checking only the obviously-named
+queues would have ended the investigation with nothing found.
+
+What resolved it was a duration argument. **Flood Service hands off at 30 seconds, but the lost
+calls ran 49–107 seconds — so they were never in Flood Service.** They were in a third queue,
+`RB Operator Control`, named after the agency's operator desk and easy to overlook:
+
+| Queue | Max wait | Overflow destination |
+|---|---|---|
+| Flood Service | 30s | external → AI agent ✅ |
+| Flood Sales | 30s | external → AI agent ✅ |
+| **RB Operator Control** | **3 minutes** | **voicemail** ❌ |
+
+Six times the timer, and a mailbox at the end of it instead of an agent. Callers held for up to
+three minutes, then dropped into a queue voicemail box accumulating ~400 messages a month.
+
+Some flood calls also bypassed queues entirely and terminated on individual users' extensions
+(`Accept → Chandra Taft`, then `PstnToSip → ext 331`, then `FindMe → Stopped`), dying in personal
+voicemail where no queue rule could help them.
+
+Transferable lessons:
+
+- Enumerate **every** destination in a number's traces before reading any config. Use
+  `analyze_routing.py --number <n>`, which prints the destination table for exactly this.
+- Compare max-wait and overflow **across all of them**. The outlier is the leak.
+- Trust the duration arithmetic over the naming. A lost-call duration exceeding a queue's cap is
+  proof of absence from that queue, and eliminates candidates faster than reading settings.
+- A queue's name reflects org history, not call flow. Check staffing to judge whether an AI
+  backstop suits it — here all nine `RB Operator Control` agents were on the California Flood
+  site, which made the flood agent the right destination despite the name.
+
 ## 5. Fixing ring order in the admin UI
 
 On accounts with `NewCallHandlingAndForwarding`, the answering-rule API is read-blocked
