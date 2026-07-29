@@ -399,3 +399,46 @@ hours.** Everything else — site copy, schema, Yelp — must match it.
    way it does name/address/phone. Separately, "leading nationwide provider" is the same class of
    unqualified superlative as the "Save 30–50%" claim retired in DECISIONS.md; it is GBP copy
    rather than site copy, but the reasoning applies equally.
+
+### NAP chain verified July 29 2026
+
+GBP, schema and site copy now agree. Confirmed across three stable cache-busted samples:
+
+| Field | Value (identical in GBP and schema) |
+|---|---|
+| name | California Flood Insurance Services |
+| telephone | +1-855-225-3566 |
+| openingHours | Monday–Friday 07:30-17:00 |
+| address | 7960 Silverton Ave. #203, San Diego, CA 92126, US |
+| sameAs | Facebook, LinkedIn, YouTube |
+
+No `aggregateRating`. Zero occurrences of the Escondido mailing address anywhere in the page.
+The `Place` node carries only `@id`, `@type` and `address` and is referenced by `location` —
+Rank Math's normal output shape, not a duplicate entity.
+
+### Open schema items the free UI cannot express
+
+Rather than fighting the free UI field by field, note that a single `rank_math/json_ld` filter
+in the child theme's `functions.php` can add anything the UI cannot. **Deferred deliberately** —
+nothing below is urgent, and coupling our PHP to another plugin's graph shape is a maintenance
+cost worth paying once, for a batch, rather than four times for singles.
+
+Candidates for that batch, if it ever ships:
+
+- `openingHoursSpecification` objects instead of the free tier's comma-joined string. Google
+  parses the string form, so this is a robustness improvement, not a fix.
+- `areaServed` — pending the California-vs-nationwide decision.
+- `alternateName` on the **Organization** node. The UI's only alternate-name field attaches to
+  the `WebSite` node instead, where it currently duplicates `name` exactly and therefore carries
+  no signal — **blank that field**.
+- `provider` edge on the `/get-a-quote/` `Service` node, batched with the Service overrides for
+  `/residential/`, `/commercial/` and `/hoa-master-flood-policies/` when their content lands.
+
+### Two small enrichments worth taking now
+
+- **`foundingDate: 2012-01-01`** via Local SEO → Additional Info. GBP records the opening date
+  as January 1 2012 and the site says "since 2012", so it is verifiable rather than decorative.
+- **`legalName`** only if the registered entity name genuinely differs from
+  "California Flood Insurance Services". Do not duplicate the GBP name into it — `name` already
+  holds that, and a `legalName` identical to `name` is noise of the same kind as the WebSite
+  `alternateName`.
