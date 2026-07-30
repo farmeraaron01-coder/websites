@@ -391,3 +391,33 @@ body.cfi-lp{margin:0;background:var(--cfi-paper);font-family:var(--cfi-body);col
 #main-header .site-top-header-inner-wrap .header-html-inner{width:100%}
 #main-header .cfi-topbar{display:flex;align-items:center;justify-content:space-between;
   gap:2px 24px;flex-wrap:wrap;width:100%}
+
+/* ---- Mobile tap-to-call bar ----
+   Only below 1025px, which is exactly where Kadence's mobile header takes over
+   and the desktop top bar (with the phone number) stops rendering. Above that
+   the bar would duplicate the top bar, so it is display:none.
+
+   The body padding matters: a fixed bar overlaps the footer's last rows
+   otherwise, and on iOS the home-indicator area needs safe-area inset or the
+   buttons sit under it. */
+.cfi-callbar{display:none}
+@media (max-width:1024px){
+  .cfi-callbar{display:grid;grid-template-columns:1fr 1fr;gap:8px;
+    position:fixed;left:0;right:0;bottom:0;z-index:9990;
+    padding:9px 12px calc(9px + env(safe-area-inset-bottom,0px));
+    background:rgba(255,255,255,.94);backdrop-filter:blur(8px);
+    border-top:1px solid var(--cfi-line);
+    box-shadow:0 -2px 14px -6px rgba(10,37,64,.28)}
+  .cfi-callbar a{display:flex;align-items:center;justify-content:center;gap:7px;
+    min-height:46px;border-radius:10px;font:600 15.5px/1.1 var(--cfi-body);
+    text-decoration:none;text-align:center;padding:6px 10px}
+  .cfi-callbar-tel{background:var(--cfi-navy);color:#fff}
+  .cfi-callbar-tel:hover,.cfi-callbar-tel:focus{background:var(--cfi-navy-2);color:#fff}
+  .cfi-callbar-quote{background:var(--cfi-cta);color:var(--cfi-cta-ink)}
+  .cfi-callbar-quote:hover,.cfi-callbar-quote:focus{background:var(--cfi-cta-hover);color:var(--cfi-cta-ink)}
+  .cfi-callbar a:focus-visible{outline:3px solid var(--cfi-accent-deep);outline-offset:2px}
+  body{padding-bottom:calc(66px + env(safe-area-inset-bottom,0px))}
+}
+@media (max-width:1024px) and (prefers-reduced-motion:reduce){
+  .cfi-callbar{backdrop-filter:none;background:#fff}
+}

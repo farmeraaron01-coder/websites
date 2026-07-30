@@ -93,6 +93,9 @@ add_filter( 'rank_math/json_ld', function ( $data, $jsonld ) {
 /* Interior pages: TOC engine, takeaways, byline, and the REST-visible meta. */
 require_once get_stylesheet_directory() . '/inc/interior.php';
 
+/* Mobile tap-to-call bar — the desktop top bar's phone number stops at 1024px. */
+require_once get_stylesheet_directory() . '/inc/callbar.php';
+
 add_action( 'wp_enqueue_scripts', function () {
 	wp_enqueue_style(
 		'cfi-tokens',
