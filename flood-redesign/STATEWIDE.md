@@ -242,6 +242,20 @@ photoreal editorial AI images OK for share cards/archives.
 Global Meta → OpenGraph Thumbnail: set coastal-homes-golden-hour as the sitewide default
 share image on BOTH sites (statewide media 125, CFI media 296).
 
+## Imagery wave 2 — July 30
+
+Five more nano-banana editorial images (same pipeline: 2752×1536 PNG → 1600w WebP,
+91–272KB, alt text, featured-media only — never rendered in-article):
+- sandbags-front-door-flood → FEMA-aid article (sw post 129)
+- river-bend-suburban-homes → NFIP premium article (sw post 130)
+- flood-claim-dry-out-waterline → claims article (sw post 132)
+- burn-scar-hillside-homes → CFI debris-flow article (post 299)
+- atmospheric-river-rain-neighborhood → CFI atmospheric-river article (post 300)
+
+og:image verified on all five. **`/elevation-certificates-2026/` (post 131) still uses the
+sitewide default** — its image (surveyor tripod at an elevated stilt house) was not in the
+batch; prompt is in the transcript if Aaron wants to generate it later.
+
 ## Still open
 
 - Homepage title: no incumbent to protect here — propose
