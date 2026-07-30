@@ -93,9 +93,11 @@ Same pipeline as CFI, in this order:
      the FAQ section was extracted separately and merged (100w → 3,138w on staging).
    - `/insights/` — migrated content was a dead blog-feed teaser; page is now assigned as
      the posts index (empty until statewide-original articles exist).
-   - `/media/` — NOT migrated: pure Divi demo placeholder ("Your Title Goes Here by Artist
-     Name" + Elegant Themes demo audio). Needs a redirect decision at launch.
-   - `/floodguru/` — NOT migrated (25w, noindexed on production). Redirect decision at launch.
+   - `/media/` — NOT migrated: Divi demo placeholder (an iframe promoting the Divi theme
+     itself + Elegant Themes' sample podcast `Podcast-Landing-Elegant-Themes.m4a`, not in
+     the nav). **Decided July 30: 301 `/media/` → `/video/`** (the new video hub).
+   - `/floodguru/` — NOT migrated (25w, already noindexed on production). **Decided July 30:
+     delete outright on production at cutover, no redirect** (owner's call).
    - 18 pages had no meta description; drafts written from each page's own opening copy
      (`sw-desc-drafts.json`), six hand-written (legal pages, glossary, insights, two
      truncation fixes). **Aaron should skim these.**
@@ -256,6 +258,37 @@ Plus surveyor-elevation-certificate → elevation certificate article (sw post 1
 right after. **All seven statewide articles and both CFI articles now carry unique dedicated
 images** — verified og:image on every URL, zero duplicates, zero fallbacks. The
 coastal-homes-golden-hour default now only serves pages without their own image, as intended.
+
+## One YouTube channel, two websites — the video-sharing architecture (July 30)
+
+The constraint: a single YouTube channel, mostly California-shot, but the *topics* are
+federal and serve both brands. The rules that actually apply:
+
+1. **Embedding the same video on both sites is NOT duplicate content.** The video is hosted
+   on YouTube; duplicate-content rules govern text. Only the surrounding copy must differ.
+2. **VideoObject schema is the part that competes.** Google picks one canonical page per
+   video for video rich results, so two pages claiming the same id means an arbitrary
+   winner. Rule adopted: **exactly one page per video carries the schema** (its "video
+   home"); every other placement uses `schema="no"` (theme v1.3.4) and exists for readers.
+3. **CFI is the video home for all nine current videos** — it already has per-video pages
+   with VideoObject and a PSI-verified hub (95 mobile). Nothing there changes.
+
+Built on statewide: `/video/` (page 144, "Flood Insurance Videos") — a curated hub with all
+nine players, statewide-original framing, `schema="no"` throughout, linked from Resources →
+Videos and the footer Learn column. Plus contextual embeds where a video genuinely helps the
+reader: BFE video in `/elevation-certificates-2026/`, mortgage-clause video in the lender
+article, private-vs-FEMA video on `/private-flood-insurance-vs-nfip/` (its biggest page).
+No per-video pages on statewide — nine near-identical write-ups would be the text-level
+duplication we just spent a day removing.
+
+**Theme v1.3.4** adds two things this needed: the `schema="no"` attribute, and automatic
+lazy-loading for every player after the first on a page (previously every `[cfi_video]`
+thumbnail was `fetchpriority="high"`, which is right for one embed and ruinous for nine).
+**Must be installed on both sites** — until it is, statewide's hub emits nine competing
+VideoObject blocks and nine eager 1280px thumbnails.
+
+**When statewide records its own videos**, they become statewide's video homes: own pages,
+own VideoObject, and CFI can embed them back with `schema="no"`. The mechanism is symmetric.
 
 ## Still open
 

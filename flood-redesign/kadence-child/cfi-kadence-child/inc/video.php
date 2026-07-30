@@ -6,6 +6,7 @@
  *
  *   [cfi_video id="vdslGDfJgIQ" title="Private Flood Insurance vs FEMA"
  *              upload="2025-03-14" duration="PT4M12S"]
+ *   [cfi_video id="vdslGDfJgIQ" title="…" schema="no"]   — player only, no VideoObject
  *   [cfi_videos]                        — grid of every post in the "videos" category
  *
  * Why a click-to-play facade rather than a plain iframe: a YouTube iframe pulls
@@ -35,6 +36,19 @@ add_shortcode( 'cfi_video', function ( $atts ) {
 		'upload'   => '',
 		'duration' => '',   // ISO 8601, e.g. PT4M12S
 		'desc'     => '',
+		/*
+		 * schema="no" renders the player without VideoObject markup.
+		 *
+		 * Why this exists: the two sister sites share ONE YouTube channel. Embedding
+		 * the same video on both sites is fine — the video lives on YouTube, and
+		 * duplicate-content rules are about text, not embeds. But Google picks a
+		 * single canonical page per video for video rich results, so if both sites
+		 * emit VideoObject for the same id they compete and we don't get to choose
+		 * the winner. Rule: exactly ONE page per video carries the schema (its
+		 * "video home"); every other placement uses schema="no" and exists for the
+		 * reader, not the crawler.
+		 */
+		'schema'   => 'yes',
 	), $atts, 'cfi_video' );
 
 	// YouTube ids are 11 chars of [A-Za-z0-9_-]. Reject anything else rather
@@ -69,15 +83,23 @@ add_shortcode( 'cfi_video', function ( $atts ) {
 		$schema['duration'] = $a['duration'];
 	}
 
+	/*
+	 * The FIRST player on a page is its LCP element and must load eagerly —
+	 * lazy-loading it measured a 5.9s LCP. Every player after the first is below
+	 * the fold, so it lazy-loads: a curated page with nine 1280px thumbnails all
+	 * marked high-priority would compete with its own LCP and undo the gain.
+	 */
+	static $n = 0;
+	$n++;
+	$first = ( 1 === $n );
+
 	ob_start();
 	?>
 	<div class="cfi-video">
 		<button type="button" class="cfi-video-play" data-embed="<?php echo esc_url( $embed ); ?>"
 			aria-label="<?php echo esc_attr( 'Play video: ' . $label ); ?>">
-			<?php /* Never lazy: the facade is the LCP element of a video page.
-			   Lazy-loading it measured a 5.9s LCP on the hub. */ ?>
 			<img src="<?php echo esc_url( $thumb ); ?>" alt="" width="1280" height="720"
-				fetchpriority="high" decoding="async"
+				<?php echo $first ? 'fetchpriority="high"' : 'loading="lazy"'; ?> decoding="async"
 				onerror="this.onerror=null;this.src='<?php echo esc_js( $fallb ); ?>'">
 			<span class="cfi-video-icon" aria-hidden="true"></span>
 			<?php if ( $a['title'] !== '' ) : ?>
@@ -85,9 +107,11 @@ add_shortcode( 'cfi_video', function ( $atts ) {
 			<?php endif; ?>
 		</button>
 	</div>
+	<?php if ( 'no' !== strtolower( (string) $a['schema'] ) ) : ?>
 	<script type="application/ld+json"><?php
 		echo wp_json_encode( $schema, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE );
 	?></script>
+	<?php endif; ?>
 	<?php
 	return ob_get_clean();
 } );
