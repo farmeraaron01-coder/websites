@@ -261,7 +261,7 @@ Two viable paths, and the choice belongs with the content migration:
 
 Recommended: path 1, then selectively rewrite. The import preserves everything, and the
 rewrites are then limited to the defects already identified — the `/san-diego/` canonical
-mismatch, the weak city titles, and the homepage's "Save 30–50%" claim. Doing it the other
+homepage "Save 30–50%" title, the 19 missing h1s, and the over-long legacy post titles. Doing it the other
 way round means retyping meta that was already fine.
 
 ### Rank Math cannot be configured remotely
@@ -334,22 +334,83 @@ nothing while it sits there inactive on the front end.
    if a score drops noticeably, that plugin needs justifying).
 
 
-## SEO findings from the live site (fix during migration)
+## SEO findings from the live site — full audit, July 30 2026
 
-Detected while inspecting current output:
+**Superseded by a real audit.** The earlier version of this section was written from spot
+checks of a few URLs and got two of its four findings wrong. All 86 published URLs have now
+been crawled with title, description, canonical, robots, h1 and word count extracted
+(`cfi-production-seo-audit.csv`).
 
-1. **City page canonicals are mismatched.** `/san-diego/` sets its canonical to
-   `/san-diego-california-flood-insurance-resort-floods/` — a different URL. Google may be
-   treating one as a duplicate of the other. Audit every city page: the canonical must
-   match the URL that is actually linked and indexed.
-2. **City page titles are weaker than zone page titles.** Compare
-   "San Diego California Flood Insurance: Your Only Resort During Floods" against
-   "Flood Zone AE: What It Means & Insurance Rules | CA". Rewrite city titles in the
-   zone-page style: keyword-first, benefit-clear, under ~60 characters.
-3. **Homepage title still claims "Save 30–50%"** — conflicts with the qualified-claims
-   decision in DECISIONS.md. Rewrite at migration.
-4. **Duplicate schema.** The live site runs both AIOSEO and Schema & Structured Data for WP,
-   producing 44 `SiteNavigationElement` blocks on the homepage. One schema source only.
+### Two earlier findings were WRONG — retracted
+
+1. ~~City page canonicals are mismatched~~ — **false, and the method caused it.** `/san-diego/`
+   is a **301 redirect** to `/san-diego-california-flood-insurance-resort-floods/`. Fetching
+   the redirecting URL and comparing the pre-redirect address against the post-redirect
+   canonical produced a mismatch that does not exist. Across all 86 URLs: **zero canonical
+   mismatches**, host form consistent (non-www everywhere), zero missing canonicals.
+2. ~~City page titles are weaker than zone page titles~~ — **false.** The actual city landing
+   pages are already well optimised, 46–51 characters, keyword-first:
+   `San Diego Flood Insurance | Private & NFIP Quotes` (49),
+   `Sacramento Flood Insurance | Private & NFIP Quotes` (50). Fully comparable to
+   `Flood Zone AE: What It Means & Insurance Rules | CA` (51). The 97-character example
+   quoted before — "San Diego California Flood Insurance: Your Only Resort During Floods" — is
+   a legacy blog **post**, not a city page. Confusing the two produced the wrong conclusion.
+
+### Confirmed and quantified
+
+3. **Homepage title claims "Save 30–50%".** Confirmed verbatim:
+   `California Flood Insurance: Save 30–50% on Flood Quotes` (55 chars). Conflicts with the
+   qualified-claims decision in DECISIONS.md. Rewrite at migration.
+4. **19 pages have no `<h1>` at all** — the largest real finding, and 10 of them run over
+   1,500 words: every city page (`/sacramento-flood-insurance/` 1,727w,
+   `/san-jose-flood-insurance/` 1,700w, `/long-beach-flood-insurance/`,
+   `/los-angeles-flood-insurance/`, `/fresno-flood-insurance/`, `/san-diego-flood-insurance/`,
+   `/riverside-flood-insurance/`) plus `/flood-zone-ah-and-ao/`, `/flood-zone-ae/` and
+   `/how-much-flood-insurance-do-i-need/`. They start at `<h2>`. These are the money pages.
+   **The new interior templates must enforce a single h1** — this defect cannot be allowed to
+   migrate.
+5. **39 titles over 62 characters**, so truncated in results. Overwhelmingly legacy blog posts
+   carrying a ` - California Flood Insurance` suffix; worst is 127 chars. Lower priority than
+   the h1 problem, and largely fixable by dropping the suffix.
+6. **19 pages have no meta description**, and 19 descriptions exceed 165 characters.
+7. **33 pages under 300 words**, including five near-empty stubs: `/claims/` (11w),
+   `/video/` (11w), `/agent-appointment/` (13w), `/staff-form/` (13w), `/service-center/` (13w).
+   Decide per page whether to write real content or not migrate it. Median across the site is
+   511 words; max 5,595.
+8. **The "30–50%" claim is ONE sitewide element, not 86 pages of copy.** It appears on all 86
+   URLs because it lives in the hardcoded `InsuranceAgency` JSON-LD description — the same block
+   already marked "do not migrate". Removing that block removes the claim everywhere at once.
+   An unqualified 86 would have badly overstated the work.
+9. **Zero noindexed pages** on production, and zero missing canonicals. Both clean.
+
+### Production plugin inventory was incomplete
+
+The earlier inventory was built from rendered HTML. The REST namespace list reveals more:
+`redirection/v1`, `simple-history/v1`, `llar/v1` (Limit Login Attempts Reloaded),
+`elementor-one/v1`, `ea11y/v1` (accessibility widget), `omgf/v1`, `saswp-output`,
+`google-site-kit/v1`, `divi/v1`, `wordfence/v1`, `trustindex/v1`, `aioseo/v1`.
+
+**The Redirection plugin is a migration blocker nobody had accounted for.** Whatever 301s it
+holds must come across, or previously-fixed URLs start 404ing at cutover. Export its rules
+before migration. Also note Elementor is installed alongside Divi.
+
+### AIOSEO meta extraction — solved, and the storage question is moot
+
+No AIOSEO meta is exposed through the REST API (a sample page returns only Divi's
+`_et_pb_*` keys and `footnotes`), and AIOSEO's own namespace offers admin/write routes rather
+than a bulk read. Rather than resolve where it stores data, the audit sidesteps it: **all 86
+titles, descriptions and canonicals have been captured from the served HTML**, which is ground
+truth regardless of storage. The migration no longer needs AIOSEO's database, a WXR postmeta
+export, or its importer.
+
+To write them into Rank Math on staging, `rank_math_title` / `rank_math_description` need
+`register_post_meta( …, show_in_rest => true )` in the child theme so REST can set them —
+Rank Math reads its own keys normally either way.
+
+### Content inventory
+
+38 published pages, 48 published posts, 86 total. A `project` post type is registered
+(Divi Portfolio) but holds **zero** published items — nothing to migrate there.
 
 ---
 
