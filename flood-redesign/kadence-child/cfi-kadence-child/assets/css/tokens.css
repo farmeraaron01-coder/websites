@@ -427,3 +427,37 @@ body.cfi-lp{margin:0;background:var(--cfi-paper);font-family:var(--cfi-body);col
 .cfi-embed-title{font-family:var(--cfi-display);font-weight:600;line-height:1.2;
   font-size:clamp(22px,2.6vw,28px);color:var(--cfi-navy);margin:0 0 18px}
 .cfi-embed .cognito{max-width:100%}
+
+/* ---- Footer link columns ----
+   Kadence Free has six footer widget areas but only the bottom row was enabled,
+   so the whole block lives in one Custom HTML widget in footer1 and is laid out
+   here. Same reasoning as the header top bar: one widget, CSS does the columns,
+   and the markup stays reviewable instead of living only in the database.
+
+   Colours are the on-navy pair, not --cfi-link: the footer sits on
+   --cfi-navy where the AA-safe blue used for light backgrounds would fail. */
+#colophon .cfi-foot{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:26px 32px;text-align:left;margin:0 0 30px}
+@media (max-width:900px){#colophon .cfi-foot{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:480px){#colophon .cfi-foot{grid-template-columns:1fr;gap:22px}}
+#colophon .cfi-foot-col h2{font:600 12px/1 var(--cfi-body);letter-spacing:.11em;
+  text-transform:uppercase;color:#fff;margin:0 0 12px}
+#colophon .cfi-foot-col ul{list-style:none;margin:0;padding:0}
+#colophon .cfi-foot-col li{margin:0 0 8px;line-height:1.4}
+#colophon .cfi-foot-col a{font-size:14.5px;color:var(--cfi-on-navy);text-decoration:none}
+#colophon .cfi-foot-col a:hover,#colophon .cfi-foot-col a:focus-visible{color:#fff;text-decoration:underline}
+
+#colophon .cfi-foot-legal{border-top:1px solid rgba(234,244,251,.18);padding-top:18px;text-align:left}
+#colophon .cfi-foot-legal-links{margin:0 0 8px;display:flex;flex-wrap:wrap;gap:8px 18px}
+#colophon .cfi-foot-legal-links a{font-size:14px;font-weight:600;color:#fff;text-decoration:underline;
+  text-underline-offset:2px}
+#colophon .cfi-foot-fine{margin:0;font-size:12.5px;line-height:1.6;color:var(--cfi-on-navy-2)}
+#colophon .cfi-foot-fine a{color:#fff;text-decoration:underline}
+
+/* Kadence uses global palette slot 1 (the CTA cyan) for content links, which is
+   2.01:1 on --cfi-paper. Pages on the default template render inside
+   .entry-content rather than .cfi-prose, so they were not covered by the prose
+   rule and every link on those 12 pages failed AA badly. */
+.entry-content a:not(.cfi-btn):not(.button):not([class*="cog-"]){color:var(--cfi-link);
+  text-decoration:underline;text-underline-offset:2px}
+.entry-content a:not(.cfi-btn):not(.button):not([class*="cog-"]):hover{color:var(--cfi-link-hover)}
