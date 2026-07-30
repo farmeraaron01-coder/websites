@@ -108,14 +108,15 @@ respectively. Effective July 30 2026. Contacts: service@californiafloodinsurance
 and agency.services@jumpins.com (statewide). Verified on both sites: single h1, correct
 entity, no cross-brand mentions in content, old February effective dates gone.
 
-## LAUNCH-CRITICAL: CFI staging post permalinks are date-based (found July 30)
+## ~~LAUNCH-CRITICAL~~ RESOLVED: CFI staging post permalinks (July 30)
 
 CFI staging serves posts at `/2026/07/16/slug/` while production uses `/slug/` — the
 Settings → Permalinks structure was never set to "Post name" on CFI staging (statewide's
 was, day one). All 48 migrated posts 301 from their production-style URLs today, which is
-why every verification passed (curl followed redirects). **Fix before launch:** wp-admin →
-Settings → Permalinks → select "Post name" → Save. One click; instantly makes every post
-URL match production. Pages are unaffected.
+why every verification passed (curl followed redirects). **FIXED July 30** (Settings → Permalinks → "Post name"). Verified from
+here: all 59 published posts return `/slug/` links with zero date-based leftovers, and
+spot-checked posts return 200 with no redirect hop — so production URLs, rankings, and
+backlinks map 1:1 at cutover. Pages were unaffected throughout.
 
 ## Plugins on production that must not follow
 
