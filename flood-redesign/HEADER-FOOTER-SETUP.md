@@ -33,8 +33,9 @@ Customize → **Colors & Fonts → Colors** (Global Palette). Set the nine swatc
 
 - **Left slot:** HTML element →
   `CA Lic. #0L75450 &nbsp;·&nbsp; Independent agency specializing in flood since 2012`
-- **Right slot:** HTML element →
-  `Mon–Fri 8am–5pm PT &nbsp;&nbsp; <a href="tel:8552253566"><strong>855-CAL-FLOOD (225-3566)</strong></a>`
+- **Right slot:** not used. Kadence Free permits only **one** HTML element per header, and it
+  is spent on the left slot. (Had this been added it would also have needed the hours
+  corrected to 7:30am — see the GBP data in PLUGIN-PLAN.md.)
 - Top Bar **Design** tab: Background `#0A2540` · Text color `#9FBDD4` · Link color `#38C6F4` · Min height **36px** · Bottom border: none.
 - HTML element font size: **13px**.
 
@@ -83,12 +84,20 @@ Customize → **Additional CSS** → paste this block (harmonizes Kadence's head
 theme fonts and keeps the button crisp):
 
 ```css
-#masthead, #colophon { font-family: 'Public Sans', -apple-system, 'Segoe UI', sans-serif; }
+#masthead, #colophon { font-family: 'Inter', -apple-system, 'Segoe UI', sans-serif; }
 #masthead .site-branding img { width: auto; }
 #masthead .header-button { box-shadow: 0 2px 0 rgba(0,0,0,.10); }
 #masthead .main-navigation .menu-item > a { letter-spacing: .01em; }
 #colophon a:hover { color: #ffffff; }
 ```
+
+## Changing the top-bar text later
+
+Appearance → **Customize → Header**. In the Header Builder grid under the preview, click the
+**HTML 1** chip in the Top Row's left slot (or **Header → Elements → HTML 1**). Edit the
+**Content** box, then **Publish**.
+
+Note the `&nbsp;` entities are intentional — they hold the spacing around the middot.
 
 ## Step 5 — Finish
 
