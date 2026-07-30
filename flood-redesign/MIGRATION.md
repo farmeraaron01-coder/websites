@@ -92,6 +92,22 @@ Fix during the write, do not carry across:
 6. Do **not** migrate the hardcoded `InsuranceAgency` JSON-LD block. It carries the
    self-serving `aggregateRating` and the "30–50% lower" claim, and Rank Math now owns schema.
 
+## Legal pages — 2026-edition documents (July 30)
+
+Both sites now carry attorney-supplied 2026-edition Terms of Service and Privacy Policy,
+converted from Aaron's Word documents (Dropbox: CaliforniaFloodInsurance_*_2026.docx /
+StatewideFloodInsurance_*_2026.docx) and published to staging with the docx pipeline
+(headings/lists preserved, manual TOC dropped in favor of the template's, guide template):
+
+- CFI: terms (page 84, 3,116w/30 sections), privacy (page 3, 2,683w/18 sections)
+- Statewide: terms (page 75, 3,098w/30), privacy (page 3, 2,670w/18)
+
+Both name the real operator — **Rebecca Byrom Insurance Agency, Inc. (RBIA), CA License
+#0L75450** — dba California Flood Insurance Services / dba Statewide Flood Insurance
+respectively. Effective July 30 2026. Contacts: service@californiafloodinsurance.com (CFI)
+and agency.services@jumpins.com (statewide). Verified on both sites: single h1, correct
+entity, no cross-brand mentions in content, old February effective dates gone.
+
 ## Plugins on production that must not follow
 
 Beyond Divi itself: Elementor (installed alongside Divi), OMGF, Schema & Structured Data for WP,
