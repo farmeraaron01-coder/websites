@@ -208,6 +208,27 @@ clipart page (rewritten, CA voice, CAL-FLOOD number, guide template); CFI
 was left alone; CFI got its own `/excess-flood-insurance/` (page 292, CA angle: coastal +
 burn-scar debris flows + loan balances) linked from its footer Coverage column.
 
+## Imagery — July 30
+
+Five nano-banana-generated editorial images (Aaron generated, reviewed here full-size,
+originals via Dropbox, 2752×1536 PNGs converted to 1600w WebP ~90–340KB):
+- storm-surge-beach-houses → featured on the storm-surge article (post 113)
+- florida-intracoastal-waterfront-homes → Florida excess article (post 114)
+- closing-documents-house-keys → lender article (post 115; AI-garbled signature names
+  acceptable at card size, don't reuse anywhere the document is legible)
+- coastal-homes-golden-hour → statewide excess page (page 111) + uploaded to CFI media
+  (id 296) for the site default og image
+- excess-flood-california-coast → CFI excess page (page 292)
+
+Featured images do NOT render on the pages (text-first layout stays); they drive og:image
+(verified in served HTML on three URLs), Google Discover eligibility, and /insights/ cards
+(verified rendering). Owner decisions recorded: no stock illustrations, no parallax;
+photoreal editorial AI images OK for share cards/archives.
+
+**Remaining wp-admin step (Chrome Claude, ~1 min each site):** Rank Math → Titles & Meta →
+Global Meta → OpenGraph Thumbnail: set coastal-homes-golden-hour as the sitewide default
+share image on BOTH sites (statewide media 125, CFI media 296).
+
 ## Still open
 
 - Homepage title: no incumbent to protect here — propose
