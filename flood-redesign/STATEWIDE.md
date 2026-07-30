@@ -154,6 +154,23 @@ because it has no hero video. Footnotes:
   markup, third-party. Mobile scores 100 because the widget lazy-loads below the fold and
   the mobile run never renders it. Not actionable from this side.
 
+## Customizer pass — July 30, complete and verified visually
+
+Full runbook in STATEWIDE-CUSTOMIZER.md, executed by Chrome Claude, verified here by
+headless-browser screenshot: teal top bar (36px), badge-only logo 56px, nav + Start My
+Quote header button, four-column footer + legal row live, Kadence credit gone, guides
+section shows the four curated private-flood pages (v1.3.3), canonical URL serves fresh
+content post-purge (noindex + meta description both present without cache-busters).
+
+Incidents worth remembering:
+- **Customizer sessions clobber REST-created widgets.** Chrome Claude's session, loaded
+  before the API created the footer widgets, published its stale widget map and orphaned
+  both to Inactive. Fix: move back via REST, then RELOAD the Customizer before its next
+  publish. Rule: never run REST widget writes and an open Customizer session in parallel.
+- Kadence Free has no row padding control (Pro feature) — bottom row uses default padding;
+  visually fine.
+- Nginx Helper's "Purge Method" field only appears after saving with Enable Purge checked.
+
 ## Still open
 
 - Homepage title: no incumbent to protect here — propose
