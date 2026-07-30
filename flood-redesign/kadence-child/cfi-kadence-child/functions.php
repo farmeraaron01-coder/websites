@@ -27,6 +27,69 @@ define( 'CFI_SISTER_NOTE', 'Looking for coverage outside California? <a href="ht
  */
 define( 'CFI_TRUSTINDEX_ID', 'bcdff9477ef19568e30684fd16d' );
 
+/**
+ * Territory the business serves. The DBA registered with the California
+ * Department of Insurance — California Flood Insurance Services — writes
+ * nationwide, so both sister sites claim the same area.
+ */
+define( 'CFI_AREA_SERVED', 'United States' );
+
+/**
+ * Fill the two gaps Rank Math's free tier cannot express on the
+ * Organization / LocalBusiness node.
+ *
+ * 1. areaServed — no UI field exists for it at all.
+ * 2. openingHoursSpecification — the free tier emits the older comma-joined
+ *    `openingHours` string. Google parses both, so this is robustness rather
+ *    than a fix, but the object form is unambiguous.
+ *
+ * Rank Math stays the single source of truth: the hours are parsed out of
+ * whatever it already emitted, so changing them in Local SEO settings still
+ * works and nothing is duplicated here. If a line does not parse, the original
+ * string is left untouched rather than silently dropped.
+ */
+add_filter( 'rank_math/json_ld', function ( $data, $jsonld ) {
+	foreach ( $data as $key => $node ) {
+		if ( empty( $node['@type'] ) ) {
+			continue;
+		}
+		$types = (array) $node['@type'];
+		if ( ! array_intersect( $types, array( 'Organization', 'LocalBusiness', 'InsuranceAgency' ) ) ) {
+			continue;
+		}
+
+		$data[ $key ]['areaServed'] = array(
+			'@type' => 'Country',
+			'name'  => CFI_AREA_SERVED,
+		);
+
+		if ( empty( $node['openingHours'] ) ) {
+			continue;
+		}
+
+		$spec = array();
+		foreach ( (array) $node['openingHours'] as $line ) {
+			if ( ! preg_match( '/^([A-Za-z,]+)\s+(\d{2}:\d{2})-(\d{2}:\d{2})$/', trim( $line ), $m ) ) {
+				$spec = array();
+				break;
+			}
+			$spec[] = array(
+				'@type'     => 'OpeningHoursSpecification',
+				'dayOfWeek' => array_map( 'trim', explode( ',', $m[1] ) ),
+				'opens'     => $m[2],
+				'closes'    => $m[3],
+			);
+		}
+
+		if ( $spec ) {
+			$data[ $key ]['openingHoursSpecification'] = $spec;
+			unset( $data[ $key ]['openingHours'] );
+		}
+	}
+
+	return $data;
+}, 20, 2 );
+
 add_action( 'wp_enqueue_scripts', function () {
 	wp_enqueue_style(
 		'cfi-tokens',
