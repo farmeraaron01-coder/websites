@@ -195,6 +195,13 @@ pages, and the quote page. Insights restored to the nav. These do NOT get copied
 one home per article is the whole lesson of the duplicate-blog problem; CFI links to them
 cross-site if ever needed. **Aaron should review voice/claims before launch.**
 
+**Domain rule from Aaron (July 30) — binding vs. waiting period.** A private flood policy
+can be BOUND same day; the WAITING PERIOD (often 7–10 days private, 30 NFIP) is when
+coverage becomes effective for a loss; and for a new purchase or refinance the waiting
+periods are generally waived. Never write "binds within 10 days." Corrected in the lender
+article, both residential pages, and the statewide commercial page; all other new content
+swept clean.
+
 **Same treatment applied to CFI staging:** its `/residential/` was the identical thin
 clipart page (rewritten, CA voice, CAL-FLOOD number, guide template); CFI
 `/commercial-flood-insurance/` was already strong from the original migration (1,283w) and
