@@ -93,6 +93,24 @@ add_shortcode( 'cfi_video', function ( $atts ) {
 } );
 
 /**
+ * Preconnect to YouTube's image CDN on pages that will fetch thumbnails.
+ * The first-row thumbs are the hub's LCP candidates, and without this the
+ * connection setup (DNS + TCP + TLS) to i.ytimg.com sits on the critical path.
+ * Printed only where a video shortcode exists, so the other ~90 pages carry
+ * no extra hint.
+ */
+add_action( 'wp_head', function () {
+	global $post;
+	if ( ! $post ) {
+		return;
+	}
+	$c = (string) $post->post_content;
+	if ( has_shortcode( $c, 'cfi_video' ) || has_shortcode( $c, 'cfi_videos' ) ) {
+		echo '<link rel="preconnect" href="https://i.ytimg.com" crossorigin>' . "\n";
+	}
+}, 4 );
+
+/**
  * One tiny script for every facade on the page, printed only when one exists.
  */
 add_action( 'wp_footer', function () {
