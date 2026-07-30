@@ -141,3 +141,30 @@ that documented three real bugs).
 
 Last known lever for mobile: the six render-blocking stylesheets (~570ms). Kadence's
 per-page / critical CSS option is the designed fix — enable, re-test, before launch.
+
+---
+
+## FINAL — July 30 2026, after v1.2.3 + Kadence CSS Preload
+
+| | Perf | A11y | Best Practices | FCP | LCP | TBT | CLS | SI |
+|---|---|---|---|---|---|---|---|---|
+| **Desktop** | **100** | 100 | 100 | 0.4s | 0.7s | 0ms | 0 | 0.6s |
+| **Mobile** | **90** | 100 | 100 | 1.6s | 3.2s | 0ms | 0 | 4.3s |
+
+Google-run PSI on the staging homepage. SEO 66 on both is the intentional staging
+noindex — one failing audit, eight passing — and becomes 100 when the noindex is
+removed at launch. Divi baseline: desktop 79, mobile 58, 12.6s mobile LCP.
+
+The delivery chain that got here: nginx page cache (TTFB 70ms) → static asset cache
+headers via the theme (1yr immutable) → tokens.css inlined (~6.4KB gz) → Kadence CSS
+Preload on (head chain six files → two) → hero poster preloaded → fonts self-hosted,
+preloaded, font-display:optional → Cognito embeds reserved at 88vh → Trust Index
+lazy-loaded with autoplay off.
+
+CLS is 0 on every audited page type: home, zone/guide, city, article, and all three
+Cognito form pages (0.016/0.001/0.002 measured live).
+
+Mobile's remaining gap to 100 is round-trip-bound on simulated slow 4G (document +
+global.min.css). Option recorded but not taken: inline the last two Kadence CSS files
+for an estimated +2–4 points. Declined as simulator-chasing; every vital is green and
+field data is what counts after launch.
