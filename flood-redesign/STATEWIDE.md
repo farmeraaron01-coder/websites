@@ -84,8 +84,27 @@ Same pipeline as CFI, in this order:
      say." All keyed off `CFI_BRAND` in `front-page.php`.
    Statewide logo assets shipped in the theme (`assets/img/logo-swfi*.png/webp`) for the
    quote landing page bar; the main header logo is set per-site in the Customizer as usual.
-3. **Content migration** — `tools-divi2html.py` + `tools-migrate.py` port directly (same
-   Divi builder markup). New decision gate: which of the 47 shared posts migrate at all.
+3. **Content migration — DONE July 30.** 51 pages migrated, 0 failures, verified clean on
+   staging (single h1, no Divi artifacts). Zero posts migrated — all 48 were CFI duplicates
+   (including `how-much-does-flood-insurance-cost-2`, a mangled-slug clone). Pipeline:
+   `tools-sw-migrate.py`; results in `sw-migration-report.json`. Notable handling:
+   - `/faqs/` — production keeps its 35-question FAQ in native `<details>` blocks *after* an
+     `<aside>`, which the slicer treats as a hard stop. Converter now keeps details/summary;
+     the FAQ section was extracted separately and merged (100w → 3,138w on staging).
+   - `/insights/` — migrated content was a dead blog-feed teaser; page is now assigned as
+     the posts index (empty until statewide-original articles exist).
+   - `/media/` — NOT migrated: pure Divi demo placeholder ("Your Title Goes Here by Artist
+     Name" + Elegant Themes demo audio). Needs a redirect decision at launch.
+   - `/floodguru/` — NOT migrated (25w, noindexed on production). Redirect decision at launch.
+   - 18 pages had no meta description; drafts written from each page's own opening copy
+     (`sw-desc-drafts.json`), six hand-written (legal pages, glossary, insights, two
+     truncation fixes). **Aaron should skim these.**
+   - **Legal pages are CFI's text verbatim** — privacy policy and terms both name
+     "California Flood Insurance Services" and the CFI domain throughout, on statewide
+     production today. Possibly correct (same operating entity/DBA) but that is an
+     owner/attorney call. Left at production parity; flagged.
+   - `/contact-us/` carries the Escondido *mailing* address in body copy (production parity,
+     fine there) — it must still never enter schema NAP. "Phyiscal" typo fixed.
 4. **Plugins/SEO** — same five-plugin stack, same Rank Math config with statewide's NAP
    (needs its GBP data), areaServed United States, same schema fixes via the theme filter.
 5. **Redirects** — pull from production Redirection when credentials exist.

@@ -21,6 +21,8 @@ KEEP = {
     'h2', 'h3', 'h4', 'p', 'ul', 'ol', 'li', 'table', 'thead', 'tbody', 'tfoot',
     'tr', 'th', 'td', 'blockquote', 'a', 'strong', 'em', 'b', 'i', 'br', 'img',
     'sup', 'sub', 'code', 'pre',
+    # native disclosure widgets — statewide's 35-question FAQ lives in these
+    'details', 'summary',
 }
 VOID = {'br', 'img'}
 DROP_TREE = {'script', 'style', 'noscript', 'svg', 'form', 'button', 'iframe', 'h1'}
