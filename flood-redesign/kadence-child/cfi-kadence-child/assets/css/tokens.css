@@ -257,3 +257,109 @@ body.cfi-lp{margin:0;background:var(--cfi-paper);font-family:var(--cfi-body);col
 .cfi-home p a:not(.cfi-btn):hover,.cfi-home li a:not(.cfi-btn):hover{text-decoration-thickness:2px}
 /* Standalone/UI links (cards, chips, nav-like) stay clean — they're not in text blocks. */
 .cfi-cover a,.cfi-guide a,.cfi-zchip,.cfi-rating a{text-decoration:none}
+
+/* ============================================================
+   INTERIOR PAGES — zone pages, city pages, articles
+   Used by single.php and template-guide.php via parts/interior.php.
+   The h1 is owned by the template, never the content: 19 production
+   pages have no h1 at all because Divi authors began at h2.
+   ============================================================ */
+
+.cfi-interior{background:var(--cfi-paper)}
+.cfi-doc-head{background:var(--cfi-mist);border-bottom:1px solid var(--cfi-line);padding:34px 0 30px}
+.cfi-crumbs{font-size:13px;color:var(--cfi-ink-3);margin:0 0 14px}
+.cfi-crumbs a{color:var(--cfi-link)}
+.cfi-crumbs .separator{margin:0 6px;color:var(--cfi-ink-3)}
+
+.cfi-badge{display:inline-flex;align-items:center;gap:9px;margin:0 0 14px;padding:6px 13px;
+  border-radius:999px;background:var(--cfi-card);border:1px solid var(--cfi-line);
+  font:600 12.5px/1 var(--cfi-body);letter-spacing:.04em;text-transform:uppercase;color:var(--cfi-ink)}
+.cfi-badge span{font-weight:500;text-transform:none;letter-spacing:0;font-size:12px;color:var(--cfi-ink-3);
+  padding-left:9px;border-left:1px solid var(--cfi-line)}
+.cfi-badge.is-high{border-color:#E8B4B4;background:#FDF4F4}
+.cfi-badge.is-high span{color:#8F3A3A;border-left-color:#E8B4B4}
+.cfi-badge.is-moderate{border-color:#E5D2A8;background:#FDFAF2}
+.cfi-badge.is-moderate span{color:#7A5A16;border-left-color:#E5D2A8}
+.cfi-badge.is-low{border-color:#B8DCC8;background:#F3FAF6}
+.cfi-badge.is-low span{color:#1F6B45;border-left-color:#B8DCC8}
+
+.cfi-doc-head h1{font-family:var(--cfi-display);font-weight:600;line-height:1.12;
+  font-size:clamp(29px,4.4vw,45px);color:var(--cfi-navy);margin:0;max-width:19em}
+.cfi-standfirst{margin:14px 0 0;max-width:34em;font-size:17.5px;line-height:1.55;color:var(--cfi-ink-2)}
+
+.cfi-byline{display:flex;align-items:center;gap:13px;margin:22px 0 0}
+.cfi-byline img{width:44px;height:44px;border-radius:50%;object-fit:cover;object-position:center top;
+  background:var(--cfi-card);flex:none}
+.cfi-byline p{margin:0;font-size:14px;line-height:1.45;color:var(--cfi-ink-2)}
+.cfi-byline b{color:var(--cfi-ink)}
+.cfi-byline span{display:block;font-size:12.5px;color:var(--cfi-ink-3);margin-top:2px}
+
+.cfi-doc-grid{display:grid;grid-template-columns:minmax(0,1fr) 306px;gap:52px;
+  align-items:start;padding-top:40px;padding-bottom:72px}
+@media (max-width:1000px){.cfi-doc-grid{grid-template-columns:1fr;gap:36px}}
+
+.cfi-takeaways{background:var(--cfi-card);border:1px solid var(--cfi-line);border-left:4px solid var(--cfi-accent);
+  border-radius:12px;padding:22px 26px;margin:0 0 30px;box-shadow:var(--cfi-shadow)}
+.cfi-takeaways h2{margin:0 0 12px;font:600 12.5px/1 var(--cfi-body);letter-spacing:.09em;
+  text-transform:uppercase;color:var(--cfi-accent-deep)}
+.cfi-takeaways ul{margin:0;padding-left:20px}
+.cfi-takeaways li{margin:0 0 8px;font-size:16px;line-height:1.55;color:var(--cfi-ink)}
+.cfi-takeaways li:last-child{margin-bottom:0}
+
+.cfi-toc{background:var(--cfi-card);border:1px solid var(--cfi-line);border-radius:12px;
+  padding:20px 24px;margin:0 0 34px}
+.cfi-toc h2{margin:0 0 10px;font:600 12.5px/1 var(--cfi-body);letter-spacing:.09em;
+  text-transform:uppercase;color:var(--cfi-ink-3)}
+.cfi-toc ol{margin:0;padding-left:19px}
+.cfi-toc li{margin:0 0 6px;font-size:15px;line-height:1.45}
+.cfi-toc li.lvl-3{margin-left:14px;font-size:14px}
+.cfi-toc a{color:var(--cfi-link);text-decoration:none}
+.cfi-toc a:hover{text-decoration:underline}
+
+/* Long-form typography. Measure capped so lines stay readable on wide screens. */
+.cfi-prose{max-width:41em;font-size:17.5px;line-height:1.68;color:var(--cfi-ink)}
+.cfi-prose > * + *{margin-top:1.15em}
+.cfi-prose h2{font-family:var(--cfi-display);font-weight:600;line-height:1.2;
+  font-size:clamp(23px,2.7vw,30px);color:var(--cfi-navy);margin-top:2em;scroll-margin-top:24px}
+.cfi-prose h3{font-family:var(--cfi-body);font-weight:650;font-size:19.5px;line-height:1.3;
+  color:var(--cfi-navy-2);margin-top:1.7em;scroll-margin-top:24px}
+.cfi-prose a{color:var(--cfi-link);text-decoration:underline;text-underline-offset:2px}
+.cfi-prose a:hover{color:var(--cfi-link-hover)}
+.cfi-prose ul,.cfi-prose ol{padding-left:24px}
+.cfi-prose li + li{margin-top:.5em}
+.cfi-prose img{max-width:100%;height:auto;border-radius:10px}
+.cfi-prose blockquote{margin-left:0;padding:2px 0 2px 20px;border-left:3px solid var(--cfi-accent-bright);
+  color:var(--cfi-ink-2);font-style:normal}
+.cfi-prose table{width:100%;border-collapse:collapse;font-size:16px;display:block;overflow-x:auto}
+.cfi-prose th,.cfi-prose td{border:1px solid var(--cfi-line);padding:10px 12px;text-align:left}
+.cfi-prose th{background:var(--cfi-mist);font-weight:650;color:var(--cfi-ink)}
+
+.cfi-doc-cta{margin-top:48px;background:var(--cfi-navy);border-radius:16px;padding:34px 36px;color:var(--cfi-on-navy)}
+.cfi-doc-cta h2{margin:0 0 10px;font-family:var(--cfi-display);font-weight:600;
+  font-size:clamp(21px,2.6vw,27px);color:#fff;line-height:1.2}
+.cfi-doc-cta p{margin:0;font-size:16px;line-height:1.6;color:var(--cfi-on-navy);max-width:44em}
+.cfi-doc-cta-row{margin-top:20px!important;display:flex;flex-wrap:wrap;gap:12px}
+.cfi-btn-ghost{background:transparent;border:1.5px solid rgba(234,244,251,.45);color:#fff}
+.cfi-btn-ghost:hover{border-color:#fff;background:rgba(255,255,255,.08)}
+@media (max-width:600px){.cfi-doc-cta{padding:26px 22px}.cfi-doc-cta-row .cfi-btn{width:100%;text-align:center}}
+
+.cfi-doc-rail{position:sticky;top:22px;display:grid;gap:18px}
+@media (max-width:1000px){.cfi-doc-rail{position:static}}
+.cfi-rail-card{background:var(--cfi-card);border:1px solid var(--cfi-line);border-radius:12px;
+  padding:22px;box-shadow:var(--cfi-shadow)}
+.cfi-rail-quote{border:2px solid var(--cfi-cta)}
+.cfi-rail-stars{margin:0 0 12px;font-size:13.5px;color:var(--cfi-ink-3)}
+.cfi-rail-stars span{color:var(--cfi-star);letter-spacing:1px}
+.cfi-rail-card p{margin:0 0 14px;font-size:15.5px;line-height:1.5;color:var(--cfi-ink)}
+.cfi-rail-card .cfi-btn{display:block;text-align:center}
+.cfi-rail-tel{display:block;text-align:center;margin-top:12px;font-weight:650;font-size:16px;
+  color:var(--cfi-link);text-decoration:none}
+.cfi-rail-tel:hover{text-decoration:underline}
+.cfi-rail-hours{margin:8px 0 0!important;font-size:12.5px;color:var(--cfi-ink-3);text-align:center}
+.cfi-rail-h{margin:0 0 12px;font:600 12.5px/1 var(--cfi-body);letter-spacing:.09em;
+  text-transform:uppercase;color:var(--cfi-ink-3)}
+.cfi-rail-links{margin:0;padding:0;list-style:none}
+.cfi-rail-links li{padding:9px 0;border-top:1px solid var(--cfi-line);font-size:15px;line-height:1.4}
+.cfi-rail-links li:first-child{border-top:0;padding-top:0}
+.cfi-rail-links a{color:var(--cfi-link);text-decoration:none}
+.cfi-rail-links a:hover{text-decoration:underline}

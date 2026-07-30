@@ -90,6 +90,9 @@ add_filter( 'rank_math/json_ld', function ( $data, $jsonld ) {
 	return $data;
 }, 20, 2 );
 
+/* Interior pages: TOC engine, takeaways, byline, and the REST-visible meta. */
+require_once get_stylesheet_directory() . '/inc/interior.php';
+
 add_action( 'wp_enqueue_scripts', function () {
 	wp_enqueue_style(
 		'cfi-tokens',
