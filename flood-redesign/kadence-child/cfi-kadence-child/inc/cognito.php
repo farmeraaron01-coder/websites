@@ -17,7 +17,8 @@
  *         [cfi_cognito form="5" title="Start your flood quote"]
  *
  * The form key is shared across every CFI form; only the number changes.
- * Known forms: 5 = flood quote, 12 = service center, 31 = claims.
+ * Known forms: 5 = flood quote, 12 = service center, 31 = claims,
+ *              34 = agent appointment.
  */
 
 define( 'CFI_COGNITO_KEY', '8nmcIcFF1k6xZNCBaOzZxQ' );
