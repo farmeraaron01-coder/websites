@@ -299,7 +299,29 @@ $theme_uri = get_stylesheet_directory_uri();
 		</div>
 	</section>
 
-	<!-- Guides: latest four posts -->
+	<!-- Guides: CFI shows the four latest posts; statewide has no posts by design
+	     (the shared blog stayed on CFI), so it curates its money pages instead.
+	     Either way the whole section is skipped when the query comes back empty —
+	     a headline over a blank grid is worse than no section. -->
+	<?php
+	if ( 'swfi' === CFI_BRAND ) {
+		$guides = new WP_Query( array(
+			'post_type'           => 'page',
+			'post_name__in'       => array(
+				'private-flood-insurance-vs-nfip',
+				'nfip-alternatives',
+				'flood-insurance-cost-by-state',
+				'high-risk-flood-insurance',
+			),
+			'orderby'             => 'post_name__in',
+			'posts_per_page'      => 4,
+			'no_found_rows'       => true,
+		) );
+	} else {
+		$guides = new WP_Query( array( 'posts_per_page' => 4, 'ignore_sticky_posts' => true, 'no_found_rows' => true ) );
+	}
+	if ( $guides->have_posts() ) :
+		?>
 	<section class="cfi-sec" style="padding-top:0">
 		<div class="cfi-wrap">
 			<div class="cfi-sec-head">
@@ -308,26 +330,24 @@ $theme_uri = get_stylesheet_directory_uri();
 			</div>
 			<div class="cfi-guides-grid">
 				<?php
-				$guides = new WP_Query( array( 'posts_per_page' => 4, 'ignore_sticky_posts' => true, 'no_found_rows' => true ) );
-				if ( $guides->have_posts() ) :
-					while ( $guides->have_posts() ) :
-						$guides->the_post();
-						$cat = get_the_category();
-						?>
-						<article class="cfi-guide">
-							<span class="g-tag"><?php echo $cat ? esc_html( $cat[0]->name ) : 'Guide'; ?></span>
-							<h3><?php the_title(); ?></h3>
-							<p>By <?php the_author(); ?> &middot; Updated <?php the_modified_date( 'M Y' ); ?></p>
-							<a href="<?php the_permalink(); ?>">Read the guide &rarr;</a>
-						</article>
-						<?php
-					endwhile;
-					wp_reset_postdata();
-				endif;
+				while ( $guides->have_posts() ) :
+					$guides->the_post();
+					$cat = get_the_category();
+					?>
+					<article class="cfi-guide">
+						<span class="g-tag"><?php echo $cat ? esc_html( $cat[0]->name ) : 'Guide'; ?></span>
+						<h3><?php the_title(); ?></h3>
+						<p>By <?php the_author(); ?> &middot; Updated <?php the_modified_date( 'M Y' ); ?></p>
+						<a href="<?php the_permalink(); ?>">Read the guide &rarr;</a>
+					</article>
+					<?php
+				endwhile;
+				wp_reset_postdata();
 				?>
 			</div>
 		</div>
 	</section>
+	<?php endif; ?>
 
 	<!-- CTA band -->
 	<section class="cfi-ctaband">
