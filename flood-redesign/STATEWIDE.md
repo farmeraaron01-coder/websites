@@ -72,8 +72,18 @@ Same pipeline as CFI, in this order:
 
 1. **Staging environment** — need the statewide staging URL + an application password
    (same InMotion account or separate?).
-2. **Theme variant** — `swfi` constants + palette swap of the child theme; version it in
-   this repo alongside `cfi-kadence-child`.
+2. **Theme variant — DONE (v1.3.0), pending review.** One theme now serves both brands:
+   `functions.php` detects the statewide domain from `home_url()` and swaps the constants;
+   `assets/css/brand-swfi.css` overrides the `:root` palette tokens (appended to the inlined
+   CSS only on statewide). No second theme copy to drift. Two things are **drafts for Aaron**:
+   - Palette: deep sea-teal (`#0E8E8A` accent / `#092C35` navy / `#35CFC9` CTA), all pairings
+     AA-verified. Alternative reading of the badge logo: slate navy `#374464` + sunset-orange
+     CTA. Decide on a staging render.
+   - Statewide hero copy: "It floods everywhere. / Overpaying is *optional*." with eyebrow
+     "Nationwide · Flood-focused · Est. 2012". Reviews heading: "What our clients nationwide
+     say." All keyed off `CFI_BRAND` in `front-page.php`.
+   Statewide logo assets shipped in the theme (`assets/img/logo-swfi*.png/webp`) for the
+   quote landing page bar; the main header logo is set per-site in the Customizer as usual.
 3. **Content migration** — `tools-divi2html.py` + `tools-migrate.py` port directly (same
    Divi builder markup). New decision gate: which of the 47 shared posts migrate at all.
 4. **Plugins/SEO** — same five-plugin stack, same Rank Math config with statewide's NAP

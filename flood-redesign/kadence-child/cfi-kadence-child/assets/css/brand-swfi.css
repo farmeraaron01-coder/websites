@@ -1,0 +1,41 @@
+/*
+ * Statewide Flood Insurance — brand palette override.
+ *
+ * Appended after tokens.css by functions.php when the theme detects it is
+ * serving statewidefloodinsurance.com. Only :root tokens belong here; if a
+ * component needs a per-brand rule, add a token to tokens.css and override
+ * the token, never the component.
+ *
+ * Palette: deep sea-teal. Distinct from CFI's cyan/navy at a glance, still
+ * water-adjacent and professional. The logo (navy #374464 badge with a
+ * sunset) sits on the white header bar, so it never collides with these.
+ * DRAFT until Aaron approves against a staging render — an alternative
+ * reading of the logo (slate navy + sunset-orange CTA) is noted in
+ * STATEWIDE.md.
+ *
+ * Contrast, verified (WCAG AA needs 4.5:1 for small text):
+ *   link #0A6B68     — 6.04 on paper, 5.49 on mist, 6.33 on white
+ *   cta-ink #092C35  — 7.67 on cta #35CFC9
+ *   on-navy-2 #9CCFD1 — 8.61 on navy #092C35
+ *   foot-link #A8E8E4 — 9.09 on navy-2 #0D3944
+ */
+:root{
+  --cfi-accent:#0E8E8A;
+  --cfi-accent-rgb:14,142,138;
+  --cfi-accent-bright:#35CFC9;
+  --cfi-accent-bright-rgb:53,207,201;
+  --cfi-accent-deep:#0A6B68;
+  --cfi-link:#0A6B68;
+  --cfi-link-hover:#07514F;
+  --cfi-cta:#35CFC9;
+  --cfi-cta-hover:#1FB5AF;
+  --cfi-cta-ink:#092C35;
+  --cfi-navy:#092C35;
+  --cfi-navy-rgb:9,44,53;
+  --cfi-navy-2:#0D3944;
+  --cfi-mist:#E5F2F1;
+  --cfi-line:#D2E5E3;
+  --cfi-on-navy:#EAF7F6;
+  --cfi-on-navy-2:#9CCFD1;
+  --cfi-foot-link:#A8E8E4;
+}

@@ -1,7 +1,9 @@
 /*
- * California Flood Insurance — design tokens + front-page components.
- * Kadence child theme. For StatewideFloodInsurance.com change only the
- * :root block (teal palette values are commented beside each token).
+ * Design tokens + front-page components for both sister brands.
+ * Kadence child theme. Every value here is the California Flood Insurance
+ * palette; StatewideFloodInsurance.com overrides the :root tokens via
+ * brand-swfi.css, appended automatically by functions.php when the theme
+ * detects it is serving the statewide domain. Never fork this file.
  */
 
 /* font-display:optional, not swap — the desktop CLS fix.
@@ -19,18 +21,26 @@
 @font-face{font-family:'Source Serif 4';font-style:normal;font-weight:200 900;font-stretch:100%;src:url(../fonts/sourceserif4.woff2) format('woff2');font-display:optional}
 @font-face{font-family:'Inter';font-style:normal;font-weight:100 900;src:url(../fonts/inter.woff2) format('woff2');font-display:optional}
 
+/* Brand palette. The statewide (swfi) values live in brand-swfi.css as a
+   :root override block that functions.php appends when the theme detects it
+   is serving statewidefloodinsurance.com — one theme, two brands, no drift.
+   The -rgb triplets exist so shadows and gradient overlays (rgba(...)) swap
+   with the brand too; keep each triplet in sync with its hex twin. */
 :root{
-  --cfi-accent:#0891C7;        /* swfi: #0E8E8A */
-  --cfi-accent-bright:#38C6F4; /* swfi: #35CFC9 */
-  --cfi-accent-deep:#066D96;   /* swfi: #0A6B68 */
+  --cfi-accent:#0891C7;
+  --cfi-accent-rgb:8,145,199;
+  --cfi-accent-bright:#38C6F4;
+  --cfi-accent-bright-rgb:56,198,244;
+  --cfi-accent-deep:#066D96;
   --cfi-link:#066D96;          /* AA-safe link/small-text blue (5.5:1 on paper) */
   --cfi-link-hover:#04536F;
-  --cfi-cta:#25C1EE;           /* swfi: #35CFC9 — quote CTAs only */
-  --cfi-cta-hover:#0FAAD8;     /* swfi: #1FB5AF */
+  --cfi-cta:#25C1EE;           /* quote CTAs only */
+  --cfi-cta-hover:#0FAAD8;
   --cfi-cta-ink:#0A2540;
   --cfi-star:#F2B01E;          /* review stars only (Google convention) */
-  --cfi-navy:#0A2540;          /* swfi: #092C35 */
-  --cfi-navy-2:#0E2E4F;        /* swfi: #0D3944 */
+  --cfi-navy:#0A2540;
+  --cfi-navy-rgb:10,37,64;
+  --cfi-navy-2:#0E2E4F;
   --cfi-paper:#F7FAFC;
   --cfi-mist:#E7F0F6;
   --cfi-card:#FFFFFF;
@@ -43,10 +53,11 @@
   --cfi-ink-3:#4F6B85;
   --cfi-on-navy:#EAF4FB;
   --cfi-on-navy-2:#9FBDD4;
+  --cfi-foot-link:#BFE6F8;
   --cfi-good:#1E9E6A;
   --cfi-radius:10px;
-  --cfi-shadow:0 1px 2px rgba(10,37,64,.06),0 12px 32px -12px rgba(10,37,64,.18);
-  --cfi-shadow-big:0 2px 4px rgba(10,37,64,.08),0 24px 64px -16px rgba(10,37,64,.35);
+  --cfi-shadow:0 1px 2px rgba(var(--cfi-navy-rgb),.06),0 12px 32px -12px rgba(var(--cfi-navy-rgb),.18);
+  --cfi-shadow-big:0 2px 4px rgba(var(--cfi-navy-rgb),.08),0 24px 64px -16px rgba(var(--cfi-navy-rgb),.35);
   --cfi-display:'Source Serif 4',Georgia,serif;
   --cfi-body:'Inter',-apple-system,'Segoe UI',sans-serif;
 }
@@ -75,7 +86,7 @@
    that washed cyan straight across the "Prefer to talk?" text. Now a neutral
    navy shadow, tight enough that it cannot reach adjacent content: still reads
    as raised, no colour bleed. */
-a.cfi-btn-cta,.cfi-btn-cta{background:var(--cfi-cta);color:var(--cfi-cta-ink);box-shadow:0 2px 0 rgba(0,0,0,.14),0 5px 12px -6px rgba(10,37,64,.38)}
+a.cfi-btn-cta,.cfi-btn-cta{background:var(--cfi-cta);color:var(--cfi-cta-ink);box-shadow:0 2px 0 rgba(0,0,0,.14),0 5px 12px -6px rgba(var(--cfi-navy-rgb),.38)}
 a.cfi-btn-cta:hover,.cfi-btn-cta:hover{background:var(--cfi-cta-hover);color:var(--cfi-cta-ink)}
 a.cfi-btn-ghost,.cfi-btn-ghost{background:transparent;color:var(--cfi-on-navy);border:1.5px solid rgba(234,244,251,.35)}
 a.cfi-btn-ghost:hover,.cfi-btn-ghost:hover{border-color:var(--cfi-accent-bright);color:#fff}
@@ -84,7 +95,7 @@ a.cfi-btn-ghost:hover,.cfi-btn-ghost:hover{border-color:var(--cfi-accent-bright)
 .cfi-hero{background:var(--cfi-navy);color:var(--cfi-on-navy);overflow:hidden;position:relative}
 .cfi-hero .bg{position:absolute;inset:0;z-index:0}
 .cfi-hero .bg video,.cfi-hero .bg img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
-.cfi-hero .bg::after{content:"";position:absolute;inset:0;background:linear-gradient(92deg,rgba(10,37,64,.96) 8%,rgba(10,37,64,.78) 44%,rgba(10,37,64,.24) 78%,rgba(10,37,64,.12) 100%)}
+.cfi-hero .bg::after{content:"";position:absolute;inset:0;background:linear-gradient(92deg,rgba(var(--cfi-navy-rgb),.96) 8%,rgba(var(--cfi-navy-rgb),.78) 44%,rgba(var(--cfi-navy-rgb),.24) 78%,rgba(var(--cfi-navy-rgb),.12) 100%)}
 @media (prefers-reduced-motion:reduce),(max-width:720px){.cfi-hero .bg video{display:none}}
 .cfi-hero .cfi-wrap{display:grid;grid-template-columns:1.2fr minmax(320px,370px);gap:64px;padding-top:76px;padding-bottom:96px;position:relative;z-index:2;align-items:start}
 @media (max-width:980px){.cfi-hero .cfi-wrap{grid-template-columns:1fr;padding-top:56px;padding-bottom:72px}}
@@ -102,7 +113,7 @@ a.cfi-btn-ghost:hover,.cfi-btn-ghost:hover{border-color:var(--cfi-accent-bright)
 
 /* ---- quote card ---- */
 .cfi-qcard{position:relative;background:var(--cfi-card);color:var(--cfi-ink);border-radius:14px;box-shadow:var(--cfi-shadow-big);padding:24px;align-self:start;justify-self:end;width:100%;margin-top:48px}
-@media (max-width:980px){.cfi-qcard{margin-top:0;justify-self:stretch;padding:28px 24px;box-shadow:0 4px 8px rgba(10,37,64,.12),0 28px 70px -14px rgba(10,37,64,.55);border:2px solid var(--cfi-cta)}}
+@media (max-width:980px){.cfi-qcard{margin-top:0;justify-self:stretch;padding:28px 24px;box-shadow:0 4px 8px rgba(var(--cfi-navy-rgb),.12),0 28px 70px -14px rgba(var(--cfi-navy-rgb),.55);border:2px solid var(--cfi-cta)}}
 .cfi-qcard h2{font-size:21px;margin-bottom:4px}
 .cfi-qcard .qsub{font-size:14px;color:var(--cfi-ink-3);margin-bottom:16px}
 .cfi-qcard .ribbon{position:absolute;top:-13px;left:24px;background:var(--cfi-cta);color:var(--cfi-cta-ink);font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:5px 12px;border-radius:6px}
@@ -117,19 +128,19 @@ a.cfi-btn-ghost:hover,.cfi-btn-ghost:hover{border-color:var(--cfi-accent-bright)
 /* ---- markets bar ---- */
 .cfi-markets{background:var(--cfi-mist);border-bottom:1px solid var(--cfi-line)}
 .cfi-markets .cfi-wrap{display:flex;align-items:center;gap:12px 28px;padding:20px 24px;flex-wrap:wrap;justify-content:center}
-.cfi-markets .m-label{font-size:12.5px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:#4E6A82}
+.cfi-markets .m-label{font-size:12.5px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--cfi-ink-3)}
 .cfi-markets .mk{font-family:var(--cfi-body);font-weight:600;font-size:16.5px;color:var(--cfi-ink-2)}
 .cfi-markets .mk.nfip{display:inline-flex;align-items:center;gap:7px}
 .cfi-markets .mk.nfip::before{content:"";width:9px;height:9px;border-radius:50%;background:var(--cfi-accent)}
-.cfi-markets .m-note{font-size:13px;color:#4E6A82}
+.cfi-markets .m-note{font-size:13px;color:var(--cfi-ink-3)}
 
 /* ---- process flow ---- */
 .cfi-flow{background:var(--cfi-navy);border-radius:16px;box-shadow:var(--cfi-shadow-big);padding:14px 0;color:var(--cfi-on-navy);overflow:hidden}
 .cfi-flow-row{display:grid;grid-template-columns:190px 1fr;gap:28px;padding:30px 40px;position:relative}
 .cfi-flow-row + .cfi-flow-row{border-top:1px solid rgba(255,255,255,.08)}
 .cfi-flow-when{font-size:13.5px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--cfi-accent-bright);padding-top:5px;display:flex;align-items:flex-start;gap:12px}
-.cfi-flow-when::before{content:"";width:11px;height:11px;border-radius:50%;background:var(--cfi-accent-bright);flex:0 0 auto;margin-top:2px;box-shadow:0 0 0 4px rgba(56,198,244,.25)}
-.cfi-flow-row::before{content:"";position:absolute;left:45px;top:0;bottom:0;border-left:2px dashed rgba(56,198,244,.3)}
+.cfi-flow-when::before{content:"";width:11px;height:11px;border-radius:50%;background:var(--cfi-accent-bright);flex:0 0 auto;margin-top:2px;box-shadow:0 0 0 4px rgba(var(--cfi-accent-bright-rgb),.25)}
+.cfi-flow-row::before{content:"";position:absolute;left:45px;top:0;bottom:0;border-left:2px dashed rgba(var(--cfi-accent-bright-rgb),.3)}
 .cfi-flow-row:first-child::before{top:38px}
 .cfi-flow-row:last-child::before{bottom:calc(100% - 38px)}
 .cfi-flow-body h3{font-size:20px;margin-bottom:8px;color:#fff}
@@ -140,7 +151,7 @@ a.cfi-btn-ghost:hover,.cfi-btn-ghost:hover{border-color:var(--cfi-accent-bright)
 .cfi-covers{display:grid;grid-template-columns:repeat(3,1fr);gap:28px}
 @media (max-width:860px){.cfi-covers{grid-template-columns:1fr}}
 .cfi-cover{background:var(--cfi-card);border:1px solid var(--cfi-line);border-radius:var(--cfi-radius);padding:30px 26px;box-shadow:var(--cfi-shadow);display:flex;flex-direction:column;gap:12px}
-.cfi-cover .ic{width:46px;height:46px;border-radius:10px;background:rgba(8,145,199,.12);display:grid;place-items:center;color:var(--cfi-accent)}
+.cfi-cover .ic{width:46px;height:46px;border-radius:10px;background:rgba(var(--cfi-accent-rgb),.12);display:grid;place-items:center;color:var(--cfi-accent)}
 .cfi-cover h3{font-size:20px}
 .cfi-cover ul{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:10px;font-size:15px;color:var(--cfi-ink-2)}
 .cfi-cover li{padding-left:20px;position:relative}
@@ -176,7 +187,7 @@ table.cfi-rates caption{caption-side:bottom;text-align:left;font-size:12.5px;col
 .cfi-price-card .pc-sub{font-size:14px;color:var(--cfi-ink-3);margin-bottom:18px}
 .cfi-price-card ol{margin:0;padding:0;list-style:none;counter-reset:pc;display:flex;flex-direction:column}
 .cfi-price-card li{counter-increment:pc;display:grid;grid-template-columns:auto 1fr;gap:14px;padding:13px 0;border-top:1px solid var(--cfi-line);font-size:15px;color:var(--cfi-ink-2);align-items:baseline}
-.cfi-price-card li::before{content:counter(pc);font-family:var(--cfi-display);font-weight:700;font-size:15px;color:var(--cfi-link);width:26px;height:26px;border-radius:50%;background:rgba(8,145,199,.10);display:inline-flex;align-items:center;justify-content:center}
+.cfi-price-card li::before{content:counter(pc);font-family:var(--cfi-display);font-weight:700;font-size:15px;color:var(--cfi-link);width:26px;height:26px;border-radius:50%;background:rgba(var(--cfi-accent-rgb),.10);display:inline-flex;align-items:center;justify-content:center}
 .cfi-price-card li b{color:var(--cfi-ink);font-weight:600}
 .cfi-price-card .pc-note{margin-top:16px;font-size:14px;color:var(--cfi-ink-2);background:var(--cfi-mist);border-radius:8px;padding:14px 16px}
 .cfi-price-card .pc-note b{color:var(--cfi-ink)}
@@ -220,7 +231,7 @@ table.cfi-rates caption{caption-side:bottom;text-align:left;font-size:12.5px;col
 @media (max-width:860px){.cfi-expert picture{width:200px}}
 .cfi-xphoto{display:block;width:100%;aspect-ratio:4/5;border-radius:14px;object-fit:cover;object-position:center top;background:var(--cfi-mist);box-shadow:var(--cfi-shadow)}
 .cfi-xcreds{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
-.cfi-xcred{font-size:13px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:var(--cfi-link);background:rgba(8,145,199,.09);border:1px solid rgba(8,145,199,.3);padding:6px 12px;border-radius:6px}
+.cfi-xcred{font-size:13px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:var(--cfi-link);background:rgba(var(--cfi-accent-rgb),.09);border:1px solid rgba(var(--cfi-accent-rgb),.3);padding:6px 12px;border-radius:6px}
 
 /* ---- guides ---- */
 .cfi-guides-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:22px}
@@ -272,7 +283,7 @@ body.cfi-lp{margin:0;background:var(--cfi-paper);font-family:var(--cfi-body);col
 .cfi-home p a:not(.cfi-btn),.cfi-home li a:not(.cfi-btn){text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px}
 /* Footer widget/text links live outside .cfi-home — underline them too, and lift
    the link color so it also passes against the surrounding footer text. */
-#colophon .textwidget a,#colophon p a,#colophon .footer-html a,.cfi-lp-foot a{color:#BFE6F8!important;text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px}
+#colophon .textwidget a,#colophon p a,#colophon .footer-html a,.cfi-lp-foot a{color:var(--cfi-foot-link)!important;text-decoration:underline;text-underline-offset:2px;text-decoration-thickness:1px}
 #colophon .textwidget a:hover,#colophon p a:hover,.cfi-lp-foot a:hover{color:#fff!important;text-decoration-thickness:2px}
 .cfi-home p a:not(.cfi-btn):hover,.cfi-home li a:not(.cfi-btn):hover{text-decoration-thickness:2px}
 /* Standalone/UI links (cards, chips, nav-like) stay clean — they're not in text blocks. */
@@ -419,7 +430,7 @@ body.cfi-lp{margin:0;background:var(--cfi-paper);font-family:var(--cfi-body);col
     padding:9px 12px calc(9px + env(safe-area-inset-bottom,0px));
     background:rgba(255,255,255,.94);backdrop-filter:blur(8px);
     border-top:1px solid var(--cfi-line);
-    box-shadow:0 -2px 14px -6px rgba(10,37,64,.28)}
+    box-shadow:0 -2px 14px -6px rgba(var(--cfi-navy-rgb),.28)}
   .cfi-callbar a{display:flex;align-items:center;justify-content:center;gap:7px;
     min-height:46px;border-radius:10px;font:600 15.5px/1.1 var(--cfi-body);
     text-decoration:none;text-align:center;padding:6px 10px}
@@ -501,7 +512,7 @@ body.cfi-lp{margin:0;background:var(--cfi-paper);font-family:var(--cfi-body);col
 .cfi-video-play{position:relative;padding:0;cursor:pointer;overflow:hidden;background:var(--cfi-navy)}
 .cfi-video-play img{width:100%;height:100%;object-fit:cover;display:block}
 .cfi-video-icon{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
-  width:76px;height:76px;border-radius:50%;background:rgba(10,37,64,.82);
+  width:76px;height:76px;border-radius:50%;background:rgba(var(--cfi-navy-rgb),.82);
   box-shadow:0 6px 22px -8px rgba(0,0,0,.6);transition:background .15s ease,transform .15s ease}
 .cfi-video-icon::after{content:"";position:absolute;left:52%;top:50%;transform:translate(-50%,-50%);
   border-style:solid;border-width:13px 0 13px 21px;border-color:transparent transparent transparent #fff}
@@ -510,7 +521,7 @@ body.cfi-lp{margin:0;background:var(--cfi-paper);font-family:var(--cfi-body);col
 .cfi-video-play:focus-visible{outline:3px solid var(--cfi-accent-bright);outline-offset:3px}
 .cfi-video-label{position:absolute;left:0;right:0;bottom:0;padding:26px 18px 14px;text-align:left;
   font:600 16px/1.3 var(--cfi-body);color:#fff;
-  background:linear-gradient(to top,rgba(10,37,64,.88),transparent)}
+  background:linear-gradient(to top,rgba(var(--cfi-navy-rgb),.88),transparent)}
 @media (prefers-reduced-motion:reduce){.cfi-video-icon{transition:none}
   .cfi-video-play:hover .cfi-video-icon{transform:translate(-50%,-50%)}}
 
@@ -529,11 +540,11 @@ body.cfi-lp{margin:0;background:var(--cfi-paper);font-family:var(--cfi-body);col
    600KB-1MB of player each. */
 .cfi-video{margin:28px 0}
 .cfi-video-play{position:relative;display:block;width:100%;aspect-ratio:16/9;border:0;padding:0;
-  cursor:pointer;border-radius:12px;overflow:hidden;background:#0A2540}
+  cursor:pointer;border-radius:12px;overflow:hidden;background:var(--cfi-navy)}
 .cfi-video-play img{width:100%;height:100%;object-fit:cover;display:block}
 .cfi-video-play:focus-visible{outline:3px solid var(--cfi-accent-deep);outline-offset:3px}
 .cfi-video-icon{position:absolute;inset:0;margin:auto;width:74px;height:52px;
-  background:rgba(10,37,64,.88);border-radius:12px;transition:background .15s ease}
+  background:rgba(var(--cfi-navy-rgb),.88);border-radius:12px;transition:background .15s ease}
 .cfi-video-icon::after{content:"";position:absolute;inset:0;margin:auto;width:0;height:0;
   border-style:solid;border-width:11px 0 11px 19px;border-color:transparent transparent transparent #fff}
 .cfi-video-play:hover .cfi-video-icon,.cfi-video-play:focus-visible .cfi-video-icon{background:var(--cfi-cta)}

@@ -17,8 +17,8 @@
 
 <header class="cfi-lp-bar">
 	<a class="cfi-lp-brand" href="<?php echo esc_url( home_url( '/' ) ); ?>">
-		<img src="<?php echo esc_url( get_stylesheet_directory_uri() . '/assets/img/logo.png' ); ?>" alt="" width="40" height="36">
-		<span><b>California</b> Flood Insurance</span>
+		<img src="<?php echo esc_url( get_stylesheet_directory_uri() . '/assets/img/' . ( 'swfi' === CFI_BRAND ? 'logo-swfi.png' : 'logo.png' ) ); ?>" alt="" width="40" height="36">
+		<span><?php echo 'swfi' === CFI_BRAND ? '<b>Statewide</b> Flood Insurance' : '<b>California</b> Flood Insurance'; ?></span>
 	</a>
 	<a class="cfi-lp-phone" href="tel:<?php echo esc_attr( CFI_PHONE_TEL ); ?>">
 		<small>Talk to a licensed specialist</small>

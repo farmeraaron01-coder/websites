@@ -1,31 +1,54 @@
 <?php
 /**
- * California Flood Insurance — Kadence child theme.
+ * California Flood Insurance / Statewide Flood Insurance — Kadence child theme.
  *
- * Brand facts used across templates. For StatewideFloodInsurance.com,
- * change the constants below and the palette block at the top of
- * assets/css/tokens.css — nothing else differs between the sister sites.
+ * ONE theme serves both sister sites. The brand is detected from the site's
+ * home URL at runtime, so the identical theme zip installs on either site and
+ * every future fix lands on both — no second copy to drift out of date.
+ * Per-brand differences are exactly three surfaces:
+ *   1. the constants below,
+ *   2. the palette override in assets/css/brand-swfi.css (appended to the
+ *      inlined tokens.css when the statewide brand is active),
+ *   3. a handful of brand-conditional copy strings in templates, all keyed
+ *      off CFI_BRAND.
+ * Constant names keep the CFI_ prefix on both brands; renaming them across
+ * every template would add churn with no behaviour change.
  */
 
-define( 'CFI_PHONE_DISPLAY', '855-CAL-FLOOD (225-3566)' );
-define( 'CFI_PHONE_TEL', '8552253566' );
-define( 'CFI_QUOTE_URL', 'https://www.californiafloodinsurance.com/get-a-quote/' );
-define( 'CFI_LICENSE', 'CA License #0L75450' );
-define( 'CFI_SISTER_NOTE', 'Looking for coverage outside California? <a href="https://www.statewidefloodinsurance.com/">Visit Statewide Flood Insurance</a>.' );
+define( 'CFI_BRAND', false !== strpos( (string) home_url(), 'statewidefloodinsurance' ) ? 'swfi' : 'cfi' );
 
-/**
- * Trust Index review widget.
- *
- * Both sister sites are the same parent company and draw from one Google
- * Business Profile, so the review pool is shared. A widget ID identifies a
- * *display configuration*, not a review source — duplicating a widget in
- * Trust Index does not split or copy reviews. So either site may reuse this
- * ID, or point at its own styled copy of the same feed.
- *
- * Set to '' to render the section without the live feed (the rating block
- * and the "read our reviews on Google" fallback still show).
- */
-define( 'CFI_TRUSTINDEX_ID', 'bcdff9477ef19568e30684fd16d' );
+if ( 'swfi' === CFI_BRAND ) {
+	define( 'CFI_SITE_NAME', 'Statewide Flood Insurance' );
+	define( 'CFI_PHONE_DISPLAY', '855-225-3566' );  /* no CAL-FLOOD vanity — that is California branding */
+	define( 'CFI_PHONE_TEL', '8552253566' );
+	define( 'CFI_QUOTE_URL', 'https://statewidefloodinsurance.com/get-a-quote/' );  /* non-www: statewide's canonical host */
+	define( 'CFI_LICENSE', 'CA License #0L75450' );
+	define( 'CFI_SISTER_NOTE', 'Insuring a California property? <a href="https://www.californiafloodinsurance.com/">Visit California Flood Insurance</a>.' );
+	define( 'CFI_TRUSTINDEX_ID', '' );  /* set once statewide's widget copy exists in Trust Index */
+	define( 'CFI_GOOGLE_REVIEWS_URL', 'https://www.google.com/search?q=Statewide+Flood+Insurance+reviews' );
+} else {
+	define( 'CFI_SITE_NAME', 'California Flood Insurance' );
+	define( 'CFI_PHONE_DISPLAY', '855-CAL-FLOOD (225-3566)' );
+	define( 'CFI_PHONE_TEL', '8552253566' );
+	define( 'CFI_QUOTE_URL', 'https://www.californiafloodinsurance.com/get-a-quote/' );
+	define( 'CFI_LICENSE', 'CA License #0L75450' );
+	define( 'CFI_SISTER_NOTE', 'Looking for coverage outside California? <a href="https://www.statewidefloodinsurance.com/">Visit Statewide Flood Insurance</a>.' );
+
+	/*
+	 * Trust Index review widget.
+	 *
+	 * Both sister sites are the same parent company and draw from one Google
+	 * Business Profile, so the review pool is shared. A widget ID identifies a
+	 * *display configuration*, not a review source — duplicating a widget in
+	 * Trust Index does not split or copy reviews. So either site may reuse this
+	 * ID, or point at its own styled copy of the same feed.
+	 *
+	 * Set to '' to render the section without the live feed (the rating block
+	 * and the "read our reviews on Google" fallback still show).
+	 */
+	define( 'CFI_TRUSTINDEX_ID', 'bcdff9477ef19568e30684fd16d' );
+	define( 'CFI_GOOGLE_REVIEWS_URL', 'https://www.google.com/search?q=California+Flood+Insurance+Services+reviews' );
+}
 
 /**
  * Territory the business serves. The DBA registered with the California
@@ -128,6 +151,11 @@ add_action( 'wp_enqueue_scripts', function () {
 	$path = get_stylesheet_directory() . '/assets/css/tokens.css';
 	$css  = is_readable( $path ) ? file_get_contents( $path ) : false;
 
+	/* Statewide: append the palette override so its :root tokens win.
+	   Order matters — the override must come after tokens.css. */
+	$brand_path = get_stylesheet_directory() . '/assets/css/brand-swfi.css';
+	$brand_css  = ( 'swfi' === CFI_BRAND && is_readable( $brand_path ) ) ? file_get_contents( $brand_path ) : '';
+
 	if ( false === $css || '' === trim( $css ) ) {
 		wp_enqueue_style(
 			'cfi-tokens',
@@ -135,8 +163,18 @@ add_action( 'wp_enqueue_scripts', function () {
 			array(),
 			wp_get_theme()->get( 'Version' )
 		);
+		if ( '' !== $brand_css ) {
+			wp_enqueue_style(
+				'cfi-brand',
+				get_stylesheet_directory_uri() . '/assets/css/brand-swfi.css',
+				array( 'cfi-tokens' ),
+				wp_get_theme()->get( 'Version' )
+			);
+		}
 		return;
 	}
+
+	$css .= "\n" . $brand_css;
 
 	$css = str_replace( 'url(../', 'url(' . get_stylesheet_directory_uri() . '/assets/', $css );
 	$css = preg_replace( '~/\*.*?\*/~s', '', $css );

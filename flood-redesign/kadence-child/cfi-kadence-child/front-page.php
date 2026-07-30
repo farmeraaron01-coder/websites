@@ -1,6 +1,6 @@
 <?php
 /**
- * Front page — California Flood Insurance.
+ * Front page — shared by both sister brands; copy forks on CFI_BRAND.
  * Coded template per owner decision (no page builder). Header and footer
  * come from the Kadence header/footer builder; everything between is here.
  */
@@ -32,8 +32,13 @@ $theme_uri = get_stylesheet_directory_uri();
 		</div>
 		<div class="cfi-wrap">
 			<div>
-				<p class="cfi-eyebrow eyebrow-light">California-based &middot; Flood-focused &middot; Est. 2012</p>
-				<h1>California floods.<br>Your premium <em>shouldn&rsquo;t.</em></h1>
+				<?php if ( 'swfi' === CFI_BRAND ) : /* DRAFT copy — Aaron reviews before launch */ ?>
+					<p class="cfi-eyebrow eyebrow-light">Nationwide &middot; Flood-focused &middot; Est. 2012</p>
+					<h1>It floods everywhere.<br>Overpaying is <em>optional.</em></h1>
+				<?php else : ?>
+					<p class="cfi-eyebrow eyebrow-light">California-based &middot; Flood-focused &middot; Est. 2012</p>
+					<h1>California floods.<br>Your premium <em>shouldn&rsquo;t.</em></h1>
+				<?php endif; ?>
 				<p class="sub">We compare <strong>up to nine private flood markets, plus the NFIP</strong> when appropriate &mdash; and explain the tradeoffs in plain English, including when the federal program is your better fit. Options vary by property, eligibility, and carrier availability.</p>
 				<p class="microproof">40,000+ properties protected <span class="dot">·</span> 4.9&#9733; from 900+ reviews <span class="dot">·</span> Flood specialists since 2012</p>
 				<div class="ctas">
@@ -229,7 +234,7 @@ $theme_uri = get_stylesheet_directory_uri();
 		<div class="cfi-wrap">
 			<div class="cfi-sec-head">
 				<p class="cfi-eyebrow">Reviews</p>
-				<h2>What California property owners say.</h2>
+				<h2>What <?php echo 'swfi' === CFI_BRAND ? 'our clients nationwide' : 'California property owners'; ?> say.</h2>
 			</div>
 			<div class="cfi-rating">
 				<b>4.9</b>
@@ -243,7 +248,7 @@ $theme_uri = get_stylesheet_directory_uri();
 				$ti_loader = 'https://cdn.trustindex.io/loader.js?' . rawurlencode( CFI_TRUSTINDEX_ID ); ?>
 			<div class="cfi-trustindex" id="cfi-reviews">
 				<div data-src="<?php echo esc_url( $ti_loader ); ?>"></div>
-				<noscript><p style="color:var(--cfi-ink-2)">Read our reviews on <a href="https://www.google.com/search?q=California+Flood+Insurance+reviews">Google</a>.</p></noscript>
+				<noscript><p style="color:var(--cfi-ink-2)">Read our reviews on <a href="<?php echo esc_url( CFI_GOOGLE_REVIEWS_URL ); ?>">Google</a>.</p></noscript>
 			</div>
 			<script>
 			/* Load the Trust Index script only when the reviews section nears the
@@ -266,7 +271,7 @@ $theme_uri = get_stylesheet_directory_uri();
 			})();
 			</script>
 			<?php else : ?>
-			<p style="color:var(--cfi-ink-2)">Read our reviews on <a href="https://www.google.com/search?q=California+Flood+Insurance+reviews">Google</a>.</p>
+			<p style="color:var(--cfi-ink-2)">Read our reviews on <a href="<?php echo esc_url( CFI_GOOGLE_REVIEWS_URL ); ?>">Google</a>.</p>
 			<?php endif; ?>
 		</div>
 	</section>
@@ -277,7 +282,7 @@ $theme_uri = get_stylesheet_directory_uri();
 			<div class="x-grid">
 				<picture>
 					<source srcset="<?php echo esc_url( $theme_uri . '/assets/img/aaron.webp' ); ?>" type="image/webp">
-					<img class="cfi-xphoto" src="<?php echo esc_url( $theme_uri . '/assets/img/aaron.jpg' ); ?>" alt="Aaron J. Farmer, founder of California Flood Insurance" width="520" height="650" loading="lazy" decoding="async">
+					<img class="cfi-xphoto" src="<?php echo esc_url( $theme_uri . '/assets/img/aaron.jpg' ); ?>" alt="Aaron J. Farmer, founder of <?php echo esc_attr( CFI_SITE_NAME ); ?>" width="520" height="650" loading="lazy" decoding="async">
 				</picture>
 				<div>
 					<p class="cfi-eyebrow">Talk to a flood expert, not a call tree</p>
