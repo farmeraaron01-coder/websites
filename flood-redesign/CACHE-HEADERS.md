@@ -114,3 +114,30 @@ raindrops-hero.mp4 at their bare URLs) survived; they age out within the cache's
 **Cutover:** nothing to do. The routine travels with the theme and fires on the first
 wp-admin visit on production. Confirm with:
 `curl -sI https://www.californiafloodinsurance.com/wp-content/themes/cfi-kadence-child/assets/fonts/inter.woff2?cb=1 | grep -i cache-control`
+
+---
+
+## Final PSI results — July 30 2026 (Google-run, staging homepage)
+
+| | Perf | A11y | Best Practices | FCP | LCP | TBT | CLS | SI |
+|---|---|---|---|---|---|---|---|---|
+| **Desktop** | **99** | 100 | 100 | 0.4s | 0.8s | 0ms | **0** | 0.8s |
+| **Mobile** | **89** | 100 | 100 | 1.5s | 3.3s | 0ms | **0** | 4.3s |
+
+(SEO 66 on both = the intentional staging noindex; resolves at launch.)
+
+The desktop CLS fix (font-display:optional, v1.2.1) took CLS 0.143 → 0 and the score
+94 → 99. Mobile CLS also 0. Divi baseline for comparison: 58 mobile / 79 desktop,
+12.6s mobile LCP.
+
+Mobile 89 vs the earlier 90: Speed Index moved 2.4s → 4.3s under simulated throttling
+after the hero preload changed the resource graph — LCP simultaneously improved
+3.6s → 3.3s. Lantern-simulated SI swings run to run; treat as variance unless it
+repeats consistently, in which case removing the front-page hero preload is the lever.
+
+Declined on purpose: further logo compression (11.7KB at 168×153 is an intentional 2×
+retina asset for an 84×76 slot) and CSS minification (2KB against losing the comments
+that documented three real bugs).
+
+Last known lever for mobile: the six render-blocking stylesheets (~570ms). Kadence's
+per-page / critical CSS option is the designed fix — enable, re-test, before launch.
