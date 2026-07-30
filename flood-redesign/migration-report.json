@@ -1,0 +1,852 @@
+[
+ {
+  "slug": "flood-zone-v-and-ve",
+  "type": "pages",
+  "action": "updated id=51",
+  "words": 1235,
+  "takeaways": 5,
+  "badge": "Flood Zone V & VE",
+  "risk": "high",
+  "template": "template-guide.php"
+ },
+ {
+  "slug": "flood-zone-ah-and-ao",
+  "type": "pages",
+  "action": "updated id=52",
+  "words": 1356,
+  "takeaways": 5,
+  "badge": "Flood Zone AH & AO",
+  "risk": "high",
+  "template": "template-guide.php"
+ },
+ {
+  "slug": "flood-zone-a",
+  "type": "pages",
+  "action": "updated id=53",
+  "words": 1270,
+  "takeaways": 5,
+  "badge": "Flood Zone A",
+  "risk": "high",
+  "template": "template-guide.php"
+ },
+ {
+  "slug": "flood-zone-ae",
+  "type": "pages",
+  "action": "updated id=46",
+  "words": 1367,
+  "takeaways": 5,
+  "badge": "Flood Zone AE",
+  "risk": "high",
+  "template": "template-guide.php"
+ },
+ {
+  "slug": "flood-insurance-rates",
+  "type": "pages",
+  "action": "updated id=55",
+  "words": 1263,
+  "takeaways": 5,
+  "badge": "",
+  "risk": "",
+  "template": "template-guide.php"
+ },
+ {
+  "slug": "areas-we-serve",
+  "type": "pages",
+  "action": "updated id=56",
+  "words": 453,
+  "takeaways": 0,
+  "badge": "",
+  "risk": "",
+  "template": "template-guide.php"
+ },
+ {
+  "slug": "riverside-flood-insurance",
+  "type": "pages",
+  "action": "updated id=57",
+  "words": 1374,
+  "takeaways": 5,
+  "badge": "",
+  "risk": "",
+  "template": "template-guide.php"
+ },
+ {
+  "slug": "stockton-flood-insurance",
+  "type": "pages",
+  "action": "updated id=58",
+  "words": 1326,
+  "takeaways": 5,
+  "badge": "",
+  "risk": "",
+  "template": "template-guide.php"
+ },
+ {
+  "slug": "fresno-flood-insurance",
+  "type": "pages",
+  "action": "updated id=59",
+  "words": 1404,
+  "takeaways": 5,
+  "badge": "",
+  "risk": "",
+  "template": "template-guide.php"
+ },
+ {
+  "slug": "long-beach-flood-insurance",
+  "type": "pages",
+  "action": "updated id=60",
+  "words": 1497,
+  "takeaways": 5,
+  "badge": "",
+  "risk": "",
+  "template": "template-guide.php"
+ },
+ {
+  "slug": "san-jose-flood-insurance",
+  "type": "pages",
+  "action": "updated id=61",
+  "words": 1528,
+  "takeaways": 5,
+  "badge": "",
+  "risk": "",
+  "template": "template-guide.php"
+ },
+ {
+  "slug": "sacramento-flood-insurance",
+  "type": "pages",
+  "action": "updated id=62",
+  "words": 1557,
+  "takeaways": 5,
+  "badge": "",
+  "risk": "",
+  "template": "template-guide.php"
+ },
+ {
+  "slug": "los-angeles-flood-insurance",
+  "type": "pages",
+  "action": "updated id=63",
+  "words": 1502,
+  "takeaways": 5,
+  "badge": "",
+  "risk": "",
+  "template": "template-guide.php"
+ },
+ {
+  "slug": "san-diego-flood-insurance",
+  "type": "pages",
+  "action": "updated id=64",
+  "words": 1392,
+  "takeaways": 5,
+  "badge": "",
+  "risk": "",
+  "template": "template-guide.php"
+ },
+ {
+  "slug": "cheap-flood-insurance-california",
+  "type": "pages",
+  "action": "updated id=65",
+  "words": 1175,
+  "takeaways": 5,
+  "badge": "",
+  "risk": "",
+  "template": "template-guide.php"
+ },
+ {
+  "slug": "how-much-flood-insurance-do-i-need",
+  "type": "pages",
+  "action": "updated id=66",
+  "words": 1370,
+  "takeaways": 5,
+  "badge": "",
+  "risk": "",
+  "template": "template-guide.php"
+ },
+ {
+  "slug": "california-flood-insurance-quotes",
+  "type": "pages",
+  "action": "updated id=67",
+  "words": 1324,
+  "takeaways": 5,
+  "badge": "",
+  "risk": "",
+  "template": "template-guide.php"
+ },
+ {
+  "slug": "claims",
+  "type": "pages",
+  "action": "updated id=68",
+  "words": 0,
+  "takeaways": 0,
+  "badge": "",
+  "risk": "",
+  "template": ""
+ },
+ {
+  "slug": "agent-appointment",
+  "type": "pages",
+  "action": "updated id=69",
+  "words": 0,
+  "takeaways": 0,
+  "badge": "",
+  "risk": "",
+  "template": ""
+ },
+ {
+  "slug": "video",
+  "type": "pages",
+  "action": "updated id=70",
+  "words": 0,
+  "takeaways": 0,
+  "badge": "",
+  "risk": "",
+  "template": ""
+ },
+ {
+  "slug": "staff-form",
+  "type": "pages",
+  "action": "updated id=71",
+  "words": 0,
+  "takeaways": 0,
+  "badge": "",
+  "risk": "",
+  "template": ""
+ },
+ {
+  "slug": "media",
+  "type": "pages",
+  "action": "updated id=72",
+  "words": 50,
+  "takeaways": 0,
+  "badge": "",
+  "risk": "",
+  "template": ""
+ },
+ {
+  "slug": "faqs",
+  "type": "pages",
+  "action": "updated id=73",
+  "words": 81,
+  "takeaways": 0,
+  "badge": "",
+  "risk": "",
+  "template": ""
+ },
+ {
+  "slug": "california-flood-glossary",
+  "type": "pages",
+  "action": "updated id=74",
+  "words": 1002,
+  "takeaways": 0,
+  "badge": "",
+  "risk": "",
+  "template": "template-guide.php"
+ },
+ {
+  "slug": "insights",
+  "type": "pages",
+  "action": "updated id=75",
+  "words": 30,
+  "takeaways": 0,
+  "badge": "",
+  "risk": "",
+  "template": ""
+ },
+ {
+  "slug": "facts-about-floods",
+  "type": "pages",
+  "action": "updated id=76",
+  "words": 471,
+  "takeaways": 0,
+  "badge": "",
+  "risk": "",
+  "template": "template-guide.php"
+ },
+ {
+  "slug": "condo-owners-flood-renters-flood",
+  "type": "pages",
+  "action": "updated id=77",
+  "words": 347,
+  "takeaways": 0,
+  "badge": "",
+  "risk": "",
+  "template": ""
+ },
+ {
+  "slug": "homeownwers-association-flood-insurance",
+  "type": "pages",
+  "action": "updated id=78",
+  "words": 211,
+  "takeaways": 0,
+  "badge": "",
+  "risk": "",
+  "template": ""
+ },
+ {
+  "slug": "get-a-quote",
+  "action": "skipped (bespoke template)",
+  "words": 0
+ },
+ {
+  "slug": "service-center",
+  "type": "pages",
+  "action": "updated id=79",
+  "words": 0,
+  "takeaways": 0,
+  "badge": "",
+  "risk": "",
+  "template": ""
+ },
+ {
+  "slug": "contact-us",
+  "type": "pages",
+  "action": "updated id=80",
+  "words": 41,
+  "takeaways": 0,
+  "badge": "",
+  "risk": "",
+  "template": ""
+ },
+ {
+  "slug": "resources",
+  "type": "pages",
+  "action": "updated id=81",
+  "words": 237,
+  "takeaways": 0,
+  "badge": "",
+  "risk": "",
+  "template": ""
+ },
+ {
+  "slug": "commercial-flood-insurance",
+  "type": "pages",
+  "action": "updated id=82",
+  "words": 1283,
+  "takeaways": 5,
+  "badge": "",
+  "risk": "",
+  "template": "template-guide.php"
+ },
+ {
+  "slug": "aaron-farmer",
+  "type": "pages",
+  "action": "updated id=83",
+  "words": 495,
+  "takeaways": 0,
+  "badge": "",
+  "risk": "",
+  "template": "template-guide.php"
+ },
+ {
+  "slug": "terms-of-service",
+  "type": "pages",
+  "action": "updated id=84",
+  "words": 5569,
+  "takeaways": 0,
+  "badge": "",
+  "risk": "",
+  "template": "template-guide.php"
+ },
+ {
+  "slug": "residential",
+  "type": "pages",
+  "action": "updated id=9",
+  "words": 317,
+  "takeaways": 0,
+  "badge": "",
+  "risk": "",
+  "template": ""
+ },
+ {
+  "slug": "privacy-policy",
+  "type": "pages",
+  "action": "updated id=3",
+  "words": 930,
+  "takeaways": 0,
+  "badge": "",
+  "risk": "",
+  "template": "template-guide.php"
+ },
+ {
+  "slug": "home",
+  "action": "skipped (bespoke template)",
+  "words": 0
+ },
+ {
+  "slug": "how-much-flood-insurance-is-required-by-lender",
+  "type": "posts",
+  "action": "updated id=87",
+  "words": 1378,
+  "takeaways": 5,
+  "badge": "",
+  "risk": "",
+  "template": "(post)"
+ },
+ {
+  "slug": "can-flood-insurance-drop-you",
+  "type": "posts",
+  "action": "updated id=88",
+  "words": 1243,
+  "takeaways": 5,
+  "badge": "",
+  "risk": "",
+  "template": "(post)"
+ },
+ {
+  "slug": "can-flood-insurance-be-sold-anywhere",
+  "type": "posts",
+  "action": "updated id=89",
+  "words": 253,
+  "takeaways": 0,
+  "badge": "",
+  "risk": "",
+  "template": "(post)"
+ },
+ {
+  "slug": "which-flood-zone-requires-flood-insurance",
+  "type": "posts",
+  "action": "updated id=90",
+  "words": 1466,
+  "takeaways": 5,
+  "badge": "",
+  "risk": "",
+  "template": "(post)"
+ },
+ {
+  "slug": "what-does-flood-insurance-not-cover",
+  "type": "posts",
+  "action": "updated id=91",
+  "words": 1329,
+  "takeaways": 5,
+  "badge": "",
+  "risk": "",
+  "template": "(post)"
+ },
+ {
+  "slug": "how-much-does-flood-insurance-cost",
+  "type": "posts",
+  "action": "updated id=92",
+  "words": 1240,
+  "takeaways": 5,
+  "badge": "",
+  "risk": "",
+  "template": "(post)"
+ },
+ {
+  "slug": "loss-of-use-coverage-in-flood-insurance",
+  "type": "posts",
+  "action": "updated id=93",
+  "words": 1393,
+  "takeaways": 5,
+  "badge": "",
+  "risk": "",
+  "template": "(post)"
+ },
+ {
+  "slug": "when-is-flood-insurance-required",
+  "type": "posts",
+  "action": "updated id=94",
+  "words": 1447,
+  "takeaways": 5,
+  "badge": "",
+  "risk": "",
+  "template": "(post)"
+ },
+ {
+  "slug": "navigating-flood-zone-x",
+  "type": "posts",
+  "action": "updated id=95",
+  "words": 1159,
+  "takeaways": 5,
+  "badge": "",
+  "risk": "",
+  "template": "(post)"
+ },
+ {
+  "slug": "understanding-base-flood-elevation-bfe",
+  "type": "posts",
+  "action": "updated id=96",
+  "words": 1480,
+  "takeaways": 5,
+  "badge": "",
+  "risk": "",
+  "template": "(post)"
+ },
+ {
+  "slug": "hiscox-flood-plus-comprehensive-flood-insurance-coverage",
+  "type": "posts",
+  "action": "updated id=97",
+  "words": 294,
+  "takeaways": 0,
+  "badge": "",
+  "risk": "",
+  "template": "(post)"
+ },
+ {
+  "slug": "comparing-the-admitted-vs-non-admitted-insurance-markets",
+  "type": "posts",
+  "action": "updated id=98",
+  "words": 1490,
+  "takeaways": 5,
+  "badge": "",
+  "risk": "",
+  "template": "(post)"
+ },
+ {
+  "slug": "how-risk-rating-2-0-affects-federal-flood-insurance-policy-holders",
+  "type": "posts",
+  "action": "updated id=99",
+  "words": 521,
+  "takeaways": 0,
+  "badge": "",
+  "risk": "",
+  "template": "(post)"
+ },
+ {
+  "slug": "calflood-newstalk-kbkw-discussing-flood-insurance",
+  "type": "posts",
+  "action": "updated id=100",
+  "words": 108,
+  "takeaways": 0,
+  "badge": "",
+  "risk": "",
+  "template": "(post)"
+ },
+ {
+  "slug": "do-you-need-flood-insurance",
+  "type": "posts",
+  "action": "updated id=101",
+  "words": 1322,
+  "takeaways": 5,
+  "badge": "",
+  "risk": "",
+  "template": "(post)"
+ },
+ {
+  "slug": "couple-hit-with-44000-flood-insurance-premium",
+  "type": "posts",
+  "action": "updated id=102",
+  "words": 46,
+  "takeaways": 0,
+  "badge": "",
+  "risk": "",
+  "template": "(post)"
+ },
+ {
+  "slug": "30-day-countdown-to-the-2013-hurricane-season-begins-may-2",
+  "type": "posts",
+  "action": "updated id=103",
+  "words": 46,
+  "takeaways": 0,
+  "badge": "",
+  "risk": "",
+  "template": "(post)"
+ },
+ {
+  "slug": "why-are-you-paying-for-everyones-flood-insurance",
+  "type": "posts",
+  "action": "updated id=104",
+  "words": 41,
+  "takeaways": 0,
+  "badge": "",
+  "risk": "",
+  "template": "(post)"
+ },
+ {
+  "slug": "fema-head-says-flood-insurance-rates-going-up",
+  "type": "posts",
+  "action": "updated id=105",
+  "words": 63,
+  "takeaways": 0,
+  "badge": "",
+  "risk": "",
+  "template": "(post)"
+ },
+ {
+  "slug": "flood-insurance-coverage",
+  "type": "posts",
+  "action": "updated id=106",
+  "words": 33,
+  "takeaways": 0,
+  "badge": "",
+  "risk": "",
+  "template": "(post)"
+ },
+ {
+  "slug": "sandy-flood-vicitms",
+  "type": "posts",
+  "action": "updated id=107",
+  "words": 121,
+  "takeaways": 0,
+  "badge": "",
+  "risk": "",
+  "template": "(post)"
+ },
+ {
+  "slug": "thousands-recommended-flood-insurance-sacramento",
+  "type": "posts",
+  "action": "updated id=108",
+  "words": 68,
+  "takeaways": 0,
+  "badge": "",
+  "risk": "",
+  "template": "(post)"
+ },
+ {
+  "slug": "sacramento-flood-insurance-location-location-location",
+  "type": "posts",
+  "action": "updated id=109",
+  "words": 297,
+  "takeaways": 0,
+  "badge": "",
+  "risk": "",
+  "template": "(post)"
+ },
+ {
+  "slug": "extending-national-flood-insurance-program-choppy-waters",
+  "type": "posts",
+  "action": "updated id=110",
+  "words": 30,
+  "takeaways": 0,
+  "badge": "",
+  "risk": "",
+  "template": "(post)"
+ },
+ {
+  "slug": "san-diego-flood-insurance-rate-decrease",
+  "type": "posts",
+  "action": "updated id=111",
+  "words": 401,
+  "takeaways": 0,
+  "badge": "",
+  "risk": "",
+  "template": "(post)"
+ },
+ {
+  "slug": "congress-national-flood-insurance-program",
+  "type": "posts",
+  "action": "updated id=112",
+  "words": 48,
+  "takeaways": 0,
+  "badge": "",
+  "risk": "",
+  "template": "(post)"
+ },
+ {
+  "slug": "flash-flooding-problems-homeowners-businesses",
+  "type": "posts",
+  "action": "updated id=113",
+  "words": 1,
+  "takeaways": 0,
+  "badge": "",
+  "risk": "",
+  "template": "(post)"
+ },
+ {
+  "slug": "flood-insurance-bakersfield-yuba-city-redding-stockton-merced-modesto-visalia",
+  "type": "posts",
+  "action": "updated id=114",
+  "words": 662,
+  "takeaways": 0,
+  "badge": "",
+  "risk": "",
+  "template": "(post)"
+ },
+ {
+  "slug": "flood-zone-map",
+  "type": "posts",
+  "action": "updated id=115",
+  "words": 4,
+  "takeaways": 0,
+  "badge": "",
+  "risk": "",
+  "template": "(post)"
+ },
+ {
+  "slug": "changes-coming-fema-new-flood-bill",
+  "type": "posts",
+  "action": "updated id=116",
+  "words": 13,
+  "takeaways": 0,
+  "badge": "",
+  "risk": "",
+  "template": "(post)"
+ },
+ {
+  "slug": "assess-private-flood-insurance",
+  "type": "posts",
+  "action": "updated id=117",
+  "words": 24,
+  "takeaways": 0,
+  "badge": "",
+  "risk": "",
+  "template": "(post)"
+ },
+ {
+  "slug": "master-flood-policies-hoas",
+  "type": "posts",
+  "action": "updated id=118",
+  "words": 1421,
+  "takeaways": 5,
+  "badge": "",
+  "risk": "",
+  "template": "(post)"
+ },
+ {
+  "slug": "dont-roll-the-dice-on-flood-insurance",
+  "type": "posts",
+  "action": "updated id=119",
+  "words": 31,
+  "takeaways": 0,
+  "badge": "",
+  "risk": "",
+  "template": "(post)"
+ },
+ {
+  "slug": "why-more-homeowners-should-buy-flood-insurance",
+  "type": "posts",
+  "action": "updated id=120",
+  "words": 95,
+  "takeaways": 0,
+  "badge": "",
+  "risk": "",
+  "template": "(post)"
+ },
+ {
+  "slug": "valet-parking-flood-zone",
+  "type": "posts",
+  "action": "updated id=121",
+  "words": 27,
+  "takeaways": 0,
+  "badge": "",
+  "risk": "",
+  "template": "(post)"
+ },
+ {
+  "slug": "fema-annouces-higher-expected-rate-increase-effective-april-2015",
+  "type": "posts",
+  "action": "updated id=122",
+  "words": 262,
+  "takeaways": 0,
+  "badge": "",
+  "risk": "",
+  "template": "(post)"
+ },
+ {
+  "slug": "california-flood-preparedness-week-starts-now",
+  "type": "posts",
+  "action": "updated id=123",
+  "words": 254,
+  "takeaways": 0,
+  "badge": "",
+  "risk": "",
+  "template": "(post)"
+ },
+ {
+  "slug": "excess-flood-insurance-commonplae-lenders",
+  "type": "posts",
+  "action": "updated id=124",
+  "words": 104,
+  "takeaways": 0,
+  "badge": "",
+  "risk": "",
+  "template": "(post)"
+ },
+ {
+  "slug": "san-diego-california-flood-insurance-resort-floods",
+  "type": "posts",
+  "action": "updated id=125",
+  "words": 475,
+  "takeaways": 0,
+  "badge": "",
+  "risk": "",
+  "template": "(post)"
+ },
+ {
+  "slug": "long-beach-ca-flood-insurance",
+  "type": "posts",
+  "action": "updated id=126",
+  "words": 566,
+  "takeaways": 0,
+  "badge": "",
+  "risk": "",
+  "template": "(post)"
+ },
+ {
+  "slug": "flood-insurance-sacramento-prepared-risk",
+  "type": "posts",
+  "action": "updated id=127",
+  "words": 568,
+  "takeaways": 0,
+  "badge": "",
+  "risk": "",
+  "template": "(post)"
+ },
+ {
+  "slug": "flood-insurance-mandatory-flood-zones",
+  "type": "posts",
+  "action": "updated id=128",
+  "words": 15,
+  "takeaways": 0,
+  "badge": "",
+  "risk": "",
+  "template": "(post)"
+ },
+ {
+  "slug": "measure-your-damage-with-this-interactive-tool",
+  "type": "posts",
+  "action": "updated id=129",
+  "words": 35,
+  "takeaways": 0,
+  "badge": "",
+  "risk": "",
+  "template": "(post)"
+ },
+ {
+  "slug": "how-many-of-the-flood-claims-come-from-areas-that-dont-belong-to-flood-zone",
+  "type": "posts",
+  "action": "updated id=130",
+  "words": 511,
+  "takeaways": 0,
+  "badge": "",
+  "risk": "",
+  "template": "(post)"
+ },
+ {
+  "slug": "flood-insurance-quote-relieve-stress-during-floods",
+  "type": "posts",
+  "action": "updated id=131",
+  "words": 488,
+  "takeaways": 0,
+  "badge": "",
+  "risk": "",
+  "template": "(post)"
+ },
+ {
+  "slug": "why-flood-insurance-can-be-costly-if-you-dont-have-it",
+  "type": "posts",
+  "action": "updated id=132",
+  "words": 493,
+  "takeaways": 0,
+  "badge": "",
+  "risk": "",
+  "template": "(post)"
+ },
+ {
+  "slug": "is-flood-insurance-worth-purchasing",
+  "type": "posts",
+  "action": "updated id=133",
+  "words": 478,
+  "takeaways": 0,
+  "badge": "",
+  "risk": "",
+  "template": "(post)"
+ },
+ {
+  "slug": "do-i-need-flood-insurance-coverage",
+  "type": "posts",
+  "action": "updated id=134",
+  "words": 565,
+  "takeaways": 0,
+  "badge": "",
+  "risk": "",
+  "template": "(post)"
+ }
+]

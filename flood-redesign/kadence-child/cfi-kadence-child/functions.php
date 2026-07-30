@@ -96,6 +96,9 @@ require_once get_stylesheet_directory() . '/inc/interior.php';
 /* Mobile tap-to-call bar — the desktop top bar's phone number stops at 1024px. */
 require_once get_stylesheet_directory() . '/inc/callbar.php';
 
+/* [cfi_cognito form="31"] — embeds for the pages that exist only to host a form. */
+require_once get_stylesheet_directory() . '/inc/cognito.php';
+
 add_action( 'wp_enqueue_scripts', function () {
 	wp_enqueue_style(
 		'cfi-tokens',
