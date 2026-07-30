@@ -35,7 +35,7 @@ $theme_uri = get_stylesheet_directory_uri();
 				<p class="cfi-eyebrow eyebrow-light">California-based &middot; Flood-focused &middot; Est. 2012</p>
 				<h1>California floods.<br>Your premium <em>shouldn&rsquo;t.</em></h1>
 				<p class="sub">We compare <strong>up to nine private flood markets, plus the NFIP</strong> when appropriate &mdash; and explain the tradeoffs in plain English, including when the federal program is your better fit. Options vary by property, eligibility, and carrier availability.</p>
-				<p class="microproof">40,000+ properties protected <span class="dot">·</span> 4.9&#9733; from 900+ reviews <span class="dot">·</span> Flood-only since 2012</p>
+				<p class="microproof">40,000+ properties protected <span class="dot">·</span> 4.9&#9733; from 900+ reviews <span class="dot">·</span> Flood specialists since 2012</p>
 				<div class="ctas">
 					<a class="cfi-btn cfi-btn-cta" href="<?php echo esc_url( CFI_QUOTE_URL ); ?>">Start my quote</a>
 					<a class="cfi-btn cfi-btn-ghost" href="tel:<?php echo esc_attr( CFI_PHONE_TEL ); ?>">&#9742; <?php echo esc_html( CFI_PHONE_DISPLAY ); ?></a>

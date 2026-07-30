@@ -57,7 +57,7 @@
 </main>
 
 <footer class="cfi-lp-foot">
-	<span><?php echo esc_html( CFI_LICENSE ); ?> &middot; Independent flood-only agency since 2012</span>
+	<span><?php echo esc_html( CFI_LICENSE ); ?> &middot; Independent agency specializing in flood since 2012</span>
 	<span>Coverage is subject to underwriting, policy terms, conditions, and exclusions.</span>
 </footer>
 

@@ -32,7 +32,7 @@ Customize → **Colors & Fonts → Colors** (Global Palette). Set the nine swatc
 ### 2a. Top Bar (drag elements in the builder's top row)
 
 - **Left slot:** HTML element →
-  `CA Lic. #0L75450 &nbsp;·&nbsp; Independent flood-only agency since 2012`
+  `CA Lic. #0L75450 &nbsp;·&nbsp; Independent agency specializing in flood since 2012`
 - **Right slot:** HTML element →
   `Mon–Fri 8am–5pm PT &nbsp;&nbsp; <a href="tel:8552253566"><strong>855-CAL-FLOOD (225-3566)</strong></a>`
 - Top Bar **Design** tab: Background `#0A2540` · Text color `#9FBDD4` · Link color `#38C6F4` · Min height **36px** · Bottom border: none.

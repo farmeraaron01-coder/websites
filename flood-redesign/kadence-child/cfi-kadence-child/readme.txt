@@ -11,7 +11,7 @@ and pages use the normal WordPress editor, unchanged.
 3. Set a static front page: Settings > Reading > "A static page" > pick any page titled Home
    (the template ignores the page content; front-page.php renders the homepage).
 4. Header: use the Kadence Header Builder (Appearance > Customize > Header):
-   - Top row: HTML element left = "CA Lic. #0L75450 · Independent flood-only agency since 2012",
+   - Top row: HTML element left = "CA Lic. #0L75450 · Independent agency specializing in flood since 2012",
      right = hours + phone. Background #0A2540, text #9FBDD4, links #38C6F4.
    - Main row: logo left, primary menu center-right, button "Start My Quote" -> /get-a-quote/
      (button background #25C1EE, text #0A2540). Enable sticky header.
