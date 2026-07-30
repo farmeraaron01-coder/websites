@@ -58,7 +58,12 @@
 /* ---- buttons ---- */
 .cfi-btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;font-family:var(--cfi-body);font-weight:600;font-size:16px;border-radius:var(--cfi-radius);padding:15px 26px;border:0;cursor:pointer;white-space:nowrap;transition:transform .15s ease,background .15s ease}
 .cfi-btn:active{transform:translateY(1px)}
-a.cfi-btn-cta,.cfi-btn-cta{background:var(--cfi-cta);color:var(--cfi-cta-ink);box-shadow:0 2px 0 rgba(0,0,0,.12),0 10px 28px -8px rgba(37,193,238,.5)}
+/* The glow used to be 0 10px 28px -8px rgba(37,193,238,.5) — a 28px cyan blur
+   pushed 10px down, against a 14px gap to the line beneath it. On white cards
+   that washed cyan straight across the "Prefer to talk?" text. Now a neutral
+   navy shadow, tight enough that it cannot reach adjacent content: still reads
+   as raised, no colour bleed. */
+a.cfi-btn-cta,.cfi-btn-cta{background:var(--cfi-cta);color:var(--cfi-cta-ink);box-shadow:0 2px 0 rgba(0,0,0,.14),0 5px 12px -6px rgba(10,37,64,.38)}
 a.cfi-btn-cta:hover,.cfi-btn-cta:hover{background:var(--cfi-cta-hover);color:var(--cfi-cta-ink)}
 a.cfi-btn-ghost,.cfi-btn-ghost{background:transparent;color:var(--cfi-on-navy);border:1.5px solid rgba(234,244,251,.35)}
 a.cfi-btn-ghost:hover,.cfi-btn-ghost:hover{border-color:var(--cfi-accent-bright);color:#fff}
@@ -93,7 +98,7 @@ a.cfi-btn-ghost:hover,.cfi-btn-ghost:hover{border-color:var(--cfi-accent-bright)
 .cfi-qlist li{padding-left:24px;position:relative}
 .cfi-qlist li::before{content:"\2713";position:absolute;left:0;color:var(--cfi-good);font-weight:700}
 .cfi-qcard .cfi-btn-cta{width:100%}
-.cfi-qmicro{margin-top:12px;font-size:13px;color:var(--cfi-ink-3);text-align:center}
+.cfi-qmicro{margin-top:16px;font-size:13px;color:var(--cfi-ink-3);text-align:center}
 .cfi-qtrust{display:flex;justify-content:center;gap:14px;margin-top:14px;padding-top:14px;border-top:1px solid var(--cfi-line);font-size:12.5px;color:var(--cfi-ink-2);flex-wrap:wrap}
 .cfi-qtrust b{color:var(--cfi-ink)}
 
