@@ -185,8 +185,21 @@ performance/CLS grounds.
 **NEW: `/excess-flood-insurance/` (page 111)** — Aaron flagged excess flood as a major
 under-served topic for coastal states. Net-new ~700w guide (NFIP caps, the self-insurance
 gap, who needs it, layer-vs-single-policy, cost drivers), linked from the footer Private
-Flood column and the commercial page. First statewide-original content asset; more coastal
-topics (storm surge vs wind, Florida-specific excess) are natural follow-ups for /insights/.
+Flood column and the commercial page. First statewide-original content asset.
+
+**Insights launched (July 30):** three statewide-original articles published as posts
+(ids 113–115, author Aaron J. Farmer, interior layout with takeaways/standfirst):
+`/storm-surge-flood-not-wind/`, `/florida-excess-flood-nfip-cap/`,
+`/lender-flood-insurance-requirements-over-250k/`. All cross-link the excess guide, state
+pages, and the quote page. Insights restored to the nav. These do NOT get copied to CFI —
+one home per article is the whole lesson of the duplicate-blog problem; CFI links to them
+cross-site if ever needed. **Aaron should review voice/claims before launch.**
+
+**Same treatment applied to CFI staging:** its `/residential/` was the identical thin
+clipart page (rewritten, CA voice, CAL-FLOOD number, guide template); CFI
+`/commercial-flood-insurance/` was already strong from the original migration (1,283w) and
+was left alone; CFI got its own `/excess-flood-insurance/` (page 292, CA angle: coastal +
+burn-scar debris flows + loan balances) linked from its footer Coverage column.
 
 ## Still open
 
