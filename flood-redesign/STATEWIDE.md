@@ -252,9 +252,10 @@ Five more nano-banana editorial images (same pipeline: 2752×1536 PNG → 1600w 
 - burn-scar-hillside-homes → CFI debris-flow article (post 299)
 - atmospheric-river-rain-neighborhood → CFI atmospheric-river article (post 300)
 
-og:image verified on all five. **`/elevation-certificates-2026/` (post 131) still uses the
-sitewide default** — its image (surveyor tripod at an elevated stilt house) was not in the
-batch; prompt is in the transcript if Aaron wants to generate it later.
+Plus surveyor-elevation-certificate → elevation certificate article (sw post 131), added
+right after. **All seven statewide articles and both CFI articles now carry unique dedicated
+images** — verified og:image on every URL, zero duplicates, zero fallbacks. The
+coastal-homes-golden-hour default now only serves pages without their own image, as intended.
 
 ## Still open
 
