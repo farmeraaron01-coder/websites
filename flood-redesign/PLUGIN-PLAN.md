@@ -360,7 +360,9 @@ been crawled with title, description, canonical, robots, h1 and word count extra
 
 3. **Homepage title claims "Save 30–50%".** Confirmed verbatim:
    `California Flood Insurance: Save 30–50% on Flood Quotes` (55 chars). Conflicts with the
-   qualified-claims decision in DECISIONS.md. Rewrite at migration.
+   qualified-claims decision in DECISIONS.md. ~~Rewrite at migration.~~ **Resolved July 30:
+   kept verbatim by owner decision** — years of conversion data outrank the style rule, and a
+   title tag is sales copy, not schema. The claim stays out of JSON-LD (item 8) either way.
 4. **19 pages have no `<h1>` at all** — the largest real finding, and 10 of them run over
    1,500 words: every city page (`/sacramento-flood-insurance/` 1,727w,
    `/san-jose-flood-insurance/` 1,700w, `/long-beach-flood-insurance/`,

@@ -68,7 +68,11 @@ staging, `rank_math_title` and `rank_math_description` need
 
 Fix during the write, do not carry across:
 
-1. Homepage title `California Flood Insurance: Save 30–50% on Flood Quotes` → drop the claim.
+1. ~~Homepage title `California Flood Insurance: Save 30–50% on Flood Quotes` → drop the claim.~~
+   **Overruled July 30:** the title has converted for years and stays verbatim (owner's call —
+   "this is sales"). Restored on staging (page 7 `rank_math_title`) after a brief run with the
+   claim-free variant. Note it remains a title-tag claim only; the JSON-LD version of the claim
+   (item 6 below) is still retired.
 2. 19 pages with **no `<h1>`**, ten over 1,500 words including every city page. The new interior
    templates enforce a single h1, so this is fixed structurally rather than page by page.
 3. 39 titles over 62 characters, mostly legacy posts carrying a ` - California Flood Insurance`
