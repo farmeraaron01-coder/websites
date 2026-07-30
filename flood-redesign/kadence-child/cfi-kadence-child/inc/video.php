@@ -74,8 +74,10 @@ add_shortcode( 'cfi_video', function ( $atts ) {
 	<div class="cfi-video">
 		<button type="button" class="cfi-video-play" data-embed="<?php echo esc_url( $embed ); ?>"
 			aria-label="<?php echo esc_attr( 'Play video: ' . $label ); ?>">
+			<?php /* Never lazy: the facade is the LCP element of a video page.
+			   Lazy-loading it measured a 5.9s LCP on the hub. */ ?>
 			<img src="<?php echo esc_url( $thumb ); ?>" alt="" width="1280" height="720"
-				loading="lazy" decoding="async"
+				fetchpriority="high" decoding="async"
 				onerror="this.onerror=null;this.src='<?php echo esc_js( $fallb ); ?>'">
 			<span class="cfi-video-icon" aria-hidden="true"></span>
 			<?php if ( $a['title'] !== '' ) : ?>
@@ -146,8 +148,10 @@ add_shortcode( 'cfi_videos', function ( $atts ) {
 
 	ob_start();
 	echo '<div class="cfi-video-grid">';
+	$i = 0;
 	while ( $q->have_posts() ) {
 		$q->the_post();
+		$i++;
 		// Pull the first video id out of the post so the card can show its thumbnail.
 		$vid = '';
 		if ( preg_match( '/\[cfi_video[^\]]*id=["\']([A-Za-z0-9_-]{11})["\']/', get_the_content(), $m ) ) {
@@ -155,9 +159,14 @@ add_shortcode( 'cfi_videos', function ( $atts ) {
 		}
 		?>
 		<a class="cfi-video-card" href="<?php the_permalink(); ?>">
-			<?php if ( $vid ) : ?>
+			<?php if ( $vid ) :
+				/* The first row holds the page's LCP image — lazy-loading it
+				   measured LCP 5.9s vs the sub-3s the rest of the site gets.
+				   Everything below the first row stays lazy. */
+				$eager = $i <= 3; ?>
 				<img src="<?php echo esc_url( 'https://i.ytimg.com/vi/' . $vid . '/mqdefault.jpg' ); ?>"
-					alt="" width="320" height="180" loading="lazy" decoding="async">
+					alt="" width="320" height="180" decoding="async"
+					<?php echo $eager ? 'fetchpriority="high"' : 'loading="lazy"'; ?>>
 			<?php endif; ?>
 			<span class="cfi-video-card-title"><?php the_title(); ?></span>
 		</a>
