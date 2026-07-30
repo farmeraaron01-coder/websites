@@ -85,3 +85,43 @@ Fix during the write, do not carry across:
 Beyond Divi itself: Elementor (installed alongside Divi), OMGF, Schema & Structured Data for WP,
 Pojo/ea11y accessibility widget, Simple History, Limit Login Attempts Reloaded. The new stack is
 five plugins and is documented in PLUGIN-PLAN.md.
+
+
+## Cache purge behaviour — matters for the batch
+
+Discovered while verifying v1.1.1, and it invalidated a verification I had already
+run. After installing the new theme and purging, the homepage served the new
+stylesheet but **interior pages did not**:
+
+| URL | Cached page referenced | Cache |
+|---|---|---|
+| `/` | `tokens.css?ver=1.1.1` ✓ | HIT |
+| `/flood-zone-ae/` | `tokens.css?ver=1.1.0` ✗ | HIT |
+| `/residential/` | `tokens.css?ver=1.1.0` ✗ | HIT |
+
+The same URLs with a cache-buster returned 1.1.1, which is exactly how the trap
+works: **a cache-busted fetch proves the file is correct and proves nothing about
+what visitors get.** Lighthouse requests the canonical URL, so it was scoring a
+page built against the old stylesheet — reporting an accessibility failure that
+had already been fixed, and a CLS of 0.052 that did not really exist.
+
+Two things resolve it:
+
+- `https://…/purge/<path>/` returns **403** — that path is IP-restricted, so it
+  cannot be triggered remotely.
+- **A REST write to the page fires Nginx Helper's purge-on-update and works.**
+  Touching pages 46 and 9 flipped both to `ver=1.1.1` with `x-proxy-cache: MISS`
+  immediately.
+
+**Consequence for the migration: no manual purging is needed.** Every page the
+batch writes purges itself as a side effect of the write. The manual/global purge
+is the unreliable path, not the automatic one — which also explains the earlier
+"you do not have the necessary privileges" error being more of a nuisance than a
+blocker.
+
+Verified after the purge landed:
+
+| Page | a11y | perf | best practices | LCP | CLS |
+|---|---|---|---|---|---|
+| `/flood-zone-ae/` | **100** | 98 | 100 | 2.1s | **0** |
+| `/residential/` | **100** | 99 | 100 | 2.2s | **0** |
