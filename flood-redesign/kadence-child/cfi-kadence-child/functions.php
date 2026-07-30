@@ -105,14 +105,47 @@ require_once get_stylesheet_directory() . '/inc/video.php';
 /* One-time .htaccess cache-header install — see inc/htaccess.php for why. */
 require_once get_stylesheet_directory() . '/inc/htaccess.php';
 
+/**
+ * tokens.css is inlined into the page rather than enqueued as a file.
+ *
+ * PSI measured it as a ~450ms render-blocking request on mobile — the largest
+ * single member of the six-stylesheet chain that sets the FCP floor. Inlining
+ * removes the request entirely; at ~10KB gzipped the payload cost per page is
+ * far below the round-trips it saves, and the nginx page cache absorbs the
+ * per-request file read.
+ *
+ * Two details that matter:
+ * - The @font-face rules use url(../fonts/…), relative to the CSS file's
+ *   location. Inlined into HTML those would resolve against the page URL and
+ *   silently break both fonts, so they are rewritten to absolute URLs first.
+ * - Comments are stripped at print time only — the file on disk stays fully
+ *   documented, the served HTML carries none of it.
+ *
+ * If the file read ever fails, it falls back to the old enqueue rather than
+ * shipping an unstyled page.
+ */
 add_action( 'wp_enqueue_scripts', function () {
-	wp_enqueue_style(
-		'cfi-tokens',
-		get_stylesheet_directory_uri() . '/assets/css/tokens.css',
-		array(),
-		wp_get_theme()->get( 'Version' )
-	);
-} );
+	$path = get_stylesheet_directory() . '/assets/css/tokens.css';
+	$css  = is_readable( $path ) ? file_get_contents( $path ) : false;
+
+	if ( false === $css || '' === trim( $css ) ) {
+		wp_enqueue_style(
+			'cfi-tokens',
+			get_stylesheet_directory_uri() . '/assets/css/tokens.css',
+			array(),
+			wp_get_theme()->get( 'Version' )
+		);
+		return;
+	}
+
+	$css = str_replace( 'url(../', 'url(' . get_stylesheet_directory_uri() . '/assets/', $css );
+	$css = preg_replace( '~/\*.*?\*/~s', '', $css );
+	$css = preg_replace( '~\n{2,}~', "\n", trim( $css ) );
+
+	wp_register_style( 'cfi-tokens', false, array(), null );
+	wp_enqueue_style( 'cfi-tokens' );
+	wp_add_inline_style( 'cfi-tokens', $css );
+}, 20 );
 
 /**
  * Preload the two self-hosted font files so the headline never flashes.
