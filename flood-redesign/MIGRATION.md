@@ -82,7 +82,13 @@ Fix during the write, do not carry across:
 4. 19 pages with no meta description; 19 descriptions over 165 characters.
 5. 33 pages under 300 words, including five 11–13 word stubs (`/claims/`, `/video/`,
    `/agent-appointment/`, `/staff-form/`, `/service-center/`). Decide per page: write real
-   content, merge, or do not migrate.
+   content, merge, or do not migrate. **All five resolved:** `/claims/` (form 31),
+   `/service-center/` (form 12), `/agent-appointment/` (form 34) carry their Cognito embeds;
+   `/video/` became the video hub. **`/staff-form/` (July 30):** kept — it is the office's
+   phone-intake copy of quote form 5, deliberately on its own URL so staff entries never touch
+   the Google Ads conversion tracking tied to `/get-a-quote/`. Staging page 71 now embeds
+   form 5 and gets `rank_math_robots = noindex,nofollow` (meta registered in theme v1.3.1);
+   never link to it from public pages.
 6. Do **not** migrate the hardcoded `InsuranceAgency` JSON-LD block. It carries the
    self-serving `aggregateRating` and the "30–50% lower" claim, and Rank Math now owns schema.
 

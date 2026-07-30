@@ -59,6 +59,30 @@ add_action( 'init', function () {
 				},
 			) );
 		}
+
+		/*
+		 * Rank Math's per-page robots directives, e.g. ["noindex","nofollow"].
+		 * Needed so internal-only pages (/staff-form/) can be excluded from
+		 * search programmatically. Values are whitelisted to the directives
+		 * Rank Math itself offers.
+		 */
+		register_post_meta( $type, 'rank_math_robots', array(
+			'type'              => 'array',
+			'single'            => true,
+			'show_in_rest'      => array(
+				'schema' => array(
+					'type'  => 'array',
+					'items' => array( 'type' => 'string' ),
+				),
+			),
+			'sanitize_callback' => function ( $value ) {
+				$allowed = array( 'index', 'noindex', 'nofollow', 'noarchive', 'noimageindex', 'nosnippet' );
+				return array_values( array_intersect( (array) $value, $allowed ) );
+			},
+			'auth_callback'     => function () {
+				return current_user_can( 'edit_posts' );
+			},
+		) );
 	}
 } );
 

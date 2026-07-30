@@ -90,11 +90,21 @@ Same pipeline as CFI, in this order:
    (needs its GBP data), areaServed United States, same schema fixes via the theme filter.
 5. **Redirects** — pull from production Redirection when credentials exist.
 
-## Open questions for Aaron
+## Decisions (July 30)
 
-- Staging URL + application password for statewide (Dropbox folder preferred over chat).
-- Does Statewide have its own Google Business Profile listing (separate NAP/reviews
-  surface), or does only the shared parent GBP exist?
-- Shared-posts disposition (item 5 above).
+- **Shared posts: statewide stands on its own content.** The 47 duplicated CFI posts do not
+  migrate; the two sites cross-link instead (sister-note in the theme, plus editorial links
+  where relevant). Statewide's ranking surface is the 30 state pages + private-flood cluster.
+- **No separate GBP.** Statewide uses the California Flood Insurance Services profile —
+  reviews come through both sites, same company. Rank Math local SEO on statewide therefore
+  carries the same NAP as CFI; the Organization node is named Statewide Flood Insurance with
+  sameAs linking both domains and the shared GBP surfaces.
+- Staging: Aaron is creating it now (URL + application password to follow).
+
+## Still open
+
 - Homepage title: no incumbent to protect here — propose
   `Statewide Flood Insurance: NFIP & Private Flood Quotes` or a claim variant if desired.
+- Palette + hero copy drafts (above) — review on the staging render.
+- `/staff-form/` equivalent exists on statewide production too; same treatment as CFI
+  (Cognito quote form on its own URL, noindex) if statewide's office flow needs it.
