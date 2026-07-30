@@ -89,3 +89,28 @@ Ruled out by inspection: Kadence's `--scrollbar-offset` inline script, which PSI
 119ms forced reflow, only feeds `.kadence-scrollbar-fixer` — a class added when a drawer
 opens, not on load. Re-run PSI desktop a second time before treating 0.143 as real; single
 Lighthouse traces are noisy and CLS especially so.
+
+---
+
+## RESOLVED — July 30 2026, via the theme (v1.2.0)
+
+Manual .htaccess editing was declined on the browser side, so the theme now installs the
+rules itself: `inc/htaccess.php` uses core's `insert_with_markers()` (the WP Super Cache /
+W3TC mechanism), marker-delimited, IfModule-wrapped, admin-only, one-time. It fired on the
+first wp-admin load after the v1.2.0 install and Apache now serves:
+
+- images / fonts / video: `public, max-age=31536000, immutable` + 1-year Expires
+- CSS / JS: `public, max-age=2592000`
+
+**Verification trap, hit twice:** the nginx proxy cache fronts static files too, and a cached
+asset keeps whatever headers it was stored with. Post-install checks read "NONE" because the
+entries predated the rules — only a cache-busted request (forced MISS) showed the truth.
+Architecture confirmed by requesting a nonexistent theme file: it returns a WordPress-rendered
+404, so Apache processes /wp-content/themes/ paths and per-directory .htaccess applies.
+
+After a panel purge, a few pre-rule entries (sourceserif4.woff2, hero-poster.webp,
+raindrops-hero.mp4 at their bare URLs) survived; they age out within the cache's 24h refresh.
+
+**Cutover:** nothing to do. The routine travels with the theme and fires on the first
+wp-admin visit on production. Confirm with:
+`curl -sI https://www.californiafloodinsurance.com/wp-content/themes/cfi-kadence-child/assets/fonts/inter.woff2?cb=1 | grep -i cache-control`
