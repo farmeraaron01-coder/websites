@@ -102,6 +102,9 @@ require_once get_stylesheet_directory() . '/inc/cognito.php';
 /* [cfi_video] click-to-play facade + VideoObject, and [cfi_videos] for the hub. */
 require_once get_stylesheet_directory() . '/inc/video.php';
 
+/* One-time .htaccess cache-header install — see inc/htaccess.php for why. */
+require_once get_stylesheet_directory() . '/inc/htaccess.php';
+
 add_action( 'wp_enqueue_scripts', function () {
 	wp_enqueue_style(
 		'cfi-tokens',
