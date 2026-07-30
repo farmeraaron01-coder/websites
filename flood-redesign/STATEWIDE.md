@@ -130,6 +130,30 @@ Same pipeline as CFI, in this order:
   sameAs linking both domains and the shared GBP surfaces.
 - Staging: Aaron is creating it now (URL + application password to follow).
 
+## PSI — July 30 2026 (homepage, Google-run)
+
+| | Mobile | Desktop |
+|---|---|---|
+| Performance | **100** | **100** |
+| FCP / LCP | 0.8s / 1.5s | 0.3s / 0.5s |
+| TBT / CLS | 0ms / 0 | 0ms / 0.006 |
+
+Best result of the whole project — statewide's homepage outscores CFI's (93 mobile), mostly
+because it has no hero video. Footnotes:
+
+- **SEO showed 91 with "no meta description" and no indexing block — both false.** PSI
+  measured a stale nginx-cached copy (`x-proxy-cache: HIT`) predating the day's SEO work;
+  the live page (cache-busted) serves both the description and `noindex, nofollow`.
+  Root cause: statewide staging had no purge-on-update at all. Nginx Helper is now
+  installed+activated via REST, but its purge switch is wp-admin-only —
+  Settings → Nginx Helper → "Enable Purge" (see cut-paste in chat). `/purge/` is 403
+  (IP-restricted) here exactly as on production.
+- **"Font display 240–450ms" insight is the deliberate font-display:optional trade** —
+  accepting it is what bought CLS 0 (see tokens.css header comment). Do not "fix".
+- **Desktop a11y 95** ("lists contain non-li children") is the Trust Index carousel's own
+  markup, third-party. Mobile scores 100 because the widget lazy-loads below the fold and
+  the mobile run never renders it. Not actionable from this side.
+
 ## Still open
 
 - Homepage title: no incumbent to protect here — propose
