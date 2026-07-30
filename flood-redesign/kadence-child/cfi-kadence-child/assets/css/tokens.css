@@ -371,3 +371,23 @@ body.cfi-lp{margin:0;background:var(--cfi-paper);font-family:var(--cfi-body);col
 .cfi-rail-links li:first-child{border-top:0;padding-top:0}
 .cfi-rail-links a{color:var(--cfi-link);text-decoration:none}
 .cfi-rail-links a:hover{text-decoration:underline}
+
+/* ---- Kadence top bar: two halves inside one HTML element ----
+   Kadence Free permits a single HTML element across the whole header, so the
+   licence line and the hours/phone line share one block and are split here.
+
+   Selectors read from the live DOM rather than guessed. The row
+   (.site-top-header-inner-wrap) is a CSS **grid** — computed
+   grid-template-columns: 1019px 222px — so the left section needs grid-column,
+   not flex-grow; a flex rule here would silently do nothing. The right section
+   is empty and is hidden so the left can span the full width.
+
+   Note this row only renders above 1024px, where Kadence swaps in its mobile
+   header, so the header phone number is desktop-only by design. */
+#main-header .site-top-header-inner-wrap .site-header-top-section-left{grid-column:1/-1}
+#main-header .site-top-header-inner-wrap .site-header-top-section-right{display:none}
+#main-header .site-top-header-inner-wrap .site-header-item,
+#main-header .site-top-header-inner-wrap .header-html,
+#main-header .site-top-header-inner-wrap .header-html-inner{width:100%}
+#main-header .cfi-topbar{display:flex;align-items:center;justify-content:space-between;
+  gap:2px 24px;flex-wrap:wrap;width:100%}
