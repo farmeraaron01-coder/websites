@@ -4,8 +4,20 @@
  * :root block (teal palette values are commented beside each token).
  */
 
-@font-face{font-family:'Source Serif 4';font-style:normal;font-weight:200 900;font-stretch:100%;src:url(../fonts/sourceserif4.woff2) format('woff2');font-display:swap}
-@font-face{font-family:'Inter';font-style:normal;font-weight:100 900;src:url(../fonts/inter.woff2) format('woff2');font-display:swap}
+/* font-display:optional, not swap — the desktop CLS fix.
+   PSI measured CLS 0.143 on desktop (twice) and 0.001 on mobile: on desktop the
+   page paints at 0.4s before the fonts land, then the swap rewraps specific
+   strings (hero sub, markets bar) and shifts everything below. Metric-matched
+   fallbacks (size-adjust/ascent-override) were built and measured first — they
+   made it WORSE (0.042 -> 0.096), because the shift is per-string wrap variance
+   that average-width adjustment cannot fix. `optional` removes the swap
+   entirely: if the font misses first paint the page keeps the fallback and the
+   font caches for the next view. Measured: CLS 0 in both race outcomes.
+   Trade-off: the very first pageview on a cold cache may render Georgia/Arial.
+   With preload + the 1-year immutable cache headers, every later view is brand
+   type. Revert = change `optional` back to `swap` (and accept the CLS). */
+@font-face{font-family:'Source Serif 4';font-style:normal;font-weight:200 900;font-stretch:100%;src:url(../fonts/sourceserif4.woff2) format('woff2');font-display:optional}
+@font-face{font-family:'Inter';font-style:normal;font-weight:100 900;src:url(../fonts/inter.woff2) format('woff2');font-display:optional}
 
 :root{
   --cfi-accent:#0891C7;        /* swfi: #0E8E8A */
