@@ -461,3 +461,12 @@ body.cfi-lp{margin:0;background:var(--cfi-paper);font-family:var(--cfi-body);col
 .entry-content a:not(.cfi-btn):not(.button):not([class*="cog-"]){color:var(--cfi-link);
   text-decoration:underline;text-underline-offset:2px}
 .entry-content a:not(.cfi-btn):not(.button):not([class*="cog-"]):hover{color:var(--cfi-link-hover)}
+
+/* Kadence's bottom footer row is a two-column grid (measured: 606px 606px), and
+   the widget area is the right-hand section — so the link block only ever got
+   half the width and its four columns collapsed to 128px, wrapping five link
+   labels. Collapse the row to one column when our block is present and pull it
+   above the copyright section. Same lesson as the header: this row is grid, so
+   grid-column/one-column is the lever, not flex. */
+#colophon .site-bottom-footer-inner-wrap:has(.cfi-foot){grid-template-columns:1fr;gap:24px}
+#colophon .site-footer-bottom-section-2:has(.cfi-foot){order:-1}
