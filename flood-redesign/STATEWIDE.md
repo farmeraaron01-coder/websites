@@ -193,11 +193,18 @@ under-served topic for coastal states. Net-new ~700w guide (NFIP caps, the self-
 gap, who needs it, layer-vs-single-policy, cost drivers), linked from the footer Private
 Flood column and the commercial page. First statewide-original content asset.
 
-**Insights launched (July 30):** three statewide-original articles published as posts
-(ids 113–115, author Aaron J. Farmer, interior layout with takeaways/standfirst):
+**Insights launched (July 30):** SEVEN statewide-original articles, six categories
+(Hurricanes & Storm Surge, Excess Flood, Lenders & Closings, Flood Basics, NFIP & Pricing,
+Claims — created as content pillars, no Uncategorized), dates staggered June 17–July 30 at
+Aaron's request. Wave 1 (ids 113–115):
 `/storm-surge-flood-not-wind/`, `/florida-excess-flood-nfip-cap/`,
 `/lender-flood-insurance-requirements-over-250k/`. All cross-link the excess guide, state
-pages, and the quote page. Insights restored to the nav. These do NOT get copied to CFI —
+pages, and the quote page. Insights restored to the nav. Wave 2 (ids 129–132): `/fema-disaster-assistance-vs-flood-insurance/` (the "FEMA will
+help me" myth), `/nfip-risk-rating-2-premium-increases/` (the 18%-cap escalator + private
+off-ramp), `/elevation-certificates-2026/` (optional under RR2.0, still cuts premiums on
+elevated homes), `/how-flood-claims-get-paid/` (process, 60-day Proof of Loss, ACV
+contents). All carry safe, verifiable claims only; waiting-period language follows Aaron's
+binding-vs-effective rule. These do NOT get copied to CFI —
 one home per article is the whole lesson of the duplicate-blog problem; CFI links to them
 cross-site if ever needed. **Aaron should review voice/claims before launch.**
 
