@@ -99,10 +99,16 @@ Same pipeline as CFI, in this order:
    - 18 pages had no meta description; drafts written from each page's own opening copy
      (`sw-desc-drafts.json`), six hand-written (legal pages, glossary, insights, two
      truncation fixes). **Aaron should skim these.**
-   - **Legal pages are CFI's text verbatim** — privacy policy and terms both name
-     "California Flood Insurance Services" and the CFI domain throughout, on statewide
-     production today. Possibly correct (same operating entity/DBA) but that is an
-     owner/attorney call. Left at production parity; flagged.
+   - **Legal pages — RESOLVED July 30.** Aaron supplied statewide-specific 2026-edition
+     documents (Dropbox: StatewideFloodInsurance_Terms_of_Service_2026.docx / _Privacy_
+     Policy_2026.docx). Both published to staging (terms 3,098w/30 sections, privacy
+     2,670w/18 sections), converted from docx with headings/lists intact, manual TOC
+     dropped in favor of the template's. They name the real operator — **Rebecca Byrom
+     Insurance Agency, Inc. (RBIA), CA License #0L75450, dba Statewide Flood Insurance** —
+     contact agency.services@jumpins.com, effective July 30 2026. Zero CFI references in
+     content (verified; the footer sister-link is the only cross-domain mention on the
+     page). NOTE: RBIA is presumably also the entity behind the CFI DBA — CFI's own legal
+     pages may deserve the same 2026-edition treatment before launch; ask Aaron.
    - `/contact-us/` carries the Escondido *mailing* address in body copy (production parity,
      fine there) — it must still never enter schema NAP. "Phyiscal" typo fixed.
 4. **Plugins/SEO — DONE July 30, verified live.** Rank Math configured (wizard Advanced,
