@@ -105,8 +105,17 @@ Same pipeline as CFI, in this order:
      owner/attorney call. Left at production parity; flagged.
    - `/contact-us/` carries the Escondido *mailing* address in body copy (production parity,
      fine there) — it must still never enter schema NAP. "Phyiscal" typo fixed.
-4. **Plugins/SEO** — same five-plugin stack, same Rank Math config with statewide's NAP
-   (needs its GBP data), areaServed United States, same schema fixes via the theme filter.
+4. **Plugins/SEO — DONE July 30, verified live.** Rank Math configured (wizard Advanced,
+   Insurance Agency, name "Statewide Flood Insurance", shared-GBP NAP: Silverton Ave, +1-855-
+   225-3566, Mon–Fri 07:30–17:00, foundingDate 2012-01-01, sameAs Facebook + YouTube + CFI
+   domain). Verified in served JSON-LD on home/get-a-quote/texas: the theme filter emits
+   areaServed=United States and openingHoursSpecification on the statewide brand; Service
+   node on get-a-quote with the Offers/InStock group deleted (again required the hidden-
+   delete-button DOM workaround, same Rank Math builder quirk as CFI); BreadcrumbList on
+   interior pages; robots noindex untouched. Homepage meta set: "Statewide Flood Insurance:
+   NFIP & Private Flood Quotes" + 50-states description (drafts, one-field change).
+   Remaining niggle: homepage content schema still carries an Article node — delete per-page
+   schema on the Home page in wp-admin, same as CFI's homepage.
 5. **Redirects** — pull from production Redirection when credentials exist.
 
 ## Decisions (July 30)

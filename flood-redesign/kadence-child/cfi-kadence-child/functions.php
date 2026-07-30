@@ -24,8 +24,17 @@ if ( 'swfi' === CFI_BRAND ) {
 	define( 'CFI_QUOTE_URL', 'https://statewidefloodinsurance.com/get-a-quote/' );  /* non-www: statewide's canonical host */
 	define( 'CFI_LICENSE', 'CA License #0L75450' );
 	define( 'CFI_SISTER_NOTE', 'Insuring a California property? <a href="https://www.californiafloodinsurance.com/">Visit California Flood Insurance</a>.' );
-	define( 'CFI_TRUSTINDEX_ID', '' );  /* set once statewide's widget copy exists in Trust Index */
-	define( 'CFI_GOOGLE_REVIEWS_URL', 'https://www.google.com/search?q=Statewide+Flood+Insurance+reviews' );
+	/*
+	 * Same widget as CFI staging deliberately: both brands share one Google
+	 * Business Profile, and this widget copy is the one already tuned there
+	 * (rotate interval 0 so no autoplay CLS, rich snippet off). If statewide
+	 * ever needs its own styling, duplicate the widget in Trust Index and
+	 * swap this ID — the review pool is unaffected.
+	 */
+	define( 'CFI_TRUSTINDEX_ID', 'bcdff9477ef19568e30684fd16d' );
+	/* The shared GBP is named after the CFI DBA, so that is where a reviews
+	   search actually lands. */
+	define( 'CFI_GOOGLE_REVIEWS_URL', 'https://www.google.com/search?q=California+Flood+Insurance+Services+reviews' );
 } else {
 	define( 'CFI_SITE_NAME', 'California Flood Insurance' );
 	define( 'CFI_PHONE_DISPLAY', '855-CAL-FLOOD (225-3566)' );
