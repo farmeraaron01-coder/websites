@@ -120,6 +120,23 @@ add_action( 'wp_head', function () {
 	$base = get_stylesheet_directory_uri() . '/assets/fonts/';
 	echo '<link rel="preload" href="' . esc_url( $base . 'sourceserif4.woff2' ) . '" as="font" type="font/woff2" crossorigin>' . "\n";
 	echo '<link rel="preload" href="' . esc_url( $base . 'inter.woff2' ) . '" as="font" type="font/woff2" crossorigin>' . "\n";
+
+	/*
+	 * Preload the hero poster on the front page only — it is the LCP element.
+	 * PageSpeed Insights measured its LCP breakdown as 70ms TTFB, 460ms resource
+	 * load *delay*, 530ms load, 210ms render: the delay was the largest single
+	 * component, because the image sits inside a <picture> that the browser only
+	 * discovers after the six render-blocking stylesheets resolve.
+	 *
+	 * type="image/webp" means browsers without WebP support skip the hint rather
+	 * than fetching something they cannot use, and only the WebP is preloaded so
+	 * the JPEG fallback is never double-downloaded.
+	 */
+	if ( is_front_page() ) {
+		echo '<link rel="preload" as="image" href="'
+			. esc_url( get_stylesheet_directory_uri() . '/assets/media/hero-poster.webp' )
+			. '" type="image/webp" fetchpriority="high">' . "\n";
+	}
 }, 5 );
 
 /* Trim scripts WordPress ships that this site never uses. */
