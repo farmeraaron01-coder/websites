@@ -17,7 +17,7 @@ Harbor navy `#0A2540` grounds the hero and footer; the brand cyan is evolved int
 accessible Pacific blue `#0891C7` (bright tint `#38C6F4` on dark); a single warm accent,
 sunset gold `#F2A93B` (from the logo's sunset), is reserved exclusively for quote CTAs so the
 conversion action is always the warmest pixel on screen. Statewide swaps the blues for deep
-teal — same system, two brands. Type is Bricolage Grotesque (display) + Public Sans (body),
+teal — same system, two brands. Type is Source Serif 4 (display) + Inter (body/UI),
 both Google Fonts that Kadence can self-host locally (~100 KB total). The one decorative motif
 is a dashed **base-flood-elevation waterline** borrowed from elevation certificates — it anchors
 the hero, the zone badge, and the CTA band, and it is literally what flood pricing is about.

@@ -18,7 +18,7 @@ and pages use the normal WordPress editor, unchanged.
 5. Footer: Kadence Footer Builder, background #0A2540. Include the license line, the
    qualified-coverage disclaimer, and the Statewide cross-link (see REVIEW.md).
 6. Typography (Appearance > Customize > Typography): the child theme self-hosts
-   Bricolage Grotesque + Public Sans and applies them on the front page. For sitewide use,
+   Source Serif 4 (display) + Inter (body/UI) and applies them on the front page. For sitewide use,
    select the same families in Kadence and enable "Load Google Fonts Locally", or leave
    Kadence's defaults for interior pages.
 7. Performance (Appearance > Customize > General > Performance): enable CSS per-page

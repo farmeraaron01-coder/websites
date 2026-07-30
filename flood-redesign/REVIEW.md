@@ -34,7 +34,7 @@ best of both.
 5. **Aaron is a monogram, not a person.** They shipped `aaron-farmer.png` but render "AF" on the
    homepage. YMYL trust wants the face and credentials.
 6. **Georgia/Arial system type.** Zero-byte payload is smart, but Arial body reads dated —
-   exactly what the migration is meant to escape. v2 uses Bricolage Grotesque + Public Sans
+   exactly what the migration is meant to escape. v2 used Bricolage Grotesque + Public Sans (superseded — the build ships Source Serif 4 + Inter)
    (~100 KB self-hosted via Kadence) as a distinctive but trustworthy voice. This is the one
    deliberate style disagreement; both options are performance-safe.
 
