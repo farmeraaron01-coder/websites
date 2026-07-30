@@ -470,3 +470,34 @@ body.cfi-lp{margin:0;background:var(--cfi-paper);font-family:var(--cfi-body);col
    grid-column/one-column is the lever, not flex. */
 #colophon .site-bottom-footer-inner-wrap:has(.cfi-foot){grid-template-columns:1fr;gap:24px}
 #colophon .site-footer-bottom-section-2:has(.cfi-foot){order:-1}
+
+/* ---- Video facade + hub grid (see inc/video.php) ----
+   The facade is a button holding a thumbnail; the iframe replaces it on click.
+   aspect-ratio keeps the box reserved at the right size before and after, so
+   swapping the thumbnail for the iframe shifts nothing. */
+.cfi-video{margin:0 0 22px}
+.cfi-video iframe,.cfi-video-play{width:100%;aspect-ratio:16/9;border:0;border-radius:12px;display:block}
+.cfi-video-play{position:relative;padding:0;cursor:pointer;overflow:hidden;background:var(--cfi-navy)}
+.cfi-video-play img{width:100%;height:100%;object-fit:cover;display:block}
+.cfi-video-icon{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
+  width:76px;height:76px;border-radius:50%;background:rgba(10,37,64,.82);
+  box-shadow:0 6px 22px -8px rgba(0,0,0,.6);transition:background .15s ease,transform .15s ease}
+.cfi-video-icon::after{content:"";position:absolute;left:52%;top:50%;transform:translate(-50%,-50%);
+  border-style:solid;border-width:13px 0 13px 21px;border-color:transparent transparent transparent #fff}
+.cfi-video-play:hover .cfi-video-icon{background:var(--cfi-cta);transform:translate(-50%,-50%) scale(1.06)}
+.cfi-video-play:hover .cfi-video-icon::after{border-left-color:var(--cfi-cta-ink)}
+.cfi-video-play:focus-visible{outline:3px solid var(--cfi-accent-bright);outline-offset:3px}
+.cfi-video-label{position:absolute;left:0;right:0;bottom:0;padding:26px 18px 14px;text-align:left;
+  font:600 16px/1.3 var(--cfi-body);color:#fff;
+  background:linear-gradient(to top,rgba(10,37,64,.88),transparent)}
+@media (prefers-reduced-motion:reduce){.cfi-video-icon{transition:none}
+  .cfi-video-play:hover .cfi-video-icon{transform:translate(-50%,-50%)}}
+
+.cfi-video-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:22px;margin:0 0 8px}
+.cfi-video-card{display:block;text-decoration:none;background:var(--cfi-card);
+  border:1px solid var(--cfi-line);border-radius:12px;overflow:hidden;box-shadow:var(--cfi-shadow)}
+.cfi-video-card img{width:100%;aspect-ratio:16/9;object-fit:cover;display:block}
+.cfi-video-card-title{display:block;padding:14px 16px;font:600 15.5px/1.35 var(--cfi-body);color:var(--cfi-ink)}
+.cfi-video-card:hover{border-color:var(--cfi-accent-bright)}
+.cfi-video-card:hover .cfi-video-card-title{color:var(--cfi-link)}
+.cfi-video-card:focus-visible{outline:3px solid var(--cfi-accent-bright);outline-offset:2px}

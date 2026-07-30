@@ -99,6 +99,9 @@ require_once get_stylesheet_directory() . '/inc/callbar.php';
 /* [cfi_cognito form="31"] — embeds for the pages that exist only to host a form. */
 require_once get_stylesheet_directory() . '/inc/cognito.php';
 
+/* [cfi_video] click-to-play facade + VideoObject, and [cfi_videos] for the hub. */
+require_once get_stylesheet_directory() . '/inc/video.php';
+
 add_action( 'wp_enqueue_scripts', function () {
 	wp_enqueue_style(
 		'cfi-tokens',
