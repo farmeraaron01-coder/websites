@@ -114,8 +114,9 @@ Same pipeline as CFI, in this order:
    delete-button DOM workaround, same Rank Math builder quirk as CFI); BreadcrumbList on
    interior pages; robots noindex untouched. Homepage meta set: "Statewide Flood Insurance:
    NFIP & Private Flood Quotes" + 50-states description (drafts, one-field change).
-   Remaining niggle: homepage content schema still carries an Article node — delete per-page
-   schema on the Home page in wp-admin, same as CFI's homepage.
+   Homepage Article node deleted per-page (July 30, verified live twice — wp-admin and a
+   cache-busted fetch from here): final homepage graph is Place, InsuranceAgency/Organization,
+   WebSite, WebPage. Trust Index live via the shared tuned widget (v1.3.2 installed).
 5. **Redirects** — pull from production Redirection when credentials exist.
 
 ## Decisions (July 30)
