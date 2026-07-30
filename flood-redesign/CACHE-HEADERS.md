@@ -178,6 +178,11 @@ TBT 0ms, CLS 0 — with nine video thumbnails on the page. The click-to-play fac
 architecture holds: zero YouTube player weight until a click; the hub outscores the
 homepage (93) on mobile.
 
+`/video/` desktop (Google-run, same day): **100 perf / 100 a11y / 100 BP**, FCP 0.4s,
+LCP 0.5s, TBT 0ms, CLS 0. The remaining "render-blocking 350ms" insight is Kadence's
+global.min.css (the one stylesheet left blocking by design) and the image-delivery
+25 KiB is YouTube's mqdefault JPEGs — neither is actionable from this side.
+
 The "cache lifetimes 70 KiB" insight is i.ytimg.com's own thumbnail headers — YouTube's
 servers, not configurable from this side.
 
