@@ -168,3 +168,20 @@ Mobile's remaining gap to 100 is round-trip-bound on simulated slow 4G (document
 global.min.css). Option recorded but not taken: inline the last two Kadence CSS files
 for an estimated +2–4 points. Declined as simulator-chasing; every vital is green and
 field data is what counts after launch.
+
+---
+
+## Video hub PSI — July 30 2026
+
+`/video/` mobile (Google-run): **95 perf / 100 a11y / 100 BP**, FCP 1.5s, LCP 2.9s,
+TBT 0ms, CLS 0 — with nine video thumbnails on the page. The click-to-play facade
+architecture holds: zero YouTube player weight until a click; the hub outscores the
+homepage (93) on mobile.
+
+The "cache lifetimes 70 KiB" insight is i.ytimg.com's own thumbnail headers — YouTube's
+servers, not configurable from this side.
+
+Local-Lighthouse footnote: this same page measured 62 perf / 8.7s LCP through this
+environment's double proxy, with the trace showing everything loaded by 2.3s. External-
+origin pages cannot be measured from here; PSI is the arbiter (third instance of the
+instrument failing before the site did: font CLS, min-height harness, this).
