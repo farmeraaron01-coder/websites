@@ -171,6 +171,23 @@ Incidents worth remembering:
   visually fine.
 - Nginx Helper's "Purge Method" field only appears after saving with Enable Purge checked.
 
+## Content upgrades — July 30
+
+`/residential/` and `/commercial-flood-insurance/` were the two coverage pages thin enough
+(317w/375w) to fall below the guide-template threshold: default title band, raw production
+copy with literal `\` bullet separators, a wrong vanity number (225-FLOOD), and Divi-era
+clipart. Both rewritten (~600w each, structured h2s, takeaways, standfirst, internal links,
+proven claims kept: 10–50% lower premiums, 10-day vs 30-day wait, $50M/$10M/$1M limits),
+set to template-guide.php explicitly, clipart dropped. Owner decision: no stock
+illustrations anywhere — real photography only if supplied; parallax rejected on
+performance/CLS grounds.
+
+**NEW: `/excess-flood-insurance/` (page 111)** — Aaron flagged excess flood as a major
+under-served topic for coastal states. Net-new ~700w guide (NFIP caps, the self-insurance
+gap, who needs it, layer-vs-single-policy, cost drivers), linked from the footer Private
+Flood column and the commercial page. First statewide-original content asset; more coastal
+topics (storm surge vs wind, Florida-specific excess) are natural follow-ups for /insights/.
+
 ## Still open
 
 - Homepage title: no incumbent to protect here — propose
