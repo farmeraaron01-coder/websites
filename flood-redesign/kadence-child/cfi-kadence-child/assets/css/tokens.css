@@ -25,7 +25,10 @@
   --cfi-line:#D5E3EC;
   --cfi-ink:#12283F;
   --cfi-ink-2:#44607A;
-  --cfi-ink-3:#54708A;   /* AA-safe for small text on white and mist */
+  /* Small-text ink. Was #54708A, whose comment claimed mist-safety it did not
+     have: 4.48:1 on --cfi-mist, so 13px breadcrumb and byline text failed AA by
+     a hair. Verified now — 4.82 on mist, 5.31 on paper, 5.56 on white. */
+  --cfi-ink-3:#4F6B85;
   --cfi-on-navy:#EAF4FB;
   --cfi-on-navy-2:#9FBDD4;
   --cfi-good:#1E9E6A;
