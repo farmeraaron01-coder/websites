@@ -284,8 +284,10 @@ duplication we just spent a day removing.
 **Theme v1.3.4** adds two things this needed: the `schema="no"` attribute, and automatic
 lazy-loading for every player after the first on a page (previously every `[cfi_video]`
 thumbnail was `fetchpriority="high"`, which is right for one embed and ruinous for nine).
-**Must be installed on both sites** — until it is, statewide's hub emits nine competing
-VideoObject blocks and nine eager 1280px thumbnails.
+**Installed on both sites July 30 and verified from here:** statewide's hub emits 0
+VideoObject (was 9) with 1 eager / 8 lazy players; the three statewide contextual embeds
+emit 0 VideoObject; CFI's per-video pages still emit theirs. Zero schema competition
+between the sites.
 
 **When statewide records its own videos**, they become statewide's video homes: own pages,
 own VideoObject, and CFI can embed them back with `schema="no"`. The mechanism is symmetric.
