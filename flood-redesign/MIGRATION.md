@@ -196,8 +196,34 @@ call the same day, that being evacuated does not put the claim at risk, and to k
 of when you were able to do what. This is an improvement on the source documents, which do
 not address it.
 
+**Coverage-line correction (Aaron, July 31):** building and contents are *not* "two
+purchases" — they are two different lines of coverage on one policy, each with its own limit
+and its own deductible. This wording came out of the source PDFs (page 8 of the Flood Claim
+Preparation Guide reads "Building coverage and contents coverage are separate purchases"), so
+**the PDFs need the same correction at Aaron's next revision** — the site is now right and
+the downloads are not. Fixed in four places on `/flood-coverage-gaps/`: the section-1 body on
+both sites, the statewide H2, the CFI Q&A answer, and — found only by rendering the page,
+because it lives in `_cfi_takeaways` meta rather than the content — the "What to know" bullet
+on both. Sitewide re-scan of every page and post, content *and* meta: zero remaining
+instances.
+
+Aaron's substantive point got written in alongside the correction: lenders require the
+building line and nothing on what is inside, so that is how most policies get written and
+nobody revisits it, while adding contents is often a small part of the premium. Every
+customer should be asking for that number rather than assuming it is expensive.
+
+**Tone correction (Aaron, July 31):** the statewide heading "Nobody is paying for the hotel"
+was harsh. The message is a coverage distinction, not a scolding: standard NFIP has no
+loss-of-use coverage, some private policies do, and it is knowable in advance. Now "Somewhere
+to live is not standard coverage — ask first" (statewide) and "Loss of use is a question to
+settle before the flood" (CFI), with both bodies making the before-not-after point explicitly.
+
 Rule going forward: if a reworded heading is less clear
 than the original, keep the original and take the duplication hit.
+
+Rule going forward (verification): text lives in meta as well as content on the interior
+template — `_cfi_takeaways`, and the Rank Math description. A content-only search will report
+a phrase as gone while it is still on the page. Sweep meta too, then render.
 
 Remaining assessment: acceptable, not ideal. The shared core is the procedure itself. If
 Google filters one version for a given query, both sites are the same company and the
