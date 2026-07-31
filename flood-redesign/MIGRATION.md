@@ -118,6 +118,39 @@ here: all 59 published posts return `/slug/` links with zero date-based leftover
 spot-checked posts return 200 with no redirect hop — so production URLs, rankings, and
 backlinks map 1:1 at cutover. Pages were unaffected throughout.
 
+## Claims content cluster — CFI, July 31
+
+Aaron produced five branded claim documents per brand (checklist one-pager, Before the Flood,
+Homeowner's Guide to Flood Readiness, a 10-page Flood Claim Preparation Guide, and Preparing
+for Your Flood Adjuster's Visit). Findings before building:
+
+- **CFI and statewide versions are pixel-identical except the logo** (measured: 0.14%–0.77%
+  of pixels differ). Publishing both verbatim as web pages would be textbook duplicate
+  content, so the pages are forked editorially per brand; the PDFs stay identical.
+- **All nine PDFs have NO text layer** — type is flattened to vector outlines (verified with
+  two independent PDF engines, zero characters extracted). Consequences: invisible to Google
+  and to AI engines, unreadable by screen readers, un-searchable with Ctrl+F. Content had to
+  be transcribed from page renders. This is why the pages, not the PDFs, are the SEO asset.
+- **Every statewide PDF carries CFI contact details** (`855-CAL-FLOOD` and
+  `service@californiafloodinsurance.com`); only logo and URL were localised. Aaron is fixing
+  the source files. The disclaimer WAS localised, so the omission was partial.
+- **Each brand is missing one document:** no SW version of the 10-page guide, no CFI version
+  of the adjuster guide.
+- Filename typos fixed on upload: `Guild`→`Guide`, `Vistit`→`Visit`.
+
+Built on CFI staging (pages, `template-guide.php`, standfirst + takeaways + GEO Q&A +
+Aaron's disclaimer verbatim on each):
+`/flood-claim-guide/` (310, hub, holds the During section inline), `/before-a-flood/` (311),
+`/after-a-flood/` (312), `/flood-adjuster-visit/` (313), `/flood-coverage-gaps/` (314).
+`/claims/` (68) keeps the Cognito intake form but gained context, next-steps, and links.
+Four PDFs uploaded (media 306–309) and offered as downloads. Nav gained a "Claim Help" group;
+footer Learn column links the hub.
+
+**Theme v1.3.5** adds `X-Robots-Tag "noindex, noarchive"` for PDFs to the .htaccess block
+(option bumped to `v2` so the installer re-runs). Keeps deliverable PDFs out of search so
+they never outrank the pages holding the same content, and stops the two brands' identical
+PDFs competing.
+
 ## Plugins on production that must not follow
 
 Beyond Divi itself: Elementor (installed alongside Divi), OMGF, Schema & Structured Data for WP,

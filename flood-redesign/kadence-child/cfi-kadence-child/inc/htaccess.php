@@ -29,7 +29,7 @@
  */
 
 add_action( 'admin_init', function () {
-	if ( get_option( 'cfi_htaccess_cache_rules' ) === 'v1' ) {
+	if ( get_option( 'cfi_htaccess_cache_rules' ) === 'v2' ) {
 		return;
 	}
 	if ( ! current_user_can( 'manage_options' ) ) {
@@ -67,10 +67,22 @@ add_action( 'admin_init', function () {
 		'  <FilesMatch "\.(css|js)$">',
 		'    Header set Cache-Control "public, max-age=2592000"',
 		'  </FilesMatch>',
+		/*
+		 * Downloadable PDFs (claim checklists, prep guides) are deliverables, not
+		 * search assets. Two reasons to keep them out of the index: a PDF result
+		 * carries no navigation, no CTA and no phone number, so it converts far
+		 * worse than the page holding the same content; and the two sister brands
+		 * ship the same documents with different logos, which would otherwise have
+		 * them competing with each other. The pages are the indexable version.
+		 */
+		'  <FilesMatch "\.pdf$">',
+		'    Header set X-Robots-Tag "noindex, noarchive"',
+		'    Header set Cache-Control "public, max-age=2592000"',
+		'  </FilesMatch>',
 		'</IfModule>',
 	);
 
 	if ( insert_with_markers( $path, 'CFI static asset cache', $rules ) ) {
-		update_option( 'cfi_htaccess_cache_rules', 'v1', false );
+		update_option( 'cfi_htaccess_cache_rules', 'v2', false );
 	}
 } );
