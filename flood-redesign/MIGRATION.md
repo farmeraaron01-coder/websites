@@ -179,6 +179,13 @@ engines: **all five statewide Q&A blocks replaced with entirely different questi
 public adjusters, detached garages, vehicles) plus reworded H2 outlines on three pages so
 the two sites are not mirror images. Result: **31.3% unique on average** (28.4%–39.8%).
 
+Heading-rewording caveat (Aaron's catch, July 31): that pass optimised statewide's H2s for
+*difference from CFI's*, and difference is a worse goal than clarity. "Shoot the whole house
+before you touch anything" was ambiguous and reads badly in a disaster context — now
+"Photograph the whole house…"; "Do not go back until it is cleared" left the actor unstated —
+now "…until officials say it is safe". Rule going forward: if a reworded heading is less clear
+than the original, keep the original and take the duplication hit.
+
 Remaining assessment: acceptable, not ideal. The shared core is the procedure itself. If
 Google filters one version for a given query, both sites are the same company and the
 visitor converts either way — the cost is occupying one slot instead of two, not a penalty.
