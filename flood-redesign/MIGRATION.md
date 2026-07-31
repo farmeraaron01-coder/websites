@@ -183,7 +183,20 @@ Heading-rewording caveat (Aaron's catch, July 31): that pass optimised statewide
 *difference from CFI's*, and difference is a worse goal than clarity. "Shoot the whole house
 before you touch anything" was ambiguous and reads badly in a disaster context — now
 "Photograph the whole house…"; "Do not go back until it is cleared" left the actor unstated —
-now "…until officials say it is safe". Rule going forward: if a reworded heading is less clear
+now "…until officials say it is safe". Two more of Aaron's catches on the same pass: "Build the inventory an adjuster will work
+from" used trade shorthand and had dropped the words that explain what an inventory is —
+now "Photograph your home and list what's in it"; "Harden the building" was mitigation
+jargon — now "Protect the building itself".
+
+**Content accuracy fix (Aaron, July 31):** the reworded heading "Open the claim the same
+day" was wrong, not merely blunt — many policyholders are evacuated and cannot. Now "Report
+the claim as soon as you safely can", and BOTH sites gained a paragraph stating plainly that
+displacement is expected, that carriers understand a displaced policyholder cannot always
+call the same day, that being evacuated does not put the claim at risk, and to keep a record
+of when you were able to do what. This is an improvement on the source documents, which do
+not address it.
+
+Rule going forward: if a reworded heading is less clear
 than the original, keep the original and take the duplication hit.
 
 Remaining assessment: acceptable, not ideal. The shared core is the procedure itself. If
