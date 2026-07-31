@@ -151,6 +151,40 @@ footer Learn column links the hub.
 they never outrank the pages holding the same content, and stops the two brands' identical
 PDFs competing.
 
+## Claims cluster — statewide + corrected PDFs, July 31
+
+Aaron supplied corrected sets for both brands. **Statewide contact details fixed and
+verified** (`855-225-3566`, statewide URL, statewide disclaimer, no CAL-FLOOD vanity, no CFI
+email). Both gaps filled: statewide now has the 10-page guide, CFI has the adjuster guide.
+The four re-sent CFI files were byte-identical to those already uploaded (md5 verified), so
+only the new CFI adjuster PDF was added — existing page links untouched.
+
+Note: statewide footers now carry **no email address at all** (previously the wrong one).
+Not incorrect, but `floodservice@statewideflood.com` would be an improvement.
+
+Statewide cluster built to mirror CFI's: `/flood-claim-guide/` (155), `/before-a-flood/`
+(156), `/after-a-flood/` (157), `/flood-adjuster-visit/` (159), `/flood-coverage-gaps/` (160);
+`/claims/` rewired; Claim Help nav group; footer link; five PDFs (media 150–154).
+
+### Duplicate-content measurement — the honest number
+
+Framing changes alone were NOT enough. First measurement: only **15–30% unique** text
+between the CFI and statewide versions (the projection was 60–70%). Aaron's documents are
+dense with procedural facts that have one correct phrasing — "photograph the high-water
+line" cannot be meaningfully paraphrased.
+
+A second pass rewrote the surfaces that carry the most weight for both Google and AI
+engines: **all five statewide Q&A blocks replaced with entirely different questions**
+(waiting periods, mortgage-free owners, Proof of Loss deadlines, catastrophe adjusters,
+public adjusters, detached garages, vehicles) plus reworded H2 outlines on three pages so
+the two sites are not mirror images. Result: **31.3% unique on average** (28.4%–39.8%).
+
+Remaining assessment: acceptable, not ideal. The shared core is the procedure itself. If
+Google filters one version for a given query, both sites are the same company and the
+visitor converts either way — the cost is occupying one slot instead of two, not a penalty.
+The lever if more separation is ever wanted: asymmetric depth (each site expands different
+sections and compresses others), or a cross-domain canonical on the most-duplicated page.
+
 ## Plugins on production that must not follow
 
 Beyond Divi itself: Elementor (installed alongside Divi), OMGF, Schema & Structured Data for WP,
