@@ -74,9 +74,16 @@ Do these in order. Do not skip to rendering.
 
 ### 1. Inventory
 
-List every file with duration, resolution, fps and whether it has audio.
-`ffprobe` each one. Note which are A-roll (someone talking), which are B-roll
-(no dialogue needed) and which are separate audio.
+```bash
+python helpers/ingest.py footage
+```
+
+This classifies every file as A-roll, B-roll or separate audio and flags the
+four properties that quietly ruin a render if nobody catches them now:
+variable frame rate, HDR, rotation metadata, and audio that is effectively
+silent. Read the "needs a decision" block before going further — mixed frame
+rates and mixed orientations are choices, not errors, and they are much
+cheaper to make here than after the cut exists.
 
 ### 2. Sync — before anything else
 
@@ -252,6 +259,7 @@ there is a reason.
 ## Helpers
 
 ```
+ingest.py           inventory and classify raw footage
 sync.py             dual-system, multicam and flash alignment
 transcribe.py       word-level verbatim ASR (Scribe or local whisper)
 pack_transcripts.py words -> phrase-level takes_packed.md

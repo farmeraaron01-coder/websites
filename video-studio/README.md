@@ -44,6 +44,7 @@ sync ──> transcribe ──> read ──> propose cuts ──> confirm ──
 
 | Stage | Tool | What it does |
 |---|---|---|
+| Inventory | `ingest.py` | Classifies footage and flags VFR, HDR, rotation and silent audio before they cost you a render |
 | Sync | `sync.py` | Aligns separate audio recorders and multiple cameras to one timeline, sub-millisecond, including clock-drift correction |
 | Transcribe | `transcribe.py` | Word-level verbatim ASR via ElevenLabs Scribe, or local whisper offline |
 | Read | `pack_transcripts.py` | Words into phrase-level takes — the main reading view |
