@@ -1,0 +1,264 @@
+{
+  "language_code": "en",
+  "text": "Got that A, though. Hi. How are you? How are you? Doing great. That's good. Thank you. Thank you. Thank you, oh yeah can I get four red please?",
+  "words": [
+    {
+      "type": "word",
+      "text": "Got",
+      "start": 10.08,
+      "end": 10.7,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "that",
+      "start": 10.7,
+      "end": 10.96,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "A,",
+      "start": 10.96,
+      "end": 11.16,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "spacing",
+      "text": " ",
+      "start": 11.16,
+      "end": 11.22
+    },
+    {
+      "type": "word",
+      "text": "though.",
+      "start": 11.22,
+      "end": 11.62,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "spacing",
+      "text": " ",
+      "start": 11.62,
+      "end": 14.7
+    },
+    {
+      "type": "word",
+      "text": "Hi.",
+      "start": 14.7,
+      "end": 15.32,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "spacing",
+      "text": " ",
+      "start": 15.32,
+      "end": 15.6
+    },
+    {
+      "type": "word",
+      "text": "How",
+      "start": 15.6,
+      "end": 15.76,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "are",
+      "start": 15.76,
+      "end": 15.86,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "you?",
+      "start": 15.86,
+      "end": 16.1,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "spacing",
+      "text": " ",
+      "start": 16.1,
+      "end": 16.4
+    },
+    {
+      "type": "word",
+      "text": "How",
+      "start": 16.4,
+      "end": 16.72,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "are",
+      "start": 16.72,
+      "end": 17.2,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "you?",
+      "start": 17.2,
+      "end": 17.32,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "spacing",
+      "text": " ",
+      "start": 17.32,
+      "end": 17.36
+    },
+    {
+      "type": "word",
+      "text": "Doing",
+      "start": 17.36,
+      "end": 17.64,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "great.",
+      "start": 17.64,
+      "end": 18.02,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "spacing",
+      "text": " ",
+      "start": 18.02,
+      "end": 18.78
+    },
+    {
+      "type": "word",
+      "text": "That's",
+      "start": 18.78,
+      "end": 19.06,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "good.",
+      "start": 19.06,
+      "end": 19.54,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "spacing",
+      "text": " ",
+      "start": 19.54,
+      "end": 20.38
+    },
+    {
+      "type": "word",
+      "text": "Thank",
+      "start": 20.38,
+      "end": 20.58,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "you.",
+      "start": 20.58,
+      "end": 20.89,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "spacing",
+      "text": " ",
+      "start": 20.89,
+      "end": 22.36
+    },
+    {
+      "type": "word",
+      "text": "Thank",
+      "start": 22.36,
+      "end": 22.52,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "you.",
+      "start": 22.52,
+      "end": 22.88,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "spacing",
+      "text": " ",
+      "start": 22.88,
+      "end": 30.64
+    },
+    {
+      "type": "word",
+      "text": "Thank",
+      "start": 30.64,
+      "end": 31.64,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "you,",
+      "start": 31.64,
+      "end": 32.14,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "oh",
+      "start": 32.14,
+      "end": 33.98,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "yeah",
+      "start": 33.98,
+      "end": 34.7,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "can",
+      "start": 34.7,
+      "end": 34.9,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "I",
+      "start": 34.9,
+      "end": 35.02,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "get",
+      "start": 35.02,
+      "end": 35.16,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "four",
+      "start": 35.16,
+      "end": 35.6,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "red",
+      "start": 35.6,
+      "end": 35.86,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "please?",
+      "start": 35.86,
+      "end": 36.38,
+      "speaker_id": "speaker_0"
+    }
+  ],
+  "_backend": "faster-whisper:small.en"
+}
