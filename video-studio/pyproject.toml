@@ -1,0 +1,16 @@
+[project]
+name = "video-studio"
+version = "0.1.0"
+description = "Conversation-driven video editing studio for Mr Taco Shop food reviews"
+requires-python = ">=3.10"
+dependencies = [
+    "requests",   # ElevenLabs Scribe API
+    "numpy",      # audio correlation for A/V sync
+    "pillow",     # timeline views and motion graphics
+]
+
+[project.optional-dependencies]
+# Local, offline transcription. Only needed without an ElevenLabs key.
+whisper = ["faster-whisper"]
+# Diagrammatic animation.
+manim = ["manim"]

@@ -1,0 +1,36 @@
+# Secrets
+.env
+
+# Python
+.venv/
+__pycache__/
+*.pyc
+
+# Media: source footage and renders never go in git. They are large, binary,
+# and regenerable from the EDL. The EDL, transcripts and project notes DO get
+# committed — those are the edit.
+projects/*/footage/
+projects/*/edit/synced/
+projects/*/edit/aligned/
+projects/*/edit/clips_graded/
+projects/*/edit/clips_preview/
+projects/*/edit/clips_draft/
+projects/*/edit/broll_clips/
+projects/*/edit/broll_draft/
+projects/*/edit/animations/
+projects/*/edit/downloads/
+projects/*/edit/verify/
+*.mp4
+*.mov
+*.MP4
+*.MOV
+*.mkv
+*.avi
+*.m4v
+*.webm
+*.wav
+*.WAV
+*.aiff
+*.flac
+*.mp3
+*.m4a
