@@ -69,6 +69,7 @@ import json
 import re
 import subprocess
 from dataclasses import dataclass, asdict, field
+from datetime import datetime
 from pathlib import Path
 
 import numpy as np
@@ -85,6 +86,8 @@ N_PROBES = 5
 MIN_OVERLAP_S = 15.0      # lags with less overlap than this are not considered
 MAX_SHIFT_S = 0.0         # 0 = search every lag; set it when you know roughly
                           # how far apart the devices started rolling
+EXPECT_TOLERANCE_S = 30.0 # how far the search may stray from a filename-implied
+                          # offset, to absorb clock skew between devices
 TRUST_QUALITY = 6.0       # peak-to-sidelobe ratio below which we do not mux
 DRIFT_PPM_FLOOR = 50.0    # below this, a static offset is good enough
 
@@ -129,6 +132,36 @@ def frame_rate_of(path: Path) -> float:
         return float(num) / float(den)
     except Exception:
         return 0.0
+
+
+def filename_timestamp(path: Path) -> datetime | None:
+    """Wall-clock start time encoded in a filename, if there is one.
+
+    DJI cameras and DJI wireless mics both stamp the recording start into the
+    name, which is a free, independent check on the correlation result:
+
+        DJI_20260801120655_0071_D.MP4          -> 2026-08-01 12:06:55
+        TX00_MIC001_20260801_120634_orig.wav   -> 2026-08-01 12:06:34
+
+    Phones generally do not -- an iPhone's MOV `creation_time` is rewritten
+    when the file is copied, so it reports the transfer time, not the take.
+    Never trust it for sync.
+    """
+    m = re.search(r"(20\d{6})[_-]?(\d{6})", path.name)
+    if not m:
+        return None
+    try:
+        return datetime.strptime(m.group(1) + m.group(2), "%Y%m%d%H%M%S")
+    except ValueError:
+        return None
+
+
+def expected_offset(video: Path, audio: Path) -> float | None:
+    """Offset implied by the two filenames, or None if either lacks a stamp."""
+    tv, ta = filename_timestamp(video), filename_timestamp(audio)
+    if tv is None or ta is None:
+        return None
+    return -(tv - ta).total_seconds()
 
 
 def decode_mono(path: Path, start: float = 0.0, duration: float | None = None) -> np.ndarray:
@@ -186,7 +219,8 @@ def _xcorr(a: np.ndarray, b: np.ndarray) -> tuple[np.ndarray, int]:
 
 
 def _normalize_by_overlap(corr: np.ndarray, zero: int, la: int, lb: int,
-                          min_overlap: int, max_shift: int = 0) -> np.ndarray:
+                          min_overlap: int, max_shift: int = 0,
+                          lag_window: tuple[int, int] | None = None) -> np.ndarray:
     """Divide out the overlap taper, then mask lags we refuse to consider.
 
     A zero-padded FFT correlation sums only over the region where the two
@@ -207,6 +241,8 @@ def _normalize_by_overlap(corr: np.ndarray, zero: int, la: int, lb: int,
     ok = counts >= max(min_overlap, 1)
     if max_shift > 0:
         ok &= np.abs(lags) <= max_shift
+    if lag_window is not None:
+        ok &= (lags >= lag_window[0]) & (lags <= lag_window[1])
     out[ok] = corr[ok] / np.sqrt(counts[ok])
     return out
 
@@ -234,11 +270,20 @@ def _parabolic_vertex(y_prev: float, y_peak: float, y_next: float) -> float:
     return float(np.clip(0.5 * (y_prev - y_next) / denom, -0.5, 0.5))
 
 
-def measure_offset(ref_pcm: np.ndarray, other_pcm: np.ndarray) -> tuple[float, float]:
+def measure_offset(ref_pcm: np.ndarray, other_pcm: np.ndarray,
+                   expect: float | None = None,
+                   tolerance: float = EXPECT_TOLERANCE_S) -> tuple[float, float]:
     """Return (offset_seconds, quality) for two decoded mono signals.
 
     offset is the position of other_pcm[0] on ref_pcm's timeline, per the
     convention at the top of this file.
+
+    `expect` constrains the search to within `tolerance` of a known coarse
+    alignment. On a long recording the correlator has thousands of candidate
+    lags to choose between, and a room full of repeated sounds -- a griddle,
+    traffic, the same phrase said twice -- can hand a false peak more support
+    than the true one. Pinning the search to a window the answer must lie in
+    removes that entire failure mode.
     """
     env_r, env_o = envelope(ref_pcm), envelope(other_pcm)
     if len(env_r) < 8 or len(env_o) < 8:
@@ -248,8 +293,13 @@ def measure_offset(ref_pcm: np.ndarray, other_pcm: np.ndarray) -> tuple[float, f
     min_overlap_hops = int(min(MIN_OVERLAP_S * SR / HOP,
                                0.25 * min(len(env_r), len(env_o))))
     max_shift_hops = int(MAX_SHIFT_S * SR / HOP)
+    window = None
+    if expect is not None:
+        per_hop = SR / HOP
+        window = (int((expect - tolerance) * per_hop),
+                  int((expect + tolerance) * per_hop))
     corr = _normalize_by_overlap(corr, zero, len(env_r), len(env_o),
-                                 min_overlap_hops, max_shift_hops)
+                                 min_overlap_hops, max_shift_hops, window)
     if not corr.any():
         return 0.0, 0.0
 
@@ -372,7 +422,14 @@ class SyncResult:
     drift_ms_per_hour: float
     video_duration_s: float
     audio_duration_s: float
+    filename_offset_s: float | None = None
     probes: list[dict] = field(default_factory=list)
+
+    @property
+    def filename_delta(self) -> float | None:
+        if self.filename_offset_s is None:
+            return None
+        return self.offset_s - self.filename_offset_s
 
     @property
     def confident(self) -> bool:
@@ -412,7 +469,7 @@ def measure_drift(video: Path, audio: Path, offset: float,
         pa = decode_mono(audio, start=a_start, duration=PROBE_LEN_S)
         if len(pv) < SR * 5 or len(pa) < SR * 5:
             continue
-        residual, q = measure_offset(pv, pa)
+        residual, q = measure_offset(pv, pa, expect=0.0, tolerance=2.0)
         # Regress against the window MIDPOINT: the correlation peak reports the
         # average alignment over the window, not the alignment at its start.
         probes.append({"video_t": round(v_start + PROBE_LEN_S / 2, 2),
@@ -431,7 +488,10 @@ def measure_drift(video: Path, audio: Path, offset: float,
     return float(slope) * 1e6, float(intercept), probes
 
 
-def sync_pair(video: Path, audio: Path, verbose: bool = True) -> SyncResult:
+def sync_pair(video: Path, audio: Path, verbose: bool = True,
+              use_filename_times: bool = False,
+              expect_offset: float | None = None,
+              tolerance: float = EXPECT_TOLERANCE_S) -> SyncResult:
     if not has_audio_stream(video):
         raise SystemExit(
             f"{video.name} has no audio track. Dual-system sync correlates the "
@@ -444,9 +504,33 @@ def sync_pair(video: Path, audio: Path, verbose: bool = True) -> SyncResult:
     if verbose:
         print(f"sync: {video.name} ({v_dur:.1f}s)  <-  {audio.name} ({a_dur:.1f}s)")
 
-    offset, quality = measure_offset(decode_mono(video), decode_mono(audio))
+    fn_offset = expected_offset(video, audio)
+    # An explicit window always wins over the filename-derived one.
+    expect = expect_offset
+    if expect is None and use_filename_times and fn_offset is not None:
+        expect = fn_offset
+    if verbose and expect is not None:
+        src = "given" if expect_offset is not None else "filename-implied"
+        print(f"  searching within {tolerance:g}s of the {src} {expect:+.1f}s")
+
+    offset, quality = measure_offset(decode_mono(video), decode_mono(audio),
+                                     expect=expect, tolerance=tolerance)
     if verbose:
         print(f"  offset {offset:+.3f}s   quality {quality:.1f}")
+
+    # Independent cross-check. Two devices that both stamp wall-clock time into
+    # their filenames should agree with the correlation to within their clock
+    # skew; a large disagreement means one of the two is wrong, and the
+    # correlation is the one to distrust when its quality is also marginal.
+    if fn_offset is not None:
+        delta = offset - fn_offset
+        if verbose:
+            if abs(delta) <= 2.0:
+                print(f"  filenames agree ({fn_offset:+.1f}s, delta {delta:+.2f}s)")
+            else:
+                print(f"  DISAGREES with filenames: they imply {fn_offset:+.1f}s, "
+                      f"correlation says {offset:+.1f}s (delta {delta:+.1f}s). "
+                      f"Re-run with --use-filename-times to constrain the search.")
 
     drift_ppm, correction, probes = measure_drift(video, audio, offset, v_dur, a_dur)
     offset += correction
@@ -464,6 +548,7 @@ def sync_pair(video: Path, audio: Path, verbose: bool = True) -> SyncResult:
         offset_s=round(offset, 4), quality=round(quality, 2),
         drift_ppm=round(drift_ppm, 2), drift_ms_per_hour=round(drift_ppm * 3.6, 1),
         video_duration_s=round(v_dur, 3), audio_duration_s=round(a_dur, 3),
+        filename_offset_s=(round(fn_offset, 3) if fn_offset is not None else None),
         probes=probes,
     )
 
@@ -821,6 +906,19 @@ def main() -> None:
                     help="Assume the sources started within SEC of each other. "
                          "0 (default) searches every lag. Set it when you know the "
                          "rough gap -- it rules out false peaks from repetitive audio.")
+    ap.add_argument("--expect-offset", type=float, metavar="SEC",
+                    help="Constrain the search to within --tolerance of this offset. "
+                         "Use when you know roughly where a clip sits -- e.g. from "
+                         "file numbering, a slate, or a shot log -- and correlation "
+                         "alone is landing on a false peak.")
+    ap.add_argument("--tolerance", type=float, default=EXPECT_TOLERANCE_S, metavar="SEC",
+                    help=f"Half-width of the --expect-offset window "
+                         f"(default {EXPECT_TOLERANCE_S:g})")
+    ap.add_argument("--use-filename-times", action="store_true",
+                    help="Constrain the search to the offset implied by wall-clock "
+                         "timestamps in the filenames (DJI cameras and mics write "
+                         "them). Without this the timestamps are still reported as "
+                         "a cross-check, just not enforced.")
     ap.add_argument("--min-overlap", type=float, default=MIN_OVERLAP_S, metavar="SEC",
                     help=f"Ignore alignments backed by less than SEC of common audio "
                          f"(default {MIN_OVERLAP_S:g})")
@@ -851,7 +949,7 @@ def main() -> None:
         edit_dir = (args.edit_dir or root / "edit").resolve()
         results = []
         for v, a in pair_directory(root):
-            r = sync_pair(v, a)
+            r = sync_pair(v, a, use_filename_times=args.use_filename_times)
             results.append(r)
             if args.mux:
                 if r.confident or args.force:
@@ -873,7 +971,8 @@ def main() -> None:
         ap.error("give both <video> and <audio>, or use --scan / --multicam <dir>")
 
     video, audio = args.video.resolve(), args.audio.resolve()
-    result = sync_pair(video, audio)
+    result = sync_pair(video, audio, use_filename_times=args.use_filename_times,
+                       expect_offset=args.expect_offset, tolerance=args.tolerance)
 
     if not result.confident:
         print(f"\n  WARNING: quality {result.quality:.1f} is below the trust "

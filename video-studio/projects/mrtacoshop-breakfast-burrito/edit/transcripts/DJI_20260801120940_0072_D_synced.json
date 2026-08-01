@@ -1,0 +1,693 @@
+{
+  "language_code": "en",
+  "text": "okay as we wait here in line let's get something straight we are not gonna put potatoes in my breakfast burrito it's sort of like pineapple on a pizza we just don't do it it's not good no one asked for it let's not go there all right so we're a little backed up here but we're gonna see one thing that's really great about the guacamole here is they have a lot of thick onion so if you like onion in your guac then you're gonna be super thrilled about the alberos here this is in Escondido",
+  "words": [
+    {
+      "type": "word",
+      "text": "okay",
+      "start": 0.72,
+      "end": 1.28,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "as",
+      "start": 1.28,
+      "end": 1.84,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "we",
+      "start": 1.84,
+      "end": 2.06,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "wait",
+      "start": 2.06,
+      "end": 2.56,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "here",
+      "start": 2.56,
+      "end": 3.06,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "in",
+      "start": 3.06,
+      "end": 4.12,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "line",
+      "start": 4.12,
+      "end": 4.4,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "let's",
+      "start": 4.4,
+      "end": 4.72,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "get",
+      "start": 4.72,
+      "end": 4.82,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "something",
+      "start": 4.82,
+      "end": 5.1,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "straight",
+      "start": 5.1,
+      "end": 5.46,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "we",
+      "start": 5.46,
+      "end": 6.0,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "are",
+      "start": 6.0,
+      "end": 6.16,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "not",
+      "start": 6.16,
+      "end": 6.4,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "gonna",
+      "start": 6.4,
+      "end": 6.6,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "put",
+      "start": 6.6,
+      "end": 6.78,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "potatoes",
+      "start": 6.78,
+      "end": 7.28,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "in",
+      "start": 7.28,
+      "end": 8.2,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "my",
+      "start": 8.2,
+      "end": 8.34,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "breakfast",
+      "start": 8.34,
+      "end": 8.68,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "burrito",
+      "start": 8.68,
+      "end": 9.14,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "it's",
+      "start": 9.14,
+      "end": 9.5,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "sort",
+      "start": 9.5,
+      "end": 9.62,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "of",
+      "start": 9.62,
+      "end": 9.72,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "like",
+      "start": 9.72,
+      "end": 10.22,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "pineapple",
+      "start": 10.22,
+      "end": 11.64,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "on",
+      "start": 11.64,
+      "end": 12.0,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "a",
+      "start": 12.0,
+      "end": 12.12,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "pizza",
+      "start": 12.12,
+      "end": 12.42,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "we",
+      "start": 12.42,
+      "end": 13.4,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "just",
+      "start": 13.4,
+      "end": 13.56,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "don't",
+      "start": 13.56,
+      "end": 13.84,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "do",
+      "start": 13.84,
+      "end": 14.0,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "it",
+      "start": 14.0,
+      "end": 14.42,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "it's",
+      "start": 14.42,
+      "end": 15.24,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "not",
+      "start": 15.24,
+      "end": 15.46,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "good",
+      "start": 15.46,
+      "end": 15.74,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "no",
+      "start": 15.74,
+      "end": 15.96,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "one",
+      "start": 15.96,
+      "end": 16.08,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "asked",
+      "start": 16.08,
+      "end": 16.28,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "for",
+      "start": 16.28,
+      "end": 16.58,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "it",
+      "start": 16.58,
+      "end": 16.86,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "let's",
+      "start": 16.86,
+      "end": 18.34,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "not",
+      "start": 18.34,
+      "end": 18.54,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "go",
+      "start": 18.54,
+      "end": 18.68,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "there",
+      "start": 18.68,
+      "end": 19.0,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "all",
+      "start": 19.0,
+      "end": 20.06,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "right",
+      "start": 20.06,
+      "end": 20.28,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "so",
+      "start": 20.28,
+      "end": 20.86,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "we're",
+      "start": 20.86,
+      "end": 21.86,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "a",
+      "start": 21.86,
+      "end": 21.86,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "little",
+      "start": 21.86,
+      "end": 22.18,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "backed",
+      "start": 22.18,
+      "end": 22.42,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "up",
+      "start": 22.42,
+      "end": 22.66,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "here",
+      "start": 22.66,
+      "end": 22.98,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "but",
+      "start": 22.98,
+      "end": 24.82,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "we're",
+      "start": 24.82,
+      "end": 25.02,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "gonna",
+      "start": 25.02,
+      "end": 25.12,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "see",
+      "start": 25.12,
+      "end": 25.48,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "one",
+      "start": 25.48,
+      "end": 25.78,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "thing",
+      "start": 25.78,
+      "end": 25.96,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "that's",
+      "start": 25.96,
+      "end": 26.18,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "really",
+      "start": 26.18,
+      "end": 26.34,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "great",
+      "start": 26.34,
+      "end": 26.58,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "about",
+      "start": 26.58,
+      "end": 26.84,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "the",
+      "start": 26.84,
+      "end": 27.08,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "guacamole",
+      "start": 27.08,
+      "end": 27.72,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "here",
+      "start": 27.72,
+      "end": 28.06,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "is",
+      "start": 28.06,
+      "end": 28.78,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "they",
+      "start": 28.78,
+      "end": 29.32,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "have",
+      "start": 29.32,
+      "end": 29.5,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "a",
+      "start": 29.5,
+      "end": 29.6,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "lot",
+      "start": 29.6,
+      "end": 29.72,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "of",
+      "start": 29.72,
+      "end": 30.16,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "thick",
+      "start": 30.16,
+      "end": 30.74,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "onion",
+      "start": 30.74,
+      "end": 31.28,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "so",
+      "start": 31.28,
+      "end": 32.04,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "if",
+      "start": 32.04,
+      "end": 32.18,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "you",
+      "start": 32.18,
+      "end": 32.32,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "like",
+      "start": 32.32,
+      "end": 32.52,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "onion",
+      "start": 32.52,
+      "end": 32.9,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "in",
+      "start": 32.9,
+      "end": 33.16,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "your",
+      "start": 33.16,
+      "end": 33.34,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "guac",
+      "start": 33.34,
+      "end": 33.74,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "then",
+      "start": 33.74,
+      "end": 34.0,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "you're",
+      "start": 34.0,
+      "end": 34.22,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "gonna",
+      "start": 34.22,
+      "end": 34.28,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "be",
+      "start": 34.28,
+      "end": 34.46,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "super",
+      "start": 34.46,
+      "end": 34.8,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "thrilled",
+      "start": 34.8,
+      "end": 35.16,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "about",
+      "start": 35.16,
+      "end": 35.48,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "the",
+      "start": 35.48,
+      "end": 35.8,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "alberos",
+      "start": 35.8,
+      "end": 36.46,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "here",
+      "start": 36.46,
+      "end": 36.68,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "this",
+      "start": 36.68,
+      "end": 36.9,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "is",
+      "start": 36.9,
+      "end": 37.08,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "in",
+      "start": 37.08,
+      "end": 37.26,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "Escondido",
+      "start": 37.26,
+      "end": 37.8,
+      "speaker_id": "speaker_0"
+    }
+  ],
+  "_backend": "faster-whisper:small.en"
+}

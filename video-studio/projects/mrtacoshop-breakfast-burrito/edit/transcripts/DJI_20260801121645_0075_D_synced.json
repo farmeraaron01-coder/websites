@@ -1,0 +1,258 @@
+{
+  "language_code": "en",
+  "text": "You got to love this. This place hasn't been cleaned in 25 years and none of us care because it's got the best wok and one of the best breakfast burritos in Escondido for sure.",
+  "words": [
+    {
+      "type": "word",
+      "text": "You",
+      "start": 1.64,
+      "end": 2.24,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "got",
+      "start": 2.24,
+      "end": 2.44,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "to",
+      "start": 2.44,
+      "end": 2.6,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "love",
+      "start": 2.6,
+      "end": 2.78,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "this.",
+      "start": 2.78,
+      "end": 3.28,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "spacing",
+      "text": " ",
+      "start": 3.28,
+      "end": 4.9
+    },
+    {
+      "type": "word",
+      "text": "This",
+      "start": 4.9,
+      "end": 5.5,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "place",
+      "start": 5.5,
+      "end": 5.68,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "hasn't",
+      "start": 5.68,
+      "end": 6.04,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "been",
+      "start": 6.04,
+      "end": 6.2,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "cleaned",
+      "start": 6.2,
+      "end": 6.48,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "in",
+      "start": 6.48,
+      "end": 6.7,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "25",
+      "start": 6.7,
+      "end": 7.18,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "years",
+      "start": 7.18,
+      "end": 7.62,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "and",
+      "start": 7.62,
+      "end": 8.26,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "none",
+      "start": 8.26,
+      "end": 8.54,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "of",
+      "start": 8.54,
+      "end": 8.7,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "us",
+      "start": 8.7,
+      "end": 8.88,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "care",
+      "start": 8.88,
+      "end": 9.18,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "because",
+      "start": 9.18,
+      "end": 9.74,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "it's",
+      "start": 9.74,
+      "end": 10.52,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "got",
+      "start": 10.52,
+      "end": 10.78,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "the",
+      "start": 10.78,
+      "end": 11.04,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "best",
+      "start": 11.04,
+      "end": 11.58,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "wok",
+      "start": 11.58,
+      "end": 12.08,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "and",
+      "start": 12.08,
+      "end": 13.66,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "one",
+      "start": 13.66,
+      "end": 13.76,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "of",
+      "start": 13.76,
+      "end": 13.88,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "the",
+      "start": 13.88,
+      "end": 13.94,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "best",
+      "start": 13.94,
+      "end": 14.14,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "breakfast",
+      "start": 14.14,
+      "end": 14.44,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "burritos",
+      "start": 14.44,
+      "end": 14.94,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "in",
+      "start": 14.94,
+      "end": 15.34,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "Escondido",
+      "start": 15.34,
+      "end": 15.96,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "for",
+      "start": 15.96,
+      "end": 16.28,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "sure.",
+      "start": 16.28,
+      "end": 16.58,
+      "speaker_id": "speaker_0"
+    }
+  ],
+  "_backend": "faster-whisper:small.en"
+}

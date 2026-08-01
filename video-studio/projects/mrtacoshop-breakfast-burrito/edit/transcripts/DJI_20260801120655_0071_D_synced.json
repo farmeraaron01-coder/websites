@@ -1,0 +1,1252 @@
+{
+  "language_code": "en",
+  "text": "Okay, here we go, pulling it to Alberto's. This is the OG. Gotta love that. Can I get for you? Yeah, can I get Okay, anything else? Uh, how about a orange soda? Oh, what, I'm sorry? Uh, do you have orange soda? Okay, anything else? That's it. Thank you. Thank you. The Alberto's is awesome. There were those Gs you just slap red paint, some yellow paint, 50 coats, no problem. And then of course this is always the fun part of eating here. One is the parking lot sucks. So we got a, okay, this guy wants to get out, there's nowhere to go, there's nowhere for him to go. He's screwed. So, anyone that's been here has had their, you you're always worried about that your car is going to get totally side swiped on the side when you go through the drive-thru.",
+  "words": [
+    {
+      "type": "word",
+      "text": "Okay,",
+      "start": 6.26,
+      "end": 6.76,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "spacing",
+      "text": " ",
+      "start": 6.76,
+      "end": 6.84
+    },
+    {
+      "type": "word",
+      "text": "here",
+      "start": 6.84,
+      "end": 7.02,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "we",
+      "start": 7.02,
+      "end": 7.14,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "go,",
+      "start": 7.14,
+      "end": 8.36,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "pulling",
+      "start": 8.36,
+      "end": 11.3,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "it",
+      "start": 11.3,
+      "end": 11.46,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "to",
+      "start": 11.46,
+      "end": 11.64,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "Alberto's.",
+      "start": 11.64,
+      "end": 12.82,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "spacing",
+      "text": " ",
+      "start": 12.82,
+      "end": 13.38
+    },
+    {
+      "type": "word",
+      "text": "This",
+      "start": 13.38,
+      "end": 13.66,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "is",
+      "start": 13.66,
+      "end": 13.82,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "the",
+      "start": 13.82,
+      "end": 13.96,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "OG.",
+      "start": 13.96,
+      "end": 14.42,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "spacing",
+      "text": " ",
+      "start": 14.42,
+      "end": 18.2
+    },
+    {
+      "type": "word",
+      "text": "Gotta",
+      "start": 18.2,
+      "end": 18.58,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "love",
+      "start": 18.58,
+      "end": 18.84,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "that.",
+      "start": 18.84,
+      "end": 19.26,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "spacing",
+      "text": " ",
+      "start": 19.26,
+      "end": 20.34
+    },
+    {
+      "type": "word",
+      "text": "Can",
+      "start": 20.34,
+      "end": 20.62,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "I",
+      "start": 20.62,
+      "end": 20.86,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "get",
+      "start": 20.86,
+      "end": 20.98,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "for",
+      "start": 20.98,
+      "end": 21.16,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "you?",
+      "start": 21.16,
+      "end": 21.24,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "spacing",
+      "text": " ",
+      "start": 21.24,
+      "end": 22.1
+    },
+    {
+      "type": "word",
+      "text": "Yeah,",
+      "start": 22.1,
+      "end": 22.36,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "spacing",
+      "text": " ",
+      "start": 22.36,
+      "end": 22.54
+    },
+    {
+      "type": "word",
+      "text": "can",
+      "start": 22.54,
+      "end": 22.58,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "I",
+      "start": 22.58,
+      "end": 22.8,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "get",
+      "start": 22.8,
+      "end": 23.02,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "spacing",
+      "text": " ",
+      "start": 23.02,
+      "end": 31.56
+    },
+    {
+      "type": "word",
+      "text": "Okay,",
+      "start": 31.56,
+      "end": 32.0,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "spacing",
+      "text": " ",
+      "start": 32.0,
+      "end": 32.04
+    },
+    {
+      "type": "word",
+      "text": "anything",
+      "start": 32.04,
+      "end": 32.24,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "else?",
+      "start": 32.24,
+      "end": 32.56,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "spacing",
+      "text": " ",
+      "start": 32.56,
+      "end": 33.24
+    },
+    {
+      "type": "word",
+      "text": "Uh,",
+      "start": 33.24,
+      "end": 33.68,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "spacing",
+      "text": " ",
+      "start": 33.68,
+      "end": 34.7
+    },
+    {
+      "type": "word",
+      "text": "how",
+      "start": 34.7,
+      "end": 34.82,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "about",
+      "start": 34.82,
+      "end": 35.04,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "a",
+      "start": 35.04,
+      "end": 35.3,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "orange",
+      "start": 35.3,
+      "end": 35.66,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "soda?",
+      "start": 35.66,
+      "end": 36.1,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "spacing",
+      "text": " ",
+      "start": 36.1,
+      "end": 37.56
+    },
+    {
+      "type": "word",
+      "text": "Oh,",
+      "start": 37.56,
+      "end": 37.64,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "spacing",
+      "text": " ",
+      "start": 37.64,
+      "end": 37.7
+    },
+    {
+      "type": "word",
+      "text": "what,",
+      "start": 37.7,
+      "end": 37.78,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "spacing",
+      "text": " ",
+      "start": 37.78,
+      "end": 37.84
+    },
+    {
+      "type": "word",
+      "text": "I'm",
+      "start": 37.84,
+      "end": 37.96,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "sorry?",
+      "start": 37.96,
+      "end": 38.1,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "spacing",
+      "text": " ",
+      "start": 38.1,
+      "end": 38.42
+    },
+    {
+      "type": "word",
+      "text": "Uh,",
+      "start": 38.42,
+      "end": 38.64,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "spacing",
+      "text": " ",
+      "start": 38.64,
+      "end": 38.66
+    },
+    {
+      "type": "word",
+      "text": "do",
+      "start": 38.66,
+      "end": 38.76,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "you",
+      "start": 38.76,
+      "end": 38.8,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "have",
+      "start": 38.8,
+      "end": 38.86,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "orange",
+      "start": 38.86,
+      "end": 39.06,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "soda?",
+      "start": 39.06,
+      "end": 39.42,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "spacing",
+      "text": " ",
+      "start": 39.42,
+      "end": 40.46
+    },
+    {
+      "type": "word",
+      "text": "Okay,",
+      "start": 40.46,
+      "end": 40.9,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "spacing",
+      "text": " ",
+      "start": 40.9,
+      "end": 41.06
+    },
+    {
+      "type": "word",
+      "text": "anything",
+      "start": 41.06,
+      "end": 41.18,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "else?",
+      "start": 41.18,
+      "end": 41.4,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "spacing",
+      "text": " ",
+      "start": 41.4,
+      "end": 41.6
+    },
+    {
+      "type": "word",
+      "text": "That's",
+      "start": 41.6,
+      "end": 41.8,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "it.",
+      "start": 41.8,
+      "end": 41.94,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "spacing",
+      "text": " ",
+      "start": 41.94,
+      "end": 43.24
+    },
+    {
+      "type": "word",
+      "text": "Thank",
+      "start": 43.24,
+      "end": 43.56,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "you.",
+      "start": 43.56,
+      "end": 43.68,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "spacing",
+      "text": " ",
+      "start": 43.68,
+      "end": 43.98
+    },
+    {
+      "type": "word",
+      "text": "Thank",
+      "start": 43.98,
+      "end": 44.12,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "you.",
+      "start": 44.12,
+      "end": 44.98,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "spacing",
+      "text": " ",
+      "start": 44.98,
+      "end": 55.02
+    },
+    {
+      "type": "word",
+      "text": "The",
+      "start": 55.02,
+      "end": 55.46,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "Alberto's",
+      "start": 55.46,
+      "end": 55.9,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "is",
+      "start": 55.9,
+      "end": 56.02,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "awesome.",
+      "start": 56.02,
+      "end": 56.48,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "spacing",
+      "text": " ",
+      "start": 56.48,
+      "end": 57.42
+    },
+    {
+      "type": "word",
+      "text": "There",
+      "start": 57.42,
+      "end": 57.98,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "were",
+      "start": 57.98,
+      "end": 58.12,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "those",
+      "start": 58.12,
+      "end": 58.3,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "Gs",
+      "start": 58.3,
+      "end": 58.86,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "you",
+      "start": 58.86,
+      "end": 59.02,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "just",
+      "start": 59.02,
+      "end": 59.24,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "slap",
+      "start": 59.24,
+      "end": 59.64,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "red",
+      "start": 59.64,
+      "end": 60.24,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "paint,",
+      "start": 60.24,
+      "end": 60.82,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "spacing",
+      "text": " ",
+      "start": 60.82,
+      "end": 61.4
+    },
+    {
+      "type": "word",
+      "text": "some",
+      "start": 61.4,
+      "end": 61.88,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "yellow",
+      "start": 61.88,
+      "end": 62.62,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "paint,",
+      "start": 62.62,
+      "end": 63.3,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "spacing",
+      "text": " ",
+      "start": 63.3,
+      "end": 63.98
+    },
+    {
+      "type": "word",
+      "text": "50",
+      "start": 63.98,
+      "end": 64.6,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "coats,",
+      "start": 64.6,
+      "end": 65.02,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "spacing",
+      "text": " ",
+      "start": 65.02,
+      "end": 65.42
+    },
+    {
+      "type": "word",
+      "text": "no",
+      "start": 65.42,
+      "end": 65.66,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "problem.",
+      "start": 65.66,
+      "end": 66.02,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "spacing",
+      "text": " ",
+      "start": 66.02,
+      "end": 66.84
+    },
+    {
+      "type": "word",
+      "text": "And",
+      "start": 66.84,
+      "end": 66.9,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "then",
+      "start": 66.9,
+      "end": 67.12,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "of",
+      "start": 67.12,
+      "end": 67.34,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "course",
+      "start": 67.34,
+      "end": 67.58,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "this",
+      "start": 67.58,
+      "end": 67.82,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "is",
+      "start": 67.82,
+      "end": 67.98,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "always",
+      "start": 67.98,
+      "end": 68.28,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "the",
+      "start": 68.28,
+      "end": 68.66,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "fun",
+      "start": 68.66,
+      "end": 69.18,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "part",
+      "start": 69.18,
+      "end": 69.48,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "of",
+      "start": 69.48,
+      "end": 69.76,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "eating",
+      "start": 69.76,
+      "end": 70.46,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "here.",
+      "start": 70.46,
+      "end": 70.86,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "spacing",
+      "text": " ",
+      "start": 70.86,
+      "end": 71.06
+    },
+    {
+      "type": "word",
+      "text": "One",
+      "start": 71.06,
+      "end": 71.32,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "is",
+      "start": 71.32,
+      "end": 72.66,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "the",
+      "start": 72.66,
+      "end": 72.82,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "parking",
+      "start": 72.82,
+      "end": 73.12,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "lot",
+      "start": 73.12,
+      "end": 73.3,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "sucks.",
+      "start": 73.3,
+      "end": 73.72,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "spacing",
+      "text": " ",
+      "start": 73.72,
+      "end": 74.54
+    },
+    {
+      "type": "word",
+      "text": "So",
+      "start": 74.54,
+      "end": 74.54,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "we",
+      "start": 74.54,
+      "end": 74.78,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "got",
+      "start": 74.78,
+      "end": 75.34,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "a,",
+      "start": 75.34,
+      "end": 76.02,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "spacing",
+      "text": " ",
+      "start": 76.02,
+      "end": 76.2
+    },
+    {
+      "type": "word",
+      "text": "okay,",
+      "start": 76.2,
+      "end": 76.58,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "spacing",
+      "text": " ",
+      "start": 76.58,
+      "end": 78.12
+    },
+    {
+      "type": "word",
+      "text": "this",
+      "start": 78.12,
+      "end": 78.36,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "guy",
+      "start": 78.36,
+      "end": 78.56,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "wants",
+      "start": 78.56,
+      "end": 78.76,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "to",
+      "start": 78.76,
+      "end": 78.94,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "get",
+      "start": 78.94,
+      "end": 79.06,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "out,",
+      "start": 79.06,
+      "end": 79.34,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "spacing",
+      "text": " ",
+      "start": 79.34,
+      "end": 79.46
+    },
+    {
+      "type": "word",
+      "text": "there's",
+      "start": 79.46,
+      "end": 79.72,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "nowhere",
+      "start": 79.72,
+      "end": 79.9,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "to",
+      "start": 79.9,
+      "end": 80.08,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "go,",
+      "start": 80.08,
+      "end": 80.7,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "spacing",
+      "text": " ",
+      "start": 80.7,
+      "end": 82.28
+    },
+    {
+      "type": "word",
+      "text": "there's",
+      "start": 82.28,
+      "end": 82.88,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "nowhere",
+      "start": 82.88,
+      "end": 83.02,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "for",
+      "start": 83.02,
+      "end": 83.24,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "him",
+      "start": 83.24,
+      "end": 83.32,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "to",
+      "start": 83.32,
+      "end": 83.44,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "go.",
+      "start": 83.44,
+      "end": 83.6,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "spacing",
+      "text": " ",
+      "start": 83.6,
+      "end": 83.76
+    },
+    {
+      "type": "word",
+      "text": "He's",
+      "start": 83.76,
+      "end": 83.9,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "screwed.",
+      "start": 83.9,
+      "end": 84.1,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "spacing",
+      "text": " ",
+      "start": 84.1,
+      "end": 95.58
+    },
+    {
+      "type": "word",
+      "text": "So,",
+      "start": 95.58,
+      "end": 95.98,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "spacing",
+      "text": " ",
+      "start": 95.98,
+      "end": 96.2
+    },
+    {
+      "type": "word",
+      "text": "anyone",
+      "start": 96.2,
+      "end": 96.2,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "that's",
+      "start": 96.2,
+      "end": 96.58,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "been",
+      "start": 96.58,
+      "end": 96.76,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "here",
+      "start": 96.76,
+      "end": 97.12,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "has",
+      "start": 97.12,
+      "end": 97.38,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "had",
+      "start": 97.38,
+      "end": 97.84,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "their,",
+      "start": 97.84,
+      "end": 98.52,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "spacing",
+      "text": " ",
+      "start": 98.52,
+      "end": 99.72
+    },
+    {
+      "type": "word",
+      "text": "you",
+      "start": 99.72,
+      "end": 100.22,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "you're",
+      "start": 100.22,
+      "end": 100.28,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "always",
+      "start": 100.28,
+      "end": 100.38,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "worried",
+      "start": 100.38,
+      "end": 100.56,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "about",
+      "start": 100.56,
+      "end": 100.74,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "that",
+      "start": 100.74,
+      "end": 100.86,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "your",
+      "start": 100.86,
+      "end": 100.98,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "car",
+      "start": 100.98,
+      "end": 101.26,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "is",
+      "start": 101.26,
+      "end": 101.42,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "going",
+      "start": 101.42,
+      "end": 101.54,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "to",
+      "start": 101.54,
+      "end": 101.64,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "get",
+      "start": 101.64,
+      "end": 101.78,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "totally",
+      "start": 101.78,
+      "end": 102.32,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "side",
+      "start": 102.32,
+      "end": 103.48,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "swiped",
+      "start": 103.48,
+      "end": 103.8,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "on",
+      "start": 103.8,
+      "end": 103.98,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "the",
+      "start": 103.98,
+      "end": 104.14,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "side",
+      "start": 104.14,
+      "end": 104.44,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "when",
+      "start": 104.44,
+      "end": 104.74,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "you",
+      "start": 104.74,
+      "end": 104.88,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "go",
+      "start": 104.88,
+      "end": 105.02,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "through",
+      "start": 105.02,
+      "end": 105.22,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "the",
+      "start": 105.22,
+      "end": 105.38,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "drive",
+      "start": 105.38,
+      "end": 105.58,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "-thru.",
+      "start": 105.58,
+      "end": 105.84,
+      "speaker_id": "speaker_0"
+    }
+  ],
+  "_backend": "faster-whisper:small.en"
+}

@@ -1,0 +1,117 @@
+{
+  "language_code": "en",
+  "text": "Yep, that's what happens. You go to war with one of these breakfast burritos.",
+  "words": [
+    {
+      "type": "word",
+      "text": "Yep,",
+      "start": 3.54,
+      "end": 4.02,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "spacing",
+      "text": " ",
+      "start": 4.02,
+      "end": 4.44
+    },
+    {
+      "type": "word",
+      "text": "that's",
+      "start": 4.44,
+      "end": 4.44,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "what",
+      "start": 4.44,
+      "end": 4.56,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "happens.",
+      "start": 4.56,
+      "end": 4.82,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "spacing",
+      "text": " ",
+      "start": 4.82,
+      "end": 5.04
+    },
+    {
+      "type": "word",
+      "text": "You",
+      "start": 5.04,
+      "end": 5.04,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "go",
+      "start": 5.04,
+      "end": 5.18,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "to",
+      "start": 5.18,
+      "end": 5.22,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "war",
+      "start": 5.22,
+      "end": 5.58,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "with",
+      "start": 5.58,
+      "end": 5.76,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "one",
+      "start": 5.76,
+      "end": 5.94,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "of",
+      "start": 5.94,
+      "end": 6.04,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "these",
+      "start": 6.04,
+      "end": 6.58,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "breakfast",
+      "start": 6.58,
+      "end": 6.58,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "burritos.",
+      "start": 6.58,
+      "end": 7.06,
+      "speaker_id": "speaker_0"
+    }
+  ],
+  "_backend": "faster-whisper:small.en"
+}

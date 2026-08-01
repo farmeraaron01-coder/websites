@@ -1,0 +1,248 @@
+[
+  {
+    "video": "/home/user/websites/video-studio/projects/mrtacoshop-breakfast-burrito/footage/DJI_20260801120655_0071_D.MP4",
+    "audio": "/home/user/websites/video-studio/projects/mrtacoshop-breakfast-burrito/footage/TX00_MIC001_20260801_120634_orig.wav",
+    "offset_s": -20.9597,
+    "quality": 59.74,
+    "drift_ppm": 18.87,
+    "drift_ms_per_hour": 67.9,
+    "video_duration_s": 124.928,
+    "audio_duration_s": 1800.15,
+    "filename_offset_s": -21.0,
+    "probes": [
+      {
+        "video_t": 16.9,
+        "residual_s": -0.0013,
+        "quality": 11.83
+      },
+      {
+        "video_t": 39.68,
+        "residual_s": -0.0003,
+        "quality": 12.68
+      },
+      {
+        "video_t": 62.46,
+        "residual_s": -0.0003,
+        "quality": 51.71
+      },
+      {
+        "video_t": 85.25,
+        "residual_s": -0.0002,
+        "quality": 19.83
+      },
+      {
+        "video_t": 108.03,
+        "residual_s": 0.0008,
+        "quality": 18.49
+      }
+    ]
+  },
+  {
+    "video": "/home/user/websites/video-studio/projects/mrtacoshop-breakfast-burrito/footage/DJI_20260801120940_0072_D.MP4",
+    "audio": "/home/user/websites/video-studio/projects/mrtacoshop-breakfast-burrito/footage/TX00_MIC001_20260801_120634_orig.wav",
+    "offset_s": -185.8873,
+    "quality": 143.26,
+    "drift_ppm": 0.0,
+    "drift_ms_per_hour": 0.0,
+    "video_duration_s": 40.999,
+    "audio_duration_s": 1800.15,
+    "filename_offset_s": -186.0,
+    "probes": []
+  },
+  {
+    "video": "/home/user/websites/video-studio/projects/mrtacoshop-breakfast-burrito/footage/DJI_20260801121154_0073_D.MP4",
+    "audio": "/home/user/websites/video-studio/projects/mrtacoshop-breakfast-burrito/footage/TX00_MIC001_20260801_120634_orig.wav",
+    "offset_s": -320.0303,
+    "quality": 96.41,
+    "drift_ppm": 0.0,
+    "drift_ms_per_hour": 0.0,
+    "video_duration_s": 28.362,
+    "audio_duration_s": 1800.15,
+    "filename_offset_s": -320.0,
+    "probes": []
+  },
+  {
+    "video": "/home/user/websites/video-studio/projects/mrtacoshop-breakfast-burrito/footage/DJI_20260801121605_0074_D.MP4",
+    "audio": "/home/user/websites/video-studio/projects/mrtacoshop-breakfast-burrito/footage/TX00_MIC001_20260801_120634_orig.wav",
+    "offset_s": -570.8876,
+    "quality": 72.29,
+    "drift_ppm": 0.0,
+    "drift_ms_per_hour": 0.0,
+    "video_duration_s": 14.973,
+    "audio_duration_s": 1800.15,
+    "filename_offset_s": -571.0,
+    "probes": []
+  },
+  {
+    "video": "/home/user/websites/video-studio/projects/mrtacoshop-breakfast-burrito/footage/DJI_20260801121645_0075_D.MP4",
+    "audio": "/home/user/websites/video-studio/projects/mrtacoshop-breakfast-burrito/footage/TX00_MIC001_20260801_120634_orig.wav",
+    "offset_s": -610.9102,
+    "quality": 76.39,
+    "drift_ppm": 0.0,
+    "drift_ms_per_hour": 0.0,
+    "video_duration_s": 25.859,
+    "audio_duration_s": 1800.15,
+    "filename_offset_s": -611.0,
+    "probes": []
+  },
+  {
+    "video": "/home/user/websites/video-studio/projects/mrtacoshop-breakfast-burrito/footage/DJI_20260801121728_0076_D.MP4",
+    "audio": "/home/user/websites/video-studio/projects/mrtacoshop-breakfast-burrito/footage/TX00_MIC001_20260801_120634_orig.wav",
+    "offset_s": -653.8553,
+    "quality": 100.72,
+    "drift_ppm": 0.0,
+    "drift_ms_per_hour": 0.0,
+    "video_duration_s": 48.715,
+    "audio_duration_s": 1800.15,
+    "filename_offset_s": -654.0,
+    "probes": []
+  },
+  {
+    "video": "/home/user/websites/video-studio/projects/mrtacoshop-breakfast-burrito/footage/DJI_20260801122117_0077_D.MP4",
+    "audio": "/home/user/websites/video-studio/projects/mrtacoshop-breakfast-burrito/footage/TX00_MIC001_20260801_120634_orig.wav",
+    "offset_s": -883.0178,
+    "quality": 226.44,
+    "drift_ppm": -0.21,
+    "drift_ms_per_hour": -0.8,
+    "video_duration_s": 424.853,
+    "audio_duration_s": 1800.15,
+    "filename_offset_s": -883.0,
+    "probes": [
+      {
+        "video_t": 22.9,
+        "residual_s": 0.0001,
+        "quality": 34.96
+      },
+      {
+        "video_t": 117.66,
+        "residual_s": 0.0001,
+        "quality": 59.91
+      },
+      {
+        "video_t": 212.43,
+        "residual_s": 0.0001,
+        "quality": 24.67
+      },
+      {
+        "video_t": 307.19,
+        "residual_s": 0.0001,
+        "quality": 11.72
+      },
+      {
+        "video_t": 401.96,
+        "residual_s": 0.0,
+        "quality": 54.44
+      }
+    ]
+  },
+  {
+    "video": "/home/user/websites/video-studio/projects/mrtacoshop-breakfast-burrito/footage/DJI_20260801123019_0078_D.MP4",
+    "audio": "/home/user/websites/video-studio/projects/mrtacoshop-breakfast-burrito/footage/TX00_MIC001_20260801_120634_orig.wav",
+    "offset_s": -1425.4815,
+    "quality": 112.65,
+    "drift_ppm": 4.23,
+    "drift_ms_per_hour": 15.2,
+    "video_duration_s": 207.499,
+    "audio_duration_s": 1800.15,
+    "filename_offset_s": -1425.0,
+    "probes": [
+      {
+        "video_t": 18.55,
+        "residual_s": 0.0011,
+        "quality": 43.33
+      },
+      {
+        "video_t": 61.15,
+        "residual_s": 0.0001,
+        "quality": 34.11
+      },
+      {
+        "video_t": 103.75,
+        "residual_s": 0.0001,
+        "quality": 43.43
+      },
+      {
+        "video_t": 146.35,
+        "residual_s": 0.0019,
+        "quality": 23.21
+      },
+      {
+        "video_t": 188.95,
+        "residual_s": 0.0011,
+        "quality": 40.29
+      }
+    ]
+  },
+  {
+    "video": "/home/user/websites/video-studio/projects/mrtacoshop-breakfast-burrito/footage/DJI_20260801123556_0079_D.MP4",
+    "audio": "/home/user/websites/video-studio/projects/mrtacoshop-breakfast-burrito/footage/TX00_MIC001_20260801_120634_orig.wav",
+    "offset_s": -1762.3555,
+    "quality": 25.22,
+    "drift_ppm": 0.0,
+    "drift_ms_per_hour": 0.0,
+    "video_duration_s": 14.348,
+    "audio_duration_s": 1800.15,
+    "filename_offset_s": -1762.0,
+    "probes": []
+  },
+  {
+    "video": "/home/user/websites/video-studio/projects/mrtacoshop-breakfast-burrito/footage/DJI_20260801123727_0080_D.MP4",
+    "audio": "/home/user/websites/video-studio/projects/mrtacoshop-breakfast-burrito/footage/TX00_MIC002_20260801_123634_orig.wav",
+    "offset_s": -53.3213,
+    "quality": 33.53,
+    "drift_ppm": 0.0,
+    "drift_ms_per_hour": 0.0,
+    "video_duration_s": 34.243,
+    "audio_duration_s": 109.89,
+    "filename_offset_s": -53.0,
+    "probes": []
+  },
+  {
+    "video": "/home/user/websites/video-studio/projects/mrtacoshop-breakfast-burrito/footage/IMG_1836.MOV",
+    "audio": "/home/user/websites/video-studio/projects/mrtacoshop-breakfast-burrito/footage/TX00_MIC001_20260801_120634_orig.wav",
+    "offset_s": -1081.8475,
+    "quality": 6.87,
+    "drift_ppm": 0.0,
+    "drift_ms_per_hour": 0.0,
+    "video_duration_s": 25.433,
+    "audio_duration_s": 1800.15,
+    "filename_offset_s": null,
+    "probes": []
+  },
+  {
+    "video": "/home/user/websites/video-studio/projects/mrtacoshop-breakfast-burrito/footage/IMG_1838.MOV",
+    "audio": "/home/user/websites/video-studio/projects/mrtacoshop-breakfast-burrito/footage/TX00_MIC001_20260801_120634_orig.wav",
+    "offset_s": -1236.8204,
+    "quality": 25.51,
+    "drift_ppm": 0.0,
+    "drift_ms_per_hour": 0.0,
+    "video_duration_s": 68.983,
+    "audio_duration_s": 1800.15,
+    "filename_offset_s": null,
+    "probes": []
+  },
+  {
+    "video": "/home/user/websites/video-studio/projects/mrtacoshop-breakfast-burrito/footage/IMG_1839.MOV",
+    "audio": "/home/user/websites/video-studio/projects/mrtacoshop-breakfast-burrito/footage/TX00_MIC001_20260801_120634_orig.wav",
+    "offset_s": -1327.9729,
+    "quality": 11.99,
+    "drift_ppm": 0.0,
+    "drift_ms_per_hour": 0.0,
+    "video_duration_s": 13.767,
+    "audio_duration_s": 1800.15,
+    "filename_offset_s": null,
+    "probes": []
+  },
+  {
+    "video": "/home/user/websites/video-studio/projects/mrtacoshop-breakfast-burrito/footage/IMG_1843.MOV",
+    "audio": "/home/user/websites/video-studio/projects/mrtacoshop-breakfast-burrito/footage/TX00_MIC001_20260801_120634_orig.wav",
+    "offset_s": -1033.6228,
+    "quality": 7.7,
+    "drift_ppm": 0.0,
+    "drift_ms_per_hour": 0.0,
+    "video_duration_s": 9.408,
+    "audio_duration_s": 1800.15,
+    "filename_offset_s": null,
+    "probes": []
+  }
+]

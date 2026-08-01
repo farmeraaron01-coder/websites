@@ -34,3 +34,6 @@ projects/*/edit/verify/
 *.flac
 *.mp3
 *.m4a
+
+# Transient run logs
+projects/*/edit/*.log

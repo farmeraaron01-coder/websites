@@ -1,0 +1,14 @@
+{
+  "language_code": "en",
+  "text": "Cheers!",
+  "words": [
+    {
+      "type": "word",
+      "text": "Cheers!",
+      "start": 0.0,
+      "end": 0.82,
+      "speaker_id": "speaker_0"
+    }
+  ],
+  "_backend": "faster-whisper:small.en"
+}
