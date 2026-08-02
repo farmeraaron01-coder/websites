@@ -336,7 +336,13 @@ def extract_segment(
         "-af", af,
         "-c:v", "libx264", "-preset", preset, "-crf", crf,
         "-pix_fmt", "yuv420p", "-r", str(OUT_FPS),
-        "-c:a", "pcm_s16le", "-ar", "48000",
+        # Force one channel layout across every segment. Sources differ --
+        # a mono lav mux next to a stereo insert -- and PCM carries no
+        # per-packet channel info, so the concat demuxer takes the layout from
+        # the FIRST segment and reinterprets the rest. A stereo segment read as
+        # mono comes out at double length, which corrupts the timeline for
+        # everything after it. Sample rate is pinned for the same reason.
+        "-c:a", "pcm_s16le", "-ar", "48000", "-ac", "2",
         str(out_path),
     ]
     subprocess.run(cmd, check=True, stdout=subprocess.DEVNULL, stderr=subprocess.PIPE)
@@ -602,7 +608,8 @@ def prepare_broll(
         else:
             af = [f"atempo={speed:.6f}"] if speed != 1.0 else []
             af.append("aresample=48000")
-            cmd += ["-af", ",".join(af), "-c:a", "aac", "-b:a", "192k", "-ar", "48000"]
+            cmd += ["-af", ",".join(af), "-c:a", "aac", "-b:a", "192k",
+                    "-ar", "48000", "-ac", "2"]
         cmd += ["-movflags", "+faststart", str(out_clip)]
 
         try:
