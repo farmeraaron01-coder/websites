@@ -152,6 +152,8 @@ def resolve_path(maybe_path: str, base: Path) -> Path:
 # Fix: detect HDR via color_transfer and prepend a zscale+tonemap chain to the
 # vf graph so the output is clean Rec.709 SDR.
 
+OUT_FPS = 24
+
 HDR_TRANSFERS = {"smpte2084", "arib-std-b67"}  # PQ (HDR10) and HLG
 
 TONEMAP_CHAIN = (
@@ -294,9 +296,21 @@ def extract_segment(
     if grade_filter:
         vf = f"{vf},{grade_filter}"
 
+    # The video encoder can only emit whole frames, so a nominal duration
+    # gets rounded up and the audio (cut exactly) comes out shorter. Concat
+    # advances by file duration, so that mismatch becomes a per-cut timeline
+    # slip that accumulates -- 17 cuts cost 300ms, and every bleep, caption
+    # and cutaway placed on the nominal clock landed early by that much.
+    # Fix: decide the frame count up front, and pad the audio to exactly the
+    # duration those frames occupy. The pad is silence landing on the fade-out,
+    # so it is inaudible.
+    n_frames = max(1, round(duration * OUT_FPS))
+    vdur = n_frames / OUT_FPS
+
     # 30ms audio fades at both edges (Rule 3) — prevent pops
     fade_out_start = max(0.0, duration - 0.03)
-    af = f"afade=t=in:st=0:d=0.03,afade=t=out:st={fade_out_start:.3f}:d=0.03"
+    af = (f"afade=t=in:st=0:d=0.03,afade=t=out:st={fade_out_start:.3f}:d=0.03,"
+          f"apad")
 
     if draft:
         preset, crf = "ultrafast", "28"
@@ -309,16 +323,46 @@ def extract_segment(
         "ffmpeg", "-y",
         "-ss", f"{seg_start:.3f}",
         "-i", str(source),
-        "-t", f"{duration:.3f}",
+        "-t", f"{vdur:.6f}",
+        "-frames:v", str(n_frames),
         "-vf", vf,
         "-af", af,
         "-c:v", "libx264", "-preset", preset, "-crf", crf,
-        "-pix_fmt", "yuv420p", "-r", "24",
+        "-pix_fmt", "yuv420p", "-r", str(OUT_FPS),
         "-c:a", "aac", "-b:a", "192k", "-ar", "48000",
         "-movflags", "+faststart",
         str(out_path),
     ]
     subprocess.run(cmd, check=True, stdout=subprocess.DEVNULL, stderr=subprocess.PIPE)
+
+
+def frame_quantized_offsets(edl: dict) -> tuple[list[float], list[float], list[float]]:
+    """Nominal vs real cumulative segment offsets.
+
+    Authors place features (bleeps, cutaways, overlays, captions) on the
+    timeline implied by the EDL's range durations. The rendered timeline is
+    those durations quantized to whole frames, so each feature has to be
+    translated. Returns (nominal_offsets, real_offsets, real_durations).
+    """
+    nominal, real, durs = [], [], []
+    cn = cr = 0.0
+    for r in edl["ranges"]:
+        nominal.append(cn)
+        real.append(cr)
+        d = float(r["end"]) - float(r["start"])
+        vd = max(1, round(d * OUT_FPS)) / OUT_FPS
+        durs.append(vd)
+        cn += d
+        cr += vd
+    return nominal, real, durs
+
+
+def remap_output_time(t: float, nominal: list[float], real: list[float]) -> float:
+    """Translate a nominal output time onto the frame-quantized timeline."""
+    for i in range(len(nominal) - 1, -1, -1):
+        if t >= nominal[i] - 1e-6:
+            return real[i] + (t - nominal[i])
+    return t
 
 
 def choose_canvas(edl: dict, edit_dir: Path, draft: bool) -> tuple[int, int]:
@@ -684,7 +728,8 @@ def _mask_bleeped(text: str, a: float, b: float,
     return text
 
 
-def build_master_srt(edl: dict, edit_dir: Path, out_path: Path) -> int:
+def build_master_srt(edl: dict, edit_dir: Path, out_path: Path,
+                     seg_durations: list[float] | None = None) -> int:
     """Build an output-timeline SRT from per-source transcripts.
 
     - 2-word chunks (break on any punctuation in between)
@@ -701,11 +746,12 @@ def build_master_srt(edl: dict, edit_dir: Path, out_path: Path) -> int:
     entries: list[tuple[float, float, str]] = []
     seg_offset = 0.0
 
-    for r in edl["ranges"]:
+    for ri, r in enumerate(edl["ranges"]):
         src_name = r["source"]
         seg_start = float(r["start"])
         seg_end = float(r["end"])
-        seg_duration = seg_end - seg_start
+        seg_duration = (seg_durations[ri] if seg_durations
+                        else seg_end - seg_start)
 
         tr_path = find_transcript(transcripts_dir, src_name,
                                   resolve_path(sources[src_name], edit_dir))
@@ -1188,12 +1234,22 @@ def main() -> None:
     base_path = edit_dir / base_name
     concat_segments(segment_paths, base_path, edit_dir)
 
+    # 2b. Translate every output-time feature onto the frame-quantized
+    # timeline the segments actually occupy. Skipping this is a 300ms drift
+    # by the end of a 17-cut film, and a censor bleep misses its word.
+    nominal_offs, real_offs, real_durs = frame_quantized_offsets(edl)
+    for coll in ("broll", "overlays", "bleeps"):
+        for item in edl.get(coll) or []:
+            item["start_in_output"] = round(
+                remap_output_time(float(item["start_in_output"]),
+                                  nominal_offs, real_offs), 4)
+
     # 3. Subtitles: build if requested, resolve final path
     subs_path: Path | None = None
     if not args.no_subtitles:
         if args.build_subtitles:
             subs_path = edit_dir / "master.srt"
-            if build_master_srt(edl, edit_dir, subs_path) == 0:
+            if build_master_srt(edl, edit_dir, subs_path, real_durs) == 0:
                 print("  0 cues built — rendering without captions")
                 subs_path = None
         elif edl.get("subtitles"):
@@ -1212,7 +1268,7 @@ def main() -> None:
 
     # 5. Composite (B-roll + overlays + subtitles LAST) → pre-loudnorm path
     bleeps = edl.get("bleeps") or []
-    total = sum(float(r["end"]) - float(r["start"]) for r in edl["ranges"])
+    total = sum(real_durs)
     if args.no_loudnorm:
         build_final_composite(base_path, overlays, subs_path, out_path, edit_dir,
                               broll, bleeps, total)
