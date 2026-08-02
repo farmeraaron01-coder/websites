@@ -26,28 +26,32 @@ BEATS = [
     ("IMG_1839",                  3.70,   7.35, "COLD OPEN",  "you go to war with one of these"),
     ("SLOWMO_BITE",               0.10,   3.55, "THE BURRITO", "silent slow-mo: raise + interior reveal; title over"),
     ("SLOWMO_BITE",               4.80,   8.55, "THE BITE",    "silent slow-mo: the bite + cheese-strand pull"),
+    ("IMG_1837",                  8.10,  15.30, "INTRO",       "FACE: Alberto's is one of the best in San Diego"),
     ("DJI_20260801120655_0071_D", 11.00,  14.75, "ARRIVAL",    "pulling up to Alberto's, this is the OG"),
     ("DJI_20260801120655_0071_D", 22.05,  30.15, "THE ORDER",  "ham, egg, guacamole and cheese"),
     ("DJI_20260801121728_0076_D", 18.60,  21.45, "THE PRICE",  "it is $15.42"),
     ("DJI_20260801120940_0072_D",  3.90,  19.10, "THE RULE",   "no potatoes / pineapple on a pizza"),
-    ("DJI_20260801123019_0078_D", 54.25,  67.80, "THE PLACE",  "wiener schnitzel building, A rating thank God"),
+    ("IMG_1841",                  42.10,  55.75, "THE PLACE",  "FACE: wiener schnitzel building, A rating thank God"),
     ("DJI_20260801120655_0071_D", 66.65,  73.95, "PARKING 1",  "the parking lot sucks"),
     ("DJI_20260801120655_0071_D", 78.10,  84.35, "PARKING 2",  "nowhere to go, he's screwed"),
-    ("DJI_20260801122117_0077_D", 13.65,  24.30, "UNVEILING",  "all that green is fresh guacamole"),
-    ("DJI_20260801122117_0077_D", 56.80,  62.30, "FIRST BITE", "oh snap / holy [bleep] that is good"),
-    ("DJI_20260801122117_0077_D", 65.00,  74.95, "THE FOOD",   "right amount of cheese, guac is tremendous"),
+    ("IMG_1837",                  16.30,  20.00, "UNVEIL FACE","FACE: here we go, here's the unveiling"),
+    ("DJI_20260801122117_0077_D", 19.40,  24.30, "UNVEILING",  "FOOD: all that green is fresh guacamole"),
+    ("IMG_1837",                  59.40,  65.00, "FIRST BITE", "FACE: oh snap / holy [bleep] that is good"),
+    ("DJI_20260801122117_0077_D", 65.00,  74.95, "THE FOOD",   "FOOD: right amount of cheese, guac is tremendous"),
     ("DJI_20260801122117_0077_D", 339.25, 345.85, "THE MESS",  "pissing all over me / sign of a good one"),
     ("IMG_1838",                  10.50,  16.10, "MESS 2",     "MULTICAM: selfie angle, so much juice"),
-    ("DJI_20260801122117_0077_D", 274.90, 288.85, "SQUAWK BOX","can't hear [bleep] out of it"),
+    ("IMG_1837",                  277.50, 291.45, "SQUAWK BOX","FACE: can't hear [bleep] out of it"),
     ("DJI_20260801123019_0078_D", 183.00, 196.30, "TACO BELL", "who would go to a freaking Taco Bell"),
     ("DJI_20260801123727_0080_D",  5.30,  24.95, "THE VERDICT","four Tapatios"),
     ("DJI_20260801123727_0080_D", 25.35,  33.45, "OUTRO",      "signing off, Mr Taco Shop"),
 ]
 
 # (source, word_start, word_end, word) -- declared in SOURCE time
+# Declared against whichever angle the beat actually uses. The two 0077 words
+# moved to IMG_1837 (its selfie angle, +2.68s into that clip's own clock).
 BLEEPS = [
-    ("DJI_20260801122117_0077_D",  61.140,  61.380, "shit"),
-    ("DJI_20260801122117_0077_D", 279.540, 279.700, "shit"),
+    ("IMG_1837",                   63.820,  64.060, "shit"),
+    ("IMG_1837",                  282.220, 282.380, "shit"),
     ("DJI_20260801123019_0078_D", 193.100, 193.320, "shit"),
 ]
 
@@ -64,7 +68,7 @@ def beat_index(name: str) -> int:
 # A file entry may also be a raw path relative to the edit dir, for sources
 # that never needed syncing (muted cutaways).
 BROLL = [
-    ("TACO BELL", "../footage/IMG_1842.MOV", 6.00, 2.30, 5.80,
+    ("TACO BELL", "../footage/IMG_1842.MOV", 6.00, 2.30, 5.60,
      "zeroing in on the Taco Bell next door"),
     ("THE PLACE", "DJI_20260801121645_0075_D", 5.80, 1.60, 3.20, "the filthy yellow wall"),
     ("THE PLACE", "DJI_20260801121154_0073_D", 9.60, 5.20, 3.00, "building exterior, crushed wall"),
@@ -76,7 +80,7 @@ BROLL = [
 GRAPHICS = [
     ("THE BURRITO", 0.40, "title", 2.80),
     ("THE PRICE", 0.30, "price", 2.30),
-    ("UNVEILING", 1.20, "dish", 3.20),
+    ("UNVEIL FACE", 0.60, "dish", 3.20),
     ("TACO BELL", 2.40, "newsalert", 7.00),   # parody PiP over the outbreak line
     ("THE VERDICT", 5.40, "tapatio_score", 3.40),
 ]

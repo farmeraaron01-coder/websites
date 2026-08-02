@@ -3,12 +3,14 @@
   "sources": {
     "IMG_1839": "synced/IMG_1839_synced.mp4",
     "SLOWMO_BITE": "inserts/slowmo_bite.mp4",
+    "IMG_1837": "synced/IMG_1837_synced.mp4",
     "DJI_20260801120655_0071_D": "synced/DJI_20260801120655_0071_D_synced.mp4",
     "DJI_20260801121728_0076_D": "synced/DJI_20260801121728_0076_D_synced.mp4",
     "DJI_20260801120940_0072_D": "synced/DJI_20260801120940_0072_D_synced.mp4",
-    "DJI_20260801123019_0078_D": "synced/DJI_20260801123019_0078_D_synced.mp4",
+    "IMG_1841": "synced/IMG_1841_synced.mp4",
     "DJI_20260801122117_0077_D": "synced/DJI_20260801122117_0077_D_synced.mp4",
     "IMG_1838": "synced/IMG_1838_synced.mp4",
+    "DJI_20260801123019_0078_D": "synced/DJI_20260801123019_0078_D_synced.mp4",
     "DJI_20260801123727_0080_D": "synced/DJI_20260801123727_0080_D_synced.mp4"
   },
   "ranges": [
@@ -34,6 +36,13 @@
       "end": 8.55,
       "beat": "THE BITE",
       "reason": "silent slow-mo: the bite + cheese-strand pull"
+    },
+    {
+      "source": "IMG_1837",
+      "start": 8.1,
+      "end": 15.3,
+      "beat": "INTRO",
+      "reason": "FACE: Alberto's is one of the best in San Diego"
     },
     {
       "source": "DJI_20260801120655_0071_D",
@@ -64,11 +73,11 @@
       "reason": "no potatoes / pineapple on a pizza"
     },
     {
-      "source": "DJI_20260801123019_0078_D",
-      "start": 54.25,
-      "end": 67.8,
+      "source": "IMG_1841",
+      "start": 42.1,
+      "end": 55.75,
       "beat": "THE PLACE",
-      "reason": "wiener schnitzel building, A rating thank God"
+      "reason": "FACE: wiener schnitzel building, A rating thank God"
     },
     {
       "source": "DJI_20260801120655_0071_D",
@@ -85,25 +94,32 @@
       "reason": "nowhere to go, he's screwed"
     },
     {
-      "source": "DJI_20260801122117_0077_D",
-      "start": 13.65,
-      "end": 24.3,
-      "beat": "UNVEILING",
-      "reason": "all that green is fresh guacamole"
+      "source": "IMG_1837",
+      "start": 16.3,
+      "end": 20.0,
+      "beat": "UNVEIL FACE",
+      "reason": "FACE: here we go, here's the unveiling"
     },
     {
       "source": "DJI_20260801122117_0077_D",
-      "start": 56.8,
-      "end": 62.3,
+      "start": 19.4,
+      "end": 24.3,
+      "beat": "UNVEILING",
+      "reason": "FOOD: all that green is fresh guacamole"
+    },
+    {
+      "source": "IMG_1837",
+      "start": 59.4,
+      "end": 65.0,
       "beat": "FIRST BITE",
-      "reason": "oh snap / holy [bleep] that is good"
+      "reason": "FACE: oh snap / holy [bleep] that is good"
     },
     {
       "source": "DJI_20260801122117_0077_D",
       "start": 65.0,
       "end": 74.95,
       "beat": "THE FOOD",
-      "reason": "right amount of cheese, guac is tremendous"
+      "reason": "FOOD: right amount of cheese, guac is tremendous"
     },
     {
       "source": "DJI_20260801122117_0077_D",
@@ -120,11 +136,11 @@
       "reason": "MULTICAM: selfie angle, so much juice"
     },
     {
-      "source": "DJI_20260801122117_0077_D",
-      "start": 274.9,
-      "end": 288.85,
+      "source": "IMG_1837",
+      "start": 277.5,
+      "end": 291.45,
       "beat": "SQUAWK BOX",
-      "reason": "can't hear [bleep] out of it"
+      "reason": "FACE: can't hear [bleep] out of it"
     },
     {
       "source": "DJI_20260801123019_0078_D",
@@ -153,8 +169,8 @@
     {
       "file": "../footage/IMG_1842.MOV",
       "src_start": 6.0,
-      "start_in_output": 122.4,
-      "duration": 5.8,
+      "start_in_output": 127.75,
+      "duration": 5.6,
       "mode": "full",
       "audio": "mute",
       "note": "zeroing in on the Taco Bell next door"
@@ -162,7 +178,7 @@
     {
       "file": "synced/DJI_20260801121645_0075_D_synced.mp4",
       "src_start": 5.8,
-      "start_in_output": 42.35,
+      "start_in_output": 49.55,
       "duration": 3.2,
       "mode": "full",
       "audio": "mute",
@@ -171,7 +187,7 @@
     {
       "file": "synced/DJI_20260801121154_0073_D_synced.mp4",
       "src_start": 9.6,
-      "start_in_output": 45.95,
+      "start_in_output": 53.15,
       "duration": 3.0,
       "mode": "full",
       "audio": "mute",
@@ -180,7 +196,7 @@
     {
       "file": "synced/DJI_20260801120655_0071_D_synced.mp4",
       "src_start": 24.0,
-      "start_in_output": 49.75,
+      "start_in_output": 56.95,
       "duration": 3.0,
       "mode": "full",
       "audio": "mute",
@@ -189,7 +205,7 @@
     {
       "file": "synced/DJI_20260801121728_0076_D_synced.mp4",
       "src_start": 14.5,
-      "start_in_output": 109.15,
+      "start_in_output": 114.5,
       "duration": 3.5,
       "mode": "full",
       "audio": "mute",
@@ -204,40 +220,40 @@
     },
     {
       "file": "animations/price.webm",
-      "start_in_output": 23.0,
+      "start_in_output": 30.2,
       "duration": 2.3
     },
     {
       "file": "animations/dish.webm",
-      "start_in_output": 69.05,
+      "start_in_output": 75.75,
       "duration": 3.2
     },
     {
       "file": "animations/newsalert.webm",
-      "start_in_output": 122.5,
+      "start_in_output": 127.85,
       "duration": 7.0
     },
     {
       "file": "animations/tapatio_score.webm",
-      "start_in_output": 138.8,
+      "start_in_output": 144.15,
       "duration": 3.4
     }
   ],
   "bleeps": [
     {
-      "start_in_output": 82.84,
+      "start_in_output": 88.17,
       "duration": 0.24,
       "coverage": 0.6,
       "note": "shit"
     },
     {
-      "start_in_output": 110.79,
+      "start_in_output": 116.22,
       "duration": 0.16,
       "coverage": 0.6,
       "note": "shit"
     },
     {
-      "start_in_output": 130.2,
+      "start_in_output": 135.55,
       "duration": 0.22,
       "coverage": 0.6,
       "note": "shit"
@@ -247,9 +263,9 @@
   "sfx": [
     {
       "file": "sfx/fart.wav",
-      "start_in_output": 122.65,
+      "start_in_output": 128.0,
       "gain_db": -7.0
     }
   ],
-  "total_duration_s": 161.15
+  "total_duration_s": 166.5
 }
