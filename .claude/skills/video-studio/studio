@@ -1,0 +1,84 @@
+#!/usr/bin/env bash
+# Run a studio helper from anywhere.
+#
+# Every helper lives beside this script, but the working directory has to be the
+# PROJECT (so `edit/...` and relative EDL paths resolve). Getting that backwards
+# is the single most common way to waste a run: the command appears to work, a
+# probe silently fails to find the source, a fallback kicks in, and you get a
+# valid-but-wrong file with no error. This wrapper removes the choice -- it
+# always knows where the helpers are, and leaves cwd alone for the project.
+#
+#   studio setup                   one-time: create a venv and install deps
+#   studio doctor                  check ffmpeg / python deps / API key
+#   studio --list                  list helpers
+#   studio <helper> [args...]      e.g.  studio sync --scan footage --mux
+set -euo pipefail
+HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+find_python() {
+  # A project venv wins (it may have extras such as faster-whisper), then the
+  # skill's own venv, then whatever python3 is on PATH.
+  for cand in "./.venv/bin/python" "../.venv/bin/python" "../../.venv/bin/python" \
+              "../../../.venv/bin/python" "$HERE/.venv/bin/python"; do
+    if [[ -x "$cand" ]] && "$cand" -c 'import numpy, PIL, requests' 2>/dev/null; then
+      echo "$cand"; return 0
+    fi
+  done
+  if command -v python3 >/dev/null && python3 -c 'import numpy, PIL, requests' 2>/dev/null; then
+    echo "python3"; return 0
+  fi
+  return 1
+}
+
+case "${1:-}" in
+  setup)
+    echo "creating $HERE/.venv"
+    (command -v uv >/dev/null && uv venv "$HERE/.venv" \
+       && uv pip install --python "$HERE/.venv/bin/python" -r "$HERE/requirements.txt") \
+    || (python3 -m venv "$HERE/.venv" \
+       && "$HERE/.venv/bin/pip" install -q -r "$HERE/requirements.txt")
+    echo "done. optional extras:"
+    echo "  faster-whisper   local transcription when there is no ElevenLabs key"
+    echo "  manim            diagrammatic animation"
+    exit 0 ;;
+  doctor)
+    for bin in ffmpeg ffprobe; do
+      if command -v $bin >/dev/null; then echo "  ok    $bin"
+      else echo "  MISS  $bin -- install ffmpeg; nothing works without it"; fi
+    done
+    if PY="$(find_python)"; then echo "  ok    python deps ($PY)"
+    else echo "  MISS  python deps -- run: $0 setup"; fi
+    if [[ -n "${ELEVENLABS_API_KEY:-}" ]]; then echo "  ok    ELEVENLABS_API_KEY in env"
+    elif ls .env ../.env ../../.env >/dev/null 2>&1; then echo "  ok    .env present (key read at run time)"
+    else echo "  note  no ELEVENLABS_API_KEY -- transcription falls back to local whisper"; fi
+    # Capture first, then grep. Piping ffmpeg straight into `grep -q` looks
+    # fine and is wrong under `pipefail`: grep exits on the first match and
+    # closes the pipe, ffmpeg takes SIGPIPE and returns 141, and the pipeline
+    # reports failure even though the string WAS found. It bites only on long
+    # output (-encoders), which is why the shorter -buildconf probe seemed OK.
+    BUILDCONF="$(ffmpeg -hide_banner -buildconf 2>/dev/null || true)"
+    ENCODERS="$(ffmpeg -hide_banner -encoders 2>/dev/null || true)"
+    # libzimg backs the HDR tone-map chain; without it iPhone HLG blows out.
+    if grep -q -- --enable-libzimg <<<"$BUILDCONF"
+    then echo "  ok    ffmpeg has libzimg (HDR tone mapping)"
+    else echo "  warn  ffmpeg lacks libzimg -- HDR sources cannot be tone mapped"; fi
+    if grep -q libvpx-vp9 <<<"$ENCODERS"
+    then echo "  ok    ffmpeg has libvpx-vp9 (alpha graphics)"
+    else echo "  warn  ffmpeg lacks libvpx-vp9 -- alpha overlays will not work"; fi
+    exit 0 ;;
+  --list|"")
+    echo "helpers (run from your project directory):"
+    for f in "$HERE"/helpers/*.py; do printf '  %s\n' "$(basename "${f%.py}")"; done
+    echo; echo "also: setup, doctor"
+    exit 0 ;;
+esac
+
+HELPER="$HERE/helpers/$1.py"; shift
+[[ -f "$HELPER" ]] || { echo "no such helper: $(basename "${HELPER%.py}") (try --list)" >&2; exit 2; }
+
+if ! PY="$(find_python)"; then
+  echo "studio: python dependencies missing (numpy, pillow, requests)." >&2
+  echo "        run:  $0 setup" >&2
+  exit 3
+fi
+exec "$PY" "$HELPER" "$@"
