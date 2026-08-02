@@ -140,13 +140,14 @@ def main() -> None:
     if mpath.exists():
         i0, i1 = beat_index("THE BURRITO"), beat_index("THE BITE")
         music = {"file": MUSIC_FILE, "start": MUSIC_START,
-                 # A touch louder than a pure underscore: it is also masking
-                 # parking-lot ambience between lines.
-                 "gain_db": -20.0,
+                 # Relative to dialogue, never absolute -- render.py measures
+                 # both and works out the gain. 16 dB under is present enough
+                 # to mask parking-lot ambience without competing with speech.
+                 "under_db": 16.0,
                  "fade_in": 1.2, "fade_out": 3.0,
                  "swells": [{"start": round(offsets[i0], 3),
                              "end": round(offsets[i1] + (BEATS[i1][2] - BEATS[i1][1]), 3),
-                             "gain_db": -11.0}]}
+                             "under_db": 6.0}]}
         print(f"music bed: {MUSIC_FILE} (swell over the slow-mo)")
     else:
         print(f"music bed: none ({MUSIC_FILE} not present)")

@@ -235,8 +235,8 @@
     },
     {
       "file": "animations/tapatio_score.webm",
-      "start_in_output": 144.15,
-      "duration": 3.4
+      "start_in_output": 143.95,
+      "duration": 4.4
     }
   ],
   "bleeps": [
@@ -260,15 +260,16 @@
     }
   ],
   "music": {
-    "file": "music/mariachi_bed.mp3",
-    "gain_db": -23.0,
+    "file": "music/pasame_la_salsa.mp3",
+    "start": 95.0,
+    "under_db": 16.0,
     "fade_in": 1.2,
     "fade_out": 3.0,
     "swells": [
       {
         "start": 3.65,
         "end": 10.85,
-        "gain_db": -13.0
+        "under_db": 6.0
       }
     ]
   },

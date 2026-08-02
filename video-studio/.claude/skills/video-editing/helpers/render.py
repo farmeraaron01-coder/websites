@@ -59,10 +59,13 @@ from __future__ import annotations
 
 import argparse
 import json
+import math
 import re
 import subprocess
 import sys
 from pathlib import Path
+
+import numpy as np
 
 try:
     from grade import get_preset, auto_grade_for_clip  # same directory
@@ -1117,6 +1120,53 @@ def _between_expr(windows: list[tuple[float, float]]) -> str:
     return "+".join(f"between(t,{a:.3f},{z:.3f})" for a, z in windows)
 
 
+def speech_active_rms(path: Path, sr: int = 22050) -> float:
+    """RMS of the loud portion of a track, ignoring its silences.
+
+    Plain RMS over a dialogue recording is dominated by the gaps between
+    sentences and reads far too low, which is exactly how a music bed ends up
+    mixed on top of the voice instead of under it.
+    """
+    raw = subprocess.run(
+        ["ffmpeg", "-v", "error", "-i", str(path), "-vn", "-ac", "1",
+         "-ar", str(sr), "-f", "f32le", "-"], capture_output=True).stdout
+    x = np.frombuffer(raw, dtype=np.float32)
+    if len(x) < sr:
+        return 0.0
+    w = int(0.2 * sr)
+    fr = np.array([np.sqrt((x[i:i + w] ** 2).mean()) for i in range(0, len(x) - w, w)])
+    loud = fr[fr > np.percentile(fr, 70)]
+    return float(loud.mean()) if len(loud) else 0.0
+
+
+def resolve_music_gains(music: dict, base_path: Path, edit_dir: Path) -> None:
+    """Turn `under_db` into absolute gains, measured against the actual mix.
+
+    A bed is only ever specified in dB relative to the DIALOGUE. Absolute
+    numbers are a trap: this shoot's lav sits near -37 dBFS while a mastered
+    music track sits near -14, so a "quiet-sounding" -20 dB bed lands ABOVE
+    the voice.
+    """
+    if "under_db" not in music:
+        return
+    mpath = resolve_path(music["file"], edit_dir)
+    if not mpath.exists():
+        return
+    speech = speech_active_rms(base_path)
+    track = speech_active_rms(mpath)
+    if speech <= 0 or track <= 0:
+        print("  could not measure levels; leaving music gain as declared")
+        return
+    ratio_db = 20 * math.log10(speech / track)
+    music["gain_db"] = round(ratio_db - float(music["under_db"]), 1)
+    for sw in music.get("swells") or []:
+        if "under_db" in sw:
+            sw["gain_db"] = round(ratio_db - float(sw["under_db"]), 1)
+    print(f"  music: dialogue {20 * math.log10(speech):.1f} dBFS, "
+          f"track {20 * math.log10(track):.1f} dBFS -> bed {music['gain_db']} dB "
+          f"({music['under_db']} dB under dialogue)")
+
+
 def _build_audio_chain(broll: list[dict], bleeps: list[dict],
                        filter_parts: list[str], tone_idx: int | None,
                        music_idx: int | None = None,
@@ -1358,6 +1408,8 @@ def main() -> None:
         x["start_in_output"] = round(remap_output_time(
             float(x["start_in_output"]), nominal_offs, real_offs), 4)
     music = edl.get("music")
+    if music:
+        resolve_music_gains(music, base_path, edit_dir)
     if music and music.get("swells"):
         for sw in music["swells"]:
             sw["start"] = round(remap_output_time(float(sw["start"]),
