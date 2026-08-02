@@ -650,12 +650,30 @@ def _words_in_range(transcript: dict, t_start: float, t_end: float) -> list[dict
     return out
 
 
-def build_master_srt(edl: dict, edit_dir: Path, out_path: Path) -> None:
+def find_transcript(transcripts_dir: Path, src_name: str, src_path: Path) -> Path | None:
+    """Locate the transcript for an EDL source.
+
+    Transcripts are named after the media file they were made FROM, which is
+    usually the synced copy -- so an EDL keyed "A001" whose file is
+    "synced/A001_synced.mp4" has its words in "A001_synced.json". Checking only
+    the EDL key silently produces zero captions for every segment.
+    """
+    for stem in (src_path.stem, src_name):
+        p = transcripts_dir / f"{stem}.json"
+        if p.exists():
+            return p
+    return None
+
+
+def build_master_srt(edl: dict, edit_dir: Path, out_path: Path) -> int:
     """Build an output-timeline SRT from per-source transcripts.
 
     - 2-word chunks (break on any punctuation in between)
     - UPPERCASE text
     - Output times computed as word.start - segment_start + segment_offset
+
+    Returns the cue count so the caller can skip the subtitles filter when it
+    is zero -- libass errors out on an empty file rather than ignoring it.
     """
     transcripts_dir = edit_dir / "transcripts"
     sources = edl["sources"]
@@ -669,8 +687,9 @@ def build_master_srt(edl: dict, edit_dir: Path, out_path: Path) -> None:
         seg_end = float(r["end"])
         seg_duration = seg_end - seg_start
 
-        tr_path = transcripts_dir / f"{src_name}.json"
-        if not tr_path.exists():
+        tr_path = find_transcript(transcripts_dir, src_name,
+                                  resolve_path(sources[src_name], edit_dir))
+        if tr_path is None:
             print(f"  no transcript for {src_name}, skipping captions for this segment")
             seg_offset += seg_duration
             continue
@@ -720,6 +739,7 @@ def build_master_srt(edl: dict, edit_dir: Path, out_path: Path) -> None:
         lines.append("")
     out_path.write_text("\n".join(lines))
     print(f"master SRT → {out_path.name} ({len(entries)} cues)")
+    return len(entries)
 
 
 # -------- Loudness normalization (social-ready audio) -----------------------
@@ -956,7 +976,12 @@ def build_final_composite(
     print(f"compositing -> {out_path.name}")
     print(f"  b-roll: {len(broll)}, overlays: {len(overlays)}, "
           f"bleeps: {len(bleeps)}, subtitles: {'yes' if has_subs else 'no'}")
-    subprocess.run(cmd, check=True, stdout=subprocess.DEVNULL, stderr=subprocess.PIPE)
+    proc = subprocess.run(cmd, stdout=subprocess.DEVNULL, stderr=subprocess.PIPE)
+    if proc.returncode != 0:
+        # A failure here is always a filter-graph problem; the message is the
+        # only way to know WHICH filter, so burying it costs a whole debug loop.
+        tail = proc.stderr.decode(errors="replace")[-2000:] if proc.stderr else ""
+        raise SystemExit(f"composite ffmpeg failed (exit {proc.returncode}):\n{tail}")
 
 
 # How far the narration drops under a B-roll insert's natural sound. -10 dB is
@@ -1127,7 +1152,9 @@ def main() -> None:
     if not args.no_subtitles:
         if args.build_subtitles:
             subs_path = edit_dir / "master.srt"
-            build_master_srt(edl, edit_dir, subs_path)
+            if build_master_srt(edl, edit_dir, subs_path) == 0:
+                print("  0 cues built — rendering without captions")
+                subs_path = None
         elif edl.get("subtitles"):
             subs_path = resolve_path(edl["subtitles"], edit_dir)
             if not subs_path.exists():
