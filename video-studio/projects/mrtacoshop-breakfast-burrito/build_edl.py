@@ -65,8 +65,14 @@ def main() -> None:
     ranges, offsets, cursor = [], [], 0.0
     for src, a, b, beat, note in BEATS:
         offsets.append(cursor)
-        ranges.append({"source": src, "start": round(a, 3), "end": round(b, 3),
-                       "beat": beat, "reason": note})
+        r = {"source": src, "start": round(a, 3), "end": round(b, 3),
+             "beat": beat, "reason": note}
+        # The cold open is a vertical top-down shot of the wrecked burrito.
+        # Cropping fills the frame with the guts spilling out, which is a far
+        # stronger opening image than the same shot letterboxed.
+        if beat == "COLD OPEN":
+            r["fit"], r["crop_y"] = "crop", 0.30
+        ranges.append(r)
         cursor += b - a
     total = cursor
 

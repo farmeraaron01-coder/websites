@@ -16,7 +16,9 @@
       "start": 3.7,
       "end": 7.35,
       "beat": "COLD OPEN",
-      "reason": "you go to war with one of these"
+      "reason": "you go to war with one of these",
+      "fit": "crop",
+      "crop_y": 0.3
     },
     {
       "source": "DJI_20260801120655_0071_D",

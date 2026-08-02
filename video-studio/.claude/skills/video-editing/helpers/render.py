@@ -84,12 +84,23 @@ except Exception:
 # baseline roughly 30% up from the bottom on any aspect — clear of the UI on
 # every major vertical-video platform. Do not drop this below ~75 without a
 # specific reason.
-SUB_FORCE_STYLE = (
-    "FontName=Helvetica,FontSize=18,Bold=1,"
-    "PrimaryColour=&H00FFFFFF,OutlineColour=&H00000000,BackColour=&H00000000,"
-    "BorderStyle=1,Outline=2,Shadow=0,"
-    "Alignment=2,MarginV=90"
-)
+SUB_MARGIN_V_VERTICAL = 90
+# Landscape has no app chrome eating the bottom of the frame, and a caption
+# lifted 30% up the picture there just floats in the middle of the shot.
+SUB_MARGIN_V_LANDSCAPE = 42
+
+
+def sub_force_style(canvas_w: int, canvas_h: int) -> str:
+    margin = SUB_MARGIN_V_VERTICAL if canvas_h > canvas_w else SUB_MARGIN_V_LANDSCAPE
+    return (
+        "FontName=Helvetica,FontSize=18,Bold=1,"
+        "PrimaryColour=&H00FFFFFF,OutlineColour=&H00000000,BackColour=&H00000000,"
+        "BorderStyle=1,Outline=2,Shadow=0,"
+        f"Alignment=2,MarginV={margin}"
+    )
+
+
+SUB_FORCE_STYLE = sub_force_style(1080, 1920)
 
 # -------- Helpers ------------------------------------------------------------
 
@@ -185,7 +196,8 @@ def is_portrait_source(video: Path) -> bool:
 # -------- Per-segment extraction (Rule 2 + Rule 3) --------------------------
 
 
-def conform_filter(source: Path, canvas_w: int, canvas_h: int) -> str:
+def conform_filter(source: Path, canvas_w: int, canvas_h: int,
+                   fit: str = "blur", crop_y: float = 0.5) -> str:
     """Scale a source onto the output canvas, whatever shape it arrived in.
 
     Every segment MUST come out at exactly the canvas size. The concat demuxer
@@ -193,9 +205,15 @@ def conform_filter(source: Path, canvas_w: int, canvas_h: int) -> str:
     geometry and the rest arrive squeezed, with no error anywhere. A single
     vertical phone clip in an otherwise horizontal edit is enough to do it.
 
-    Matching aspect just scales. A mismatch is letterboxed over a blurred,
-    zoomed copy of the same frame: nothing is cropped away, the subject stays
-    whole, and it reads as a deliberate treatment rather than a mistake.
+    Two ways to reconcile a mismatch, and the right one depends on the shot:
+
+      blur  letterbox over a blurred, zoomed copy of the frame. Nothing is
+            cropped, so it is always safe -- use it when the subject fills the
+            tall frame, such as a head-to-waist selfie.
+      crop  fill the canvas and cut off the overflow. Stronger and more
+            immersive, but it discards most of a vertical frame, so it only
+            works when the subject sits inside the surviving band. `crop_y`
+            biases which band survives: 0 top, 0.5 centre, 1 bottom.
     """
     try:
         w, h = probe_dimensions(source)
@@ -207,6 +225,11 @@ def conform_filter(source: Path, canvas_w: int, canvas_h: int) -> str:
     src_ar, dst_ar = w / max(h, 1), canvas_w / canvas_h
     if abs(src_ar - dst_ar) < 0.02:
         return f"scale={canvas_w}:{canvas_h}"
+
+    if fit == "crop":
+        y = f"(ih-oh)*{max(0.0, min(1.0, crop_y)):.3f}"
+        return (f"scale={canvas_w}:{canvas_h}:force_original_aspect_ratio=increase,"
+                f"crop={canvas_w}:{canvas_h}:(iw-ow)/2:{y}")
 
     return (
         f"split=2[bg][fg];"
@@ -240,6 +263,8 @@ def extract_segment(
     canvas: tuple[int, int],
     preview: bool = False,
     draft: bool = False,
+    fit: str = "blur",
+    crop_y: float = 0.5,
 ) -> None:
     """Extract a cut range as its own MP4 with grade + 30ms audio fades baked in.
 
@@ -254,7 +279,7 @@ def extract_segment(
     out_path.parent.mkdir(parents=True, exist_ok=True)
     canvas_w, canvas_h = canvas
 
-    conform = conform_filter(source, canvas_w, canvas_h)
+    conform = conform_filter(source, canvas_w, canvas_h, fit, crop_y)
     # A conform that needs `split` is a filtergraph, not a linear chain, so the
     # grade has to be appended to its final node rather than comma-joined.
     vf_parts: list[str] = []
@@ -373,7 +398,8 @@ def extract_all_segments(
         if is_auto:
             print(f"        grade: {seg_filter or '(none)'}")
         extract_segment(src_path, start, duration, seg_filter, out_path,
-                        canvas, preview=preview, draft=draft)
+                        canvas, preview=preview, draft=draft,
+                        fit=r.get("fit", "blur"), crop_y=float(r.get("crop_y", 0.5)))
         seg_paths.append(out_path)
 
     return seg_paths
@@ -874,12 +900,22 @@ def build_final_composite(
         )
         current = f"[v{idx}]"
 
+    base_w, base_h = probe_dimensions(base_path)
+
     # --- Layer 2: animation overlays, on top of any cutaway ---
     for i, ov in enumerate(overlays):
         idx += 1
         t, dur = float(ov["start_in_output"]), float(ov["duration"])
         end = t + dur
         chain = f"setpts=PTS-STARTPTS+{t}/TB"
+        # Full-frame graphics are authored once at delivery size, but a draft
+        # renders at a smaller canvas. `overlay` does not rescale -- it pins the
+        # graphic at 0,0 and lets the excess hang off the frame, so an oversized
+        # card silently loses its right edge and anything positioned to the
+        # right or bottom disappears entirely.
+        ow, oh = probe_dimensions(resolve_path(ov["file"], edit_dir))
+        if ov.get("scale_to_frame", True) and (ow, oh) != (base_w, base_h):
+            chain += f",scale={base_w}:{base_h}"
         if alpha_overlay[i]:
             # Force the alpha-carrying format through explicitly. Without it
             # the overlay filter can negotiate a format with no alpha plane and
@@ -894,8 +930,9 @@ def build_final_composite(
     # --- Layer 3: subtitles, always last ---
     if has_subs:
         subs_abs = str(subtitles_path.resolve()).replace(":", r"\:").replace("'", r"\'")
+        style = sub_force_style(base_w, base_h)
         filter_parts.append(
-            f"{current}subtitles='{subs_abs}':force_style='{SUB_FORCE_STYLE}'[outv]")
+            f"{current}subtitles='{subs_abs}':force_style='{style}'[outv]")
         out_label = "[outv]"
     elif current != "[0:v]":
         filter_parts.append(f"{current}null[outv]")
