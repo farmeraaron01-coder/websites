@@ -1,7 +1,45 @@
-{"defaults": {"width": 1920, "height": 1080, "theme": "campy"},
+{
+ "defaults": {
+  "width": 1920,
+  "height": 1080,
+  "theme": "campy"
+ },
  "cards": [
-  {"name":"title","kind":"title","text":"MR TACO SHOP","sub":"ALBERTO'S  ·  ESCONDIDO","duration":2.4},
-  {"name":"price","kind":"price","text":"$15.42","duration":2.3,"cx":0.80,"cy":0.16},
-  {"name":"dish","kind":"lower_third","text":"Breakfast Burrito","sub":"ham, egg, guacamole, cheese","duration":3.2},
-  {"name":"verdict","kind":"stamp","text":"4 TAPATIOS","duration":2.2,"rotate":-9,"cy":0.30}
- ]}
+  {
+   "name": "title",
+   "kind": "title",
+   "text": "MR TACO SHOP",
+   "sub": "ALBERTO'S  \u00b7  ESCONDIDO",
+   "duration": 2.8,
+   "scrim": 110
+  },
+  {
+   "name": "price",
+   "kind": "price",
+   "text": "$15.42",
+   "duration": 2.3,
+   "cx": 0.8,
+   "cy": 0.16
+  },
+  {
+   "name": "dish",
+   "kind": "lower_third",
+   "text": "Breakfast Burrito",
+   "sub": "ham, egg, guacamole, cheese",
+   "duration": 3.2
+  },
+  {
+   "name": "tapatio_score",
+   "kind": "score",
+   "icon": "assets/tapatio_bottle.png",
+   "count": 4,
+   "text": "",
+   "duration": 3.4,
+   "icon_h": 0.245,
+   "cy": 0.15,
+   "label_y": 0.47,
+   "band": 0.0,
+   "band_alpha": 185
+  }
+ ]
+}

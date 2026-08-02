@@ -72,7 +72,7 @@ BROLL = [
      "the slow pan arriving on the Taco Bell next door"),
     ("THE PLACE", "DJI_20260801121645_0075_D", 5.80, 1.60, 3.20, "the filthy yellow wall"),
     ("THE PLACE", "DJI_20260801121154_0073_D", 9.60, 5.20, 3.00, "building exterior, crushed wall"),
-    ("THE PLACE", "DJI_20260801120655_0071_D", 24.00, 9.00, 3.00, "drive-thru sign and menu board"),
+    ("THE PLACE", "DJI_20260801120655_0071_D", 24.00, 8.30, 2.20, "drive-thru sign and menu board"),
     ("SQUAWK BOX", "DJI_20260801121728_0076_D", 14.50, 3.00, 3.50, "the order window"),
 ]
 

@@ -41,7 +41,7 @@ import math
 import subprocess
 from pathlib import Path
 
-from PIL import Image, ImageDraw, ImageFont
+from PIL import Image, ImageDraw, ImageFilter, ImageFont
 
 FPS = 24
 
@@ -242,7 +242,8 @@ def draw_title(t: float, cfg: dict) -> Image.Image:
     if fade <= 0.002:
         return img
 
-    d.rectangle([0, 0, W, H], fill=(*th["bg"][:3], int(th["bg"][3] * fade)))
+    scrim = int(cfg.get("scrim", th["bg"][3]))
+    d.rectangle([0, 0, W, H], fill=(*th["bg"][:3], int(scrim * fade)))
 
     text, sub = cfg["text"].upper(), cfg.get("sub", "")
     f_main = load_font(int(H * 0.11), bold=True)
@@ -320,11 +321,32 @@ def draw_score(t: float, cfg: dict) -> Image.Image:
     if fade_out <= 0.002:
         return img
 
+    # Optional band behind the row. When the underlying shot is a tight
+    # close-up there is no clean space for floating icons -- they read as
+    # growing out of the subject's head. A band turns the same row into a
+    # deliberate ratings strip, and its soft lower edge keeps it from looking
+    # like a hard letterbox.
+    band = float(cfg.get("band", 0.0))
+    if band > 0:
+        bh = int(H * band)
+        top_a = int(cfg.get("band_alpha", 200))
+        # getchannel() returns a COPY -- edits to it are discarded unless the
+        # result is written back with putalpha, which is how this first shipped
+        # as a hard-edged black letterbox instead of a gradient.
+        alpha_col = Image.new("L", (1, bh))
+        ap = alpha_col.load()
+        for y in range(bh):
+            f = y / max(bh - 1, 1)
+            ap[0, y] = int(top_a * (1.0 - f) ** 2 * fade_out)
+        col = Image.new("RGBA", (1, bh), (10, 9, 8, 255))
+        col.putalpha(alpha_col)
+        img.alpha_composite(col.resize((W, bh), Image.BILINEAR), (0, 0))
+
     ih = int(H * cfg.get("icon_h", 0.44))
     iw = int(icon.width * ih / icon.height)
-    spacing = int(iw * 1.35)
+    spacing = int(iw * float(cfg.get("spacing", 1.9)))
     x0 = W // 2 - spacing * (count - 1) // 2
-    cy = int(H * cfg.get("cy", 0.42))
+    cy = int(H * cfg.get("cy", 0.26))
 
     for i in range(count):
         t_i = (t - i * stagger) / pop
@@ -337,6 +359,16 @@ def draw_score(t: float, cfg: dict) -> Image.Image:
         b = icon.resize((nw, nh), Image.LANCZOS)
         # Alternating tilt reads as hand-placed, not templated.
         b = b.rotate(-6 if i % 2 == 0 else 6, expand=True, resample=Image.BICUBIC)
+        # A blurred dark silhouette behind each icon. Without it the artwork
+        # dissolves into whatever it lands on -- here, a face and a bright cap.
+        pad = max(6, nh // 14)
+        sil = Image.new("RGBA", (b.width + pad * 2, b.height + pad * 2), (0, 0, 0, 0))
+        alpha = b.getchannel("A").point(lambda v: int(v * 0.75))
+        blk = Image.new("RGBA", b.size, (0, 0, 0, 255)); blk.putalpha(alpha)
+        sil.alpha_composite(blk, (pad, pad))
+        sil = sil.filter(ImageFilter.GaussianBlur(pad * 0.7))
+        sil.alpha_composite(b, (pad, pad))
+        b = sil
         if fade_out < 1.0:
             a = b.getchannel("A").point(lambda v: int(v * fade_out))
             b.putalpha(a)
@@ -351,7 +383,7 @@ def draw_score(t: float, cfg: dict) -> Image.Image:
         tw, th_ = text_size(d, text, f)
         a = int(255 * min(1.0, t_label) * fade_out)
         rise = int((1 - ease_out_cubic(min(1.0, t_label))) * H * 0.03)
-        d.text(((W - tw) // 2, int(H * 0.70) + rise), text, font=f,
+        d.text(((W - tw) // 2, int(H * cfg.get("label_y", 0.47)) + rise), text, font=f,
                fill=(*th["fg"][:3], a),
                stroke_width=max(3, int(H * 0.007)),
                stroke_fill=(0, 0, 0, a))
