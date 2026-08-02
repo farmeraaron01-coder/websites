@@ -57,3 +57,31 @@ building captions — these would burn in verbatim.
   cutaway texture only.
 - The "Alibertos and Roberto's, I'm not sure who came first" tangent
   (0077 @179–183) — raises a question the video never answers.
+
+## Session 2 — the cut (2026-08-02)
+
+Delivered `edit/final.mp4`: 1920x1080, 2:34 (153.958s = 3695 frames), -14.4 dB
+mean / -0.9 dB peak, 215 caption cues, 3 censor bleeps, 4 graphics, 4 B-roll
+cutaways. 17 beats; structure in `build_edl.py` (the EDL is generated, never
+hand-edited). Packaging in `youtube.md`.
+
+Decisions:
+- Cold open = IMG_1839 torn-burrito shot, crop fit (crop_y 0.30), caption over.
+- Verdict beat recovered by Scribe ("four Tapatios... the food is too freaking
+  good") — Whisper had garbled it entirely.
+- Bleep gag: 1kHz tone over middle 60% of each word, captions grawlixed to
+  match (S***). Three instances.
+- "gypped" line avoided by using the "trust me, you're gonna get plenty" take.
+- Multicam cut DJI_0077 -> IMG_1838 inside THE MESS beat.
+
+Render bugs found by inspection this session (all produced valid MP4s):
+1. Mixed-orientation concat squeeze -> global canvas + conform (blur/crop).
+2. Overlays composited unscaled -> scaled to base frame.
+3. Caption margin was vertical-video tuned -> aspect-aware.
+4. SRT built 0 cues (transcript name mismatch) -> stem lookup + skip-if-empty.
+5. Timeline drift: frame rounding (+300ms/17 cuts) -> frame-exact segments,
+   features remapped to quantized clock.
+6. Audio pts gaps from concat -> asetpts=N/SR/TB before all time-gated filters.
+
+Trust nothing but the rendered file. Measure with decode-then-trim, never
+input-seek AAC to sub-100ms windows.
