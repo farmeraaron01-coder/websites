@@ -1097,7 +1097,14 @@ def _build_audio_chain(broll: list[dict], bleeps: list[dict],
     if not voiced and not bleeps:
         return "0:a", ["-c:a", "copy"]
 
-    current = "[0:a]"
+    # Rebase the audio onto a continuous sample-count clock before ANY
+    # time-gated filter. The concat demuxer leaves per-segment gaps in the
+    # base audio's timestamps, and a `between(t,...)` gate fires on the pts
+    # axis -- so without this, gates on the base audio and gates on generated
+    # sources (which are continuous) disagree by the accumulated gap, and
+    # every censor tone lands early by ~one AAC frame per preceding cut.
+    filter_parts.append("[0:a]asetpts=N/SR/TB[a0cont]")
+    current = "[a0cont]"
 
     if voiced:
         # Duck (or fully mute) the base under each insert. A `volume` filter
@@ -1144,7 +1151,8 @@ def _build_audio_chain(broll: list[dict], bleeps: list[dict],
             filter_parts.append(
                 f"{current}volume='if({expr},0,1)':eval=frame[censored]")
             filter_parts.append(
-                f"[{tone_idx}:a]volume='if({expr},{BLEEP_LEVEL},0)':eval=frame[tone]")
+                f"[{tone_idx}:a]asetpts=N/SR/TB,"
+                f"volume='if({expr},{BLEEP_LEVEL},0)':eval=frame[tone]")
             filter_parts.append(
                 "[censored][tone]amix=inputs=2:duration=first:normalize=0[outa]")
             current = "[outa]"
