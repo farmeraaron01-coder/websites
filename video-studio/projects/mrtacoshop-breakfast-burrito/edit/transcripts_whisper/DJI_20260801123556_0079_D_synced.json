@@ -1,0 +1,290 @@
+{
+  "language_code": "en",
+  "text": "They made their band in some...some people are really, you know, negative or condescending, you know, it's not right and it's like, I don't want them to give in to a hard time trying to do it.",
+  "words": [
+    {
+      "type": "word",
+      "text": "They",
+      "start": 0.0,
+      "end": 0.4,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "made",
+      "start": 0.4,
+      "end": 0.7,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "their",
+      "start": 0.7,
+      "end": 0.92,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "band",
+      "start": 0.92,
+      "end": 1.12,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "in",
+      "start": 1.12,
+      "end": 1.46,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "some...some",
+      "start": 1.46,
+      "end": 4.18,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "people",
+      "start": 4.18,
+      "end": 4.48,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "are",
+      "start": 4.48,
+      "end": 4.64,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "really,",
+      "start": 4.64,
+      "end": 5.14,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "you",
+      "start": 5.14,
+      "end": 5.78,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "know,",
+      "start": 5.78,
+      "end": 5.96,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "spacing",
+      "text": " ",
+      "start": 5.96,
+      "end": 6.18
+    },
+    {
+      "type": "word",
+      "text": "negative",
+      "start": 6.18,
+      "end": 6.5,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "or",
+      "start": 6.5,
+      "end": 7.14,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "condescending,",
+      "start": 7.14,
+      "end": 8.14,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "spacing",
+      "text": " ",
+      "start": 8.14,
+      "end": 8.88
+    },
+    {
+      "type": "word",
+      "text": "you",
+      "start": 8.88,
+      "end": 9.08,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "know,",
+      "start": 9.08,
+      "end": 9.18,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "spacing",
+      "text": " ",
+      "start": 9.18,
+      "end": 9.26
+    },
+    {
+      "type": "word",
+      "text": "it's",
+      "start": 9.26,
+      "end": 9.32,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "not",
+      "start": 9.32,
+      "end": 9.48,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "right",
+      "start": 9.48,
+      "end": 9.88,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "and",
+      "start": 9.88,
+      "end": 10.2,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "it's",
+      "start": 10.2,
+      "end": 10.48,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "like,",
+      "start": 10.48,
+      "end": 10.74,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "spacing",
+      "text": " ",
+      "start": 10.74,
+      "end": 11.0
+    },
+    {
+      "type": "word",
+      "text": "I",
+      "start": 11.0,
+      "end": 11.14,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "don't",
+      "start": 11.14,
+      "end": 11.3,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "want",
+      "start": 11.3,
+      "end": 11.42,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "them",
+      "start": 11.42,
+      "end": 11.56,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "to",
+      "start": 11.56,
+      "end": 11.72,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "give",
+      "start": 11.72,
+      "end": 11.82,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "in",
+      "start": 11.82,
+      "end": 11.94,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "to",
+      "start": 11.94,
+      "end": 12.1,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "a",
+      "start": 12.1,
+      "end": 12.2,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "hard",
+      "start": 12.2,
+      "end": 12.36,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "time",
+      "start": 12.36,
+      "end": 12.6,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "trying",
+      "start": 12.6,
+      "end": 13.0,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "to",
+      "start": 13.0,
+      "end": 13.42,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "do",
+      "start": 13.42,
+      "end": 13.9,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "it.",
+      "start": 13.9,
+      "end": 13.98,
+      "speaker_id": "speaker_0"
+    }
+  ],
+  "_backend": "faster-whisper:small.en"
+}

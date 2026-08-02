@@ -77,10 +77,26 @@ VERBATIM_PROMPT = (
 
 
 def load_api_key() -> str | None:
-    for candidate in [Path(__file__).resolve().parent.parent / ".env",
-                      Path(__file__).resolve().parents[3] / ".env",
-                      Path(".env")]:
-        if candidate.exists():
+    """Find ELEVENLABS_API_KEY in the environment or in any .env above us.
+
+    Walks up from both this file and the working directory rather than
+    checking a fixed list of depths. The helpers live several levels inside
+    `.claude/skills/...` while `.env` sits at the project root, and a
+    hard-coded parent count silently stops finding it the moment either path
+    changes shape.
+    """
+    if os.environ.get("ELEVENLABS_API_KEY"):
+        return os.environ["ELEVENLABS_API_KEY"]
+
+    seen: set[Path] = set()
+    for origin in (Path(__file__).resolve(), Path.cwd().resolve() / "_"):
+        for parent in origin.parents:
+            candidate = parent / ".env"
+            if candidate in seen:
+                continue
+            seen.add(candidate)
+            if not candidate.is_file():
+                continue
             for line in candidate.read_text().splitlines():
                 line = line.strip()
                 if not line or line.startswith("#") or "=" not in line:
@@ -90,7 +106,7 @@ def load_api_key() -> str | None:
                     val = v.strip().strip('"').strip("'")
                     if val:
                         return val
-    return os.environ.get("ELEVENLABS_API_KEY") or None
+    return None
 
 
 def extract_audio(video_path: Path, dest: Path) -> None:

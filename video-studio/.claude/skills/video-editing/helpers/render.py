@@ -185,40 +185,89 @@ def is_portrait_source(video: Path) -> bool:
 # -------- Per-segment extraction (Rule 2 + Rule 3) --------------------------
 
 
+def conform_filter(source: Path, canvas_w: int, canvas_h: int) -> str:
+    """Scale a source onto the output canvas, whatever shape it arrived in.
+
+    Every segment MUST come out at exactly the canvas size. The concat demuxer
+    cannot join streams of differing dimensions -- it takes the first stream's
+    geometry and the rest arrive squeezed, with no error anywhere. A single
+    vertical phone clip in an otherwise horizontal edit is enough to do it.
+
+    Matching aspect just scales. A mismatch is letterboxed over a blurred,
+    zoomed copy of the same frame: nothing is cropped away, the subject stays
+    whole, and it reads as a deliberate treatment rather than a mistake.
+    """
+    try:
+        w, h = probe_dimensions(source)
+    except Exception:
+        w, h = canvas_w, canvas_h
+    if is_portrait_rotated(source):
+        w, h = h, w
+
+    src_ar, dst_ar = w / max(h, 1), canvas_w / canvas_h
+    if abs(src_ar - dst_ar) < 0.02:
+        return f"scale={canvas_w}:{canvas_h}"
+
+    return (
+        f"split=2[bg][fg];"
+        f"[bg]scale={canvas_w}:{canvas_h}:force_original_aspect_ratio=increase,"
+        f"crop={canvas_w}:{canvas_h},gblur=sigma=28[bgb];"
+        f"[fg]scale={canvas_w}:{canvas_h}:force_original_aspect_ratio=decrease[fgs];"
+        f"[bgb][fgs]overlay=(W-w)/2:(H-h)/2"
+    )
+
+
+def is_portrait_rotated(video: Path) -> bool:
+    """True when rotation metadata makes a stored-landscape frame display tall."""
+    try:
+        out = subprocess.run(
+            ["ffprobe", "-v", "error", "-select_streams", "v:0",
+             "-show_entries", "stream_side_data=rotation",
+             "-of", "default=noprint_wrappers=1:nokey=1", str(video)],
+            capture_output=True, text=True, check=True,
+        ).stdout.strip().splitlines()
+        return bool(out) and int(round(float(out[0]))) % 180 == 90
+    except Exception:
+        return False
+
+
 def extract_segment(
     source: Path,
     seg_start: float,
     duration: float,
     grade_filter: str,
     out_path: Path,
+    canvas: tuple[int, int],
     preview: bool = False,
     draft: bool = False,
 ) -> None:
     """Extract a cut range as its own MP4 with grade + 30ms audio fades baked in.
 
-    `-ss` before `-i` for fast accurate seeking. Scale to 1080p from 4K.
-    Portrait sources (height > width) are scaled by height to preserve orientation.
+    `-ss` before `-i` for fast accurate seeking. Every segment is conformed to
+    the same canvas so the lossless concat that follows is legal.
 
     Quality ladder:
-      - final (default): 1080p libx264 fast CRF 20
-      - preview:         1080p libx264 medium CRF 22 (evaluable for QC)
-      - draft:           720p libx264 ultrafast CRF 28 (cut-point check only)
+      - final (default): libx264 fast CRF 20
+      - preview:         libx264 medium CRF 22 (evaluable for QC)
+      - draft:           720p-class libx264 ultrafast CRF 28 (cut-point check)
     """
     out_path.parent.mkdir(parents=True, exist_ok=True)
+    canvas_w, canvas_h = canvas
 
-    portrait = is_portrait_source(source)
-    if draft:
-        scale = "scale=-2:1280" if portrait else "scale=1280:-2"
-    else:
-        scale = "scale=-2:1920" if portrait else "scale=1920:-2"
-
+    conform = conform_filter(source, canvas_w, canvas_h)
+    # A conform that needs `split` is a filtergraph, not a linear chain, so the
+    # grade has to be appended to its final node rather than comma-joined.
     vf_parts: list[str] = []
     if is_hdr_source(source):
         vf_parts.append(TONEMAP_CHAIN)
-    vf_parts.append(scale)
+    if vf_parts and "split=" in conform:
+        # Tone map first, then hand the result to the conform graph.
+        vf = ",".join(vf_parts) + "," + conform
+    else:
+        vf_parts.append(conform)
+        vf = ",".join(vf_parts)
     if grade_filter:
-        vf_parts.append(grade_filter)
-    vf = ",".join(vf_parts)
+        vf = f"{vf},{grade_filter}"
 
     # 30ms audio fades at both edges (Rule 3) — prevent pops
     fade_out_start = max(0.0, duration - 0.03)
@@ -247,6 +296,37 @@ def extract_segment(
     subprocess.run(cmd, check=True, stdout=subprocess.DEVNULL, stderr=subprocess.PIPE)
 
 
+def choose_canvas(edl: dict, edit_dir: Path, draft: bool) -> tuple[int, int]:
+    """Decide the output geometry once, for the whole edit.
+
+    Taken from the EDL's `canvas` if given, otherwise from whichever
+    orientation carries the most screen time. Deciding per-segment is what
+    breaks the concat, so this is deliberately a single global choice.
+    """
+    if edl.get("canvas"):
+        w, h = (int(v) for v in str(edl["canvas"]).lower().split("x"))
+    else:
+        land = tall = 0.0
+        for r in edl["ranges"]:
+            src = resolve_path(edl["sources"][r["source"]], edit_dir)
+            dur = float(r["end"]) - float(r["start"])
+            try:
+                sw, sh = probe_dimensions(src)
+            except Exception:
+                continue
+            if is_portrait_rotated(src):
+                sw, sh = sh, sw
+            if sh > sw:
+                tall += dur
+            else:
+                land += dur
+        w, h = (1080, 1920) if tall > land else (1920, 1080)
+    if draft:
+        w, h = (w * 2 // 3) // 2 * 2, (h * 2 // 3) // 2 * 2
+    print(f"canvas: {w}x{h}" + ("  (draft scale)" if draft else ""))
+    return w, h
+
+
 def extract_all_segments(
     edl: dict,
     edit_dir: Path,
@@ -260,6 +340,7 @@ def extract_all_segments(
     `auto_grade_for_clip` and apply a per-segment subtle correction.
     Otherwise, apply the same preset/raw filter to every segment.
     """
+    canvas = choose_canvas(edl, edit_dir, draft)
     resolved = resolve_grade_filter(edl.get("grade"))
     is_auto = resolved == "__AUTO__"
     clips_dir = edit_dir / (
@@ -291,7 +372,8 @@ def extract_all_segments(
         print(f"  [{i:02d}] {src_name}  {start:7.2f}-{end:7.2f}  ({duration:5.2f}s)  {note}")
         if is_auto:
             print(f"        grade: {seg_filter or '(none)'}")
-        extract_segment(src_path, start, duration, seg_filter, out_path, preview=preview, draft=draft)
+        extract_segment(src_path, start, duration, seg_filter, out_path,
+                        canvas, preview=preview, draft=draft)
         seg_paths.append(out_path)
 
     return seg_paths
@@ -730,6 +812,8 @@ def build_final_composite(
     out_path: Path,
     edit_dir: Path,
     broll: list[dict] | None = None,
+    bleeps: list[dict] | None = None,
+    total_duration: float = 0.0,
 ) -> None:
     """Final pass: base -> B-roll -> overlays -> subtitles LAST -> out.
 
@@ -739,10 +823,10 @@ def build_final_composite(
     hide them (Rule 1). Get this order wrong and the failure is silent -- the
     render succeeds and the captions are simply gone.
     """
-    broll = broll or []
+    broll, bleeps = broll or [], bleeps or []
     has_subs = subtitles_path is not None and subtitles_path.exists()
 
-    if not broll and not overlays and not has_subs:
+    if not broll and not overlays and not has_subs and not bleeps:
         run(["ffmpeg", "-y", "-i", str(base_path), "-c", "copy", str(out_path)], quiet=True)
         return
 
@@ -755,6 +839,14 @@ def build_final_composite(
         ov_path = resolve_path(ov["file"], edit_dir)
         inputs += _overlay_input_args(ov_path)
         alpha_overlay.append(has_alpha(ov_path))
+
+    # The censor tone is a generated source, added last so it cannot shift the
+    # indices the video filter graph already refers to.
+    tone_idx = None
+    if bleeps:
+        tone_idx = 1 + len(broll) + len(overlays)
+        inputs += ["-f", "lavfi", "-t", f"{max(total_duration, 1.0):.3f}",
+                   "-i", f"sine=frequency={BLEEP_HZ}:sample_rate=48000"]
 
     filter_parts: list[str] = []
     current = "[0:v]"
@@ -811,8 +903,8 @@ def build_final_composite(
     else:
         out_label = "[0:v]"
 
-    # --- Audio: mix in B-roll natural sound where asked ---
-    audio_label, audio_codec = _build_broll_audio(broll, filter_parts)
+    # --- Audio: B-roll natural sound, then censor tones ---
+    audio_label, audio_codec = _build_audio_chain(broll, bleeps, filter_parts, tone_idx)
 
     cmd = [
         "ffmpeg", "-y", *inputs,
@@ -826,7 +918,7 @@ def build_final_composite(
     ]
     print(f"compositing -> {out_path.name}")
     print(f"  b-roll: {len(broll)}, overlays: {len(overlays)}, "
-          f"subtitles: {'yes' if has_subs else 'no'}")
+          f"bleeps: {len(bleeps)}, subtitles: {'yes' if has_subs else 'no'}")
     subprocess.run(cmd, check=True, stdout=subprocess.DEVNULL, stderr=subprocess.PIPE)
 
 
@@ -834,50 +926,101 @@ def build_final_composite(
 # about a third of the level: the sizzle reads clearly and the voice still wins.
 DEFAULT_DUCK_DB = -10.0
 
+# Broadcast censor tone. 1 kHz is the television standard.
+BLEEP_HZ = 1000
+BLEEP_LEVEL = 0.30              # ~-10 dBFS: unmissable without being painful
+BLEEP_COVERAGE = 0.6            # fraction of the word the tone actually covers
 
-def _build_broll_audio(broll: list[dict], filter_parts: list[str]) -> tuple[str, list[str]]:
+
+def _bleep_windows(bleeps: list[dict]) -> list[tuple[float, float]]:
+    """Turn word spans into the spans the tone actually covers.
+
+    A real broadcast censor is always slightly late and slightly short, so you
+    catch the front and tail of the word around the tone. Covering only the
+    middle `coverage` fraction reproduces that, which is both funnier and more
+    legible than a clean full-word mute -- the viewer hears enough to know
+    exactly what was said.
+    """
+    out: list[tuple[float, float]] = []
+    for b in bleeps:
+        start, dur = float(b["start_in_output"]), float(b["duration"])
+        cov = float(b.get("coverage", BLEEP_COVERAGE))
+        margin = dur * (1.0 - cov) / 2.0
+        a, z = start + margin, start + dur - margin
+        if z > a:
+            out.append((a, z))
+    return out
+
+
+def _between_expr(windows: list[tuple[float, float]]) -> str:
+    return "+".join(f"between(t,{a:.3f},{z:.3f})" for a, z in windows)
+
+
+def _build_audio_chain(broll: list[dict], bleeps: list[dict],
+                       filter_parts: list[str], tone_idx: int | None
+                       ) -> tuple[str, list[str]]:
     """Return (audio_map_label, codec_args) for the composite command.
 
-    With no B-roll audio there is nothing to do and the base track is copied
-    through untouched -- no re-encode, no quality loss. Otherwise the base is
-    ducked during each insert and the inserts are mixed in on top.
+    With nothing to do the base track is copied through untouched -- no
+    re-encode, no quality loss.
     """
     voiced = [b for b in broll if b.get("audio") in ("duck", "full")]
-    if not voiced:
+    if not voiced and not bleeps:
         return "0:a", ["-c:a", "copy"]
 
-    # Duck (or fully mute) the base under each insert. Chained `volume` filters
-    # with `enable` windows only act inside their own window.
-    base_chain: list[str] = []
-    for b in voiced:
-        t, end = float(b["start_in_output"]), float(b["start_in_output"]) + float(b["duration"])
-        if b["audio"] == "full":
-            gain = 0.0
-        else:
-            gain = 10 ** (float(b.get("duck_db", DEFAULT_DUCK_DB)) / 20.0)
-        base_chain.append(f"volume=enable='between(t,{t:.3f},{end:.3f})':volume={gain:.4f}")
-    filter_parts.append(f"[0:a]{','.join(base_chain)}[baseduck]")
+    current = "[0:a]"
 
-    mix_labels = ["[baseduck]"]
-    for i, b in enumerate(broll, start=1):
-        if b.get("audio") not in ("duck", "full"):
-            continue
-        t = float(b["start_in_output"])
-        gain_db = float(b.get("audio_gain_db", 0.0))
-        af = [f"adelay={t * 1000:.1f}:all=1"] if t > 0 else []
-        if gain_db:
-            af.append(f"volume={gain_db:.2f}dB")
-        af.append("aresample=48000")
-        filter_parts.append(f"[{i}:a]{','.join(af)}[ba{i}]")
-        mix_labels.append(f"[ba{i}]")
+    if voiced:
+        # Duck (or fully mute) the base under each insert. A `volume` filter
+        # with an `enable` window only acts inside that window.
+        base_chain = []
+        for b in voiced:
+            t = float(b["start_in_output"])
+            end = t + float(b["duration"])
+            gain = 0.0 if b["audio"] == "full" else \
+                10 ** (float(b.get("duck_db", DEFAULT_DUCK_DB)) / 20.0)
+            base_chain.append(
+                f"volume=enable='between(t,{t:.3f},{end:.3f})':volume={gain:.4f}")
+        filter_parts.append(f"{current}{','.join(base_chain)}[baseduck]")
+        current = "[baseduck]"
 
-    # normalize=0 is essential: amix's default divides every input by the input
-    # count, which would silently drop the narration by 6 dB per cutaway.
-    filter_parts.append(
-        f"{''.join(mix_labels)}amix=inputs={len(mix_labels)}:duration=first:"
-        f"dropout_transition=0:normalize=0[outa]"
-    )
-    return "[outa]", ["-c:a", "aac", "-b:a", "256k", "-ar", "48000"]
+        mix_labels = [current]
+        for i, b in enumerate(broll, start=1):
+            if b.get("audio") not in ("duck", "full"):
+                continue
+            t = float(b["start_in_output"])
+            gain_db = float(b.get("audio_gain_db", 0.0))
+            af = [f"adelay={t * 1000:.1f}:all=1"] if t > 0 else []
+            if gain_db:
+                af.append(f"volume={gain_db:.2f}dB")
+            af.append("aresample=48000")
+            filter_parts.append(f"[{i}:a]{','.join(af)}[ba{i}]")
+            mix_labels.append(f"[ba{i}]")
+
+        # normalize=0 is essential: amix's default divides every input by the
+        # input count, which would silently drop the narration by 6 dB per
+        # cutaway.
+        filter_parts.append(
+            f"{''.join(mix_labels)}amix=inputs={len(mix_labels)}:duration=first:"
+            f"dropout_transition=0:normalize=0[premix]")
+        current = "[premix]"
+
+    if bleeps and tone_idx is not None:
+        windows = _bleep_windows(bleeps)
+        if windows:
+            expr = _between_expr(windows)
+            # `enable` is the wrong tool here: outside its window the filter is
+            # bypassed, which would leave the tone at full level everywhere.
+            # A per-frame volume EXPRESSION gates properly in both directions.
+            filter_parts.append(
+                f"{current}volume='if({expr},0,1)':eval=frame[censored]")
+            filter_parts.append(
+                f"[{tone_idx}:a]volume='if({expr},{BLEEP_LEVEL},0)':eval=frame[tone]")
+            filter_parts.append(
+                "[censored][tone]amix=inputs=2:duration=first:normalize=0[outa]")
+            current = "[outa]"
+
+    return current, ["-c:a", "aac", "-b:a", "256k", "-ar", "48000"]
 
 
 # -------- Main ---------------------------------------------------------------
@@ -963,12 +1106,15 @@ def main() -> None:
                               preview=args.preview, draft=args.draft)
 
     # 5. Composite (B-roll + overlays + subtitles LAST) → pre-loudnorm path
+    bleeps = edl.get("bleeps") or []
+    total = sum(float(r["end"]) - float(r["start"]) for r in edl["ranges"])
     if args.no_loudnorm:
-        build_final_composite(base_path, overlays, subs_path, out_path, edit_dir, broll)
+        build_final_composite(base_path, overlays, subs_path, out_path, edit_dir,
+                              broll, bleeps, total)
     else:
         tmp_composite = out_path.with_suffix(".prenorm.mp4")
         build_final_composite(base_path, overlays, subs_path, tmp_composite,
-                              edit_dir, broll)
+                              edit_dir, broll, bleeps, total)
         print("loudness normalization → social-ready (-14 LUFS / -1 dBTP / LRA 11)")
         apply_loudnorm_two_pass(tmp_composite, out_path, preview=args.draft)
         tmp_composite.unlink(missing_ok=True)

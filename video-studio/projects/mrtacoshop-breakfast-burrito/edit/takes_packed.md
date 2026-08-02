@@ -3,186 +3,282 @@
 Phrase-level, grouped on silences ≥ 0.5s or speaker change.
 Use `[start-end]` ranges to address cuts in the EDL.
 
-## DJI_20260801120655_0071_D_synced  (duration: 1m 39.6s, 21 phrases)
-  [006.26-012.82] S0 Okay, here we go, pulling it to Alberto's.
-  [013.38-014.42] S0 This is the OG.
-  [018.20-019.26] S0 Gotta love that.
-  [020.34-021.24] S0 Can I get for you?
-  [022.10-023.02] S0 Yeah, can I get
-  [031.56-032.56] S0 Okay, anything else?
-  [033.24-033.68] S0 Uh,
-  [034.70-036.10] S0 how about a orange soda?
-  [037.56-039.42] S0 Oh, what, I'm sorry? Uh, do you have orange soda?
-  [040.46-041.94] S0 Okay, anything else? That's it.
-  [043.24-044.98] S0 Thank you. Thank you.
-  [055.02-056.48] S0 The Alberto's is awesome.
-  [057.42-060.82] S0 There were those Gs you just slap red paint,
-  [061.40-063.30] S0 some yellow paint,
-  [063.98-066.02] S0 50 coats, no problem.
-  [066.84-073.72] S0 And then of course this is always the fun part of eating here. One is the parking lot sucks.
-  [074.54-076.58] S0 So we got a, okay,
-  [078.12-080.70] S0 this guy wants to get out, there's nowhere to go,
-  [082.28-084.10] S0 there's nowhere for him to go. He's screwed.
-  [095.58-098.52] S0 So, anyone that's been here has had their,
-  [099.72-105.84] S0 you you're always worried about that your car is going to get totally side swiped on the side when you go through the drive -thru.
+## DJI_20260801120655_0071_D_synced  (duration: 1m 57.3s, 31 phrases)
+  [006.50-007.54] S0 Okay, here we go.
+  [011.14-012.32] S0 Pulling up to Alberto's.
+  [013.56-014.60] S0 This is the OG.
+  [018.46-019.28] S0 Gotta love that.
+  [020.42-021.44] S1 Hi, can I get for you?
+  [022.18-027.27] S0 Yeah, can I get a breakfast burrito with, uh, ham, egg,
+  [027.84-028.62] S0 and guacamole,
+  [029.14-030.00] S0 and cheese, please?
+  [031.84-032.56] S1 Okay, anything else?
+  [033.30-036.26] S0 Uh, how about a, uh, orange soda?
+  [037.56-038.18] S1 A what? I'm sorry.
+  [038.50-039.54] S0 Uh, do you have orange soda?
+  [040.64-041.61] S1 Okay, anything else?
+  [041.62-042.00] S0 That's it.
+  [043.44-043.68] S1 Thank you.
+  [043.98-044.40] S0 Thank you.
+  [055.36-056.64] S0 Yeah, Alberto's is awesome.
+  [057.90-060.80] S0 They're one of the OGs. You just slap red paint,
+  [061.62-063.36] S0 some, uh, yellow paint,
+  [064.38-066.18] S0 50 coats, no problem.
+  [066.80-071.38] S0 And then of course, this is always the, uh, fun part of eating here. One
+  [072.56-073.86] S0 is the parking lot sucks,
+  [074.38-075.66] S0 so we, we gotta...
+  [076.38-076.62] S0 Okay,
+  [078.26-080.44] S0 this guy wants to get out. There's nowhere to go.
+  [082.68-084.20] S0 Yeah, there's nowhere for him to go. He's screwed.
+  [095.92-098.58] S0 So anyone that's been here has had, uh, their...
+  [100.14-102.34] S0 You're always worried about their car's gonna get totally
+  [103.32-105.96] S0 sideswiped on the side when you go through the drive-through.
+  [114.02-116.44] S0 Oh,
+  [119.12-123.84] S0 shit.
 
-## DJI_20260801120940_0072_D_synced  (duration: 37.1s, 1 phrases)
-  [000.72-037.80] S0 okay as we wait here in line let's get something straight we are not gonna put potatoes in my breakfast burrito it's sort of like pineapple on a pizza we just don't do it it's not good no one asked for it let's not go there all right so we're a little backed up here but we're gonna see one thing that's really great about the guacamole here is they have a lot of thick onion so if you like onion in your guac then you're gonna be super thrilled about the alberos here this is in Escondido
+## DJI_20260801120940_0072_D_synced  (duration: 37.1s, 10 phrases)
+  [001.00-003.08] S0 Okay, as we, uh, wait here
+  [004.04-007.52] S0 in line, let's get something straight. We are not gonna put potatoes
+  [008.12-009.98] S0 in my breakfast burrito. It's sort of like
+  [010.92-012.56] S0 p- uh, pineapple on a pizza.
+  [013.34-014.20] S0 We just don't do it.
+  [015.16-016.88] S0 It's not good. No one asks for it.
+  [018.24-018.96] S0 Let's not go there.
+  [020.00-021.48] S0 All right, so we're, uh,
+  [022.00-023.08] S0 a little backed up here,
+  [024.74-038.12] S0 but we're gonna see. One thing that's really great about the guacamole here is, uh, they have a lot of thick onion. So if you like onion in your guac, then you're gonna be super thrilled about the, uh, Alberto's here. This is in Escondido.
 
-## DJI_20260801121154_0073_D_synced  (duration: 16.3s, 5 phrases)
-  [002.12-004.92] S0 Alright, we're getting COSER, folks. Here we go.
-  [006.08-007.82] S0 Yeah, this is what I'm always talking about.
-  [010.02-012.18] S0 This wall's been crushed more times.
-  [013.84-014.70] S0 They even got a little,
-  [016.16-018.38] S0 uh...
+## DJI_20260801121154_0073_D_synced  (duration: 13.0s, 5 phrases)
+  [002.06-002.50] S0 All right,
+  [003.02-005.02] S0 we're getting closer, folks. Here we go.
+  [006.14-007.98] S0 Yeah, this is what I'm always talking about.
+  [010.38-012.26] S0 This wall's been crushed more times.
+  [013.92-015.10] S0 Even got a little, uh...
 
-## DJI_20260801121605_0074_D_synced  (duration: 1.4s, 1 phrases)
-  [013.52-014.92] S0 Oaxaca, cotija, cotija, cotija, cotija,
+## DJI_20260801121605_0074_D_synced  (duration: 4.9s, 1 phrases)
+  [000.08-005.02] S0 ([beeping])
 
-## DJI_20260801121645_0075_D_synced  (duration: 14.9s, 2 phrases)
-  [001.64-003.28] S0 You got to love this.
-  [004.90-016.58] S0 This place hasn't been cleaned in 25 years and none of us care because it's got the best wok and one of the best breakfast burritos in Escondido for sure.
+## DJI_20260801121645_0075_D_synced  (duration: 14.6s, 3 phrases)
+  [002.16-003.28] S0 You gotta love this.
+  [005.36-012.20] S0 This place hasn't been cleaned in twenty-five years, and none of us care because it's got the best guac
+  [013.58-016.76] S0 and one of the best breakfast burritos in Escondido for sure.
 
-## DJI_20260801121728_0076_D_synced  (duration: 26.3s, 6 phrases)
-  [010.08-011.62] S0 Got that A, though.
-  [014.70-018.02] S0 Hi. How are you? How are you? Doing great.
-  [018.78-019.54] S0 That's good.
-  [020.38-020.89] S0 Thank you.
-  [022.36-022.88] S0 Thank you.
-  [030.64-036.38] S0 Thank you, oh yeah can I get four red please?
+## DJI_20260801121728_0076_D_synced  (duration: 32.6s, 18 phrases)
+  [010.58-011.48] S0 Got that A, though.
+  [015.16-015.44] S1 Hi.
+  [015.66-016.16] S0 How are you?
+  [016.42-017.44] S1 Good, thank you. How are you?
+  [017.56-018.14] S0 Doing great.
+  [018.80-021.26] S1 That's good. It is $15.42.
+  [021.88-021.96] S0 Oh.
+  [022.40-023.06] S1 Thank you.
+  [023.08-023.08] S0 Thank you.
+  [025.30-029.16] S1 There you go.
+  [029.74-031.34] S1 Righty here is your drink.
+  [031.50-032.14] S0 Thank you.
+  [032.88-034.10] S1 And any hot sauce?
+  [034.44-036.20] S0 Oh, yeah. Can I get, uh, four red, please?
+  [036.42-036.80] S1 Four red?
+  [041.14-041.80] S1 There you go.
+  [041.90-042.20] S0 Thank you, ma'am.
+  [042.22-043.16] S1 Let me just get your card.
 
-## DJI_20260801122117_0077_D_synced  (duration: 6m 50.7s, 78 phrases)
-  [002.00-004.24] S0 Okay, let's go, Alberdos.
-  [005.50-008.70] S0 As I was saying before, Alberdos is one of the best in San Diego,
-  [009.26-012.24] S0 known for its tremendous guac.
-  [013.76-014.88] S0 Here we go. Here's the unveiling.
-  [016.62-017.02] S0 Oh, yeah.
-  [019.46-024.12] S0 Oh, you see all that green in there? That is all fresh guacamole. Unbelievable.
-  [025.40-028.58] S0 Got your standard red hot sauce
-  [055.76-058.56] S0 All right, in the
-  [060.40-062.04] S0 Holy shit, that is good.
-  [064.80-068.84] S0 So one thing I like about it, it's the right amount of cheese.
-  [071.00-072.14] S0 The guac is tremendous.
-  [073.20-074.68] S0 This is a ham, an egg.
-  [080.00-080.56] S0 Mmm.
-  [081.90-087.56] S0 These guys are the OGs of breakfast burritos, one of the best satin around.
-  [096.50-098.08] S0 See the guac in there?
-  [101.26-101.84] S0 All good.
-  [103.94-104.74] S0 Okay, so,
-  [105.70-108.90] S0 on the downside,
-  [109.58-110.42] S0 when it comes to the ham,
-  [111.02-112.74] S0 I mean, this is at that standard ham,
-  [113.60-116.84] S0 store -bought ham slice, and they just chop it up,
-  [117.64-118.28] S0 which is fine,
-  [118.82-119.80] S0 no problem for me.
-  [120.72-136.24] S0 standard the red hot sauce everyone's favorite yeah good size too I mean look at this thing good size good value
-  [145.08-147.58] S0 When you're in San Diego, especially Escondido,
-  [148.30-150.48] S0 you've got to hit this Alberto's.
-  [152.18-156.10] S0 They haven't painted it, cleaned it in probably 35 years. No one cares.
-  [157.30-157.80] S0 Si se puede.
-  [159.18-159.90] S0 Let's go.
-  [173.32-178.82] S0 They've been rocking Escondido forever.
-  [179.86-183.16] S0 Alibertos and Roberto's, I'm not sure who came first, we're going to have to find that out.
-  [191.26-194.58] S0 Known for, most likely, I think people would say it's their guacamole.
-  [195.42-200.08] S0 Their guacamole has got big chunks of onion in it.
-  [200.82-202.80] S0 That's the thing here.
-  [204.48-209.58] S0 I like that, just the right amount of cheese, not over cheesed,
-  [210.12-212.12] S0 in terms of the egg, perfect.
-  [213.24-214.12] S0 Not too overdone,
-  [215.28-217.46] S0 not underdone, but here's one thing you've got to know.
-  [218.54-220.82] S0 This thing is juicy,
-  [221.48-228.22] S0 and if you're not paying attention, you don't put something in your leg, you will seriously have a puddle of oil right down your lap.
-  [229.54-231.30] S0 So certainly got to watch that.
-  [236.48-238.30] S0 See? Told you.
-  [242.70-243.34] S0 All right,
-  [244.34-246.10] S0 one bite ever knows the rules.
-  [250.50-250.90] S0 Mmm.
-  [252.22-252.62] S0 Mmm.
-  [253.28-254.44] S0 Yeah, that is frickin' good.
-  [257.94-260.16] S0 Holy boy. So, in which time you're in Escondido?
-  [261.76-263.70] S0 Tell me what you think. Do you guys still like Alberto?
-  [264.54-265.80] S0 They certainly didn't sell out.
-  [266.86-270.98] S0 I've been doing it the same way forever, old school,
-  [272.30-282.24] S0 they got the drive through with the microphone that you basically can't hear shit out of, sounds like a squawk box,
-  [282.90-298.46] S0 who knows what they're saying, who knows if you're going to get your order but you wouldn't want Albertos on Escanito Boulevard.
-  [299.56-300.02] S0 Peace,
-  [300.62-300.70] S0 out.
-  [326.32-327.60] S0 Oh, snap.
-  [334.10-335.76] S0 Get the cheese.
-  [336.82-337.52] S0 Got the ham.
-  [339.34-340.80] S0 This thing's pissing all over me.
-  [342.36-345.82] S0 But that's the sign of a good Mexican breakfast burro.
-  [361.66-363.64] S0 Yeah, things ping all over me,
-  [364.24-365.58] S0 so much juice in this thing,
-  [366.66-368.38] S0 eggs to eggs,
-  [369.48-369.48] S0 cheese,
-  [371.14-371.14] S0 cheese,
-  [372.68-375.20] S0 standard here. You get your little bag,
-  [376.72-379.06] S0 always got to get three or four of these guys, right?
-  [380.26-380.68] S0 Perfect.
-  [381.30-382.02] S0 They may have green,
-  [382.82-391.14] S0 we're not going to give them a super award for the hot sauce. I mean, it's pretty pretty, but it's everything you're looking for in a San Diego breakfast burrito.
-  [397.00-397.76] S0 Mmm.
-  [401.02-401.78] S0 Ooh.
-  [402.56-402.64] S0 Oh.
-  [404.34-404.76] S0 Mmm.
-  [405.30-405.66] S0 Mm -hmm.
-  [408.80-409.24] S0 Bomb.
-  [410.76-411.36] S0 Chise puede.
-  [411.90-412.74] S0 Let's go.
+## DJI_20260801122117_0077_D_synced  (duration: 7m 02.1s, 111 phrases)
+  [002.16-004.38] S0 Okay, let's go, Alberto's.
+  [005.48-008.76] S0 As I was saying before, Alberto's is one of the best in San Diego,
+  [010.44-012.32] S0 known for its tremendous guac.
+  [013.80-015.12] S0 Here we go. Here's the unveiling.
+  [016.56-017.16] S0 Oh, yeah.
+  [019.66-024.16] S0 Oh, you see all that green in there? That is all fresh guacamole. Unbelievable.
+  [025.48-026.96] S0 Got your standard red,
+  [027.96-028.94] S0 uh, hot sauce here.
+  [032.92-034.20] S0 All right, here we go. Look at this.
+  [035.58-037.58] S0 Perfectly done, uh, burrito,
+  [038.52-040.78] S0 and the way you gotta do it is you gotta get that hot sauce,
+  [042.98-045.12] S0 and you gotta put the hot sauce
+  [047.54-048.30] S0 right down here.
+  [049.02-049.44] S0 Boom.
+  [050.50-051.26] S0 All right, let's go.
+  [051.94-052.82] S0 Let's try this thing right now.
+  [056.92-058.16] S0 Oh, snap.
+  [060.70-062.16] S0 Holy shit, that is good.
+  [065.16-066.12] S0 So one thing I like about
+  [067.12-068.88] S0 it, it's the right amount of cheese.
+  [071.14-072.36] S0 The guac is tremendous.
+  [073.30-074.84] S0 This is a ham and egg.
+  [080.32-080.54] S0 Mm.
+  [082.30-087.16] S0 These guys are the OGs of, uh, breakfast burritos, one of the best and around.
+  [090.47-090.58] S0 Mm.
+  [097.26-098.05] S0 See the guac in there?
+  [101.46-101.96] S0 All good.
+  [104.22-105.49] S0 Like I said, I think
+  [108.26-109.02] S0 on the downside,
+  [109.64-110.50] S0 when it comes to the ham,
+  [111.02-112.84] S0 I mean, this is at that standard ham
+  [113.66-116.84] S0 that you get store-bought ham sliced, and they just kinda chop it up,
+  [117.78-118.34] S0 which is fine.
+  [118.98-119.64] S0 No problem for me.
+  [121.10-122.50] S0 Standard, uh, the red
+  [123.98-124.54] S0 hot sauce,
+  [126.22-127.56] S0 everyone's favorite.
+  [128.80-129.22] S0 Uh,
+  [131.34-134.28] S0 yeah, good size too. I mean, look at this thing. Good size,
+  [134.98-135.54] S0 good value.
+  [138.60-139.00] S0 Mm.
+  [145.79-147.68] S0 Mm. When you're in San Diego, especially Escondido,
+  [148.70-149.88] S0 you gotta hit this Alberto's.
+  [152.34-156.16] S0 Like I said, they haven't painted it, cleaned it in probably 35 years. No one cares.
+  [157.26-158.04] S0 Si se puede.
+  [159.50-159.90] S0 Let's go.
+  [164.50-164.68] S0 Mm.
+  [173.52-174.36] S0 They've been rocking
+  [177.40-178.86] S0 Escondido forever.
+  [179.62-183.12] S0 Alberto's and Roberto's, I'm not sure who came first. We're gonna have to find that out,
+  [184.94-186.62] S0 but Alberto's is one of the OGs.
+  [188.04-188.96] S0 Super consistent.
+  [191.66-194.68] S0 Known for most likely, I think people would say, it's their guacamole.
+  [195.74-196.56] S0 Their guacamole
+  [197.10-199.34] S0 has got big chunks of onion in it.
+  [201.08-201.56] S0 That's the,
+  [202.18-202.84] S0 that's the thing here.
+  [204.62-205.56] S0 I like that, uh,
+  [207.12-209.00] S0 just the right amount of cheese, not over-cheesed.
+  [210.32-212.74] S0 In terms of the, uh, egg, perfect as well.
+  [213.38-214.20] S0 Not too overdone,
+  [215.62-217.54] S0 not underdone. But here's one thing you gotta know.
+  [219.06-221.02] S0 This thing is juicy,
+  [221.68-225.42] S0 and if you're not paying attention, you don't put this on your leg, you will seriously have a
+  [226.20-228.26] S0 puddle of oil right down your lap.
+  [229.44-231.14] S0 So certainly gotta watch that.
+  [234.72-234.92] S0 See?
+  [237.60-237.96] S0 Told you.
+  [243.00-243.26] S0 All right.
+  [244.52-245.76] S0 One bite, everybody knows the rules.
+  [250.40-250.64] S0 Mm.
+  [252.08-252.59] S0 Mm! Damn,
+  [253.62-254.54] S0 that is freaking good.
+  [258.14-260.26] S0 Oh, boy. So next time you're in Escondido,
+  [262.04-264.04] S0 tell me what you think. Do you guys still like Alberto's?
+  [264.62-265.86] S0 They surely didn't sell out.
+  [267.16-268.48] S0 They've been doing it the same way forever.
+  [270.50-271.08] S0 Old school.
+  [272.42-273.08] S0 They got the
+  [274.96-275.66] S0 drive-through
+  [276.76-280.00] S0 with the, uh, microphone that you basically can't hear shit out of.
+  [281.16-282.30] S0 Sounds like a squawk box.
+  [282.96-285.76] S0 Who knows what they're saying. Who knows if you're gonna get your order, but
+  [287.48-288.72] S0 you wouldn't want it any other way.
+  [289.64-290.92] S0 All right. Peace out.
+  [292.98-298.66] S0 This is, uh, Mr. Taco Shop signing off for Alberto's on Escondido Boulevard.
+  [299.78-300.86] S0 Peace out.
+  [326.78-327.80] S0 Oh, snap.
+  [330.38-330.58] S0 Mm.
+  [335.14-335.88] S0 Get the cheese,
+  [336.90-337.60] S0 got the ham.
+  [339.38-340.64] S0 This thing's pissing all over me,
+  [342.50-345.72] S0 but that's the sign of a good Mexican breakfast burrito.
+  [350.80-350.96] S0 Mm.
+  [362.01-363.66] S0 Yeah, thing's peeing all over me.
+  [364.42-365.58] S0 So much juice in this thing,
+  [366.44-367.74] S0 from the eggs to ham,
+  [369.28-370.12] S0 cheese.
+  [372.80-375.22] S0 Standard here. Always gotta get, get your little bag.
+  [376.86-379.10] S0 Always gotta get three or four of these guys, right?
+  [380.50-382.10] S0 Perfect. They may have green.
+  [382.90-398.04] S0 We're not gonna give them a super award for the hot sauce. I mean, it's pretty standard, but it's everything you're looking for in a San Diego breakfast burrito. Mm.
+  [401.52-401.78] S0 Oh.
+  [402.50-402.76] S0 Oh.
+  [404.52-404.63] S0 Mm.
+  [405.36-405.64] S0 Mm-hmm.
+  [408.94-409.36] S0 Bomb.
+  [410.66-411.32] S0 Si se puede.
+  [412.36-412.78] S0 Let's go.
+  [415.73-416.58] S0 Let's go, Alberto's.
+  [420.92-424.26] S0 ([groans])
 
-## DJI_20260801123019_0078_D_synced  (duration: 3m 13.8s, 26 phrases)
-  [002.42-004.34] S0 We've got to tuck her in a little bit.
-  [006.96-009.76] S0 Oh yeah, it's getting all over my fingers, it's getting everywhere.
-  [018.68-021.46] S0 So this is one of my favorites out here in Escondido.
-  [023.72-027.72] S0 Alibertos, I got a guy behind me, I'm not sure what's going on, anyhow,
-  [028.32-031.14] S0 Alibertos, super consistent, one of the best in San Diego,
-  [032.44-033.10] S0 everybody knows,
-  [033.62-036.06] S0 Alibertos are gonna get a good meal,
-  [036.82-039.08] S0 doing mostly for their guacamole, I think,
-  [039.60-040.08] S0 in my opinion,
-  [040.62-043.78] S0 it's got a lot of onion, big, thick, chunky onion, that's the thing.
-  [051.46-052.92] S0 Yeah, always busy.
-  [054.26-056.12] S0 Got that iconic drive -around.
-  [057.48-059.72] S0 Almost your wiener schnitzel looking building.
-  [060.98-062.84] S0 Never been cleaneded.
-  [063.46-064.30] S0 Probably 30 years.
-  [065.04-065.90] S0 But they got that A.
-  [066.70-067.58] S0 Grating, thank God.
-  [076.26-077.32] S0 The burrito.
-  [080.86-086.36] S0 The tortilla just on the right, soft,
-  [087.36-089.38] S0 a little stretchy, not overdone.
-  [090.88-091.82] S0 What's it easy to do?
-  [096.78-105.68] S0 Just the right. They always have good cheese as well. They don't, they don't skimp here. You eat here, you're not going to get gypped on the guac or the cheese. That's the big thing about this place
-  [110.90-117.06] S0 Insider tip you're not going to get gypped on the guac or the cheese here at alibertos
-  [117.68-123.48] S0 Trust me, you're gonna get plenty and that's the value of going alibertos
-  [141.16-144.72] S0 Oh Yeah
-  [180.42-196.18] S0 here's the most crazy thing they're literally right next to a Taco Bell I mean who would go to a freaking Taco Bell you get the diarrhea salad lettuce that they're putting on that shit when you could be sitting right here at Elibertos.
+## DJI_20260801123019_0078_D_synced  (duration: 3m 21.6s, 38 phrases)
+  [002.52-003.96] S0 We gotta tuck her in a little bit.
+  [006.94-013.56] S0 Oh yeah, it's getting all over my fingers, getting everywhere.
+  [018.84-023.64] S0 So this is one of my favorites out here in Escondido, ([clears throat]) El Alberto's.
+  [024.50-027.56] S0 Oh, I got a guy behind me. I'm not sure what's going on. Anyhow,
+  [028.28-031.24] S0 El Alberto's, super consistent, one of the best in San Diego.
+  [032.36-033.18] S0 Everybody knows
+  [033.68-036.10] S0 if you go to El Alberto's you're gonna get a damn good meal.
+  [037.02-040.22] S0 Known mostly for their guacamole, I think. In my opinion,
+  [040.74-044.38] S0 it's got a lot of onion. Big thick chunky onion. That's the thing. ([sniffs])
+  [046.36-048.12] S0 Mm. There we go.
+  [051.98-052.94] S0 Yeah, always busy,
+  [054.40-056.02] S0 got that iconic drive around,
+  [057.64-059.84] S0 almost Wiener schnitzel looking building.
+  [061.56-062.34] S0 Never been cleaned,
+  [063.54-064.38] S0 probably 30 years,
+  [065.06-067.64] S0 but they got that A rating, thank God.
+  [068.80-076.14] S0 ([sniffs])
+  [076.84-077.48] S0 The burrito.
+  [081.08-081.84] S0 The tortilla.
+  [083.26-083.96] S0 Just done right.
+  [086.02-086.44] S0 Soft,
+  [087.50-088.21] S0 a little stretchy,
+  [088.72-089.42] S0 not overdone,
+  [090.96-091.88] S0 which is easy to deal.
+  [093.80-094.10] S0 Um,
+  [097.14-111.86] S0 just the right... They always have good cheese as well. They don't, they don't skimp here. If you eat here you're not gonna get gypped on the guac or the cheese. That's the big thing about this place. ([sniffs]) Insider tip.
+  [112.80-117.12] S0 You're not gonna get gypped on the guac or the cheese here at El Alberto's.
+  [118.00-120.12] S0 Trust me, you're gonna get plenty,
+  [121.36-132.80] S0 and that's the value of going to El Alberto's. ([sniffs])
+  [134.68-138.33] S0 Mm.
+  [142.42-143.64] S0 Oh, snap.
+  [145.38-150.92] S0 Mm. Whoa.
+  [151.68-155.52] S0 Mm.
+  [167.20-182.04] S0 Here's the most crazy thing.
+  [183.12-185.48] S0 They're literally right next to a Taco Bell.
+  [186.06-188.60] S0 I mean, who would go to a freaking Taco Bell
+  [189.96-196.16] S0 and get the diarrhea salad lettuce that they're putting on that shit when you could be sitting right here at El Alberto's?
+  [197.52-204.14] S0 ([sniffs])
 
-## DJI_20260801123556_0079_D_synced  (duration: 14.0s, 2 phrases)
-  [000.00-008.14] S0 They made their band in some...some people are really, you know, negative or condescending,
-  [008.88-013.98] S0 you know, it's not right and it's like, I don't want them to give in to a hard time trying to do it.
+## DJI_20260801123556_0079_D_synced  (duration: 13.9s, 4 phrases)
+  [000.30-005.16] S0 They, they, there may have been some, some people abuse their position. Some people are really,
+  [005.70-008.28] S0 you know, negative or condescending.
+  [009.04-013.36] S0 You know, it's not right, and it's like I don't want them to give anyone a hard time for trying to
+  [014.10-014.24] S0 improve
 
-## DJI_20260801123727_0080_D_synced  (duration: 8.1s, 2 phrases)
-  [025.36-026.76] S0 Okay,
-  [027.56-033.42] S0 that's it. That was awesome. Again, I think of Mr. Taco Shop, let's go sí se puede.
+## DJI_20260801123727_0080_D_synced  (duration: 32.0s, 8 phrases)
+  [001.28-002.22] S0 Okay, that's it.
+  [004.04-004.78] S0 That was awesome.
+  [005.40-005.80] S0 Again,
+  [006.36-009.12] S0 I think, uh, I'm gonna have to give this a score of
+  [010.30-011.68] S0 I'm gonna go four Tapatios.
+  [012.86-019.84] S0 I was gonna go three and a half based on the cleanliness of the place, a little sketchy, but the food is too freaking good. So
+  [020.46-024.84] S0 amigos, it's gonna get four Tapatios. That's almost one of our highest awards
+  [025.44-033.30] S0 for the breakfast burrito review. All right, signing off, Mr. Taco Shop. Let's go si se puede.
 
-## IMG_1836_synced  (duration: 0.8s, 1 phrases)
-  [000.00-000.82] S0 Cheers!
+## IMG_1836_synced  (duration: 25.2s, 1 phrases)
+  [000.02-025.22] S0 ([background noise])
 
-## IMG_1838_synced  (duration: 55.4s, 9 phrases)
-  [007.96-009.86] S0 Now, things ping all over me.
-  [010.52-011.78] S0 So much juice in this thing.
-  [012.68-013.82] S0 From the eggs to ham,
-  [015.32-015.80] S0 cheese.
-  [019.32-021.42] S0 Standard here. Always got to get, get your little bags.
-  [022.86-037.32] S0 Always got to get three or four these guys right perfect they may have green we're not going to to give them a super award for the hot sos i mean it's pretty standard but it's everything everything you're looking for in a san diego breakfast burrito
-  [048.08-049.16] S0 oh oh
-  [054.30-060.52] S0 bomb she's a wetter let's go
-  [061.48-063.40] S0 school I burrows
+## IMG_1838_synced  (duration: 1m 00.7s, 19 phrases)
+  [008.20-009.90] S0 Damn. Thing's peeing all over me.
+  [010.64-011.80] S0 So much juice in this thing,
+  [012.62-013.96] S0 from the eggs to ham,
+  [015.48-015.94] S0 cheese.
+  [019.02-021.52] S0 Standard here. Always gotta get, get your little bag.
+  [023.06-025.34] S0 Always gotta get three or four of these guys, right?
+  [026.72-028.34] S0 Perfect. They may have green.
+  [029.08-033.42] S0 We're not gonna give them a super award for the hot sauce. I mean, it's pretty standard, but
+  [034.26-037.40] S0 it's everything you're looking for in a San Diego breakfast burrito.
+  [043.64-045.28] S0 Mm.
+  [046.10-046.28] S0 ([slurping])
+  [047.86-049.12] S0 Oh. Oh.
+  [050.74-051.98] S0 Mm. Mm-hmm.
+  [055.20-055.70] S0 Bomb.
+  [056.86-057.62] S0 Si se puede.
+  [058.58-059.28] S0 Let's go.
+  [061.92-063.38] S0 Let's go, Liberos.
+  [067.14-067.72] S0 ([sighs])
+  [068.86-068.90] S1 Mm.
 
-## IMG_1839_synced  (duration: 3.5s, 1 phrases)
-  [003.54-007.06] S0 Yep, that's what happens. You go to war with one of these breakfast burritos.
+## IMG_1839_synced  (duration: 8.4s, 2 phrases)
+  [003.86-007.18] S0 Yep, that's what happens. You go to war with one of these breakfast burritos.
+  [011.52-012.28] S0 Mm-hmm
 
-## IMG_1843_synced  (duration: 0.0s, 0 phrases)
-  _no speech detected_
+## IMG_1843_synced  (duration: 9.2s, 1 phrases)
+  [000.10-009.28] S0 ([background noise])

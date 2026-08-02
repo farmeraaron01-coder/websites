@@ -1,14 +1,18 @@
 {
-  "language_code": "en",
-  "text": "Cheers!",
+  "language_code": "eng",
+  "language_probability": 1.0,
+  "text": "[background noise]",
   "words": [
     {
-      "type": "word",
-      "text": "Cheers!",
-      "start": 0.0,
-      "end": 0.82,
-      "speaker_id": "speaker_0"
+      "text": "[background noise]",
+      "start": 0.019,
+      "end": 25.219,
+      "type": "audio_event",
+      "speaker_id": "speaker_0",
+      "logprob": -0.009310212935088203
     }
   ],
-  "_backend": "faster-whisper:small.en"
+  "transcription_id": "M5fm0D9NLMfpihKRng54",
+  "audio_duration_secs": 25.4506875,
+  "_backend": "scribe"
 }

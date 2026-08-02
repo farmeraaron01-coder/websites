@@ -1,6 +1,18 @@
 {
-  "language_code": "en",
-  "text": "",
-  "words": [],
-  "_backend": "faster-whisper:small.en"
+  "language_code": "eng",
+  "language_probability": 1.0,
+  "text": "[background noise]",
+  "words": [
+    {
+      "text": "[background noise]",
+      "start": 0.099,
+      "end": 9.28,
+      "type": "audio_event",
+      "speaker_id": "speaker_0",
+      "logprob": -0.02655907779408153
+    }
+  ],
+  "transcription_id": "Wzhc5ZwbrEnR5DvLd6y1",
+  "audio_duration_secs": 9.408,
+  "_backend": "scribe"
 }

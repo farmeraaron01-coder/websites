@@ -1,0 +1,216 @@
+{
+  "version": 1,
+  "sources": {
+    "IMG_1839": "synced/IMG_1839_synced.mp4",
+    "DJI_20260801120655_0071_D": "synced/DJI_20260801120655_0071_D_synced.mp4",
+    "DJI_20260801121728_0076_D": "synced/DJI_20260801121728_0076_D_synced.mp4",
+    "DJI_20260801120940_0072_D": "synced/DJI_20260801120940_0072_D_synced.mp4",
+    "DJI_20260801123019_0078_D": "synced/DJI_20260801123019_0078_D_synced.mp4",
+    "DJI_20260801122117_0077_D": "synced/DJI_20260801122117_0077_D_synced.mp4",
+    "IMG_1838": "synced/IMG_1838_synced.mp4",
+    "DJI_20260801123727_0080_D": "synced/DJI_20260801123727_0080_D_synced.mp4"
+  },
+  "ranges": [
+    {
+      "source": "IMG_1839",
+      "start": 3.7,
+      "end": 7.35,
+      "beat": "COLD OPEN",
+      "reason": "you go to war with one of these"
+    },
+    {
+      "source": "DJI_20260801120655_0071_D",
+      "start": 11.0,
+      "end": 14.75,
+      "beat": "ARRIVAL",
+      "reason": "pulling up to Alberto's, this is the OG"
+    },
+    {
+      "source": "DJI_20260801120655_0071_D",
+      "start": 22.05,
+      "end": 30.15,
+      "beat": "THE ORDER",
+      "reason": "ham, egg, guacamole and cheese"
+    },
+    {
+      "source": "DJI_20260801121728_0076_D",
+      "start": 18.6,
+      "end": 21.45,
+      "beat": "THE PRICE",
+      "reason": "it is $15.42"
+    },
+    {
+      "source": "DJI_20260801120940_0072_D",
+      "start": 3.9,
+      "end": 19.1,
+      "beat": "THE RULE",
+      "reason": "no potatoes / pineapple on a pizza"
+    },
+    {
+      "source": "DJI_20260801123019_0078_D",
+      "start": 54.25,
+      "end": 67.8,
+      "beat": "THE PLACE",
+      "reason": "wiener schnitzel building, A rating thank God"
+    },
+    {
+      "source": "DJI_20260801120655_0071_D",
+      "start": 66.65,
+      "end": 73.95,
+      "beat": "PARKING 1",
+      "reason": "the parking lot sucks"
+    },
+    {
+      "source": "DJI_20260801120655_0071_D",
+      "start": 78.1,
+      "end": 84.35,
+      "beat": "PARKING 2",
+      "reason": "nowhere to go, he's screwed"
+    },
+    {
+      "source": "DJI_20260801122117_0077_D",
+      "start": 13.65,
+      "end": 24.3,
+      "beat": "UNVEILING",
+      "reason": "all that green is fresh guacamole"
+    },
+    {
+      "source": "DJI_20260801122117_0077_D",
+      "start": 56.8,
+      "end": 62.3,
+      "beat": "FIRST BITE",
+      "reason": "oh snap / holy [bleep] that is good"
+    },
+    {
+      "source": "DJI_20260801122117_0077_D",
+      "start": 65.0,
+      "end": 74.95,
+      "beat": "THE FOOD",
+      "reason": "right amount of cheese, guac is tremendous"
+    },
+    {
+      "source": "DJI_20260801122117_0077_D",
+      "start": 339.25,
+      "end": 345.85,
+      "beat": "THE MESS",
+      "reason": "pissing all over me / sign of a good one"
+    },
+    {
+      "source": "IMG_1838",
+      "start": 10.5,
+      "end": 16.1,
+      "beat": "MESS 2",
+      "reason": "MULTICAM: selfie angle, so much juice"
+    },
+    {
+      "source": "DJI_20260801122117_0077_D",
+      "start": 274.9,
+      "end": 288.85,
+      "beat": "SQUAWK BOX",
+      "reason": "can't hear [bleep] out of it"
+    },
+    {
+      "source": "DJI_20260801123019_0078_D",
+      "start": 183.0,
+      "end": 196.3,
+      "beat": "TACO BELL",
+      "reason": "who would go to a freaking Taco Bell"
+    },
+    {
+      "source": "DJI_20260801123727_0080_D",
+      "start": 5.3,
+      "end": 24.95,
+      "beat": "THE VERDICT",
+      "reason": "four Tapatios"
+    },
+    {
+      "source": "DJI_20260801123727_0080_D",
+      "start": 25.35,
+      "end": 33.45,
+      "beat": "OUTRO",
+      "reason": "signing off, Mr Taco Shop"
+    }
+  ],
+  "grade": "auto",
+  "broll": [
+    {
+      "file": "synced/DJI_20260801121645_0075_D_synced.mp4",
+      "src_start": 5.8,
+      "start_in_output": 35.15,
+      "duration": 3.2,
+      "mode": "full",
+      "audio": "mute",
+      "note": "the filthy yellow wall"
+    },
+    {
+      "file": "synced/DJI_20260801121154_0073_D_synced.mp4",
+      "src_start": 9.6,
+      "start_in_output": 38.75,
+      "duration": 3.0,
+      "mode": "full",
+      "audio": "mute",
+      "note": "building exterior, crushed wall"
+    },
+    {
+      "file": "synced/DJI_20260801120655_0071_D_synced.mp4",
+      "src_start": 24.0,
+      "start_in_output": 42.55,
+      "duration": 3.0,
+      "mode": "full",
+      "audio": "mute",
+      "note": "drive-thru sign and menu board"
+    },
+    {
+      "file": "synced/DJI_20260801121728_0076_D_synced.mp4",
+      "src_start": 14.5,
+      "start_in_output": 101.95,
+      "duration": 3.5,
+      "mode": "full",
+      "audio": "mute",
+      "note": "the order window"
+    }
+  ],
+  "overlays": [
+    {
+      "file": "animations/title.webm",
+      "start_in_output": 3.55,
+      "duration": 2.4
+    },
+    {
+      "file": "animations/price.webm",
+      "start_in_output": 15.8,
+      "duration": 2.3
+    },
+    {
+      "file": "animations/dish.webm",
+      "start_in_output": 61.85,
+      "duration": 3.2
+    },
+    {
+      "file": "animations/verdict.webm",
+      "start_in_output": 131.8,
+      "duration": 2.2
+    }
+  ],
+  "bleeps": [
+    {
+      "start_in_output": 75.64,
+      "duration": 0.24,
+      "coverage": 0.6,
+      "note": "shit"
+    },
+    {
+      "start_in_output": 103.59,
+      "duration": 0.16,
+      "coverage": 0.6,
+      "note": "shit"
+    },
+    {
+      "start_in_output": 123.0,
+      "duration": 0.22,
+      "coverage": 0.6,
+      "note": "shit"
+    }
+  ],
+  "total_duration_s": 153.95
+}

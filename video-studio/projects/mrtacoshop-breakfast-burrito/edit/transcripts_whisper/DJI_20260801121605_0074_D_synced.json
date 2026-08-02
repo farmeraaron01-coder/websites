@@ -1,0 +1,42 @@
+{
+  "language_code": "en",
+  "text": "Oaxaca, cotija, cotija, cotija, cotija,",
+  "words": [
+    {
+      "type": "word",
+      "text": "Oaxaca,",
+      "start": 13.52,
+      "end": 14.92,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "cotija,",
+      "start": 14.92,
+      "end": 14.92,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "cotija,",
+      "start": 14.92,
+      "end": 14.92,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "cotija,",
+      "start": 14.92,
+      "end": 14.92,
+      "speaker_id": "speaker_0"
+    },
+    {
+      "type": "word",
+      "text": "cotija,",
+      "start": 14.92,
+      "end": 14.92,
+      "speaker_id": "speaker_0"
+    }
+  ],
+  "_backend": "faster-whisper:small.en"
+}
