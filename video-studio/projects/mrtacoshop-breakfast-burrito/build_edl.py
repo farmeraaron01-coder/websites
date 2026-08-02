@@ -68,8 +68,8 @@ def beat_index(name: str) -> int:
 # A file entry may also be a raw path relative to the edit dir, for sources
 # that never needed syncing (muted cutaways).
 BROLL = [
-    ("TACO BELL", "../footage/IMG_1842.MOV", 6.00, 2.30, 5.60,
-     "zeroing in on the Taco Bell next door"),
+    ("TACO BELL", "../footage/IMG_1842.MOV", 3.20, 1.30, 6.60,
+     "the slow pan arriving on the Taco Bell next door"),
     ("THE PLACE", "DJI_20260801121645_0075_D", 5.80, 1.60, 3.20, "the filthy yellow wall"),
     ("THE PLACE", "DJI_20260801121154_0073_D", 9.60, 5.20, 3.00, "building exterior, crushed wall"),
     ("THE PLACE", "DJI_20260801120655_0071_D", 24.00, 9.00, 3.00, "drive-thru sign and menu board"),
@@ -81,7 +81,7 @@ GRAPHICS = [
     ("THE BURRITO", 0.40, "title", 2.80),
     ("THE PRICE", 0.30, "price", 2.30),
     ("UNVEIL FACE", 0.60, "dish", 3.20),
-    ("TACO BELL", 2.40, "newsalert", 7.00),   # parody PiP over the outbreak line
+    ("TACO BELL", 2.60, "newsalert", 6.60),   # parody PiP over the outbreak line
     ("THE VERDICT", 5.40, "tapatio_score", 3.40),
 ]
 
@@ -129,7 +129,7 @@ def main() -> None:
                 for bn, off, name, dur in GRAPHICS]
 
     sfx = [{"file": "sfx/fart.wav",
-            "start_in_output": round(offsets[beat_index("TACO BELL")] + 2.55, 3),
+            "start_in_output": round(offsets[beat_index("TACO BELL")] + 2.70, 3),
             "gain_db": -7.0}]
 
     music = None

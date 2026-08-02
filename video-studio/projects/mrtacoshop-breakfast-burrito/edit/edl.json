@@ -168,12 +168,12 @@
   "broll": [
     {
       "file": "../footage/IMG_1842.MOV",
-      "src_start": 6.0,
-      "start_in_output": 127.75,
-      "duration": 5.6,
+      "src_start": 3.2,
+      "start_in_output": 126.75,
+      "duration": 6.6,
       "mode": "full",
       "audio": "mute",
-      "note": "zeroing in on the Taco Bell next door"
+      "note": "the slow pan arriving on the Taco Bell next door"
     },
     {
       "file": "synced/DJI_20260801121645_0075_D_synced.mp4",
@@ -230,8 +230,8 @@
     },
     {
       "file": "animations/newsalert.webm",
-      "start_in_output": 127.85,
-      "duration": 7.0
+      "start_in_output": 128.05,
+      "duration": 6.6
     },
     {
       "file": "animations/tapatio_score.webm",
@@ -263,7 +263,7 @@
   "sfx": [
     {
       "file": "sfx/fart.wav",
-      "start_in_output": 128.0,
+      "start_in_output": 128.15,
       "gain_db": -7.0
     }
   ],

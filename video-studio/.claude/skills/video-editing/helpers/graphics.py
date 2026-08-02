@@ -378,9 +378,14 @@ def draw_news(t: float, cfg: dict) -> Image.Image:
     tw_box = int(W * cfg.get("scale", 0.34))
     th_box = int(tw_box * 9 / 16)
     margin = int(W * 0.025)
-    x0 = W - margin - int(slide * (tw_box + margin)) + (tw_box + margin) - tw_box
-    x0 = W - int(slide * (tw_box + margin))
-    y0 = margin
+    # Which corner: the card must not cover the thing being talked about.
+    # Sliding in over the Taco Bell sign would be an own-goal.
+    side = cfg.get("side", "right")
+    if side == "left":
+        x0 = int(slide * (tw_box + margin)) - tw_box
+    else:
+        x0 = W - int(slide * (tw_box + margin))
+    y0 = margin if cfg.get("vside", "top") == "top" else H - margin - th_box
 
     tv = Image.new("RGBA", (tw_box, th_box), (12, 12, 16, 245))
     d = ImageDraw.Draw(tv)
@@ -510,6 +515,8 @@ def main() -> None:
     ap.add_argument("--icon", help="score only: path to an RGBA icon image")
     ap.add_argument("--kicker", default="NEWS ALERT", help="news only: banner text")
     ap.add_argument("--ticker", default="DEVELOPING STORY", help="news only: crawl text")
+    ap.add_argument("--side", default="right", choices=("left", "right"),
+                    help="news only: which corner to slide in from")
     ap.add_argument("--count", type=int, default=4, help="score only: number of icons")
     ap.add_argument("--cx", type=float, help="Centre X as a fraction of width")
     ap.add_argument("--cy", type=float, help="Centre Y as a fraction of height")
@@ -548,7 +555,7 @@ def main() -> None:
            "theme": args.theme, "duration": args.duration,
            "width": args.width, "height": args.height, "rotate": args.rotate,
            "icon": args.icon, "count": args.count,
-           "kicker": args.kicker, "ticker": args.ticker}
+           "kicker": args.kicker, "ticker": args.ticker, "side": args.side}
     if args.cx is not None:
         cfg["cx"] = args.cx
     if args.cy is not None:
