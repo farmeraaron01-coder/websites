@@ -358,7 +358,80 @@ def draw_score(t: float, cfg: dict) -> Image.Image:
     return img
 
 
+def draw_news(t: float, cfg: dict) -> Image.Image:
+    """A parody news-alert 'TV' that slides into a corner.
+
+    Deliberately the SHOW'S graphic, not an imitation of a real network --
+    fabricating a real broadcaster's screen is a lawyer's errand, and the
+    show-branded version is funnier anyway. Red alert banner, headline,
+    a slow ticker, and a blinking LIVE dot.
+    """
+    W, H, dur = cfg["width"], cfg["height"], cfg["duration"]
+    th = THEMES[cfg["theme"]]
+    img = Image.new("RGBA", (W, H), (0, 0, 0, 0))
+
+    enter, leave = envelope(t, dur, tin=0.40, tout=0.30)
+    slide = ease_out_cubic(enter) * (1 - ease_in_cubic(leave))
+    if slide <= 0.002:
+        return img
+
+    tw_box = int(W * cfg.get("scale", 0.34))
+    th_box = int(tw_box * 9 / 16)
+    margin = int(W * 0.025)
+    x0 = W - margin - int(slide * (tw_box + margin)) + (tw_box + margin) - tw_box
+    x0 = W - int(slide * (tw_box + margin))
+    y0 = margin
+
+    tv = Image.new("RGBA", (tw_box, th_box), (12, 12, 16, 245))
+    d = ImageDraw.Draw(tv)
+    bar_h = int(th_box * 0.22)
+    d.rectangle([0, 0, tw_box, bar_h], fill=(190, 20, 20, 255))
+    f_bar = load_font(int(bar_h * 0.52), bold=True)
+    d.text((int(tw_box * 0.03), int(bar_h * 0.20)), cfg.get("kicker", "NEWS ALERT").upper(),
+           font=f_bar, fill=(255, 255, 255, 255))
+    # Blinking LIVE dot -- 1 Hz, like every cable box ever
+    if int(t * 2) % 2 == 0:
+        r = int(bar_h * 0.16)
+        cx = tw_box - int(tw_box * 0.17)
+        d.ellipse([cx - r, bar_h // 2 - r, cx + r, bar_h // 2 + r], fill=(255, 255, 255, 255))
+        d.text((cx + r + 6, int(bar_h * 0.26)), "LIVE",
+               font=load_font(int(bar_h * 0.38), bold=True), fill=(255, 255, 255, 255))
+
+    # Headline, wrapped
+    f_head = load_font(int(th_box * 0.115), bold=True)
+    words = cfg["text"].upper().split()
+    lines, cur = [], ""
+    for wd in words:
+        trial = (cur + " " + wd).strip()
+        if text_size(d, trial, f_head)[0] > tw_box * 0.92 and cur:
+            lines.append(cur); cur = wd
+        else:
+            cur = trial
+    if cur:
+        lines.append(cur)
+    y = bar_h + int(th_box * 0.10)
+    for ln in lines[:3]:
+        d.text((int(tw_box * 0.04), y), ln, font=f_head, fill=(255, 255, 255, 255))
+        y += int(th_box * 0.16)
+
+    # Ticker: crawls right-to-left along the bottom
+    tick_h = int(th_box * 0.16)
+    d.rectangle([0, th_box - tick_h, tw_box, th_box], fill=th["fg"])
+    f_tick = load_font(int(tick_h * 0.62), bold=True)
+    tick = ("  ***  " + cfg.get("ticker", "DEVELOPING STORY").upper()) * 6
+    tick_w = text_size(d, tick, f_tick)[0]
+    xoff = -int((t * tw_box * 0.35) % (tick_w / 6))
+    d.text((xoff, th_box - tick_h + int(tick_h * 0.14)), tick, font=f_tick,
+           fill=(20, 16, 12, 255))
+
+    d.rectangle([0, 0, tw_box - 1, th_box - 1], outline=(0, 0, 0, 255),
+                width=max(2, int(th_box * 0.012)))
+    img.alpha_composite(tv, (x0, y0))
+    return img
+
+
 RENDERERS = {
+    "news": draw_news,
     "score": draw_score,
     "lower_third": draw_lower_third,
     "stamp": draw_stamp,
@@ -435,6 +508,8 @@ def main() -> None:
     ap.add_argument("--height", type=int, default=1080)
     ap.add_argument("--rotate", type=float, default=-8.0, help="stamp only")
     ap.add_argument("--icon", help="score only: path to an RGBA icon image")
+    ap.add_argument("--kicker", default="NEWS ALERT", help="news only: banner text")
+    ap.add_argument("--ticker", default="DEVELOPING STORY", help="news only: crawl text")
     ap.add_argument("--count", type=int, default=4, help="score only: number of icons")
     ap.add_argument("--cx", type=float, help="Centre X as a fraction of width")
     ap.add_argument("--cy", type=float, help="Centre Y as a fraction of height")
@@ -472,7 +547,8 @@ def main() -> None:
     cfg = {"kind": args.kind, "text": args.text, "sub": args.sub,
            "theme": args.theme, "duration": args.duration,
            "width": args.width, "height": args.height, "rotate": args.rotate,
-           "icon": args.icon, "count": args.count}
+           "icon": args.icon, "count": args.count,
+           "kicker": args.kicker, "ticker": args.ticker}
     if args.cx is not None:
         cfg["cx"] = args.cx
     if args.cy is not None:

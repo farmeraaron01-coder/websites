@@ -23,10 +23,17 @@
     },
     {
       "source": "SLOWMO_BITE",
-      "start": 0.0,
-      "end": 6.166,
+      "start": 0.1,
+      "end": 3.55,
+      "beat": "THE BURRITO",
+      "reason": "silent slow-mo: raise + interior reveal; title over"
+    },
+    {
+      "source": "SLOWMO_BITE",
+      "start": 4.8,
+      "end": 8.55,
       "beat": "THE BITE",
-      "reason": "silent 1.4x slow-mo: hold-up, bite, cheese pull; title over"
+      "reason": "silent slow-mo: the bite + cheese-strand pull"
     },
     {
       "source": "DJI_20260801120655_0071_D",
@@ -144,9 +151,18 @@
   "grade": "auto",
   "broll": [
     {
+      "file": "../footage/IMG_1842.MOV",
+      "src_start": 6.0,
+      "start_in_output": 122.4,
+      "duration": 5.8,
+      "mode": "full",
+      "audio": "mute",
+      "note": "zeroing in on the Taco Bell next door"
+    },
+    {
       "file": "synced/DJI_20260801121645_0075_D_synced.mp4",
       "src_start": 5.8,
-      "start_in_output": 41.316,
+      "start_in_output": 42.35,
       "duration": 3.2,
       "mode": "full",
       "audio": "mute",
@@ -155,7 +171,7 @@
     {
       "file": "synced/DJI_20260801121154_0073_D_synced.mp4",
       "src_start": 9.6,
-      "start_in_output": 44.916,
+      "start_in_output": 45.95,
       "duration": 3.0,
       "mode": "full",
       "audio": "mute",
@@ -164,7 +180,7 @@
     {
       "file": "synced/DJI_20260801120655_0071_D_synced.mp4",
       "src_start": 24.0,
-      "start_in_output": 48.716,
+      "start_in_output": 49.75,
       "duration": 3.0,
       "mode": "full",
       "audio": "mute",
@@ -173,7 +189,7 @@
     {
       "file": "synced/DJI_20260801121728_0076_D_synced.mp4",
       "src_start": 14.5,
-      "start_in_output": 108.116,
+      "start_in_output": 109.15,
       "duration": 3.5,
       "mode": "full",
       "audio": "mute",
@@ -183,44 +199,57 @@
   "overlays": [
     {
       "file": "animations/title.webm",
-      "start_in_output": 4.35,
+      "start_in_output": 4.05,
       "duration": 2.8
     },
     {
       "file": "animations/price.webm",
-      "start_in_output": 21.966,
+      "start_in_output": 23.0,
       "duration": 2.3
     },
     {
       "file": "animations/dish.webm",
-      "start_in_output": 68.016,
+      "start_in_output": 69.05,
       "duration": 3.2
     },
     {
+      "file": "animations/newsalert.webm",
+      "start_in_output": 122.5,
+      "duration": 7.0
+    },
+    {
       "file": "animations/tapatio_score.webm",
-      "start_in_output": 137.766,
+      "start_in_output": 138.8,
       "duration": 3.4
     }
   ],
   "bleeps": [
     {
-      "start_in_output": 81.806,
+      "start_in_output": 82.84,
       "duration": 0.24,
       "coverage": 0.6,
       "note": "shit"
     },
     {
-      "start_in_output": 109.756,
+      "start_in_output": 110.79,
       "duration": 0.16,
       "coverage": 0.6,
       "note": "shit"
     },
     {
-      "start_in_output": 129.166,
+      "start_in_output": 130.2,
       "duration": 0.22,
       "coverage": 0.6,
       "note": "shit"
     }
   ],
-  "total_duration_s": 160.12
+  "music": null,
+  "sfx": [
+    {
+      "file": "sfx/fart.wav",
+      "start_in_output": 122.65,
+      "gain_db": -7.0
+    }
+  ],
+  "total_duration_s": 161.15
 }

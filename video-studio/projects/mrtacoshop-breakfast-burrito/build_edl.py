@@ -24,7 +24,8 @@ SOURCE_OVERRIDES = {
 # (source, start, end, beat, note)
 BEATS = [
     ("IMG_1839",                  3.70,   7.35, "COLD OPEN",  "you go to war with one of these"),
-    ("SLOWMO_BITE",               0.00,   6.166, "THE BITE",   "silent 1.4x slow-mo: hold-up, bite, cheese pull; title over"),
+    ("SLOWMO_BITE",               0.10,   3.55, "THE BURRITO", "silent slow-mo: raise + interior reveal; title over"),
+    ("SLOWMO_BITE",               4.80,   8.55, "THE BITE",    "silent slow-mo: the bite + cheese-strand pull"),
     ("DJI_20260801120655_0071_D", 11.00,  14.75, "ARRIVAL",    "pulling up to Alberto's, this is the OG"),
     ("DJI_20260801120655_0071_D", 22.05,  30.15, "THE ORDER",  "ham, egg, guacamole and cheese"),
     ("DJI_20260801121728_0076_D", 18.60,  21.45, "THE PRICE",  "it is $15.42"),
@@ -50,21 +51,39 @@ BLEEPS = [
     ("DJI_20260801123019_0078_D", 193.100, 193.320, "shit"),
 ]
 
-# Cutaways: (after_beat_index, file, src_start, offset_into_beat, duration, note)
+# Beats are addressed BY NAME below. Indices shift every time a beat is
+# added; names do not, and a typo fails loudly instead of decorating the
+# wrong shot.
+def beat_index(name: str) -> int:
+    for i, b in enumerate(BEATS):
+        if b[3] == name:
+            return i
+    raise SystemExit(f"no beat named {name!r}")
+
+# Cutaways: (beat_name, file, src_start, offset_into_beat, duration, note)
+# A file entry may also be a raw path relative to the edit dir, for sources
+# that never needed syncing (muted cutaways).
 BROLL = [
-    (6, "DJI_20260801121645_0075_D", 5.80, 1.60, 3.20, "the filthy yellow wall"),
-    (6, "DJI_20260801121154_0073_D", 9.60, 5.20, 3.00, "building exterior, crushed wall"),
-    (6, "DJI_20260801120655_0071_D", 24.00, 9.00, 3.00, "drive-thru sign and menu board"),
-    (14, "DJI_20260801121728_0076_D", 14.50, 3.00, 3.50, "the order window"),
+    ("TACO BELL", "../footage/IMG_1842.MOV", 6.00, 2.30, 5.80,
+     "zeroing in on the Taco Bell next door"),
+    ("THE PLACE", "DJI_20260801121645_0075_D", 5.80, 1.60, 3.20, "the filthy yellow wall"),
+    ("THE PLACE", "DJI_20260801121154_0073_D", 9.60, 5.20, 3.00, "building exterior, crushed wall"),
+    ("THE PLACE", "DJI_20260801120655_0071_D", 24.00, 9.00, 3.00, "drive-thru sign and menu board"),
+    ("SQUAWK BOX", "DJI_20260801121728_0076_D", 14.50, 3.00, 3.50, "the order window"),
 ]
 
-# Graphics: (beat_index, offset_into_beat, name, duration)
+# Graphics: (beat_name, offset_into_beat, name, duration)
 GRAPHICS = [
-    (1, 0.70, "title", 2.80),            # over the slow-mo bite
-    (4, 0.30, "price", 2.30),
-    (9, 1.20, "dish", 3.20),
-    (16, 5.40, "tapatio_score", 3.40),   # four real bottles, staggered
+    ("THE BURRITO", 0.40, "title", 2.80),
+    ("THE PRICE", 0.30, "price", 2.30),
+    ("UNVEILING", 1.20, "dish", 3.20),
+    ("TACO BELL", 2.40, "newsalert", 7.00),   # parody PiP over the outbreak line
+    ("THE VERDICT", 5.40, "tapatio_score", 3.40),
 ]
+
+# Music bed: mixed only when the file exists. Swells fill the silent slow-mo
+# beats; everywhere else it sits far under the dialogue.
+MUSIC_FILE = "music/mariachi_bed.mp3"
 
 
 def main() -> None:
@@ -95,14 +114,32 @@ def main() -> None:
             print(f"  WARNING: bleep for {word!r} at {ws:.2f}s in {src} is not "
                   f"inside any kept range -- it will not be censored")
 
-    broll = [{"file": SRC.format(f), "src_start": ss,
-              "start_in_output": round(offsets[i] + off, 3), "duration": dur,
-              "mode": "full", "audio": "mute", "note": note}
-             for i, f, ss, off, dur, note in BROLL]
+    broll = [{"file": (f if "/" in f else SRC.format(f)), "src_start": ss,
+              "start_in_output": round(offsets[beat_index(bn)] + off, 3),
+              "duration": dur, "mode": "full", "audio": "mute", "note": note}
+             for bn, f, ss, off, dur, note in BROLL]
 
     overlays = [{"file": f"animations/{name}.webm",
-                 "start_in_output": round(offsets[i] + off, 3), "duration": dur}
-                for i, off, name, dur in GRAPHICS]
+                 "start_in_output": round(offsets[beat_index(bn)] + off, 3),
+                 "duration": dur}
+                for bn, off, name, dur in GRAPHICS]
+
+    sfx = [{"file": "sfx/fart.wav",
+            "start_in_output": round(offsets[beat_index("TACO BELL")] + 2.55, 3),
+            "gain_db": -7.0}]
+
+    music = None
+    mpath = EDIT / MUSIC_FILE
+    if mpath.exists():
+        i0, i1 = beat_index("THE BURRITO"), beat_index("THE BITE")
+        music = {"file": MUSIC_FILE, "gain_db": -23.0,
+                 "fade_in": 1.2, "fade_out": 3.0,
+                 "swells": [{"start": round(offsets[i0], 3),
+                             "end": round(offsets[i1] + (BEATS[i1][2] - BEATS[i1][1]), 3),
+                             "gain_db": -13.0}]}
+        print(f"music bed: {MUSIC_FILE} (swell over the slow-mo)")
+    else:
+        print(f"music bed: none ({MUSIC_FILE} not present)")
 
     edl = {
         "version": 1,
@@ -113,6 +150,8 @@ def main() -> None:
         "broll": broll,
         "overlays": overlays,
         "bleeps": bleeps,
+        "music": music,
+        "sfx": sfx,
         "total_duration_s": round(total, 2),
     }
     (EDIT / "edl.json").write_text(json.dumps(edl, indent=2))

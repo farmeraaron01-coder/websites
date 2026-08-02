@@ -927,6 +927,8 @@ def build_final_composite(
     broll: list[dict] | None = None,
     bleeps: list[dict] | None = None,
     total_duration: float = 0.0,
+    music: dict | None = None,
+    edl_sfx: list[dict] | None = None,
 ) -> None:
     """Final pass: base -> B-roll -> overlays -> subtitles LAST -> out.
 
@@ -960,6 +962,22 @@ def build_final_composite(
         tone_idx = 1 + len(broll) + len(overlays)
         inputs += ["-f", "lavfi", "-t", f"{max(total_duration, 1.0):.3f}",
                    "-i", f"sine=frequency={BLEEP_HZ}:sample_rate=48000"]
+    sfx = [x for x in (edl_sfx or []) if resolve_path(x["file"], edit_dir).exists()]
+    sfx_idx0 = None
+    if sfx:
+        sfx_idx0 = 1 + len(broll) + len(overlays) + (1 if bleeps else 0)
+        for x in sfx:
+            inputs += ["-i", str(resolve_path(x["file"], edit_dir))]
+    music_idx = None
+    if music and music.get("file"):
+        m_path = resolve_path(music["file"], edit_dir)
+        if m_path.exists():
+            music_idx = (1 + len(broll) + len(overlays)
+                         + (1 if bleeps else 0) + len(sfx))
+            # Loop the track for the full film; atrim in the chain cuts it.
+            inputs += ["-stream_loop", "-1", "-i", str(m_path)]
+        else:
+            print(f"  music file missing, skipping bed: {m_path}")
 
     filter_parts: list[str] = []
     current = "[0:v]"
@@ -1027,8 +1045,10 @@ def build_final_composite(
     else:
         out_label = "[0:v]"
 
-    # --- Audio: B-roll natural sound, then censor tones ---
-    audio_label, audio_codec = _build_audio_chain(broll, bleeps, filter_parts, tone_idx)
+    # --- Audio: B-roll natural sound, censor tones, SFX, then the music bed ---
+    audio_label, audio_codec = _build_audio_chain(
+        broll, bleeps, filter_parts, tone_idx,
+        music_idx, music, total_duration, sfx, sfx_idx0)
 
     cmd = [
         "ffmpeg", "-y", *inputs,
@@ -1086,15 +1106,19 @@ def _between_expr(windows: list[tuple[float, float]]) -> str:
 
 
 def _build_audio_chain(broll: list[dict], bleeps: list[dict],
-                       filter_parts: list[str], tone_idx: int | None
-                       ) -> tuple[str, list[str]]:
+                       filter_parts: list[str], tone_idx: int | None,
+                       music_idx: int | None = None,
+                       music: dict | None = None,
+                       total: float = 0.0,
+                       sfx: list[dict] | None = None,
+                       sfx_idx0: int | None = None) -> tuple[str, list[str]]:
     """Return (audio_map_label, codec_args) for the composite command.
 
     With nothing to do the base track is copied through untouched -- no
     re-encode, no quality loss.
     """
     voiced = [b for b in broll if b.get("audio") in ("duck", "full")]
-    if not voiced and not bleeps:
+    if not voiced and not bleeps and music_idx is None and not sfx:
         return "0:a", ["-c:a", "copy"]
 
     # Rebase the audio onto a continuous sample-count clock before ANY
@@ -1140,6 +1164,43 @@ def _build_audio_chain(broll: list[dict], bleeps: list[dict],
             f"{''.join(mix_labels)}amix=inputs={len(mix_labels)}:duration=first:"
             f"dropout_transition=0:normalize=0[premix]")
         current = "[premix]"
+
+    if sfx and sfx_idx0 is not None:
+        labels = [current]
+        for i, x in enumerate(sfx):
+            t0 = float(x["start_in_output"])
+            g = float(x.get("gain_db", -6.0))
+            filter_parts.append(
+                f"[{sfx_idx0 + i}:a]aresample=48000,"
+                f"adelay={t0 * 1000:.1f}:all=1,volume={g:.1f}dB[fx{i}]")
+            labels.append(f"[fx{i}]")
+        filter_parts.append(
+            f"{''.join(labels)}amix=inputs={len(labels)}:duration=first:"
+            f"dropout_transition=0:normalize=0[withfx]")
+        current = "[withfx]"
+
+    if music_idx is not None and music:
+        # A bed sits far under the dialogue and swells into declared windows
+        # (the silent slow-mo beats are the natural place). Gains are absolute
+        # dBFS trims on the track, not sidechains -- predictable and auditable.
+        g0 = 10 ** (float(music.get("gain_db", -22.0)) / 20.0)
+        expr = f"{g0:.5f}"
+        for sw in music.get("swells") or []:
+            gs = 10 ** (float(sw.get("gain_db", -14.0)) / 20.0)
+            expr = (f"if(between(t,{float(sw['start']):.3f},"
+                    f"{float(sw['end']):.3f}),{gs:.5f},{expr})")
+        fi = float(music.get("fade_in", 1.0))
+        fo = float(music.get("fade_out", 2.5))
+        chain = (f"[{music_idx}:a]aresample=48000,asetpts=N/SR/TB,"
+                 f"atrim=0:{total:.3f},"
+                 f"volume='{expr}':eval=frame,"
+                 f"afade=t=in:st=0:d={fi:.2f},"
+                 f"afade=t=out:st={max(0.0, total - fo):.2f}:d={fo:.2f}[bed]")
+        filter_parts.append(chain)
+        filter_parts.append(
+            f"{current}[bed]amix=inputs=2:duration=first:"
+            f"dropout_transition=0:normalize=0[withbed]")
+        current = "[withbed]"
 
     if bleeps and tone_idx is not None:
         windows = _bleep_windows(bleeps)
@@ -1277,13 +1338,24 @@ def main() -> None:
     # 5. Composite (B-roll + overlays + subtitles LAST) → pre-loudnorm path
     bleeps = edl.get("bleeps") or []
     total = sum(real_durs)
+    sfx = edl.get("sfx") or []
+    for x in sfx:
+        x["start_in_output"] = round(remap_output_time(
+            float(x["start_in_output"]), nominal_offs, real_offs), 4)
+    music = edl.get("music")
+    if music and music.get("swells"):
+        for sw in music["swells"]:
+            sw["start"] = round(remap_output_time(float(sw["start"]),
+                                                  nominal_offs, real_offs), 4)
+            sw["end"] = round(remap_output_time(float(sw["end"]),
+                                                nominal_offs, real_offs), 4)
     if args.no_loudnorm:
         build_final_composite(base_path, overlays, subs_path, out_path, edit_dir,
-                              broll, bleeps, total)
+                              broll, bleeps, total, music, sfx)
     else:
         tmp_composite = out_path.with_suffix(".prenorm.mp4")
         build_final_composite(base_path, overlays, subs_path, tmp_composite,
-                              edit_dir, broll, bleeps, total)
+                              edit_dir, broll, bleeps, total, music, sfx)
         print("loudness normalization → social-ready (-14 LUFS / -1 dBTP / LRA 11)")
         apply_loudnorm_two_pass(tmp_composite, out_path, preview=args.draft)
         tmp_composite.unlink(missing_ok=True)
