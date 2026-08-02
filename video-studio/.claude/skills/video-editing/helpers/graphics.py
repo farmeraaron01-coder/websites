@@ -296,7 +296,70 @@ def draw_chapter(t: float, cfg: dict) -> Image.Image:
     return img
 
 
+def draw_score(t: float, cfg: dict) -> Image.Image:
+    """A row of icon images that pop in one after another, plus a label.
+
+    The show's rating reveal: each bottle punches in with an overshoot and a
+    small alternating tilt, staggered left to right, and the label lands after
+    the last one. `icon` is a path to an RGBA image; `count` is how many.
+    """
+    W, H, dur = cfg["width"], cfg["height"], cfg["duration"]
+    th = THEMES[cfg["theme"]]
+    img = Image.new("RGBA", (W, H), (0, 0, 0, 0))
+
+    icon = cfg.get("_icon_img")
+    if icon is None:
+        icon = Image.open(cfg["icon"]).convert("RGBA")
+        cfg["_icon_img"] = icon
+
+    count = int(cfg.get("count", 4))
+    stagger = float(cfg.get("stagger", 0.16))
+    pop = 0.34
+    _, leave = envelope(t, dur, tin=0.01, tout=0.28)
+    fade_out = 1 - ease_in_cubic(leave)
+    if fade_out <= 0.002:
+        return img
+
+    ih = int(H * cfg.get("icon_h", 0.44))
+    iw = int(icon.width * ih / icon.height)
+    spacing = int(iw * 1.35)
+    x0 = W // 2 - spacing * (count - 1) // 2
+    cy = int(H * cfg.get("cy", 0.42))
+
+    for i in range(count):
+        t_i = (t - i * stagger) / pop
+        if t_i <= 0:
+            continue
+        scale = ease_out_back(min(1.0, t_i)) * fade_out
+        if scale <= 0.01:
+            continue
+        nw, nh = max(1, int(iw * scale)), max(1, int(ih * scale))
+        b = icon.resize((nw, nh), Image.LANCZOS)
+        # Alternating tilt reads as hand-placed, not templated.
+        b = b.rotate(-6 if i % 2 == 0 else 6, expand=True, resample=Image.BICUBIC)
+        if fade_out < 1.0:
+            a = b.getchannel("A").point(lambda v: int(v * fade_out))
+            b.putalpha(a)
+        img.alpha_composite(b, (x0 + i * spacing - b.width // 2,
+                                cy - b.height // 2))
+
+    text = cfg.get("text", "").upper()
+    t_label = (t - count * stagger - 0.1) / 0.3
+    if text and t_label > 0:
+        d = ImageDraw.Draw(img)
+        f = load_font(int(H * 0.085), bold=True)
+        tw, th_ = text_size(d, text, f)
+        a = int(255 * min(1.0, t_label) * fade_out)
+        rise = int((1 - ease_out_cubic(min(1.0, t_label))) * H * 0.03)
+        d.text(((W - tw) // 2, int(H * 0.70) + rise), text, font=f,
+               fill=(*th["fg"][:3], a),
+               stroke_width=max(3, int(H * 0.007)),
+               stroke_fill=(0, 0, 0, a))
+    return img
+
+
 RENDERERS = {
+    "score": draw_score,
     "lower_third": draw_lower_third,
     "stamp": draw_stamp,
     "price": draw_price,
@@ -371,6 +434,8 @@ def main() -> None:
     ap.add_argument("--width", type=int, default=1920)
     ap.add_argument("--height", type=int, default=1080)
     ap.add_argument("--rotate", type=float, default=-8.0, help="stamp only")
+    ap.add_argument("--icon", help="score only: path to an RGBA icon image")
+    ap.add_argument("--count", type=int, default=4, help="score only: number of icons")
     ap.add_argument("--cx", type=float, help="Centre X as a fraction of width")
     ap.add_argument("--cy", type=float, help="Centre Y as a fraction of height")
     ap.add_argument("-o", "--output", type=Path, help="Output .webm path")
@@ -399,12 +464,15 @@ def main() -> None:
                            "duration": r["duration"]} for r in results], indent=2))
         return
 
-    if not args.kind or not args.text:
+    if not args.kind or (not args.text and args.kind != "score"):
         ap.error("give a card kind and --text, or use --spec <file.json>")
+    if args.kind == "score" and not args.icon:
+        ap.error("score needs --icon <image.png>")
 
     cfg = {"kind": args.kind, "text": args.text, "sub": args.sub,
            "theme": args.theme, "duration": args.duration,
-           "width": args.width, "height": args.height, "rotate": args.rotate}
+           "width": args.width, "height": args.height, "rotate": args.rotate,
+           "icon": args.icon, "count": args.count}
     if args.cx is not None:
         cfg["cx"] = args.cx
     if args.cy is not None:

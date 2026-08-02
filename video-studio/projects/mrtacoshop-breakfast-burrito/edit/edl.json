@@ -2,6 +2,7 @@
   "version": 1,
   "sources": {
     "IMG_1839": "synced/IMG_1839_synced.mp4",
+    "SLOWMO_BITE": "inserts/slowmo_bite.mp4",
     "DJI_20260801120655_0071_D": "synced/DJI_20260801120655_0071_D_synced.mp4",
     "DJI_20260801121728_0076_D": "synced/DJI_20260801121728_0076_D_synced.mp4",
     "DJI_20260801120940_0072_D": "synced/DJI_20260801120940_0072_D_synced.mp4",
@@ -19,6 +20,13 @@
       "reason": "you go to war with one of these",
       "fit": "crop",
       "crop_y": 0.3
+    },
+    {
+      "source": "SLOWMO_BITE",
+      "start": 0.0,
+      "end": 6.166,
+      "beat": "THE BITE",
+      "reason": "silent 1.4x slow-mo: hold-up, bite, cheese pull; title over"
     },
     {
       "source": "DJI_20260801120655_0071_D",
@@ -138,7 +146,7 @@
     {
       "file": "synced/DJI_20260801121645_0075_D_synced.mp4",
       "src_start": 5.8,
-      "start_in_output": 35.15,
+      "start_in_output": 41.316,
       "duration": 3.2,
       "mode": "full",
       "audio": "mute",
@@ -147,7 +155,7 @@
     {
       "file": "synced/DJI_20260801121154_0073_D_synced.mp4",
       "src_start": 9.6,
-      "start_in_output": 38.75,
+      "start_in_output": 44.916,
       "duration": 3.0,
       "mode": "full",
       "audio": "mute",
@@ -156,7 +164,7 @@
     {
       "file": "synced/DJI_20260801120655_0071_D_synced.mp4",
       "src_start": 24.0,
-      "start_in_output": 42.55,
+      "start_in_output": 48.716,
       "duration": 3.0,
       "mode": "full",
       "audio": "mute",
@@ -165,7 +173,7 @@
     {
       "file": "synced/DJI_20260801121728_0076_D_synced.mp4",
       "src_start": 14.5,
-      "start_in_output": 101.95,
+      "start_in_output": 108.116,
       "duration": 3.5,
       "mode": "full",
       "audio": "mute",
@@ -175,44 +183,44 @@
   "overlays": [
     {
       "file": "animations/title.webm",
-      "start_in_output": 3.55,
-      "duration": 2.4
+      "start_in_output": 4.35,
+      "duration": 2.8
     },
     {
       "file": "animations/price.webm",
-      "start_in_output": 15.8,
+      "start_in_output": 21.966,
       "duration": 2.3
     },
     {
       "file": "animations/dish.webm",
-      "start_in_output": 61.85,
+      "start_in_output": 68.016,
       "duration": 3.2
     },
     {
-      "file": "animations/verdict.webm",
-      "start_in_output": 131.8,
-      "duration": 2.2
+      "file": "animations/tapatio_score.webm",
+      "start_in_output": 137.766,
+      "duration": 3.4
     }
   ],
   "bleeps": [
     {
-      "start_in_output": 75.64,
+      "start_in_output": 81.806,
       "duration": 0.24,
       "coverage": 0.6,
       "note": "shit"
     },
     {
-      "start_in_output": 103.59,
+      "start_in_output": 109.756,
       "duration": 0.16,
       "coverage": 0.6,
       "note": "shit"
     },
     {
-      "start_in_output": 123.0,
+      "start_in_output": 129.166,
       "duration": 0.22,
       "coverage": 0.6,
       "note": "shit"
     }
   ],
-  "total_duration_s": 153.95
+  "total_duration_s": 160.12
 }

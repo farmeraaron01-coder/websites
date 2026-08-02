@@ -16,9 +16,15 @@ from pathlib import Path
 EDIT = Path("edit")
 SRC = "synced/{}_synced.mp4"
 
+# Sources that do not live in synced/ (pre-built inserts).
+SOURCE_OVERRIDES = {
+    "SLOWMO_BITE": "inserts/slowmo_bite.mp4",
+}
+
 # (source, start, end, beat, note)
 BEATS = [
     ("IMG_1839",                  3.70,   7.35, "COLD OPEN",  "you go to war with one of these"),
+    ("SLOWMO_BITE",               0.00,   6.166, "THE BITE",   "silent 1.4x slow-mo: hold-up, bite, cheese pull; title over"),
     ("DJI_20260801120655_0071_D", 11.00,  14.75, "ARRIVAL",    "pulling up to Alberto's, this is the OG"),
     ("DJI_20260801120655_0071_D", 22.05,  30.15, "THE ORDER",  "ham, egg, guacamole and cheese"),
     ("DJI_20260801121728_0076_D", 18.60,  21.45, "THE PRICE",  "it is $15.42"),
@@ -46,18 +52,18 @@ BLEEPS = [
 
 # Cutaways: (after_beat_index, file, src_start, offset_into_beat, duration, note)
 BROLL = [
-    (5, "DJI_20260801121645_0075_D", 5.80, 1.60, 3.20, "the filthy yellow wall"),
-    (5, "DJI_20260801121154_0073_D", 9.60, 5.20, 3.00, "building exterior, crushed wall"),
-    (5, "DJI_20260801120655_0071_D", 24.00, 9.00, 3.00, "drive-thru sign and menu board"),
-    (13, "DJI_20260801121728_0076_D", 14.50, 3.00, 3.50, "the order window"),
+    (6, "DJI_20260801121645_0075_D", 5.80, 1.60, 3.20, "the filthy yellow wall"),
+    (6, "DJI_20260801121154_0073_D", 9.60, 5.20, 3.00, "building exterior, crushed wall"),
+    (6, "DJI_20260801120655_0071_D", 24.00, 9.00, 3.00, "drive-thru sign and menu board"),
+    (14, "DJI_20260801121728_0076_D", 14.50, 3.00, 3.50, "the order window"),
 ]
 
 # Graphics: (beat_index, offset_into_beat, name, duration)
 GRAPHICS = [
-    (0, 3.55, "title", 2.40),
-    (3, 0.30, "price", 2.30),
-    (8, 1.20, "dish", 3.20),
-    (15, 5.60, "verdict", 2.20),
+    (1, 0.70, "title", 2.80),            # over the slow-mo bite
+    (4, 0.30, "price", 2.30),
+    (9, 1.20, "dish", 3.20),
+    (16, 5.40, "tapatio_score", 3.40),   # four real bottles, staggered
 ]
 
 
@@ -100,7 +106,8 @@ def main() -> None:
 
     edl = {
         "version": 1,
-        "sources": {src: SRC.format(src) for src, *_ in BEATS},
+        "sources": {src: SOURCE_OVERRIDES.get(src, SRC.format(src))
+                    for src, *_ in BEATS},
         "ranges": ranges,
         "grade": "auto",
         "broll": broll,
