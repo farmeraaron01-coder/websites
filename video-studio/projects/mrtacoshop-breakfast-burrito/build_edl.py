@@ -82,12 +82,15 @@ GRAPHICS = [
     ("THE PRICE", 0.30, "price", 2.30),
     ("UNVEIL FACE", 0.60, "dish", 3.20),
     ("TACO BELL", 2.60, "newsalert", 6.60),   # parody PiP over the outbreak line
-    ("THE VERDICT", 5.40, "tapatio_score", 3.40),
+    ("THE VERDICT", 5.20, "tapatio_score", 4.40),
 ]
 
 # Music bed: mixed only when the file exists. Swells fill the silent slow-mo
 # beats; everywhere else it sits far under the dialogue.
-MUSIC_FILE = "music/mariachi_bed.mp3"
+# The editor's own parody track. Starting at 95s: the opening ~90s is a
+# build, and a bed should enter already at tempo.
+MUSIC_FILE = "music/pasame_la_salsa.mp3"
+MUSIC_START = 95.0
 
 
 def main() -> None:
@@ -136,11 +139,14 @@ def main() -> None:
     mpath = EDIT / MUSIC_FILE
     if mpath.exists():
         i0, i1 = beat_index("THE BURRITO"), beat_index("THE BITE")
-        music = {"file": MUSIC_FILE, "gain_db": -23.0,
+        music = {"file": MUSIC_FILE, "start": MUSIC_START,
+                 # A touch louder than a pure underscore: it is also masking
+                 # parking-lot ambience between lines.
+                 "gain_db": -20.0,
                  "fade_in": 1.2, "fade_out": 3.0,
                  "swells": [{"start": round(offsets[i0], 3),
                              "end": round(offsets[i1] + (BEATS[i1][2] - BEATS[i1][1]), 3),
-                             "gain_db": -13.0}]}
+                             "gain_db": -11.0}]}
         print(f"music bed: {MUSIC_FILE} (swell over the slow-mo)")
     else:
         print(f"music bed: none ({MUSIC_FILE} not present)")

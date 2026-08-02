@@ -34,12 +34,13 @@
    "icon": "assets/tapatio_bottle.png",
    "count": 4,
    "text": "",
-   "duration": 3.4,
-   "icon_h": 0.245,
-   "cy": 0.15,
+   "duration": 4.4,
+   "icon_h": 0.46,
+   "cy": 0.4,
    "label_y": 0.47,
    "band": 0.0,
-   "band_alpha": 185
+   "band_alpha": 185,
+   "spacing": 1.85
   }
  ]
 }

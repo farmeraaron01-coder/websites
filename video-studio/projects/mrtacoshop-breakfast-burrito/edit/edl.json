@@ -259,7 +259,19 @@
       "note": "shit"
     }
   ],
-  "music": null,
+  "music": {
+    "file": "music/mariachi_bed.mp3",
+    "gain_db": -23.0,
+    "fade_in": 1.2,
+    "fade_out": 3.0,
+    "swells": [
+      {
+        "start": 3.65,
+        "end": 10.85,
+        "gain_db": -13.0
+      }
+    ]
+  },
   "sfx": [
     {
       "file": "sfx/fart.wav",

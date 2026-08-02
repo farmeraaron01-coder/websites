@@ -306,6 +306,13 @@ def extract_segment(
     # so it is inaudible.
     n_frames = max(1, round(duration * OUT_FPS))
     vdur = n_frames / OUT_FPS
+    # Intermediates carry PCM in Matroska, not AAC in MP4. AAC is frame-based
+    # (1024 samples = 21.3ms), so an encoder rounds each segment's audio UP to
+    # a whole frame -- and the concat demuxer then advances by the longer
+    # stream. That silently adds ~21ms per cut, so the picture falls behind the
+    # sound cumulatively: half a second by the twentieth cut. PCM is
+    # sample-exact, so a segment's audio is precisely as long as its video.
+    # AAC is encoded once, at the end, over the finished mix.
 
     # 30ms audio fades at both edges (Rule 3) — prevent pops
     fade_out_start = max(0.0, duration - 0.03)
@@ -329,8 +336,7 @@ def extract_segment(
         "-af", af,
         "-c:v", "libx264", "-preset", preset, "-crf", crf,
         "-pix_fmt", "yuv420p", "-r", str(OUT_FPS),
-        "-c:a", "aac", "-b:a", "192k", "-ar", "48000",
-        "-movflags", "+faststart",
+        "-c:a", "pcm_s16le", "-ar", "48000",
         str(out_path),
     ]
     subprocess.run(cmd, check=True, stdout=subprocess.DEVNULL, stderr=subprocess.PIPE)
@@ -430,7 +436,7 @@ def extract_all_segments(
         start = float(r["start"])
         end = float(r["end"])
         duration = end - start
-        out_path = clips_dir / f"seg_{i:02d}_{src_name}.mp4"
+        out_path = clips_dir / f"seg_{i:02d}_{src_name}.mkv"
 
         if is_auto:
             seg_filter, _stats = auto_grade_for_clip(src_path, start=start, duration=duration, verbose=False)
@@ -463,7 +469,6 @@ def concat_segments(segment_paths: list[Path], out_path: Path, edit_dir: Path) -
         "-f", "concat", "-safe", "0",
         "-i", str(concat_list),
         "-c", "copy",
-        "-movflags", "+faststart",
         str(out_path),
     ]
     print(f"concat → {out_path.name}")
@@ -1191,8 +1196,11 @@ def _build_audio_chain(broll: list[dict], bleeps: list[dict],
                     f"{float(sw['end']):.3f}),{gs:.5f},{expr})")
         fi = float(music.get("fade_in", 1.0))
         fo = float(music.get("fade_out", 2.5))
-        chain = (f"[{music_idx}:a]aresample=48000,asetpts=N/SR/TB,"
-                 f"atrim=0:{total:.3f},"
+        # `start` picks the passage to use. A track's opening bars are often
+        # a slow build; a bed wants the part that is already at tempo.
+        m0 = float(music.get("start", 0.0))
+        chain = (f"[{music_idx}:a]aresample=48000,"
+                 f"atrim={m0:.3f}:{m0 + total:.3f},asetpts=N/SR/TB,"
                  f"volume='{expr}':eval=frame,"
                  f"afade=t=in:st=0:d={fi:.2f},"
                  f"afade=t=out:st={max(0.0, total - fo):.2f}:d={fo:.2f}[bed]")
@@ -1281,7 +1289,7 @@ def main() -> None:
         "clips_draft" if args.draft else ("clips_preview" if args.preview else "clips_graded")
     )
     if args.reuse_clips and clips_dir.is_dir():
-        segment_paths = sorted(clips_dir.glob("seg_*.mp4"))
+        segment_paths = sorted(clips_dir.glob("seg_*.mkv"))
         if len(segment_paths) == len(edl["ranges"]):
             print(f"reusing {len(segment_paths)} extracted segment(s) from {clips_dir.name}/")
         else:
@@ -1295,11 +1303,11 @@ def main() -> None:
 
     # 2. Concat → base
     if args.draft:
-        base_name = "base_draft.mp4"
+        base_name = "base_draft.mkv"
     elif args.preview:
-        base_name = "base_preview.mp4"
+        base_name = "base_preview.mkv"
     else:
-        base_name = "base.mp4"
+        base_name = "base.mkv"
     base_path = edit_dir / base_name
     concat_segments(segment_paths, base_path, edit_dir)
 
