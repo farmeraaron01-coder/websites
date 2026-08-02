@@ -665,11 +665,31 @@ def find_transcript(transcripts_dir: Path, src_name: str, src_path: Path) -> Pat
     return None
 
 
+def _mask_bleeped(text: str, a: float, b: float,
+                  bleeps: list[dict]) -> str:
+    """Grawlix a caption cue that overlaps a censor bleep.
+
+    Bleeping the audio while the burned caption prints the word in full
+    uppercase defeats both the joke and the ad-safety -- a TV censor masks
+    picture and sound together. Keep the first letter, star the rest.
+    """
+    for bl in bleeps:
+        t0 = float(bl["start_in_output"])
+        t1 = t0 + float(bl["duration"])
+        if b > t0 and a < t1:
+            word = (bl.get("note") or "").strip().upper()
+            if word:
+                masked = word[0] + "*" * max(1, len(word) - 1)
+                text = re.sub(re.escape(word), masked, text)
+    return text
+
+
 def build_master_srt(edl: dict, edit_dir: Path, out_path: Path) -> int:
     """Build an output-timeline SRT from per-source transcripts.
 
     - 2-word chunks (break on any punctuation in between)
     - UPPERCASE text
+    - Words under a censor bleep are masked to match the audio
     - Output times computed as word.start - segment_start + segment_offset
 
     Returns the cue count so the caller can skip the subtitles filter when it
@@ -725,6 +745,7 @@ def build_master_srt(edl: dict, edit_dir: Path, out_path: Path) -> int:
             # Strip trailing punctuation for cleaner uppercase look
             text = text.rstrip(",;:")
             text = text.upper()
+            text = _mask_bleeped(text, out_start, out_end, edl.get("bleeps") or [])
             entries.append((out_start, out_end, text))
 
         seg_offset += seg_duration
@@ -1118,6 +1139,14 @@ def main() -> None:
         help="Skip audio loudness normalization. Default is on (-14 LUFS, -1 dBTP, LRA 11).",
     )
     ap.add_argument(
+        "--reuse-clips",
+        action="store_true",
+        help="Reuse already-extracted segment and B-roll clips instead of "
+             "re-encoding them. Only safe when the EDL's ranges and broll are "
+             "unchanged since the last run -- compositing-only changes "
+             "(captions, bleeps, overlays) qualify.",
+    )
+    ap.add_argument(
         "--no-broll",
         action="store_true",
         help="Skip B-roll cutaways even if the EDL defines them (checks the A-roll cut).",
@@ -1133,9 +1162,21 @@ def main() -> None:
     out_path = args.output.resolve()
 
     # 1. Extract per-segment (auto-grade per range if EDL grade is "auto")
-    segment_paths = extract_all_segments(
-        edl, edit_dir, preview=args.preview, draft=args.draft
+    clips_dir = edit_dir / (
+        "clips_draft" if args.draft else ("clips_preview" if args.preview else "clips_graded")
     )
+    if args.reuse_clips and clips_dir.is_dir():
+        segment_paths = sorted(clips_dir.glob("seg_*.mp4"))
+        if len(segment_paths) == len(edl["ranges"]):
+            print(f"reusing {len(segment_paths)} extracted segment(s) from {clips_dir.name}/")
+        else:
+            print(f"--reuse-clips: found {len(segment_paths)} clips for "
+                  f"{len(edl['ranges'])} ranges -- re-extracting")
+            segment_paths = extract_all_segments(
+                edl, edit_dir, preview=args.preview, draft=args.draft)
+    else:
+        segment_paths = extract_all_segments(
+            edl, edit_dir, preview=args.preview, draft=args.draft)
 
     # 2. Concat → base
     if args.draft:
