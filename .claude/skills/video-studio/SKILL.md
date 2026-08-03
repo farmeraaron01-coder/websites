@@ -189,7 +189,30 @@ bleeps, overlays, music). It is unsafe when ranges change.
 
 Cap fix-and-re-render at three passes, then describe what is still wrong.
 
-### 9. Persist
+### 9. Thumbnail
+
+```bash
+studio thumbnail --layout face --face edit/thumb/clean.png \
+    --headline '$15 BURRITO' --sub '4 Tapatios' --zoom 1.45 -o edit/thumb/A.jpg
+```
+
+Three things decide whether a thumbnail works, and only the last is obvious:
+
+- **Pull frames from a caption-free source** (`base.mkv`), or stray sentence
+  fragments from the burned captions end up in the poster.
+- **Judge it at feed size, not full size.** The helper writes a 168 px proof
+  next to every render for exactly this. Text that looks bold at 1280 px turns
+  to mush at 168, and a small logo becomes a coloured dot — on the first pass
+  here a location kicker and a row of bottles both failed this way and had to
+  go or grow.
+- **Push in.** A 16:9 source frame gets no crop at all when fitted to a 16:9
+  thumbnail, so any dead space in the shot is faithfully preserved. `--zoom`
+  is what turns a wide shot into a poster.
+
+Two or three words maximum, and keep the bottom-right corner clear — the
+platform stamps the duration there.
+
+### 10. Persist
 
 Append to `edit/project.md`: what was cut and why, which takes were rejected,
 the sync offsets, what went wrong. Next session starts there.
@@ -253,6 +276,7 @@ pack_transcripts   words -> phrase-level takes_packed.md
 autocut            filler / stutter / dead-air cut proposal
 timeline_view      filmstrip + waveform + word labels for a range
 graphics           alpha motion graphics, offline
+thumbnail          YouTube thumbnail from frames of the cut
 render             EDL -> finished film
 verify             measure the finished film against the EDL
 grade              colour presets and per-clip auto grade
