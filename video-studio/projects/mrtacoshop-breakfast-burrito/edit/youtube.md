@@ -52,7 +52,7 @@ Watch to the end for the Tapatio count.
 Full reviews and the Tapatio rating scale: https://www.mrtacoshop.com
 
 Alberto's Mexican Food — Escondido Blvd, Escondido, CA · open 24 hours
-Order this: breakfast burrito, ham / egg / guacamole / cheese. Get four reds.
+Order this: breakfast burrito, ham / egg / guacamole / cheese. Ask for the red.
 
 ## Chapters
 
