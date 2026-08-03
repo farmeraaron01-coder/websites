@@ -85,3 +85,76 @@ Render bugs found by inspection this session (all produced valid MP4s):
 
 Trust nothing but the rendered file. Measure with decode-then-trim, never
 input-seek AAC to sub-100ms windows.
+
+## Session 3 — sync repair, effects, 1080p delivery (2026-08-02)
+
+Note flagged from the review: *"the voice sync is off. the beep didnt hapen on
+holy shit... its off on lots of the video."* Two further causes behind the same
+symptom, on top of the six above — and both earlier fixes had felt like
+success:
+
+7. **AAC frame quantization.** Intermediates were AAC-in-MP4; AAC rounds each
+   segment up to a whole 1024-sample frame, so picture fell ~21 ms further
+   behind at every cut. Intermediates are now PCM in Matroska.
+8. **Mixed channel layouts.** Exposed by fixing 7: PCM carries no per-packet
+   channel info, so the concat demuxer applied the *first* segment's layout to
+   all. `base.mkv` reported 166.509 s and decoded to 173.708 s — the excess was
+   exactly the two stereo generated inserts, read as mono at double length.
+   Every beat after them sat on a corrupted timeline. `-ac 2 -ar 48000` pinned
+   on every segment.
+
+Final measured worst timeline drift: **5 ms** (was 580 ms). All three bleeps
+confirmed on their words by content-location search, not by assumption.
+
+Added this session, per notes:
+- `SLOWMO_BITE` from IMG_1837 — the bite *and* the burrito interior, which the
+  earlier cut was missing (the face did not appear early enough).
+- Tapatio score card rebuilt from the real bottle image, four across, centred,
+  +1 s. Bottles had overlapped because spacing came from the raw icon width and
+  ignored the rotation bbox plus shadow padding; `spacing` 1.85.
+- TACO BELL beat: KTLA breaking-news parody PiP (corner), slow pan to the Taco
+  Bell from the iPhone footage, fart SFX at +2.70 (measured 3.6x over context).
+- Music bed: the editor's own parody track "Pásame la Salsa" from 95 s, 16 dB
+  under **speech-active** dialogue. An absolute -20 dB had measured *louder*
+  than the voice; `under_db` is the only sane way to specify this.
+
+Delivered `AlbertosBreakfastBurrito_1080p.mp4` — 2:46 (166.5 s), -16.5 dB mean
+/ -0.9 dB peak, 226 caption cues (3 masked, 0 unmasked profanity), 9/9 verify.
+Handed over in five bit-exact parts; recombined length 116,542,215 bytes,
+MD5 E22C1B94F493049213F486C623A422BF, confirmed on the far end.
+
+## Session 4 — thumbnail, logo, packaging correction (2026-08-03)
+
+Two factual corrections from the review, both now baked into the skill so they
+cannot recur:
+
+- **The $15.42 is the order total and included an orange soda.** Every
+  price-led title and the description had treated it as the burrito's price.
+  Rewritten; `youtube.md` now says so explicitly, and the chapter reads
+  "The order (burrito plus an orange soda, $15.42)".
+- **The score does not belong on the poster.** Titles, thumbnails and the
+  chapter name all gave away "4 Tapatios" — which is the one thing a viewer
+  stays to the end for. Everything now poses the question instead:
+  "HOW MANY TAPATIOS?".
+
+`assets/albertos_logo.png` — the real roofline sign, keyed out of
+`footage/IMG_1843.MOV` at t=4.0 s. Sky keys off trivially (`(B-R) > 26 & B >
+105`); the roof does not, because it is the same red as the sign and rust
+streaks running down from the letters connect the two into one component, so a
+connected-component filter cannot separate them. What works: the roof is a
+straight edge, and climbing each column upward from the bottom while the pixel
+stays opaque finds that edge and nothing else. The points fit a line to a few
+px; cut on it. (`scipy.ndimage.binary_closing` needs `border_value=1` here —
+the default erodes away the bottom row, which is exactly where the measurement
+has to happen.)
+
+Thumbnails: `edit/thumb/A_face.{png,jpg}` (bite at 0:08, 1.45x, logo top left,
+two-line yellow hook) and `B_split.{png,jpg}` (torn burrito | bite, red "HOW
+MANY" over giant "TAPATIOS?", logo top right on the neon). A is the stronger.
+Both verified on the 168 px feed-size proof, which is where thumbnails actually
+fail.
+
+`thumbnail.py` gained `--logo/--logo-scale/--logo-pos` (white halo over a soft
+shadow, so a keyed cutout survives landing on any frame), `--head-y`, and `|`
+as an explicit line break in `--headline` — one word per line reads as a list,
+two short words on a line read as a phrase.

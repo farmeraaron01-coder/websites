@@ -6,37 +6,48 @@ Cut: 2:46 (166.5s), 1920x1080, 24 fps, -14 LUFS. File:
 ## Title
 
 Pick one. All three are paid off by the video itself — nothing here is a
-promise the cut does not keep.
+promise the cut does not keep, and **none of them gives away the score.** The
+rating is the reason to watch to the end; spending it in the title or the
+thumbnail is spending the only thing the viewer is staying for.
 
-1. **The $15 Breakfast Burrito From A Building That Hasn't Been Cleaned In 30 Years**
+1. **The Best Breakfast Burrito In San Diego Is In A Building Nobody Has Cleaned In 30 Years**
 2. **This Breakfast Burrito Is Next Door To A Taco Bell. Nobody Goes To The Taco Bell.**
-3. **Alberto's Escondido: 4 Tapatios, And I'd Pay The $15 Again**
+3. **Alberto's Escondido Breakfast Burrito — How Many Tapatios?**
 
-Option 1 leads with the two hooks the video actually lands — the price and the
-"A rating, thank God" gag. Option 2 is the biggest laugh but spends it in the
-title, before the viewer has arrived. Option 3 is the safest and the least
-clickable.
+Option 1 leads with the gag the video actually lands, the "A rating, thank God"
+beat. Option 2 is the biggest laugh but spends it in the title, before the
+viewer has arrived. Option 3 poses the show's own question and is the one that
+pairs with the thumbnail.
+
+**Do not use a price as the hook.** The $15.42 in the video is the *order
+total* and included an orange soda, so "the $15 burrito" is not true. If the
+price is mentioned anywhere, it has to be the whole order.
 
 ## Thumbnail
 
-Two frames worth pulling:
+Built: `edit/thumb/A_face.jpg` and `edit/thumb/B_split.jpg`, both 1280x720
+with a 168 px feed-size proof beside them.
 
-- **1:41** — face mid-reaction under the awning, mouth full, neon "24HRS DRIVE
-  THRU" behind. Reads as a real moment rather than a pose.
-- **0:01** — the torn-open burrito filling the frame, egg and guacamole
-  spilling, grease on the yellow wrapper. Pure appetite.
+- **A — face.** The bite at 0:08, pushed in 1.45x, real Alberto's sign cutout
+  (`assets/albertos_logo.png`, keyed off the roofline in `IMG_1843.MOV`) top
+  left with a white halo, yellow "HOW MANY / TAPATIOS?" over the scrim.
+- **B — split.** Torn-open burrito left, the bite right, red "HOW MANY" banner
+  over a giant "TAPATIOS?", logo top right on the neon.
 
-Best composite: face right, burrito cross-section left, the yellow wrapper as
-the colour field. Face and food together beat either alone.
+A is the stronger of the two: one face, one question, and the food still reads
+in the hand. Both pose the rating instead of answering it.
+
+Frames come from `base.mkv`, not `final.mp4` — a frame off the final carries
+the burned captions into the poster.
 
 ## Description
 
 The OG breakfast burrito. Alberto's on Escondido Boulevard — ham, egg,
-guacamole and cheese, $15.42, in a building that has not been cleaned since the
-first Bush administration. It's right next door to a Taco Bell. Nobody goes to
-the Taco Bell.
+guacamole and cheese, in a building that has not been cleaned since the first
+Bush administration. $15.42 with an orange soda. It's right next door to a Taco
+Bell. Nobody goes to the Taco Bell.
 
-Four Tapatios.
+Watch to the end for the Tapatio count.
 
 Full reviews and the Tapatio rating scale: https://www.mrtacoshop.com
 
@@ -50,7 +61,7 @@ least 10 seconds, which these do.
 
     0:00 You go to war with one of these
     0:10 The best breakfast burrito in San Diego
-    0:21 The order
+    0:21 The order (burrito plus an orange soda, $15.42)
     0:32 The potato rule
     0:47 The building (A rating, thank God)
     1:01 The parking lot
@@ -58,7 +69,7 @@ least 10 seconds, which these do.
     1:39 It's a juicy one
     1:51 The squawk box
     2:05 The Taco Bell problem
-    2:18 The verdict: 4 Tapatios
+    2:18 The verdict
 
 ## Tags
 

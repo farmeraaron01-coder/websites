@@ -193,11 +193,16 @@ Cap fix-and-re-render at three passes, then describe what is still wrong.
 
 ```bash
 studio thumbnail --layout face --face edit/thumb/clean.png \
-    --headline '$15 BURRITO' --sub '4 Tapatios' --zoom 1.45 -o edit/thumb/A.jpg
+    --headline 'HOW MANY|TAPATIOS?' --zoom 1.45 \
+    --logo assets/albertos_logo.png --logo-scale 0.20 --logo-pos tl \
+    -o edit/thumb/A.jpg
 ```
 
-Three things decide whether a thumbnail works, and only the last is obvious:
+Four things decide whether a thumbnail works, and only the last is obvious:
 
+- **Ask the question, do not answer it.** A rating on the poster is the reason
+  to skip the video. "HOW MANY TAPATIOS?" earns the click that "4 TAPATIOS"
+  gives away — and the same goes for the title and the chapter names.
 - **Pull frames from a caption-free source** (`base.mkv`), or stray sentence
   fragments from the burned captions end up in the poster.
 - **Judge it at feed size, not full size.** The helper writes a 168 px proof
@@ -211,6 +216,12 @@ Three things decide whether a thumbnail works, and only the last is obvious:
 
 Two or three words maximum, and keep the bottom-right corner clear — the
 platform stamps the duration there.
+
+`--logo` drops a real logo cutout in a corner, haloed white over a soft shadow
+so it survives landing on any frame. Key one out of the signage in the footage
+rather than hunting for a brand asset: the sign is already in the shoot, and
+the roofline it sits on is a straight edge, so a sky key plus a line fit
+separates it cleanly.
 
 ### 10. Persist
 

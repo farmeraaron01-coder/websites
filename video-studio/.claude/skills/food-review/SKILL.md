@@ -128,11 +128,22 @@ Deliver alongside the MP4, in `edit/youtube.md`:
   "$8 Breakfast Burrito From A 40-Year-Old Gas Station Taqueria".
   No clickbait the video does not pay off.
 - **Thumbnail frame** — pull a still: food filling the frame, face reacting,
-  high contrast. Note its timecode.
+  high contrast. Note its timecode. Frames come from `base.mkv`; a frame off
+  the final carries the burned captions into the poster.
 - **Description** — one-line summary, address, what to order, mrtacoshop.com.
 - **Chapters** — timestamps from the beat structure. YouTube requires the
   first to be `0:00`.
 - **Tags** — dish, city, cuisine, "food review".
+
+**Never put the Tapatio count in the title, thumbnail, description or a chapter
+name.** The score is the payoff and the only reason a viewer stays to the end —
+printing it is printing the reason to skip. Pose it instead: "How many
+Tapatios?" on the poster, answered in the verdict beat.
+
+**Check a price before it becomes the hook.** The number said on camera at the
+register is the *order total*, and an order usually has a drink in it. A title
+built on "the $15 burrito" is a factual claim about a menu price, and the
+transcript will not support it. Either quote the whole order or drop the price.
 
 ## Anti-patterns
 

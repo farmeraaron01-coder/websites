@@ -16,6 +16,10 @@ Three other constraints worth knowing:
   Leave the bottom-right corner alone. The platform stamps the duration there,
   over whatever you put underneath.
 
+  Do not answer the question the video answers. A rating on the thumbnail is
+  the reason to skip the video. Pose it instead -- the score belongs in the
+  last thirty seconds, not the poster.
+
   Push contrast and saturation harder than looks right on its own. A thumbnail
   competes against twenty others rather than being viewed in isolation, and a
   correctly graded frame reads as flat in that context.
@@ -30,12 +34,13 @@ face    single full-bleed frame with a scrim panel for type. Stronger when the
 Usage:
     python helpers/thumbnail.py --layout split \\
         --food edit/thumb/clean_1.0.png --face edit/thumb/clean_8.6.png \\
-        --headline '$15.42' --kicker "ALBERTO'S · ESCONDIDO" \\
-        --icon assets/tapatio_bottle.png --icons 4 \\
+        --headline 'HOW MANY?' --kicker 'BREAKFAST BURRITO' \\
+        --logo assets/albertos_logo.png --logo-scale 0.15 \\
         -o edit/thumb/thumb_split.png
 
     python helpers/thumbnail.py --layout face --face edit/thumb/clean_8.6.png \\
-        --headline '$15 BURRITO' --sub '4 TAPATIOS' -o edit/thumb/thumb_face.png
+        --headline 'HOW MANY?' --sub 'TAPATIO SCALE' --zoom 1.45 \\
+        --logo assets/albertos_logo.png -o edit/thumb/thumb_face.png
 """
 
 from __future__ import annotations
@@ -122,6 +127,54 @@ def outlined(d: ImageDraw.ImageDraw, xy, text: str, f, fill, stroke_px: int,
            stroke_fill=INK)
 
 
+def load_logo(path: Path, height: int) -> Image.Image | None:
+    """A real logo cutout, haloed so it reads on any background.
+
+    A keyed logo has no border of its own, so dropped straight onto a photo it
+    disappears wherever the photo happens to match its colour. The halo is a
+    white outline (dilate the alpha, fill white) over a dark blurred shadow —
+    white carries it on dark frames, the shadow carries it on bright ones, and
+    together they read as a sticker rather than a paste.
+    """
+    if not path or not path.exists():
+        return None
+    logo = Image.open(path).convert("RGBA")
+    lw = max(1, int(logo.width * height / logo.height))
+    logo = logo.resize((lw, height), Image.LANCZOS)
+
+    ring = max(3, height // 22)
+    pad = ring * 3
+    canvas = Image.new("RGBA", (lw + pad * 2, height + pad * 2), (0, 0, 0, 0))
+
+    a = Image.new("L", canvas.size, 0)
+    a.paste(logo.getchannel("A"), (pad, pad))
+    # MaxFilter needs an odd window; the dilation radius is ring px.
+    grown = a.filter(ImageFilter.MaxFilter(ring * 2 + 1))
+
+    shadow = Image.new("RGBA", canvas.size, (0, 0, 0, 0))
+    shadow.putalpha(grown.filter(ImageFilter.GaussianBlur(ring)).point(
+        lambda v: int(v * 0.75)))
+    canvas.alpha_composite(shadow)
+
+    halo = Image.new("RGBA", canvas.size, (255, 255, 255, 255))
+    halo.putalpha(grown.filter(ImageFilter.GaussianBlur(0.8)))
+    canvas.alpha_composite(halo)
+    canvas.alpha_composite(logo, (pad, pad))
+    return canvas
+
+
+def place_logo(canvas: Image.Image, args, default_pos: str = "tr") -> None:
+    """Composite --logo into a corner. Never bottom-right: duration stamp."""
+    row = load_logo(args.logo, int(H * (args.logo_scale or 0.16)))
+    if not row:
+        return
+    mx, my = int(W * 0.025), int(H * 0.035)
+    pos = args.logo_pos or default_pos
+    x = mx if pos.endswith("l") else W - row.width - mx
+    y = my if pos.startswith("t") else H - row.height - my
+    canvas.paste(row, (x, y), row)
+
+
 def load_icons(path: Path, count: int, height: int) -> Image.Image | None:
     """A row of icons with a soft dark silhouette behind each."""
     if not path or not path.exists() or count <= 0:
@@ -183,6 +236,7 @@ def layout_split(args) -> Image.Image:
     row = load_icons(args.icon, args.icons, int(H * (args.icon_scale or 0.20)))
     if row:
         canvas.paste(row, (W - row.width - int(W * 0.02), int(H * 0.03)), row)
+    place_logo(canvas, args, "tr" if not row else "bl")
     return canvas
 
 
@@ -202,9 +256,12 @@ def layout_face(args) -> Image.Image:
     scrim.putalpha(grad.resize((panel_w, H), Image.BILINEAR))
     canvas.paste(scrim, (0, 0), scrim)
 
-    words = args.headline.upper().split()
+    # One word per line unless the caller sets the breaks with "|". Two short
+    # words on a line read as a phrase; one per line reads as a list.
+    head = args.headline.upper()
+    words = [s.strip() for s in head.split("|")] if "|" in head else head.split()
     f_head = font(int(H * args.head_scale))
-    y = int(H * 0.20)
+    y = int(H * args.head_y)
     for wd in words:
         outlined(d, (int(W * 0.035), y), wd, f_head, YELLOW,
                  stroke_px=max(6, int(H * 0.015)), shadow=(5, 7))
@@ -219,6 +276,7 @@ def layout_face(args) -> Image.Image:
     row = load_icons(args.icon, args.icons, int(H * (args.icon_scale or 0.17)))
     if row:
         canvas.paste(row, (int(W * 0.035), min(y + int(H * 0.03), H - row.height)), row)
+    place_logo(canvas, args, "tr")
     return canvas
 
 
@@ -236,6 +294,14 @@ def main() -> None:
     ap.add_argument("--kicker", default="", help="split only: small red banner")
     ap.add_argument("--icon", type=Path, help="RGBA icon for a rating row")
     ap.add_argument("--icons", type=int, default=0)
+    ap.add_argument("--logo", type=Path,
+                    help="RGBA logo cutout, haloed and dropped in a corner")
+    ap.add_argument("--logo-scale", type=float, default=0.0,
+                    help="Logo height as a fraction of frame height. Below ~0.11 "
+                         "a logo is a coloured smudge at feed size.")
+    ap.add_argument("--logo-pos", choices=["tl", "tr", "bl"], default=None,
+                    help="Corner for the logo. Bottom-right is unavailable: the "
+                         "platform stamps the duration there.")
     ap.add_argument("--zoom", type=float, default=1.0,
                     help="Crop in before fitting. A 16:9 source otherwise passes "
                          "through untouched, dead space included.")
@@ -244,6 +310,10 @@ def main() -> None:
     ap.add_argument("--icon-scale", type=float, default=0.0,
                     help="Icon row height as a fraction of frame height. Below "
                          "~0.14 icons collapse into coloured dots at feed size.")
+    ap.add_argument("--head-y", type=float, default=0.20,
+                    help="face only: where the headline block starts, as a "
+                         "fraction of frame height. Raise it to clear a logo "
+                         "placed top-left.")
     ap.add_argument("--head-scale", type=float, default=0.165,
                     help="Headline height as a fraction of frame height. Below "
                          "~0.12 it stops being readable at feed size.")
