@@ -219,15 +219,32 @@ def draw_price(t: float, cfg: dict) -> Image.Image:
     if scale <= 0.01:
         return img
 
+    # `sub` is for qualifying the number, not decorating it. A price said at a
+    # register is usually an order total, and a bare figure on screen reads as
+    # the price of the dish -- which is a claim the footage may not support.
     text = cfg["text"]
+    sub = str(cfg.get("sub", "")).strip()
     f = load_font(int(H * 0.075 * scale) or 1, bold=True)
     tw, th_ = text_size(d, text, f)
+    fs, sw, sh = None, 0, 0
+    if sub:
+        fs = load_font(int(H * 0.030 * scale) or 1, bold=True)
+        sw, sh = text_size(d, sub, fs)
     pad = int(H * 0.022 * scale)
-    x = int(W * cfg.get("cx", 0.80)) - (tw + pad * 2) // 2
+    # `text_size` measures the ink box, so the big line's glyph bearing already
+    # reads as extra space at the top. The sub line has no such bearing below
+    # it and looks jammed against the chip edge without a little extra.
+    gap = int(H * 0.012 * scale) if sub else 0
+    foot = int(H * 0.008 * scale) if sub else 0
+    bw, bh = max(tw, sw) + pad * 2, th_ + gap + sh + pad * 2 + foot
+    x = int(W * cfg.get("cx", 0.80)) - bw // 2
     y = int(H * cfg.get("cy", 0.22))
-    d.rounded_rectangle([x, y, x + tw + pad * 2, y + th_ + pad * 2],
+    d.rounded_rectangle([x, y, x + bw, y + bh],
                         radius=int(H * 0.014), fill=th["accent"])
-    d.text((x + pad, y + pad), text, font=f, fill=(255, 255, 255, 255))
+    d.text((x + (bw - tw) // 2, y + pad), text, font=f, fill=(255, 255, 255, 255))
+    if sub:
+        d.text((x + (bw - sw) // 2, y + pad + th_ + gap), sub, font=fs,
+               fill=(255, 255, 255, 220))
     return img
 
 

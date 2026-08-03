@@ -79,7 +79,9 @@ BROLL = [
 # Graphics: (beat_name, offset_into_beat, name, duration)
 GRAPHICS = [
     ("THE BURRITO", 0.40, "title", 2.80),
-    ("THE PRICE", 0.30, "price", 2.30),
+    # 0.30 + 2.50 = 2.80, just inside the beat's 2.85s. The card carries a
+    # second line now ("+ ORANGE SODA"), which needs the extra time to read.
+    ("THE PRICE", 0.30, "price", 2.50),
     ("UNVEIL FACE", 0.60, "dish", 3.20),
     ("TACO BELL", 2.60, "newsalert", 6.60),   # parody PiP over the outbreak line
     ("THE VERDICT", 5.20, "tapatio_score", 4.40),

@@ -158,3 +158,29 @@ fail.
 shadow, so a keyed cutout survives landing on any frame), `--head-y`, and `|`
 as an explicit line break in `--headline` — one word per line reads as a list,
 two short words on a line read as a phrase.
+
+### Price card qualified (2026-08-03)
+
+`$15.42` now carries a second line, `+ ORANGE SODA`. `draw_price` gained a
+`sub` field for exactly this: a bare figure over a register beat reads as the
+price of the dish, and the number said on camera is the order total. Card
+duration 2.30 -> 2.50s so the second line has time to read (0.30 + 2.50 = 2.80,
+inside the beat's 2.85s).
+
+Recomposited with `--reuse-clips`; nothing else moved. The pre-norm loudnorm
+measurement differs from `render_sync2.log` by 4 dB, which looked alarming and
+was a red herring — sync2 is not the run that produced the delivered file.
+Measured directly instead: the new mix against the delivered one, 1 s RMS
+envelopes, **r = 1.0000**, worst second 0.07 dB, identical duration and peak.
+Compare finished files, not logs.
+
+10/10 verify. New delivery `115,710,839` bytes, MD5
+`a8941d7f4ba278eca2afa586fb7713f0`, five 27 MiB parts. `deliver.sh` now records
+the encode (5.4 Mbps video, audio **stream-copied** so the mix never takes a
+second lossy generation — confirmed by identical audio stream MD5).
+
+Delivery channel note: there isn't one for binaries. The Dropbox connector has
+no binary upload; Zapier's Dropbox "Upload File" needs a URL or a file object
+from another service; Google Drive's `create_file` takes `base64Content`, which
+for a 116 MB file is ~155 MB of base64 that would have to pass through the model
+itself. Chat attachments are the only route, hence the split.
