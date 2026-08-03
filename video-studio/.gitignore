@@ -20,6 +20,11 @@ projects/*/edit/broll_draft/
 projects/*/edit/animations/
 projects/*/edit/downloads/
 projects/*/edit/verify/
+projects/*/edit/deliver/
+projects/*/edit/sfx/
+projects/*/edit/music/
+projects/*/edit/inserts/
+projects/*/assets/
 *.mp4
 *.mov
 *.MP4
@@ -37,3 +42,8 @@ projects/*/edit/verify/
 
 # Transient run logs
 projects/*/edit/*.log
+
+# Split-delivery chunks of a render. Derived media, and each part is large
+# enough that committing them would also breach GitHub's per-file limit.
+*.part[0-9][0-9]
+*.mp4.part*
