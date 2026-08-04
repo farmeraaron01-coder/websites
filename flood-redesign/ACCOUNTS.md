@@ -30,8 +30,65 @@ Two rules for everything below:
 | Ads campaign | `<brand> — <geo/product> — <bid strategy>` | `Flood CA — search — MaxConv` |
 | Search Console | Domain property, DNS-verified | `californiafloodinsurance.com` |
 
-One container per domain. One GA4 property per domain. If two exist for the same domain, that is a
-finding to report, not something to merge on the spot.
+**One property per business, not per domain.** The distinction matters. Two domains that are the same
+business belong in one property with cross-domain measurement configured — `lp.jumptruckinginsurance.com`
+and `jumptruckinginsurance.com` are one business, and splitting them would break the visitor journey
+from landing page to site, showing a self-referral instead of one session. Two domains that are
+separate brands with separate budgets and separate reporting belong in separate properties. Flood and
+statewide flood are already separate, which is correct: you want to compare them.
+
+If two properties serve the same domain, that is a finding to report, not something to merge on the
+spot.
+
+---
+
+## Properties that hold more than one website
+
+A GA4 property can carry several data streams, and by default the reports **blend** them. That is the
+"hard to find" problem: one property named after one brand, quietly reporting on three, so every
+number in it is a sum nobody asked for.
+
+The target is one property per business. Getting there has one cheap part and one expensive part, and
+the difference decides the order.
+
+**What splitting cannot do.** A data stream cannot be moved between properties, and history cannot be
+divided. A new property starts empty, with a new measurement ID, and there is no backfill. The old
+blended property stays as the only record of everything before the split — so **never delete it**,
+rename it to say what it is.
+
+**The history loss is smaller than it feels.** On the free tier GA4 retains event-level data for at
+most 14 months. Whatever is in the blended property ages out on that clock either way, so the argument
+for postponing a split gets weaker every month, not stronger. This is not Universal Analytics, where
+years of history sat in one place.
+
+**The expensive part is Google Ads, not reporting.** If a property feeds Ads conversions as imported
+key events — which is exactly how CFI's conversions work — then a new property means importing new
+conversion actions, and those start with **no conversion history for Smart Bidding**. Bidding
+re-learns. That is a real cost, it lands on spend, and it is the reason this is sequenced rather than
+just done.
+
+### The decision rule
+
+| The property blends… | Feeds Ads conversions? | Do this |
+|---|---|---|
+| Separate brands | No | **Split now.** Cheap, no bidding impact. |
+| Separate brands | Yes | **Split, but on its own week** — after the site cutover and after the stage 3 conversion work, never alongside either. Import the new key events, let bidding re-learn on a stable budget for 2–3 weeks. |
+| Same business, several domains or subdomains | Either | **Do not split.** Configure cross-domain measurement and name the streams properly. Splitting breaks the journey between them. |
+
+### Doing it without splitting, where splitting is not worth it
+
+If a property blends brands but the reporting need is just "let me see one site at a time", these cost
+nothing and lose no data:
+
+- **Name every data stream after its exact domain.** Most of the confusion is streams named "Website"
+  or after whichever brand was set up first.
+- **Comparisons on Hostname.** Add a comparison for `hostname exactly matches <domain>` and every
+  standard report filters to that site. Save it so it is one click next time.
+- **A Looker Studio page per brand**, filtered on hostname, so each brand has a report that cannot
+  accidentally show another's numbers.
+
+These are worth doing *even where you do intend to split*, because they make the blended property
+readable during the months the split is waiting its turn.
 
 ---
 
@@ -150,9 +207,17 @@ Read-only inventory. Change nothing — no renames, no deletes, no publishing.
    active or orphaned (no tags / never published / no matching live site).
 
 2. GA4 (analytics.google.com → Admin). List every account and property: property
-   name, property ID, and for each data stream the measurement ID and configured
-   stream URL. Flag any two properties that serve the same domain, and any
-   property with no data in the last 48 hours.
+   name, property ID, and for each data stream the stream name, measurement ID,
+   and configured stream URL. Then answer these three specifically, because they
+   decide what we do next:
+   a. Which properties contain MORE THAN ONE data stream, and what domain is each
+      stream? (A property holding several websites is the thing we are hunting.)
+   b. For each of those properties, is a Google Ads account linked (Admin →
+      Product links → Google Ads links), and are any of its key events imported
+      into Ads as conversion actions?
+   c. Which properties have received no data in the last 48 hours?
+   Also flag any two properties serving the same domain, and any stream whose
+   configured URL is http:// rather than https://.
 
 3. Google Ads (Goals → Conversions → Summary). List every conversion action:
    name, source, category, status, primary or secondary, and the count setting
