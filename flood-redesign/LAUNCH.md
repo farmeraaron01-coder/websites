@@ -32,7 +32,9 @@ The two-week watch afterwards is where the real attention goes.
 | 4 | Sign off content: 9 statewide articles, 10 claims pages, 18 drafted meta descriptions | Aaron | ☐ |
 | 5 | Sign off statewide palette and hero copy | Aaron | ☐ |
 | 6 | Correct the four "separate purchases" instances in the source PDFs (copy supplied; sites already fixed) | Aaron | ☐ |
-| 7 | **Add a DNS-verified Domain property for each site in Search Console** — neither flood site has one today (CFI has `https://` + `http://www.` URL-prefix only; statewide `https://` + `http://`), and statewide's HTML-file verification dies with the docroot swap | Aaron | ☐ |
+| 7 | ~~Add a DNS-verified Domain property for each site~~ — **done 4 Aug.** CFI auto-verified from an existing DNS record (`…JyoiyhKquy3…`), so it was already immune to the docroot swap. Statewide's TXT (`…JXdoRp-ycIhoLLHRe8hdbMyUOUQG2nT80mmR7Dy44Bk`) is live at the root, 900s TTL, confirmed resolving from Google's and Cloudflare's resolvers | — | ☑ |
+| 7e | **Never delete either `google-site-verification` TXT record.** Google re-checks periodically; removing it un-verifies the property silently, months later, with no warning | Aaron | ☐ |
+| 7f | After Search Console verifies, check whether the `https://statewidefloodinsurance.com/` URL-prefix property now lists DNS as a method. If it does, the HTML-file copy step below can be dropped | Aaron | ☐ |
 | 7c | **Open `GTM-PJQ72VK`'s two "Urgent" container-quality issues** and read what they are — statewide's container, unexamined, before launch | Aaron | ☐ |
 | 7d | Remove stale GTM publish access (2022 freelancer Gmail addresses); downgrade the two active agencies to Edit — see ACCOUNTS.md step zero | Aaron | ☐ |
 | 7b | Note a baseline week of GA4 pageviews — the number legitimately drops when Site Kit's duplicate tag goes | Aaron | ☐ |
