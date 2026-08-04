@@ -41,7 +41,8 @@ The two-week watch afterwards is where the real attention goes.
 | 7d | Remove stale GTM publish access (2022 freelancer Gmail addresses); downgrade the two active agencies to Edit — see ACCOUNTS.md step zero | Aaron | ☐ |
 | 7b | Note a baseline week of GA4 pageviews — the number legitimately drops when Site Kit's duplicate tag goes | Aaron | ☐ |
 | 8 | **Full backup of each production site — files + database — downloaded off the server** | Aaron | ☐ |
-| 9 | Confirm the cutover method with InMotion — docroot swap, not overwrite. **Ticket drafted and ready to paste: `INMOTION-TICKET.md`**, which bundles this with the `/wp-json/` cache exclusion and the PDF header | Aaron | ☐ |
+| 9 | **Read the Document Root column in cPanel → Domains** for all four hostnames. That answers the cutover-method question without support — see Phase 1 step 2 for what each answer means | Aaron | ☐ |
+| 9b | File `INMOTION-TICKET.md` as fire-and-forget for the two nginx changes (`/wp-json/` cache exclusion, PDF header). Neither is urgent and neither blocks launch — the PDF one is already mitigated by robots.txt. Drop request 1 from the ticket if item 9 answered it | Aaron | ☐ |
 
 Not launch-blocking, decide later: the asymmetric-lanes / cross-domain canonical question for
 the duplicated claims content.
@@ -58,9 +59,37 @@ Do CFI first; statewide gets the benefit of anything learned.
 
 1. **Backup again**, immediately before. The Phase 0 backup is the safety net; this one is the
    restore point.
-2. **Point the domain at the new install.** Preferred: change the document root, leaving the
-   old install on disk untouched. Do NOT use a "push to live" that overwrites production —
-   that is what makes rollback a restore instead of a click.
+2. **Point the domain at the new install, leaving the old one on disk.** Do NOT use a "push to
+   live" that overwrites production — that is what makes rollback a restore instead of a click.
+
+   **Which method applies depends on one cPanel screen, and you can check it yourself in two
+   minutes — InMotion support is slow and this does not need them.** In cPanel → **Domains**, read
+   the **Document Root** column for all four hostnames: both production domains and both staging
+   subdomains. Then:
+
+   **Method A — docroot repoint (best).** If the domain's Document Root is editable (cPanel shows a
+   *Manage* link with an editable path), just point it at the staging install's directory. Nothing
+   moves on disk. Rollback is editing that one field back. Addon domains and subdomains are almost
+   always editable this way.
+
+   **Method B — directory rename (for a primary domain).** A primary domain's docroot is usually
+   locked to `public_html` and cannot be edited. In that case, do not fight it — rename instead:
+
+   ```
+   mv public_html public_html-divi-OLD
+   mv <staging-install-dir> public_html
+   ```
+
+   Equally reversible: swap the two names back. Two cautions. First, if the staging install lives
+   *inside* `public_html` (e.g. `public_html/new/`), move its **contents** up rather than nesting
+   directories — check the Document Root column before assuming. Second, the staging subdomain will
+   404 afterwards, since its docroot no longer exists; that is expected and harmless, but point it at
+   the old directory if you want the Divi site reachable for comparison.
+
+   **Either way the property that matters is the same:** the old install still exists, complete and
+   untouched, and going back is a rename or a field edit rather than a restore. Confirm which method
+   applies *before* scheduling the flip, and write the exact reverse command down before running the
+   forward one.
 3. **Fix the site address.** WordPress `siteurl` and `home` → `https://californiafloodinsurance.com`
    (no `www`, no trailing slash). Then search-replace the staging hostname across the database:
    `new.californiafloodinsurance.com` → `californiafloodinsurance.com`. Statewide:
