@@ -24,7 +24,7 @@ The two-week watch afterwards is where the real attention goes.
 | 2 | ~~Confirm whether the GTM containers hold a GA4 config tag~~ — **done 4 Aug: they do. `CFI_GA4_ID` stays empty.** | — | ☑ |
 | 2b | **Build** the new conversion path in GTM — new triggers and tags on `cfi_form_submit` / `cfi_is_lead`, **added alongside** the existing click triggers, not replacing them. Dormant until cutover. Session 2 of CLEANUP-WORKLIST.md | Aaron | ☐ |
 | 2g | **Same session, Bing — CALIFORNIA ONLY, and it is a trigger repoint, not a new tag.** Read 4 Aug: `Bing UET - request_quote (California)` already exists and fires on `Click – All Elements` / `Click Text contains Submit Application`. Change only its trigger; keep its code pushing `request_quote` verbatim so the existing Microsoft goal and its history keep working. **Adding a new tag would double-count California.** | Aaron | ☐ |
-| 2h | **Statewide Bing: find the mechanism before building anything.** Its container has no UET event tag, only the base page-load tag — yet Microsoft reports a recording goal. If it fires from a snippet in the Divi theme, it dies at cutover and statewide silently loses Bing conversion tracking. Read-only prompt in CLEANUP-WORKLIST.md | Aaron | ☐ |
+| 2h | ~~Statewide Bing: does it die at cutover?~~ — **No. Traced 4 Aug: zero hardcoded UET code in the live page source, and California's container is `<noscript>`-only on statewide so its click tag cannot be firing there either.** Nothing Bing-related lives in the theme, so nothing breaks at the swap. What still fires its goal is a data-quality question, not a launch risk — narrow read in CLEANUP-WORKLIST.md | — | ☑ |
 | 2c | ~~Resolve where CFI's Ads conversions come from~~ — **done 4 Aug: GA4-imported key events.** Confirm the Source column when convenient | — | ☑ |
 | 2e | Decide whether to apply the **July 15 conversion-tracking cleanup plan** (60 actions, dozens Primary across six brands) — still marked DRAFT. Sequenced in ACCOUNTS.md stage 3c: after the GTM repoint, and **not in the same week as the cutover** so the two effects stay separable | Aaron | ☐ |
 | 2f | Optional: point the flood ads at **/get-a-quote/** instead of the homepage — the new landing page puts the form on the page the click lands on | Aaron | ☐ |
@@ -35,7 +35,7 @@ The two-week watch afterwards is where the real attention goes.
 | 6 | Correct the four "separate purchases" instances in the source PDFs (copy supplied; sites already fixed) | Aaron | ☐ |
 | 7 | ~~Add a DNS-verified Domain property for each site~~ — **done 4 Aug.** CFI auto-verified from an existing DNS record (`…JyoiyhKquy3…`), so it was already immune to the docroot swap. Statewide's TXT (`…JXdoRp-ycIhoLLHRe8hdbMyUOUQG2nT80mmR7Dy44Bk`) is live at the root, 900s TTL, confirmed resolving from Google's and Cloudflare's resolvers | — | ☑ |
 | 7e | **Never delete either `google-site-verification` TXT record.** Google re-checks periodically; removing it un-verifies the property silently, months later, with no warning | Aaron | ☐ |
-| 7f | After Search Console verifies, check whether the `https://statewidefloodinsurance.com/` URL-prefix property now lists DNS as a method. If it does, the HTML-file copy step below can be dropped. **Expected to pass** — CFI's *URL-prefix* properties both read "Domain name provider", proving DNS ownership does propagate down to URL-prefix properties on this account | Aaron | ☐ |
+| 7f | ~~Check whether statewide's URL-prefix property now lists DNS~~ — **checked 4 Aug: it does not. Still HTML file only.** My prediction from CFI's pattern did not hold, at least not yet — CFI's DNS record is years old and Search Console has re-checked it many times; statewide's is hours old. **So the HTML-file copy step stays in the cutover.** Re-check in a week; if DNS appears by then, the file becomes redundant | — | ☑ |
 | 7g | ~~Check CFI's verification methods~~ — **done 4 Aug: both URL-prefix properties verified by "Domain name provider", HTML file on neither.** CFI has no file dependency at all; its verification is unaffected by the docroot swap | — | ☑ |
 | 7c | **Open `GTM-PJQ72VK`'s two "Urgent" container-quality issues** and read what they are — statewide's container, unexamined, before launch | Aaron | ☐ |
 | 7d | Remove stale GTM publish access (2022 freelancer Gmail addresses); downgrade the two active agencies to Edit — see ACCOUNTS.md step zero | Aaron | ☐ |
@@ -82,9 +82,8 @@ Do CFI first; statewide gets the benefit of anything learned.
      is_lead true` trigger. Do **not** create a new tag and do **not** change its action string —
      `request_quote` is what the existing Microsoft goal matches on, so the goal carries over
      untouched with its history. No Microsoft-side change needed for California.
-   - **Bing, statewide:** whatever item 2h found determines this. If its goal fires from theme code
-     rather than GTM, that code is gone as of this step and statewide needs a UET event tag built to
-     match its goal's action string.
+   - **Bing, statewide:** nothing to do at this step. Item 2h established there is no theme-resident
+     UET code, so the swap changes nothing for it. Whatever currently fires its goal continues to.
 
    Publish. Both paths firing at once would double-count, so keep the window between the flip and
    this step short — do it immediately, before the verification pass.

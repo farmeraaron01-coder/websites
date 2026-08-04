@@ -262,11 +262,49 @@ the live /get-a-quote/ page source for uetq or bat.bing.com code GTM does not ac
 Change nothing.
 ```
 
-Three possibilities, each leading somewhere different: the goal fires from a Microsoft-side
-auto-detected click (nothing in GTM to fix, but it keeps counting clicks); it fires from a hardcoded
-snippet outside GTM (**which dies with the Divi theme at cutover, so statewide would silently lose
-Bing conversion tracking**); or it is not really recording. The middle case is the one to rule out
-before launch.
+**The middle case is now ruled out — traced 4 Aug from the live page source.** There is **no hardcoded
+UET code on statewide**: `uetq`, `bat.bing.com`, `5318855`, `5318858` and `request_quote` all return
+zero hits in the raw HTML of the live `/get-a-quote/` page. So nothing Bing-related lives in the Divi
+theme, and **nothing about Bing tracking dies at cutover.** That was the launch-relevant worry and it
+is closed.
+
+Also ruled out, and it was a plausible theory: California's container is **not** running on statewide.
+Both container IDs appear on the page, but only `GTM-PJQ72VK` has a live script loader (placed by the
+GTM4WP plugin); `GTM-MZ6RZ94` appears **only as a `<noscript>` iframe** with no loader, so it never
+executes for a normal visitor. California's click-triggered event tag therefore cannot be firing on
+statewide's form.
+
+What remains is a data-quality question rather than a launch risk, and there are two candidates:
+
+1. **A differently-named GTM tag pushes the event.** The search was done by tag *name* — anything
+   matching "Bing" or "UET". A Custom HTML tag called something else entirely could contain a `uetq`
+   push. Statewide's container has 18 tags.
+2. **Microsoft is tracking it server-side or by auto-detection**, in which case nothing in GTM is
+   involved and it will keep counting whatever it currently counts.
+
+Or the goal simply is not recording, and the earlier report of it recording was wrong.
+
+The narrow read that separates these:
+
+```
+Read-only, in GTM container GTM-PJQ72VK (statewidefloodinsurance.com).
+
+Do NOT search by tag name this time — search by CONTENT. Open every Custom HTML tag
+in the container and tell me which ones contain the string "uetq" or "bat.bing.com",
+whatever the tag is called. There are about 18 tags; I need the ones whose CODE
+touches Bing, not the ones whose NAME does.
+
+For any you find: the tag name, the exact uetq line, and its trigger.
+
+Then in Microsoft Ads, for the Statewide flood goal, tell me its exact goal TYPE as
+the interface states it, and its conversion count for the last 30 days. If it is an
+Event goal, the exact Action string it matches.
+
+Change nothing.
+```
+
+Whatever the answer, it is no longer blocking: statewide's Bing tracking is not going to break at
+cutover, because there is nothing in the theme to break.
 
 ### The end-to-end test — corrected, because my first version was unsafe
 
