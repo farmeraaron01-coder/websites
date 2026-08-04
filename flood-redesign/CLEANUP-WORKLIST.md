@@ -24,6 +24,25 @@ them when there is a quiet hour, not before sessions 2 and 7.
 
 ---
 
+## Go / no-go gate — before any conversion tag is published or any campaign goal changes
+
+Five things documented, from a second review's list. All five are answerable from sessions 0–2; none
+requires guessing.
+
+| # | Evidence | Where it comes from | Status |
+|---|---|---|---|
+| 1 | Exact trigger logic for the California and Statewide Google Ads **and** Bing conversion tags | Session 2 read-backs | Google side confirmed (click triggers, "Click Text contains SUBMIT"); **Bing side unknown** |
+| 2 | One valid quote = one lead event; staff = zero; failed validation = zero | Test A above | Not yet run |
+| 3 | Proof the test cannot send a live conversion to either platform | Test A runs with no container loaded; plus the staging-hostname exception | Design settled |
+| 4 | Campaign-to-goal map for every flood campaign | Session 0 baseline + Session 7 step 3 read-back | Not yet built |
+| 5 | Current Search Console verification method for both launch sites | Session 3 step 1 | Unknown for statewide |
+
+Evidence 1 and 5 are the two genuine unknowns. Everything else is either settled or is a task on this
+list.
+
+
+---
+
 ## Session 0 — Export a dated baseline
 
 Added on a second review's suggestion, and it was a good one. Before changing any measurement, take a
@@ -54,37 +73,39 @@ Why first: anyone with GTM publish rights can inject JavaScript into every page 
 including code that reads form fields as they are typed. Six external identities hold it, one a
 freelancer address last used in 2022 across ten containers.
 
+Two passes, on a second review's advice: **list first, then remove what I approve.** Removing an
+account's last administrator, or a user who is the sole link owner on an integration, is not something
+to discover afterwards.
+
+**Pass 1 — read only:**
+
 ```
-I need to clean up user access across Google Tag Manager, Google Analytics, Google Ads,
-and Microsoft Ads. Work through them one at a time and tell me what you changed.
+Read-only access inventory across four platforms. Change nothing.
 
-1. GTM (tagmanager.google.com → Admin → User Management). Check BOTH the account level
-   and each individual container's user list.
-   REMOVE these users entirely wherever they appear:
-     - aliofficialfiverr@gmail.com
-     - zainarshad866@gmail.com
-     - yas17sheikh@gmail.com
-   CHANGE these two from Publish to Edit, and if they have account-level access,
-   remove that and give them container-level access only:
-     - info@excellero.com  → container: pestcoverage.com
-     - kylewaters@max-conversion.com → container: jumptruckinginsurance.com
-   Leave aztecinsurance@gmail.com and my own account untouched.
+1. GTM (tagmanager.google.com → Admin → User Management). Report the account-level user
+   list, then each container's user list. For every user: email, account-level role, and
+   container-level permission (None / Read / Edit / Approve / Publish).
 
-2. GA4 (analytics.google.com → Admin → Account access management). List everyone with
-   access at the account level, and remove the same three Gmail addresses above if
-   present. Do not remove anyone else without telling me first.
+2. GA4 (Admin → Account access management, and Property access management for the
+   californiafloodinsurance.com and statewidefloodinsurance.com properties). Every user,
+   their role, and whether they are marked as the account creator.
 
-3. Google Ads (Tools → Admin → Access and security). List every user and their access
-   level. Remove the same three addresses if present. Tell me about any other
-   non-obvious address before removing it.
+3. Google Ads (Admin → Access and security). Every user, access level, and status.
+   Also list users on the manager account "Aaron Manager Account" (909-487-9776).
 
-4. Microsoft Ads (Settings → Account access). Same: list everyone, remove those three.
+4. Microsoft Ads (Settings → Account access). Every user and role.
 
-Report a table of what you removed or changed, per platform. If you find any address
-you are unsure about, stop and ask me rather than removing it.
+For each platform, also tell me: how many users hold the highest role. I need to know
+whether removing anyone would leave an account with no administrator.
+
+Report as one table per platform. Change nothing.
 ```
 
-**Report back:** the table of removals, plus any address you were unsure about.
+**Report back:** the four tables. I will mark which to remove and which to downgrade, and you approve
+that list before pass 2 runs. The expected candidates are the three 2022 Gmail addresses
+(`aliofficialfiverr@`, `zainarshad866@`, `yas17sheikh@`) for removal, and the two agency addresses
+(`info@excellero.com`, `kylewaters@max-conversion.com`) for downgrade from Publish to Edit, scoped to
+the one container each works on. But that is a prediction, not an instruction — the tables decide.
 
 ---
 
@@ -162,76 +183,63 @@ warnings on GTM-PJQ72VK and tell me exactly what the two "Urgent" issues are.
 **Report back:** the list of CFI's existing GA4 event tags with their triggers, and what
 statewide's two Urgent issues are.
 
-### The end-to-end test — do this before cutover, not after
+### The end-to-end test — corrected, because my first version was unsafe
 
-A fair challenge from the second review: nothing yet proves `cfi_form_submit` fires only on a real,
-accepted submission. What I verified was narrower — the confirmation-node path fires and de-duplicates,
-DOM churn produces nothing, and a submit click that fails validation produces nothing. I did not
-complete a real submission, because that would have put fake data in a live Cognito form and the CRM.
+A second review caught a real hole in the test I proposed, and it is worth being blunt about: I had
+you open staging with `?cfi_tags=1`, which **loads the live container**. The existing click trigger
+("Click Text contains Submit Application") would then have fired on the test submission and sent a
+**real conversion** to Google Ads and Microsoft Ads — the exact pollution this whole exercise exists
+to prevent. Do not run that version.
 
-That test can be run safely on staging, and it should be:
+**The fix is simpler and completely safe: test without GTM at all.** The theme's dataLayer push is
+not host-gated — only the container is. So the event can be proven with the container absent, which
+means no tag can possibly fire.
 
-1. Open `https://new.californiafloodinsurance.com/get-a-quote/?cfi_tags=1` logged in as an
-   administrator. (Tagging is host-gated off on staging; `?cfi_tags=1` loads the container for this
-   one request, so nothing reaches Ads.)
-2. Open GTM Preview, connected to that URL.
+**Test A — the event itself (no GTM, zero risk):**
+
+1. Open `https://new.californiafloodinsurance.com/get-a-quote/` — **no `?cfi_tags=1`**. Confirm in
+   the page source that there is no `googletagmanager.com/gtm.js` request (Network tab, filter "gtm").
+2. Open the browser console and run `window.dataLayer` — note how many entries exist.
 3. Fill the form with obvious test data and **submit it for real.**
-4. Confirm in Preview: exactly **one** `cfi_form_submit`, with `cfi_form_role: "quote"` and
-   `cfi_is_lead: true`, firing only *after* the confirmation appears — not on the button click.
-5. Repeat on `https://new.californiafloodinsurance.com/staff-form/?cfi_tags=1`. Confirm the event
-   reads `cfi_form_role: "staff"`, `cfi_is_lead: false`, and that the lead tags do **not** fire.
-6. Delete the two test entries from Cognito.
+4. When the confirmation appears, run in the console:
+   `window.dataLayer.filter(e => e.event === 'cfi_form_submit')`
+   Expect **exactly one** entry, `cfi_form_role: "quote"`, `cfi_is_lead: true`.
+5. Repeat on `/staff-form/`. Expect exactly one entry with `cfi_form_role: "staff"`,
+   `cfi_is_lead: false`.
+6. Also confirm the negative: reload, click Submit with the form deliberately incomplete so
+   validation rejects it, and confirm the filter returns **zero** entries.
+7. Delete the two test entries from Cognito.
 
-That is the proof. Until it is done, treat the mechanism as verified-by-proxy rather than verified.
+That establishes one valid quote = one lead event, staff = no lead event, failed validation = no
+event, with no possibility of a conversion reaching either ad platform.
 
-Then the Microsoft side — **which is a repoint, not a rebuild.**
+**Test B — that the tags respond correctly** can only be done where the container loads, which means
+after cutover. It is already in the post-flip checklist in `LAUNCH.md`, using GTM Preview.
 
-A second review (ChatGPT, 4 Aug) found that Microsoft's flood goals are already **Event**-type and
-recording, and that CFI's container already holds a `Bing UET - request_quote (California)` tag on a
-quote-submission trigger. That is correct and it corrects me: my earlier "the Bing goals are click
-goals" came from reading goal *names* containing the word "Click", not from a type field. Creating new
-goals would have duplicated what exists and double-counted California.
-
-**But the open question is one level down, and it is the one that matters.** A Bing goal can be
-Event-type while the GTM tag that fires the event is still triggered by a *click* — in which case the
-conversion still counts staff intake and failed validations, just laundered through an event. On the
-Google side the click triggers are confirmed directly (the inventory gave the trigger types:
-"All Elements, Click Text contains SUBMIT"). On the Bing side the trigger behind that UET tag was
-never reported. So: find out, then repoint. Do not create anything.
+**And a permanent safeguard, worth adding while in the container** — so that no future test, and no
+accidental `?cfi_tags=1`, can ever send a conversion from a staging hostname:
 
 ```
-Read first, change second. In GTM, both containers — GTM-MZ6RZ94 (california) and
-GTM-PJQ72VK (statewide):
+In BOTH containers (GTM-MZ6RZ94 and GTM-PJQ72VK), add a blocking exception to every
+Google Ads Conversion Tracking tag, every Bing/Microsoft UET conversion-event tag, and
+every GA4 event tag that Google Ads imports as a conversion.
 
-1. Find every Bing/Microsoft UET tag. For EACH one, tell me:
-   - its exact name
-   - the UET tag ID inside it
-   - its trigger, and if the trigger is a click trigger, the exact click-text or
-     selector condition it matches
-   - whether it pushes a UET "event" (and with what action/category/label) or is just
-     the base page-load tag
+Create one trigger to use as the exception:
+  - Type: Page View
+  - Name: BLOCK — staging hostnames
+  - Fire on: Some Page Views, where Page Hostname contains "new." OR Page Hostname
+    contains "staging."
+  (If GTM only allows one condition per row, use two conditions on the same trigger, or
+  create two exception triggers and add both.)
 
-2. In Microsoft Ads (account X2012441), for the two flood goals, tell me:
-   - the goal TYPE as the interface states it (Event / Destination URL / Duration /
-     Pages viewed), not the goal's name
-   - if Event type: the exact Category / Action / Label it matches on
-   - which UET tag each goal is attached to
-   - which campaigns include each goal in their conversion goals
+Add that trigger under "Exceptions" on each of those tags. Do not change their firing
+triggers. Publish as "Block conversion tags on staging hostnames".
 
-Change nothing yet. Report all of the above and stop.
+Then tell me which tags you added it to.
 ```
 
-**Report back:** the above. Then, if the UET event tag turns out to be fired by a click trigger, the
-fix is a one-line change — point that existing tag at the `cfi_form_submit — is_lead true` trigger
-instead, keeping the same UET action string so the existing Microsoft goal keeps working and its
-history stays intact. No new goals, no new tags.
-
-If it turns out the UET tag already fires on a genuine submission event, then Bing needs nothing at
-all and the whole Microsoft item drops off this list.
-
-Also worth one read while in there: **which campaigns, if any, include the `Smart goal [X2012441]` in
-their conversion goals.** I said earlier that it double-counts; that was stated too strongly. A Smart
-goal is only a bidding problem if a live campaign is optimising to it, and that has not been checked.
+This is a keep-forever safeguard, not a temporary one: it means the staging sites can never report a
+conversion no matter what anyone does to them.
 
 ---
 
@@ -389,10 +397,11 @@ Housekeeping in Google Tag Manager. Nothing here should change how any live site
    "Conversion Linker" and "Conversion Linker 1". Open both and tell me their triggers.
    Do not delete either yet — just report what each is set to.
 
-4. Also in GTM-MZ6RZ94: the container shows a "missing Google tag" warning because the
-   Google Ads tag for AW-1012143191 is not on the Initialization – All Pages trigger.
-   Add a Google tag with tag ID AW-1012143191 on the "Initialization - All Pages"
-   trigger. Do not remove the existing Google Ads Remarketing tag.
+4. Also in GTM-MZ6RZ94: the container shows a "missing Google tag" warning about
+   AW-1012143191. DO NOT add a tag and DO NOT use GTM's automatic fix — a second Ads
+   configuration could double-count. Instead, document it: list every tag in the container
+   that references AW-1012143191 or loads a Google tag, with its type and trigger, and
+   tell me what the warning says verbatim. We decide after reading it.
 
 5. Rename Microsoft Ads UET tag 295027961 from "Lp.JunpTruckingInsurance" to
    "lp.jumptruckinginsurance.com" (fixing the "Junp" typo).
@@ -422,8 +431,11 @@ conversion action — only change primary/secondary, counting, and campaign goal
    business on the account uses "One". Change all TopDog web actions to count ONE per
    click. List them for me as you go.
 
-2. DEMOTE TO SECONDARY: these are engagement events, not leads, and should never be a
-   bidding goal. Set each to Secondary:
+2. DEMOTE TO SECONDARY — but REPORT FIRST, then wait for my confirmation. For each action
+   below, tell me which campaigns currently count it before changing anything. These are
+   engagement events rather than leads, so the intent is Secondary, but a global demotion
+   without knowing which campaigns depend on each one is how a campaign ends up with no
+   primary goal at all:
      - Local actions - Website visits
      - Local actions - Menu views
      - Local actions - Directions (Get directions)
