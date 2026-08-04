@@ -833,10 +833,48 @@ Two things that are not account cleanup but are on the same list:
 
 - **Move `google-ads-project/Google Ads/.env` out of Dropbox and rotate the Google Ads refresh
   token.** A refresh token is durable access to the whole Ads account, sitting in a synced folder.
-- **Turn on "Include hidden fields" on Cognito form 5's two integration emails** (to
-  `floodcognito@robot.zapier.com` and `data@insuredmine.com`). The UTM and GCLID values you capture
-  are on the entry but invisible to Zapier and InsuredMine, so sales cannot see where a lead came
-  from.
+### Lead-source attribution into the CRM — five steps, not one checkbox
+
+I earlier called this a two-minute checkbox. That was wrong: it modifies a **live lead-delivery path**,
+so it needs an order and a test.
+
+The situation: Cognito form 5 already captures `GCLID`, `MSCLKID` and the UTM set into hidden fields
+(the June work did that, and the GTM prefill tag populates them). The entry has them and the rater
+webhook receives them. But the form's integration emails have **`IncludeHiddenFields: false`**, so the
+values never appear in the emails that Zapier and InsuredMine read. Captured, invisible to sales.
+
+Form 5 delivers four ways: a webhook to `cfi.insuranceclouds.com/Raters/Flood/JSONSubmit.aspx`, and
+emails to `quote@californiafloodinsurance.com`, `floodcognito@robot.zapier.com` (a Zapier Email Parser)
+and `data@insuredmine.com` (InsuredMine's email-to-lead ingestion).
+
+**Step 1 — Turn hidden fields on for the human inbox only.** Enable "Include hidden fields" on the
+`quote@` email first, submit a test entry, and look at what arrives. Nothing automated reads that
+address, so this is genuinely risk-free, and it shows you the new format before anything depends on it.
+
+**Step 2 — Do NOT simply enable it on the Zapier email.** `floodcognito@robot.zapier.com` is a Zapier
+**Email Parser**, and parser templates are anchored to the email's structure. Adding new lines can
+cause it to mis-parse or stop matching — which would break lead delivery to the CRM, the opposite of
+the goal.
+
+**Step 3 — Replace the email path with a webhook instead.** This is the actual recommendation. Cognito
+supports webhooks natively and already posts one to the rater, so add a second: a Zapier **Catch Hook**
+trigger, with Cognito posting the full entry JSON to it. That delivers every field including the hidden
+ones, needs no parsing, and cannot break when the form changes. It replaces a fragile text-matching
+step with a structured one, permanently. Keep the Email Parser Zap running until the webhook Zap is
+proven, then turn the old one off.
+
+**Step 4 — Create the destination fields in InsuredMine** (Settings → Custom Fields), or the Zap has
+nowhere to write: map `UTM Source` → the built-in **Lead Source** field, and add custom fields for UTM
+Medium, Campaign, Keyword, Ad/Creative, Google Click ID, Bing Click ID, and Source Website.
+
+**Step 5 — Test end to end and confirm in InsuredMine.** Submit a test with a known query string, e.g.
+`/get-a-quote/?utm_source=test&utm_campaign=verify&gclid=TESTABC123`, and confirm those exact values
+land on the InsuredMine record. Then delete the test lead.
+
+Why it is worth the five steps: this is what makes **bound policies attributable by campaign**, which is
+the number that turns the deferred Session 7 decision from a judgment call into a measurement. It is
+also the prerequisite for offline conversion import later — feeding *bound policies* back to the ad
+platforms rather than form fills.
 
 ---
 
