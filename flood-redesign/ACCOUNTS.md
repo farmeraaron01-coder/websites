@@ -459,3 +459,36 @@ repoint was missing from the plan.
   but track no conversions — the same eight-to-ten skeleton sites that show up in every platform. Not
   harmful; retire them with their sites, or leave them collecting audiences.
 - Tag `295027961` is named "Lp.JunpTruckingInsurance" — a typo for "Jump". Free to fix.
+
+---
+
+## Decided: leave `mrtacoshop.com` as the account's main domain for now (4 Aug)
+
+The cPanel account's Main Domain is `mrtacoshop.com`, holding `/public_html`. Every other site —
+including both flood sites — is an addon domain. That is why cPanel auto-created
+`californiafloodinsurance.mrtacoshop.com`, `statewidefloodinsurance.mrtacoshop.com` and the rest:
+**those aliases are standard cPanel behaviour for addon domains, not something anyone configured.**
+
+Aaron asked whether to disassociate it while things are already being cleaned up. **Recommendation: no,
+and not before launch.** Three reasons:
+
+1. **It needs WHM-level access, which means a support ticket** — and InMotion runs about a week on
+   small tickets. It is the one change on any of these lists that cannot be self-served.
+2. **It is disruptive in the wrong window.** Changing an account's primary domain touches SSL issuance,
+   email accounts, and the auto-generated alias for *every* addon domain on the account. Doing that in
+   the same period as two site cutovers means two large variables moving at once, and any problem
+   afterwards would be ambiguous between them.
+3. **The cost of leaving it is cosmetic.** It is a naming artifact visible in cPanel. It does not affect
+   how either site functions, how they rank (canonicals point at the real domains), or anything in the
+   ad accounts. The only *real* symptom is `statewidefloodinsurance.mrtacoshop.com` serving a live
+   copy — and that is fixable directly by repointing or removing that one alias, without touching the
+   main domain at all.
+
+**So: fix the symptom, not the architecture.** Handle the two alias issues at cutover (see LAUNCH.md
+Phase 1 step 2), and revisit the main-domain question later, on a quiet week, if it still bothers
+anyone.
+
+If it is ever revisited, the options in increasing order of effort: reassign the primary domain to
+`californiafloodinsurance.com` via support; or move `mrtacoshop.com` to its own hosting account, which
+is cleaner long-term since it is an unrelated business and its GA4 property currently shows no traffic.
+Neither is urgent and neither should share a week with a migration.
