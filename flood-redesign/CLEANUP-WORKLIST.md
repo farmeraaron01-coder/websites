@@ -10,7 +10,7 @@ covers the build; the switch-off is step 8 of the flip in `LAUNCH.md`.
 
 | # | Session | Risk | Time | When |
 |---|---|---|---|---|
-| 0 | Export a dated baseline | None | 15 min | Before session 2 |
+| 0 | ~~Export a dated baseline~~ — **done 4 Aug**, in `baseline-2026-08-04/` | None | — | ☑ |
 | 1 | Remove stale access | None | 15 min | Now |
 | 2 | Build the new conversion tracking | None (dormant until cutover) | 45 min | Before cutover |
 | 3 | Search Console domain properties | None | 15 min | Before cutover |
@@ -72,7 +72,24 @@ today's date:
 Save it somewhere I can find it later. Do not change anything.
 ```
 
-**Report back:** confirmation it is saved, plus the account totals so we have them written down.
+**Done 4 Aug.** Both platform exports are committed to `baseline-2026-08-04/` in raw and readable
+form, with the analysis in that folder's README. Headline: **$37,378 spend, 953.6 reported conversions,
+$39.20 blended CPA** across Google ($24,771 / 612.6) and Microsoft ($12,607 / 341.0).
+
+Three things the baseline surfaced that were not visible before, all recorded as observations rather
+than actions:
+
+- **38% of Microsoft's conversions come from the Audience network** (130 of 341, $27.56 CPA, 860k
+  impressions). That is the network where the June work found and excluded 21 fraud placements, after
+  which conversions fell 21%. The June recommendation to reduce or exclude Audience on search
+  campaigns does not appear to have been applied.
+- **Same-state CPAs disagree between platforms in both directions** — Massachusetts is $399 on Google
+  and $69 on Microsoft; California is $56 on Google and $96 on Microsoft. So it is not a simple
+  one-platform bias, and no cross-platform budget decision can be supported until both count the same
+  validated submission.
+- **Google's Massachusetts Max Conversions campaign spent $399 for one conversion** and is not
+  budget-limited — a 2.63% conversion rate against a 20–35% norm. Worth opening on its own merits,
+  separately from anything else on this list.
 
 ---
 

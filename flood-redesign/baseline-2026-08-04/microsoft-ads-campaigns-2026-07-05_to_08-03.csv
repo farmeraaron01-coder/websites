@@ -1,0 +1,52 @@
+﻿"Campaign report (July 05, 2026 - August 03, 2026)"
+Request Id: df6d892e-4a32-d0f9-5c8f-9da9e2cba8af
+
+Campaign ID,Status,Campaign,Budget,Budget Type,Delivery,Optimization Score,Campaign Type,Bid Strategy Type,Clicks,Impr.,CTR,Avg. CPC,Spend,Labels,Top impr. rate,Abs. top impr. rate,CPA,Conv.
+[120083232],Enabled,California Flood Insurance,50,DailyBudgetStandard,Limited by budget,82.8%,Search,MaxConversions,138,3838,3.6%,8.32,1147.95,,33.82%,27.68%,95.66,12
+[120258631],Paused,Apartment Insurance,15,DailyBudgetStandard,Campaign paused,-,Search,EnhancedCpc,0,0,0%,0,0,,0%,0%,0,0
+[120258632],Enabled,Florida Flood Insurance,20,DailyBudgetStandard,Limited by budget,45.7%,Search,EnhancedCpc,405,106668,0.38%,1.54,621.95,,2.52%,0.73%,10.37,60
+[122190343],Enabled,Arizona Flood Insurance,20,DailyBudgetStandard,Eligible,100%,Search,EnhancedCpc,21,2172,0.97%,9.08,190.59,,15.87%,10.09%,63.53,3
+[123392022],Enabled,Texas Flood Insurance,20,DailyBudgetStandard,Limited by budget,37.5%,Search,EnhancedCpc,202,86029,0.23%,2.84,573.11,,0.92%,0.33%,35.82,16
+[124484019],Paused,Oregon Flood Insurance,12,DailyBudgetStandard,Campaign paused,-,Search,EnhancedCpc,0,0,0%,0,0,,0%,0%,0,0
+[124484020],Enabled,Washington Flood Insurance,20,DailyBudgetStandard,Eligible,95.19999999999999%,Search,EnhancedCpc,191,76323,0.25%,2.3,439.09,,0.41%,0.2%,43.91,10
+[124796744],Enabled,New York Flood Insurance,20,DailyBudgetStandard,Limited by budget,100%,Search,EnhancedCpc,228,90261,0.25%,2.66,607.44,,0.76%,0.27%,33.75,18
+[126843956],Enabled,Sober Living Insurance,10,DailyBudgetStandard,Eligible,100%,Search,EnhancedCpc,16,2031,0.79%,1.61,25.74,,1.44%,0.7%,25.74,1
+[128174589],Enabled,Michigan Flood Insurance,20,DailyBudgetStandard,Eligible,6.3%,Search,EnhancedCpc,118,37227,0.32%,3.4,401.01,,1.42%,0.95%,100.25,4
+[128174590],Enabled,Pennsylvania Flood Insurance,15,DailyBudgetStandard,Eligible,100%,Search,EnhancedCpc,47,8156,0.58%,5.05,237.44,,6.08%,2.33%,33.92,7
+[259652234],Enabled,Ohio Flood Insurance,15,DailyBudgetStandard,Eligible,100%,Search,EnhancedCpc,37,8216,0.45%,4.54,167.85,,4.23%,1.34%,55.95,3
+[275082710],Paused,ATP Insurance,20,DailyBudgetStandard,Campaign paused,-,Search,EnhancedCpc,0,0,0%,0,0,,0%,0%,0,0
+[338384689],Paused,Restaurant Insurance,20,DailyBudgetStandard,Campaign paused,-,Search,EnhancedCpc,0,0,0%,0,0,,0%,0%,0,0
+[338384690],Enabled,Oklahoma Flood Insurance,15,DailyBudgetStandard,Eligible,6.7%,Search,EnhancedCpc,77,11074,0.7%,2.4,184.7,,6.95%,4.63%,184.7,1
+[338384691],Enabled,New Mexico Flood Insurance,10,DailyBudgetStandard,Limited: Not enough conversion data,100%,Search,MaxConversions,43,14449,0.3%,5.63,242.2,,2.06%,1.16%,0,0
+[338384692],Paused,California Remarketing,40,DailyBudgetStandard,Campaign paused,-,Search,EnhancedCpc,0,0,0%,0,0,,0%,0%,0,0
+[338384693],Paused,Cali Remarketing,25,DailyBudgetStandard,Campaign paused,-,Search,EnhancedCpc,0,0,0%,0,0,,0%,0%,0,0
+[340663722],Enabled,Georgia Flood Insurance,20,DailyBudgetStandard,Eligible,90.8%,Search,EnhancedCpc,46,4037,1.14%,5.11,234.92,,13.67%,6.24%,33.56,7
+[340663723],Enabled,Illinois Flood Insurance,20,DailyBudgetStandard,Eligible,100%,Search,EnhancedCpc,20,12280,0.16%,3.82,76.4,,2.15%,0.58%,25.47,3
+[340663724],Enabled,Massachusetts Flood Insurance,15,DailyBudgetStandard,Eligible,100%,Search,EnhancedCpc,103,51463,0.2%,2.69,276.92,,0.37%,0.12%,69.23,4
+[342080133],Enabled,Earthquake Insurance,20,DailyBudgetStandard,Eligible,50%,Search,MaxClicks,65,3859,1.68%,5.35,347.48,,23.52%,18.26%,43.44,8
+[342566829],Enabled,Connecticut Flood Insurance,20,DailyBudgetStandard,Eligible,75%,Search,EnhancedCpc,26,5207,0.5%,5.1,132.54,,5.14%,2.18%,44.18,3
+[342766938],BudgetPaused,South Carolina Flood Insurance,20,DailyBudgetStandard,Campaign out of budget,90.60000000000001%,Search,EnhancedCpc,230,86222,0.27%,2.69,617.77,,0.6%,0.25%,34.32,18
+[342766939],Enabled,Virginia Flood Insurance,20,DailyBudgetStandard,Eligible,100%,Search,EnhancedCpc,47,5045,0.93%,4.45,209.08,,13.39%,5.52%,104.54,2
+[414374935],Enabled,Pest Control Business Insurance,10,DailyBudgetStandard,Eligible,100%,Search,EnhancedCpc,87,34409,0.25%,2.08,180.81,,0.04%,0.02%,0,0
+[414839551],Paused,Cali Remarketing Feb 2022,7,DailyBudgetStandard,Campaign paused,-,Audience,EnhancedCpc,0,0,0%,0,0,,0%,0%,0,0
+[686510391],Paused,Dog Insurance,25,DailyBudgetStandard,Campaign paused,-,Search,EnhancedCpc,0,0,0%,0,0,,0%,0%,0,0
+[688277350],Enabled,Alabama Flood Insurance,20,DailyBudgetStandard,Eligible,65.8%,Search,EnhancedCpc,42,5532,0.76%,4.55,191.05,,7.28%,4.58%,47.76,4
+[688277351],Enabled,Colorado Flood Insurance,15,DailyBudgetStandard,Eligible,1.9%,Search,EnhancedCpc,41,8894,0.46%,4.82,197.42,,4.37%,1.7%,98.71,2
+[688277352],Enabled,Idaho Flood Insurance,10,DailyBudgetStandard,Eligible,0%,Search,EnhancedCpc,16,2131,0.75%,1.51,24.22,,4.16%,2.58%,0,0
+[688277353],BudgetPaused,Louisiana Flood Insurance,20,DailyBudgetStandard,Campaign out of budget,94.5%,Search,EnhancedCpc,249,70535,0.35%,2.26,563.67,,0.92%,0.39%,18.79,30
+[688277354],Enabled,Maryland Flood Insurance,15,DailyBudgetStandard,Eligible,1.7000000000000002%,Search,EnhancedCpc,30,3390,0.88%,4.26,127.91,,11.61%,7.3%,42.64,3
+[688277355],Enabled,Missouri Flood Insurance,15,DailyBudgetStandard,Eligible,80.30000000000001%,Search,EnhancedCpc,37,3454,1.07%,3.73,138.09,,12.02%,7.63%,46.03,3
+[688277356],Enabled,Mississippi Flood Insurance,8,DailyBudgetStandard,Limited by budget,57.9%,Search,EnhancedCpc,55,3431,1.6%,4.04,222.19,,11.64%,7.38%,37.03,6
+[688277357],Enabled,North Carolina Flood Insurance,20,DailyBudgetStandard,Limited by budget,19.400000000000002%,Search,EnhancedCpc,222,66096,0.34%,2.54,563.73,,1.46%,0.93%,51.25,11
+[688277360],Enabled,Rhode Island Flood Insurance,10,DailyBudgetStandard,Eligible,0.5%,Search,EnhancedCpc,8,1789,0.45%,5.51,44.06,,5.28%,3.42%,0,0
+[688277361],Enabled,TennesseeFlood Insurance,20,DailyBudgetStandard,Eligible,47.5%,Search,EnhancedCpc,53,5180,1.02%,4.2,222.73,,17.41%,12.67%,44.55,5
+[688277362],Enabled,New Jersey Flood Insurance,20,DailyBudgetStandard,Eligible,100%,Search,EnhancedCpc,181,47281,0.38%,3.32,600.52,,4.33%,1.39%,30.03,20
+[688287678],Enabled,Performance Max Bing Oct 2024,10,DailyBudgetStandard,Limited by budget,-,PerformanceMax,MaxConversions,639,25356,2.52%,0.46,295.07,,0%,0%,6.71,44
+[688863710],Enabled,Hawaii Flood Insurance,15,DailyBudgetStandard,Eligible,70.6%,Search,EnhancedCpc,67,17187,0.39%,2.33,156.01,,1.38%,0.78%,17.33,9
+[689000978],Enabled,Max Conversion - General Truck Insurance - Date: Feb 2025,85,DailyBudgetStandard,Limited by budget,100%,Search,EnhancedCpc,140,21945,0.64%,16.75,2345.08,,6.85%,1.86%,97.71,24
+[689000979],Paused,Max Conversion - Physical Damage & Cargo Insurance - Date: Feb 2025,38,DailyBudgetStandard,Campaign paused,-,Search,MaxClicks,0,0,0%,0,0,,0%,0%,0,0
+Search total,-,-,-,-,-,-,-,-,1329,45609,2.91%,6.57,8728.46,-,54.81%,25.98%,52.27,167
+Audience total,-,-,-,-,-,-,-,-,1959,860202,0.23%,1.83,3583.21,-,0%,0%,27.56,130
+Performance Max total,-,-,-,-,-,-,-,-,639,25356,2.52%,0.46,295.07,-,0%,0%,6.71,44
+Deleted items total,-,-,-,-,-,-,-,-,0,0,0%,0,0,-,0%,0%,0,0
+Overall total,-,-,-,-,-,-,-,-,3927,931167,0.42%,3.21,12606.74,-,2.19%,1.04%,36.97,341
