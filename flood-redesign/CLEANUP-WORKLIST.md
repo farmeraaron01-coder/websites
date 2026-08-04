@@ -485,42 +485,67 @@ Report step 1 and 2 as done/not-done lists, and stop for confirmation before ste
 **Report back:** steps 1 and 2 complete, plus the campaign lists for steps 3 and 4 — then confirm
 before step 3 proceeds.
 
-### What the map showed — thirteen states, not two
+### The duplicate-state question — corrected, and now closed as a factual matter
 
-The 4 Aug campaign map closes gate item 4, and reading down it turns up something bigger than the
-goal-governance point it was built to answer.
+**My "thirteen states are currently bidding against themselves" was wrong, and the error is
+instructive.** The campaign map listed each campaign's goal setting and bid approach but **not its
+enabled/paused status**. I read 26 rows and treated the absence of a status column as evidence of
+activity. A structural review then checked: eleven of those Manual CPC campaigns are **already
+paused**.
 
-**Thirteen states run two flood campaigns each** — one Manual CPC and one Maximize Conversions —
-on the same account-default goals: California, Florida, Georgia, Illinois, Louisiana, Massachusetts,
-Michigan, Missouri, North Carolina, Ohio, South Carolina, Tennessee, Virginia.
+The accurate statement: **13 historical pairs exist; two are live — California and Michigan.**
 
-The July audit found this pattern in **two** states and priced the self-competition at roughly
-$11,600/month. The full map says it is thirteen. Two things follow, and the second is the one that
-matters:
+What survives, with 90-day numbers (May 7 – Aug 4):
 
-1. They bid against each other in the same auction for the same geography, inflating their own CPCs.
-2. **They split the conversion signal.** Because both halves share the account-default goal set,
-   every conversion the Manual half takes is a conversion the Maximize Conversions half never learns
-   from — so the automated campaign is being starved by its own duplicate.
+| State | Manual CPA | Automated CPA | Status |
+|---|---:|---:|---|
+| California | $66.43 | $53.17 | **Both live, overlap confirmed** |
+| Michigan | $77.16 | $50.48 | **Both live, overlap confirmed** |
+| Virginia | $163.21 | $62.22 | Manual already paused |
+| Massachusetts | $149.00 | $80.03 | Manual already paused |
+| Illinois | $121.28 | $50.07 | Manual already paused |
+| Florida | $119.69 | $26.63 | Manual already paused |
+| Louisiana | $116.89 | $35.95 | Manual already paused |
+| Missouri | $115.55 | $44.11 | Manual already paused |
+| Tennessee | $103.29 | $64.26 | Manual already paused |
+| South Carolina | $94.99 | $50.59 | Manual already paused |
+| North Carolina | $79.31 | $33.84 | Manual already paused |
+| Ohio | $77.57 | $52.45 | Manual already paused |
+| Georgia | no conversions | $54.98 | Manual already paused |
 
-The June re-look already measured what this costs in one of these very states: **Florida, Manual CPC
-at $203 CPA and 2% conversion rate, against the same state's Maximize Conversions campaign at $29 and
-23%.** Seven times better, same state, same product.
+The automated side wins in every pair that recorded a Manual conversion — so the directional claim
+holds, and someone has already acted on it in eleven states. The overlap on the two live pairs is
+now proven rather than inferred: identical location targeting, shared core keywords, and the same
+search terms appearing in both 90-day reports.
 
-That is why step 4 above only *reads*. The pattern is strong and the mechanism is clear, but which
-half to keep is a per-state question with real money attached, and the second review is right that a
-one-size-fits-all bid change would be reckless. Get the 26-campaign spend table first.
+**But the two live pairs are the two closest cases on the table.** California is $66 against $53 and
+Michigan $77 against $50 — nothing like Florida's $120 against $27. These are exactly the pairs where
+a pause is least obviously correct, which is probably why they are the two still running.
 
-Sequence note: this is a **campaign structure** change, which is a third category after measurement
-(sessions 2 and 7 steps 1–2) and goals (step 3). Do it last, one or two states at a time, with the
-Session 0 baseline as the comparison — not as a batch of thirteen.
+**And a consolidation caution the CPA numbers hide:** the Manual campaigns carry far more keywords —
+359 versus 77 in California, 161 versus 43 in Michigan. Pausing the Manual half may drop query
+coverage the automated campaign has no keywords for, so the CPA comparison is not the whole decision.
+Before any pause, compare the two search-term reports and confirm which queries only the Manual
+campaign is reaching, and whether they convert.
 
-### One useful thing to copy rather than invent
+Sequence unchanged: measurement first, then goals, then structure — one state at a time against the
+Session 0 baseline.
 
-The two Demand Gen campaigns already carry campaign-specific goals, and one is named **"Statewide
-Flood - Quote & Contact Leads"**. So a brand-scoped goal set already exists in this account. Open it
-before building anything in step 3 — if it is well-formed, the flood search campaigns can point at
-the same pattern rather than a new one invented from scratch.
+### The Demand Gen goal set is not a template — and that is a finding
+
+I suggested copying `Statewide Flood - Quote & Contact Leads` rather than inventing a goal set.
+Withdrawn: it holds two Website actions and **one of them is dead.**
+`statewidefloodinsurance.com - Submit_Online_Quote_Form` is active and recording;
+`statewidefloodinsurance.com - Contact_Form_Submission` is reported by Google Ads as **tag inactive**.
+
+That is worth more than the template idea was. A **live** Demand Gen campaign is optimising against a
+goal set where half the actions do not fire — so it is effectively running on one goal while appearing
+to run on two. It also connects to an earlier count nobody had attached to anything specific: the
+account shows 5 tag-inactive and 4 unverified conversion actions, and this is one of them, sitting
+inside a live campaign's goals.
+
+The fix is already on this list: that contact-form action is exactly what Session 2's
+`cfi_form_submit` path is built to feed. Reconcile it there rather than copying it anywhere.
 
 ---
 
