@@ -95,6 +95,16 @@ define( 'CFI_AREA_SERVED', 'United States' );
  */
 define( 'CFI_AUTHOR_IMAGE', '/wp-content/uploads/2026/08/aaron-farmer-flood-insurance-specialist.jpg' );
 
+/*
+ * Foundation-type reference diagram, shown as an expander on the quote page.
+ * Same filename on both brands. Relative for the same reason as the headshot.
+ *
+ * The Divi original opened this in a JavaScript popup window, which mobile
+ * browsers block or handle badly — on the page carrying the ad spend. Here it
+ * expands inline instead, so nobody leaves a part-filled application.
+ */
+define( 'CFI_FOUNDATION_IMAGE', '/wp-content/uploads/2026/08/foundation-type-examples.jpg' );
+
 /**
  * Fill the two gaps Rank Math's free tier cannot express on the
  * Organization / LocalBusiness node.

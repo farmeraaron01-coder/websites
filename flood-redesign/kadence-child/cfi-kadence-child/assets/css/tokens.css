@@ -268,6 +268,14 @@ body.cfi-lp{margin:0;background:var(--cfi-paper);font-family:var(--cfi-body);col
    form loads — but .cfi-lp-embed already reserves it, and two stacked
    min-heights would make the card taller than the space it needs. */
 .cfi-lp-embed .cfi-embed{min-height:0;margin:0}
+/* Foundation-type expander, under the form. Quiet when closed so it never
+   competes with the form itself, and the image is capped so opening it does not
+   push the page around on a phone. */
+.cfi-lp-help{margin:14px 0 0;background:var(--cfi-card);border:1px solid var(--cfi-line);border-radius:10px;padding:12px 16px}
+.cfi-lp-help summary{cursor:pointer;font-weight:620;font-size:15px;color:var(--cfi-link,#0b6a88)}
+.cfi-lp-help summary:focus-visible{outline:2px solid currentColor;outline-offset:3px;border-radius:4px}
+.cfi-lp-help p{margin:12px 0 10px;font-size:14px;color:var(--cfi-ink-2)}
+.cfi-lp-help img{display:block;width:100%;height:auto;max-width:100%;border:1px solid var(--cfi-line);border-radius:8px}
 .cfi-lp-rail{display:flex;flex-direction:column;gap:18px}
 .cfi-lp-card{background:var(--cfi-card);border:1px solid var(--cfi-line);border-radius:12px;box-shadow:var(--cfi-shadow);padding:22px}
 .cfi-lp-stars{margin:0 0 14px;font-weight:700;font-size:15px}

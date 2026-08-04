@@ -40,6 +40,21 @@
 				echo do_shortcode( '[cfi_cognito form="5"]' );
 				?>
 			</div>
+			<?php
+			/* Foundation type is the question applicants most often stall on, and it
+			   sits mid-form. Kept on this page and collapsed, so checking it never
+			   navigates away from a part-filled application. */
+			if ( defined( 'CFI_FOUNDATION_IMAGE' ) && CFI_FOUNDATION_IMAGE ) :
+				?>
+				<details class="cfi-lp-help">
+					<summary>Not sure about your foundation type?</summary>
+					<p>Find yours below, then pick the closest match on the form.</p>
+					<img
+						src="<?php echo esc_url( home_url( CFI_FOUNDATION_IMAGE ) ); ?>"
+						alt="Diagram of thirteen property foundation types grouped as basement, crawlspace, elevated, and slab."
+						width="1048" height="810" loading="lazy" decoding="async">
+				</details>
+			<?php endif; ?>
 		</section>
 
 		<aside class="cfi-lp-rail">
