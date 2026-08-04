@@ -10,6 +10,7 @@ covers the build; the switch-off is step 8 of the flip in `LAUNCH.md`.
 
 | # | Session | Risk | Time | When |
 |---|---|---|---|---|
+| 0 | Export a dated baseline | None | 15 min | Before session 2 |
 | 1 | Remove stale access | None | 15 min | Now |
 | 2 | Build the new conversion tracking | None (dormant until cutover) | 45 min | Before cutover |
 | 3 | Search Console domain properties | None | 15 min | Before cutover |
@@ -17,6 +18,33 @@ covers the build; the switch-off is step 8 of the flip in `LAUNCH.md`.
 | 5 | GA4 renames, moves, and dead duplicates | Low | 45 min | Any time |
 | 6 | GTM tidy-up | Low | 30 min | Any time |
 | 7 | Google Ads goal cleanup | Resets bidding | 45 min | **Not** in cutover week |
+
+Sessions 4, 5 and 6 are hygiene. They are genuinely optional and they do not improve bidding — do
+them when there is a quiet hour, not before sessions 2 and 7.
+
+---
+
+## Session 0 — Export a dated baseline
+
+Added on a second review's suggestion, and it was a good one. Before changing any measurement, take a
+snapshot so "did this help?" is answerable later and a rollback has something to compare against.
+
+```
+Read-only export. From Google Ads (account 890-760-9729) and Microsoft Ads (X2012441),
+export or copy into plain tables, all for the last 30 days, and label everything with
+today's date:
+
+  - every campaign: name, status, bid strategy, budget, spend, conversions, cost/conv
+  - every campaign's conversion goal setting (account-default vs campaign-specific, and
+    which actions if specific)
+  - every conversion action / goal: name, type, source, category, primary or secondary,
+    count setting, and whether it has recorded anything in the last 30 days
+  - the account-level conversions and cost-per-conversion totals
+
+Save it somewhere I can find it later. Do not change anything.
+```
+
+**Report back:** confirmation it is saved, plus the account totals so we have them written down.
 
 ---
 
@@ -109,15 +137,10 @@ E. Add a GA4 event tag on trigger C (so I can still see staff volume in GA4, it 
    - Event name: form_submit_any
    - Parameter: form_role = {{cfi_form_role}}
 
-F. Add a Custom HTML tag on trigger B, for Microsoft Ads:
-   - Name: Bing UET — quote form lead
-   <script>
-     window.uetq = window.uetq || [];
-     window.uetq.push('event', 'quote_form_lead', {
-       event_category: 'form',
-       event_label: {{cfi_form_role}}
-     });
-   </script>
+F. (Nothing for Microsoft Ads in this step — deliberately. CFI's container already has a
+   "Bing UET - request_quote (California)" tag and Microsoft already has matching Event
+   goals recording. Adding another would double-count California. The Bing work is a
+   repoint of what exists, handled separately below.)
 
 G. In GTM-PJQ72VK ONLY, there are two existing Google Ads Conversion Tracking tags
    ("G. ads - statewidefloodinsurance.com - Contact_Form_Submission" and
@@ -139,34 +162,76 @@ warnings on GTM-PJQ72VK and tell me exactly what the two "Urgent" issues are.
 **Report back:** the list of CFI's existing GA4 event tags with their triggers, and what
 statewide's two Urgent issues are.
 
-Then in Microsoft Ads, one more small job:
+### The end-to-end test — do this before cutover, not after
+
+A fair challenge from the second review: nothing yet proves `cfi_form_submit` fires only on a real,
+accepted submission. What I verified was narrower — the confirmation-node path fires and de-duplicates,
+DOM churn produces nothing, and a submit click that fails validation produces nothing. I did not
+complete a real submission, because that would have put fake data in a live Cognito form and the CRM.
+
+That test can be run safely on staging, and it should be:
+
+1. Open `https://new.californiafloodinsurance.com/get-a-quote/?cfi_tags=1` logged in as an
+   administrator. (Tagging is host-gated off on staging; `?cfi_tags=1` loads the container for this
+   one request, so nothing reaches Ads.)
+2. Open GTM Preview, connected to that URL.
+3. Fill the form with obvious test data and **submit it for real.**
+4. Confirm in Preview: exactly **one** `cfi_form_submit`, with `cfi_form_role: "quote"` and
+   `cfi_is_lead: true`, firing only *after* the confirmation appears — not on the button click.
+5. Repeat on `https://new.californiafloodinsurance.com/staff-form/?cfi_tags=1`. Confirm the event
+   reads `cfi_form_role: "staff"`, `cfi_is_lead: false`, and that the lead tags do **not** fire.
+6. Delete the two test entries from Cognito.
+
+That is the proof. Until it is done, treat the mechanism as verified-by-proxy rather than verified.
+
+Then the Microsoft side — **which is a repoint, not a rebuild.**
+
+A second review (ChatGPT, 4 Aug) found that Microsoft's flood goals are already **Event**-type and
+recording, and that CFI's container already holds a `Bing UET - request_quote (California)` tag on a
+quote-submission trigger. That is correct and it corrects me: my earlier "the Bing goals are click
+goals" came from reading goal *names* containing the word "Click", not from a type field. Creating new
+goals would have duplicated what exists and double-counted California.
+
+**But the open question is one level down, and it is the one that matters.** A Bing goal can be
+Event-type while the GTM tag that fires the event is still triggered by a *click* — in which case the
+conversion still counts staff intake and failed validations, just laundered through an event. On the
+Google side the click triggers are confirmed directly (the inventory gave the trigger types:
+"All Elements, Click Text contains SUBMIT"). On the Bing side the trigger behind that UET tag was
+never reported. So: find out, then repoint. Do not create anything.
 
 ```
-In Microsoft Ads (one account: Aaron J. Farmer Insurance Agency, X2012441), create two
-new conversion goals. Do not delete or pause anything.
+Read first, change second. In GTM, both containers — GTM-MZ6RZ94 (california) and
+GTM-PJQ72VK (statewide):
 
-1. Name: California — quote form lead
-   Type: Event
-   Action equals: quote_form_lead
-   UET tag: 5318858 (Californiafloodinsurance.com)
-   Count: one per click
-   Category: Submit lead form
+1. Find every Bing/Microsoft UET tag. For EACH one, tell me:
+   - its exact name
+   - the UET tag ID inside it
+   - its trigger, and if the trigger is a click trigger, the exact click-text or
+     selector condition it matches
+   - whether it pushes a UET "event" (and with what action/category/label) or is just
+     the base page-load tag
 
-2. Name: Statewide — quote form lead
-   Type: Event
-   Action equals: quote_form_lead
-   UET tag: 5318855 (Statewidefloodinsurance)
-   Count: one per click
-   Category: Submit lead form
+2. In Microsoft Ads (account X2012441), for the two flood goals, tell me:
+   - the goal TYPE as the interface states it (Event / Destination URL / Duration /
+     Pages viewed), not the goal's name
+   - if Event type: the exact Category / Action / Label it matches on
+   - which UET tag each goal is attached to
+   - which campaigns include each goal in their conversion goals
 
-Leave the existing click goals ("CALIFORNIA Submit Button Click", "STATEWIDE Submit Form
-Click") running for now — we switch over later.
-
-Also tell me: there is a "Smart goal [X2012441]" attached to tag 5318858. Which campaigns
-currently include it as a conversion goal?
+Change nothing yet. Report all of the above and stop.
 ```
 
-**Report back:** which campaigns use the Smart goal.
+**Report back:** the above. Then, if the UET event tag turns out to be fired by a click trigger, the
+fix is a one-line change — point that existing tag at the `cfi_form_submit — is_lead true` trigger
+instead, keeping the same UET action string so the existing Microsoft goal keeps working and its
+history stays intact. No new goals, no new tags.
+
+If it turns out the UET tag already fires on a genuine submission event, then Bing needs nothing at
+all and the whole Microsoft item drops off this list.
+
+Also worth one read while in there: **which campaigns, if any, include the `Smart goal [X2012441]` in
+their conversion goals.** I said earlier that it double-counts; that was stated too strongly. A Smart
+goal is only a bidding problem if a live campaign is optimising to it, and that has not been checked.
 
 ---
 
