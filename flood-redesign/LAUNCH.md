@@ -20,7 +20,7 @@ The two-week watch afterwards is where the real attention goes.
 |---|------|-------|------|
 | 1 | ~~Install theme v1.3.8~~ — **done 4 Aug, verified on both sites.** Page role, submit event, and the host gate all confirmed live | — | ☑ |
 | 1b | ~~Install v1.3.9~~ — installed, but its approach cannot work: **nginx serves `/wp-content/uploads/` directly**, so no `.htaccess` rule reaches the PDFs | — | ☑ |
-| 1c | Install **v1.4.0** — keeps the PDFs out of search via robots.txt instead, the one mechanism that works without the host | Aaron | ☐ |
+| 1c | ~~Install v1.4.0~~ — **done, verified on both sites 4 Aug.** `Disallow: /wp-content/uploads/*.pdf` confirmed serving inside the `User-agent: *` group on both | — | ☑ |
 | 2 | ~~Confirm whether the GTM containers hold a GA4 config tag~~ — **done 4 Aug: they do. `CFI_GA4_ID` stays empty.** | — | ☑ |
 | 2b | **Build** the new conversion path in GTM — new triggers and tags on `cfi_form_submit` / `cfi_is_lead`, **added alongside** the existing click triggers, not replacing them. Dormant until cutover. Session 2 of CLEANUP-WORKLIST.md | Aaron | ☐ |
 | 2g | **Same session, Bing — CALIFORNIA ONLY, and it is a trigger repoint, not a new tag.** Read 4 Aug: `Bing UET - request_quote (California)` already exists and fires on `Click – All Elements` / `Click Text contains Submit Application`. Change only its trigger; keep its code pushing `request_quote` verbatim so the existing Microsoft goal and its history keep working. **Adding a new tag would double-count California.** | Aaron | ☐ |
@@ -41,7 +41,7 @@ The two-week watch afterwards is where the real attention goes.
 | 7d | Remove stale GTM publish access (2022 freelancer Gmail addresses); downgrade the two active agencies to Edit — see ACCOUNTS.md step zero | Aaron | ☐ |
 | 7b | Note a baseline week of GA4 pageviews — the number legitimately drops when Site Kit's duplicate tag goes | Aaron | ☐ |
 | 8 | **Full backup of each production site — files + database — downloaded off the server** | Aaron | ☐ |
-| 9 | Confirm the cutover method with InMotion (see *Rollback*) — docroot swap, not overwrite | Aaron | ☐ |
+| 9 | Confirm the cutover method with InMotion — docroot swap, not overwrite. **Ticket drafted and ready to paste: `INMOTION-TICKET.md`**, which bundles this with the `/wp-json/` cache exclusion and the PDF header | Aaron | ☐ |
 
 Not launch-blocking, decide later: the asymmetric-lanes / cross-domain canonical question for
 the duplicated claims content.
