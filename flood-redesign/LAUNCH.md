@@ -23,6 +23,7 @@ The two-week watch afterwards is where the real attention goes.
 | 1c | Install **v1.4.0** — keeps the PDFs out of search via robots.txt instead, the one mechanism that works without the host | Aaron | ☐ |
 | 2 | ~~Confirm whether the GTM containers hold a GA4 config tag~~ — **done 4 Aug: they do. `CFI_GA4_ID` stays empty.** | — | ☑ |
 | 2b | **GTM pass**: repoint the **GA4 event tags** (and statewide's native Ads tags) to `cfi_form_submit` / `cfi_is_lead`, retire the Click Text triggers | Aaron | ☐ |
+| 2g | **Same pass, Bing**: the flood UET goals are click goals too (`CALIFORNIA Submit Button Click`, `STATEWIDE Submit Form Click`), so staff intake inflates Bing as well. Add a UET event tag on `cfi_form_submit` and switch the goals to Event type — snippet in ACCOUNTS.md | Aaron | ☐ |
 | 2c | ~~Resolve where CFI's Ads conversions come from~~ — **done 4 Aug: GA4-imported key events.** Confirm the Source column when convenient | — | ☑ |
 | 2e | Decide whether to apply the **July 15 conversion-tracking cleanup plan** (60 actions, dozens Primary across six brands) — still marked DRAFT. Sequenced in ACCOUNTS.md stage 3c: after the GTM repoint, and **not in the same week as the cutover** so the two effects stay separable | Aaron | ☐ |
 | 2f | Optional: point the flood ads at **/get-a-quote/** instead of the homepage — the new landing page puts the form on the page the click lands on | Aaron | ☐ |
@@ -79,9 +80,10 @@ Do CFI first; statewide gets the benefit of anything learned.
 - Tag Assistant on the live homepage: GTM container loads, GA4 fires **once** (not twice).
 - Google Ads: confirm a conversion registers from a real test submission, then note the time so
   you can identify the test row later.
-- **Submit the staff form as a test and confirm NO Ads conversion is recorded.** In GTM Preview
-  the push should read `cfi_form_role: "staff"`, `cfi_is_lead: false`, and the Ads tag should show
-  as not fired. This is the regression that was live before v1.3.7.
+- **Submit the staff form as a test and confirm NO conversion is recorded — on Google Ads AND Bing.**
+  In GTM Preview the push should read `cfi_form_role: "staff"`, `cfi_is_lead: false`, with both the
+  Ads and UET tags showing as not fired. This is the regression that was live on both platforms
+  before v1.3.7.
 - Confirm the quote submission fires **one** conversion action, not two — the old `Click Text
   contains "SUBMIT"` trigger could also match "Submit Application".
 - **PDF exclusion:** `curl /robots.txt` → contains `Disallow: /wp-content/uploads/*.pdf` inside the

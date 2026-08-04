@@ -244,9 +244,9 @@ Stage 2's deletion candidates stop being guesses.
 
 # Findings from the inventory — 4 Aug
 
-18 GTM containers, 29 GA4 accounts holding 21 properties, one Ads account under a manager account,
-and roughly three Bing accounts, across a dozen unrelated businesses. Microsoft Ads was not reachable
-in that pass and is still outstanding.
+18 GTM containers, 29 GA4 accounts holding 21 properties, one Google Ads account under a manager
+account, and — confirmed 4 Aug — **one** Microsoft Ads account holding all 14 UET tags, across a dozen
+unrelated businesses. All five platforms are now inventoried.
 
 **Two corrections to what this document said before the inventory.**
 
@@ -398,14 +398,58 @@ sitemap and all reporting should move to the Domain property.
 
 ---
 
-## Microsoft Ads — still outstanding
+## Microsoft Ads — the same fragility, and the same fix
 
-Not reachable in the 4 Aug pass. From the UET tags embedded in GTM, the IDs cluster into three
-apparent accounts: the `142002xxx` block (eleven sites), the `531885x` pair (the two flood sites), and
-`295027961` (jumptrucking, agency-managed, native tag type rather than the custom-HTML pattern
-everything else uses).
+Manager **"Aaron J. Farmer Insurance Agency, Inc."** (C222031356) → one sub-account (X2012441). All 14
+UET tags live here. The earlier guess that they clustered into three accounts was wrong.
 
-Worth confirming when a session is available: which conversion goals reference each UET tag, and
-whether the flood goals have the same click-text fragility as the Google side. `5318855` is statewide
-and `5318858` is CFI — consistent, and consistent with the rogue California tag having been removed
-in June.
+**The important finding: the flood goals are click goals, exactly like Google's were.**
+
+| UET tag | Site | The flood goal |
+|---|---|---|
+| `5318858` | californiafloodinsurance.com | **"CALIFORNIA Submit Button Click"** |
+| `5318855` | statewidefloodinsurance.com | **"STATEWIDE Submit Form Click"** |
+
+So everything established about the Google side applies here without change: `/staff-form/` embeds the
+same Cognito form 5 with the same "Submit Application" button, so **office phone intake has been
+inflating Bing conversions too**, and a click that fails validation counts as a lead on Bing as well.
+The v1.4.0 `cfi_form_submit` event fixes the site half for both platforms at once; only the Bing
+repoint was missing from the plan.
+
+**How to repoint Bing** (belongs in the same GTM sitting as the Google repoint):
+
+1. In the site's container, add a **Custom HTML** tag on the `cfi_form_submit` trigger with
+   `cfi_is_lead` equal to `true`:
+   ```html
+   <script>
+     window.uetq = window.uetq || [];
+     window.uetq.push('event', 'quote_form_lead', {
+       event_category: 'form',
+       event_label: {{cfi_form_role}}
+     });
+   </script>
+   ```
+2. In Microsoft Ads, create a conversion goal of type **Event** matching Action `quote_form_lead`, on
+   the site's UET tag.
+3. Switch the campaigns to the new goal, then **pause** the old click goal rather than deleting it, so
+   the historical numbers stay readable.
+
+**Other findings:**
+
+- **A "Smart goal" is counting on CFI** (`Smart goal [X2012441]`). Microsoft infers these from machine
+  learning rather than a real action. Counting it alongside a genuine form goal both double-counts and
+  gives bidding a signal nobody defined. Set it to secondary or remove it from the campaigns' goals.
+- **Statewide has a paused "Recommended goal"** of Destination-URL type — an auto-suggestion nobody
+  acted on, sitting next to the real event goal. Harmless while paused; delete it to stop it looking
+  like a live goal.
+- **jumptrucking has five goals that look like double counting**: `Jump Trucking - Form Submission`
+  *and* `LP.JumpTruckingInsurance.com - Form Submission`; `Jump Trucking - Phone Call` *and*
+  `LP.JumpTruckingInsurance.com - Phone Call` *and* `… - Phone Call Top of Page`. Two or three goals
+  firing on one action, on one tag. This is the agency-managed property, and it is the most heavily
+  instrumented tag in the account while its GTM container has no GA4 tag at all — worth confirming the
+  campaign is even still running before anyone spends time on it.
+- **Eight of the fourteen tags have zero goals** (jumpins, farmerinsurance, arizona, washington, san
+  diego, texas, sacramento, restaurant-insurance). They fire on-site and collect remarketing audiences
+  but track no conversions — the same eight-to-ten skeleton sites that show up in every platform. Not
+  harmful; retire them with their sites, or leave them collecting audiences.
+- Tag `295027961` is named "Lp.JunpTruckingInsurance" — a typo for "Jump". Free to fix.
