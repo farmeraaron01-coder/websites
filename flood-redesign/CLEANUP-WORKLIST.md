@@ -349,9 +349,14 @@ submitting. Still not a blocker for the flip itself — but no longer hypothetic
 
 **Two fixes; do both, they barely cost anything:**
 
-1. **Copy the file** (the belt). Find the `google*.html` verification file in statewide's current web
-   root and copy it into the new install's web root before the swap. One small file, no DNS access
-   required, and it preserves the existing verification exactly as it stands.
+1. **Copy the file** (the belt). No DNS access required, and it preserves the existing verification
+   exactly as it stands. How to find it, since the filename is a hash:
+   - Search Console → the statewide https property → Settings → Ownership verification → the **HTML
+     file** method shows the exact filename and offers it for re-download.
+   - Confirm it is live now: `curl -I https://statewidefloodinsurance.com/google<hash>.html` should
+     return 200.
+   - Copy it into the new install's web root, and **re-run that same curl immediately after the
+     docroot swap.** If it 404s, verification is gone — that is the check, not "I copied the file".
 2. **Add a DNS-verified Domain property** (the braces). Permanent, filesystem-independent, and covers
    www, non-www, http and https at once — the fix that means this never comes up again.
 
