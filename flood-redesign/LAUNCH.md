@@ -159,30 +159,49 @@ Do CFI first; statewide gets the benefit of anything learned.
    exactly the ones most likely to hold a cached pre-launch copy. If stale entries persist, they
    age out on their own TTL — or ask InMotion to purge the proxy cache server-side, which is the
    only purge that definitely reaches it.
-6b. **Confirm GA4 is still collecting — it breaks silently otherwise.** Found 4 Aug, and it is not
-   what anyone assumed. GA4 does **not** reach either live site through GTM or Site Kit: both serve a
-   **hardcoded `gtag/js` snippet in the Divi header**, verified in the served HTML with no Site Kit
-   markers present. That snippet dies with the theme.
+6b. **GA4 needs nothing. Both containers already configure it — verified, not inferred.**
 
-   Statewide's container cannot cover for it — `GTM-PJQ72VK` reports the Urgent warning *"Missing
-   Google tags"*, meaning its GA4 event tags name `G-FH3Q6GKNHH` with no Google tag behind them. So
-   **statewide's GA4 would have stopped collecting at cutover, and nothing would have said so.**
+   Read from the published containers on 4 Aug:
 
-   Already handled for statewide: theme 1.4.7 sets `CFI_GA4_ID` to `G-FH3Q6GKNHH`. Done in the theme
-   rather than by adding a Google tag in GTM on purpose — a container publish takes effect
-   immediately and would double-count every session on the still-live Divi site, whereas the constant
-   cannot fire until the new site answers the domain.
+   | Container | Google tags (`__googtag`) it holds |
+   |---|---|
+   | `GTM-PJQ72VK` (statewide) | `G-FH3Q6GKNHH` ✅ · plus `G-3YMN51H7LE` ⚠️ see below |
+   | `GTM-MZ6RZ94` (California) | `G-3YMN51H7LE` ✅ |
 
-   **Still open for California** — `GTM-MZ6RZ94` has not been read. Before the flip, look for a
-   Google tag / GA4 Configuration tag referencing `G-3YMN51H7LE`:
-   - none exists → set California's `CFI_GA4_ID` to `G-3YMN51H7LE`
-   - one exists → leave it empty, GA4 continues through GTM
+   So GA4 survives the cutover on both brands with no theme change and no container change. Both
+   `CFI_GA4_ID` constants stay **empty**, and filling either one would double-count every session —
+   two `page_view` hits, inflated users, halved conversion rate.
 
-   Filling it blind is the one change that could make measurement worse: a second configuration
-   halves the reported conversion rate.
+   > **A correction, recorded because the wrong version of this shipped.** An earlier draft of this
+   > step claimed statewide's GA4 would go dark at cutover, and theme 1.4.7 set `CFI_GA4_ID`
+   > accordingly. That was wrong and **1.4.9 reverts it.** The claim came from reading the container's
+   > Urgent warning *"Missing Google tags"* as meaning no GA4 configuration existed. It does not mean
+   > that: the container fires Ads conversion tags for `AW-1012143191` and has no Google tag for
+   > **that** destination. The warning was about Ads. The same warning appears on `GTM-MZ6RZ94` for
+   > the same reason, and neither has anything to do with GA4.
 
-   **Either way, after the flip open GA4 Realtime on both properties and confirm traffic.** Not the
-   tag assistant — the actual property.
+   **How to check this directly. The published container is public — no login, no credentials:**
+
+   ```
+   curl -s "https://www.googletagmanager.com/gtm.js?id=GTM-PJQ72VK" \
+     | grep -o '"function":"__googtag"' | wc -l
+   ```
+
+   `__googtag` is a Google tag (GA4 configuration), `__gaawe` a GA4 event tag, `__awct` an Ads
+   conversion. This check was available the whole time and would have prevented the error. **Read the
+   container; do not reason from a warning label.**
+
+   **6c. REMOVE THE MISPLACED GOOGLE TAG FROM STATEWIDE'S CONTAINER.** `GTM-PJQ72VK` now contains a
+   Google tag for `G-3YMN51H7LE` — **California's** measurement ID — added on `Initialization – All
+   Pages` in statewide version 13. Statewide production is live and loads that container, so
+   **statewide's traffic is currently being reported into California's GA4 property**, and statewide
+   is configuring GA4 twice.
+
+   Delete that tag and publish. Keep the `G-FH3Q6GKNHH` Google tag, which was already there and is
+   correct.
+
+   **Then, after the flip, open GA4 Realtime on both properties and confirm traffic** — the property
+   itself, not the tag assistant.
 
 7. **Switch the conversion tracking over — this step belongs here, not earlier.** The old Divi site
    does not emit `cfi_form_submit`, so the click triggers had to keep running until this moment.

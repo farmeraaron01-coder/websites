@@ -31,25 +31,33 @@ if ( 'swfi' === CFI_BRAND ) {
 	define( 'CFI_PROD_HOST', 'statewidefloodinsurance.com' );
 	define( 'CFI_GTM_ID', 'GTM-PJQ72VK' );
 	/*
-	 * FILLED IN 4 AUG, and the condition inc/tags.php set has now been met.
+	 * EMPTY, AND IT MUST STAY EMPTY. Set to 'G-FH3Q6GKNHH' in 1.4.7 and reverted
+	 * in 1.4.9 — the reasoning behind filling it in was wrong, and the record is
+	 * kept here because the mistake is easy to repeat.
 	 *
-	 * Today GA4 reaches this site from a gtag snippet hardcoded in the Divi
-	 * header — present in the served HTML, no Site Kit involved, nothing to do
-	 * with GTM. That snippet dies with the theme at cutover.
+	 * The claim was that GTM-PJQ72VK holds no Google tag, inferred from its
+	 * Urgent warning "Missing Google tags". Reading the published container
+	 * settles it: **it holds two Google tags, one of them for G-FH3Q6GKNHH.**
+	 * So GA4 was never going to stop at cutover, and printing gtag from the theme
+	 * as well would have double-counted every session — two page_view hits,
+	 * inflated users, conversion rate halved. Exactly the failure this constant
+	 * was left empty to avoid in the first place.
 	 *
-	 * The container cannot cover for it: GTM-PJQ72VK reports the Urgent warning
-	 * "Missing Google tags — ... adding a Google tag to your container for each
-	 * destination where you're sending data." Its GA4 event tags name
-	 * G-FH3Q6GKNHH with no Google tag behind them. So without this constant,
-	 * **GA4 stops collecting the moment the domain moves.**
+	 * What the warning actually meant: the container fires Google Ads conversion
+	 * tags for AW-1012143191 and has no Google tag for *that* destination. It was
+	 * about Ads, not GA4. The same warning exists on GTM-MZ6RZ94 for the same
+	 * reason.
 	 *
-	 * Setting it here rather than adding a Google tag in GTM is deliberate: a
-	 * container change publishes immediately and would double-count every
-	 * session on the *live Divi site* alongside its hardcoded snippet. This
-	 * constant cannot fire until the new site answers the domain, so there is no
-	 * double-count window at all.
+	 * HOW TO CHECK THIS PROPERLY, rather than inferring from a warning — the
+	 * published container is public, no credentials needed:
+	 *
+	 *   curl -s "https://www.googletagmanager.com/gtm.js?id=GTM-PJQ72VK" \
+	 *     | grep -o '"function":"__googtag"' | wc -l
+	 *
+	 * `__googtag` is a Google tag (GA4 configuration); `__gaawe` is a GA4 event
+	 * tag; `__awct` is an Ads conversion. Read the container, do not infer it.
 	 */
-	define( 'CFI_GA4_ID', 'G-FH3Q6GKNHH' );
+	define( 'CFI_GA4_ID', '' );  /* G-FH3Q6GKNHH — already configured in GTM-PJQ72VK */
 	/*
 	 * Same widget as CFI staging deliberately: both brands share one Google
 	 * Business Profile, and this widget copy is the one already tuned there
@@ -79,28 +87,17 @@ if ( 'swfi' === CFI_BRAND ) {
 	define( 'CFI_PROD_HOST', 'californiafloodinsurance.com' );
 	define( 'CFI_GTM_ID', 'GTM-MZ6RZ94' );
 	/*
-	 * DELIBERATELY STILL EMPTY — one check away from being filled.
+	 * EMPTY, and now confirmed correct rather than merely cautious.
 	 *
-	 * California has the same exposure as statewide: its GA4 also comes from a
-	 * hardcoded gtag snippet in the Divi header, so it also stops at cutover.
-	 * The difference is evidence. Statewide's container was confirmed to have no
-	 * Google tag; GTM-MZ6RZ94 has not been read, and it carries a separate
-	 * "missing Google tag" warning about AW-1012143191 that may or may not mean
-	 * a GA4 configuration tag exists.
+	 * GTM-MZ6RZ94 holds a Google tag for G-3YMN51H7LE — read from the published
+	 * container on 4 Aug, not inferred from a warning. GA4 therefore continues
+	 * through GTM after cutover, and this must stay empty or every session is
+	 * counted twice.
 	 *
-	 * Filling this in blind is the one change here that could make measurement
-	 * worse rather than better: if the container does hold a GA4 configuration
-	 * tag, every session gets counted twice — two page_view hits, inflated
-	 * users, conversion rate halved.
-	 *
-	 * TO RESOLVE: in GTM-MZ6RZ94, look for a "Google tag" or GA4 Configuration
-	 * tag referencing G-3YMN51H7LE.
-	 *   - none        → set this to 'G-3YMN51H7LE' before the flip.
-	 *   - one exists  → leave empty; GA4 carries on through GTM.
-	 * Either way, confirm real-time GA4 traffic after cutover. This is the
-	 * measurement equivalent of the FAQ schema: silent if it breaks.
+	 * Leaving it empty pending evidence was the right call. The evidence, when it
+	 * finally got read, said do nothing.
 	 */
-	define( 'CFI_GA4_ID', '' );  /* G-3YMN51H7LE — see the note above */
+	define( 'CFI_GA4_ID', '' );  /* G-3YMN51H7LE — already configured in GTM-MZ6RZ94 */
 
 	/*
 	 * Trust Index review widget.
