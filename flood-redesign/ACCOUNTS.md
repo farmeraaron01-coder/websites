@@ -1,17 +1,23 @@
 # Account cleanup — naming standard and order of operations
 
-The confusion is structural, not accidental: **one Google Ads account, one GTM account, and one
-Cognito org serve at least six brands**, and they were named as they were created rather than to a
-convention. Nothing here is broken. It is just unreadable, which is how the staff-form conversion
-problem survived for months without anyone spotting it.
+The confusion is structural, not accidental: **one Google Ads account and one GTM account serve
+18 websites across a dozen unrelated businesses**, named as they were created rather than to a
+convention. That unreadability is how the staff-form conversion problem survived for months.
+
+**The 4 Aug inventory changed the priority.** Naming is not the biggest issue in these accounts —
+access is. Jump to *Findings from the inventory* at the bottom; step zero there comes before
+anything else in this document.
 
 Two rules for everything below:
 
 1. **Renaming is free. Deleting is not.** Container IDs, measurement IDs, and conversion action IDs
    are permanent. Friendly names are cosmetic and change nothing about tracking. So all renaming can
    happen today with zero risk; anything that removes or re-points a tag waits for its section.
-2. **Never delete a conversion action or a GA4 property.** Set it Secondary, archive it, or rename it
-   to say "do not use". Deleting destroys history you cannot get back.
+2. **Never delete anything holding history.** Conversion actions go Secondary or Hidden, never
+   deleted. GA4 properties that have *received data* get renamed to say "do not use" and archived.
+   The exception, which the inventory found several of: a property or container that has **never**
+   received a hit holds no history, so deleting it loses nothing — rename it `ZZ DELETE` and leave it
+   a week first, so a mistake stays recoverable.
 
 ---
 
@@ -43,6 +49,12 @@ spot.
 ---
 
 ## Properties that hold more than one website
+
+> **The inventory found none of this.** Every property has exactly one stream; the nesting was one
+> level up, in accounts holding two properties — which is much cheaper to fix, because a property can
+> be *moved* between accounts with its measurement ID and history intact. This section is kept for the
+> case where a blended property does turn up later, and because the Ads-cost reasoning in it still
+> governs any future split.
 
 A GA4 property can carry several data streams, and by default the reports **blend** them. That is the
 "hard to find" problem: one property named after one brand, quietly reporting on three, so every
@@ -96,26 +108,13 @@ readable during the months the split is waiting its turn.
 
 Nothing in this stage touches a tag, trigger, or bid.
 
-**GTM.** Account `6003744403` still carries a legacy name from the earthquake site. Rename the
-account, then rename every container to its domain. Known mapping:
+**GTM — mostly already done.** Account `6003744403` is named "Aaron Farmer Insurance Agency Websites
+Account", which is fine, and sixteen of its eighteen containers are already named for their domain.
+Only two renames remain; see *GTM — the short list* in the findings section.
 
-| Container | Serves |
-|---|---|
-| `GTM-MZ6RZ94` | californiafloodinsurance.com |
-| `GTM-PJQ72VK` | statewidefloodinsurance.com |
-| `GTM-T49RSMT` | cheapearthquakeinsurance.com |
-| `GTM-PRRWDV4` | cheapsoberlivinginsurance.com |
-| `GTM-PBH839BH` | lp.jumptruckinginsurance.com |
-
-There are more containers than these five — the inventory step below is what finds them.
-
-**GA4.** Rename each property to `<domain> (<measurement ID>)`. Two specific fixes:
-
-- Statewide has **two properties with the identical name** `statewidefloodinsurance.com - GA4`.
-  Rename the live one (`314831122` / `G-FH3Q6GKNHH`) to the convention, and rename the dead one
-  (`371465506` / `G-NCF8CTTSQS`, no data, no Ads link) to
-  **`ZZ DO NOT USE — orphaned (G-NCF8CTTSQS)`**, then archive it. Do not delete it.
-- Both live data streams have `http://` stream URLs. Set them to the `https://` non-www canonical.
+**GA4 — this is where the work is.** Rename each property to `<domain> (<measurement ID>)`; fix nine
+`http://` stream URLs; retire four dead duplicates; delete fourteen empty accounts. The itemised list
+is in *GA4 — where the real work is* below.
 
 **Google Ads.** The account is named `Aaron - www.CaliforniaFloodInsurance.com` while running flood,
 statewide flood, trucking, earthquake, pet, landlord, apartment, pest, and sober living. Rename it to
@@ -180,7 +179,10 @@ not in the same week as the site cutover so the two effects stay separable.
 **Recommendation: keep one account and use campaign-level conversion goals.** Splitting means new
 accounts with no conversion history, re-learning on every campaign, separate billing, and lost shared
 audiences — real cost, to solve a readability problem that naming plus campaign-level goals already
-solves. A single operator with one shared budget does not benefit from the separation.
+solves. A single operator with one shared budget does not benefit from the separation. This still
+holds at the inventory's real scale: `AW-1012143191` in 15 of 18 containers is a bigger mess than
+expected, but campaign-level goals fix the bidding contamination without any re-learning, and a split
+does not.
 
 Worth revisiting only if you sell a brand, take on a partner who needs access to one brand and not
 the others, or hand a brand to an outside agency. At that point the split is about permissions, which
@@ -237,3 +239,173 @@ inconsistently named, but do not fix it.
 
 With that back, the Stage 1 renames become a single mapping table I can write out for you, and
 Stage 2's deletion candidates stop being guesses.
+
+---
+
+# Findings from the inventory — 4 Aug
+
+18 GTM containers, 29 GA4 accounts holding 21 properties, one Ads account under a manager account,
+and roughly three Bing accounts, across a dozen unrelated businesses. Microsoft Ads was not reachable
+in that pass and is still outstanding.
+
+**Two corrections to what this document said before the inventory.**
+
+*The multi-site nesting is one level up from where I looked.* No GA4 property holds several streams.
+Instead **six accounts hold two properties each**, and twice the second property is an unrelated
+business: `Mrtacoshop.com` sits inside the arizonafloodinsurance.net account, and
+`vacanthomeinsurance.com` sits inside the californiafloodinsurance.com account. So the concern was
+real, the level was wrong. The good news is that this is *far* cheaper to fix than a stream split:
+moving a property between GA4 accounts is a supported operation that keeps the property, its
+measurement ID, and all of its history. No re-tagging, no Ads relink, no bidding reset. The expensive
+scenario I described does not apply to anything actually found.
+
+*Most GTM container naming is already done.* Sixteen of eighteen containers are already named for
+their domain. Only two deviate, both by carrying a `www.` prefix. The stage 1 GTM work is nearly
+finished — someone executed the June brief.
+
+---
+
+## Step zero — access, before any renaming
+
+This is the finding that outranks everything else in this document, and it is not a tidiness problem.
+
+**Anyone with GTM publish rights can inject arbitrary JavaScript into every page of the site it
+serves.** That is script execution on the page: it can read form fields as they are typed, move the
+phone number, or redirect the quote button. It is the single most powerful access anyone can hold over
+these sites, and the publish history shows it spread across at least six external identities over the
+years:
+
+| Identity | Last seen publishing | Notes |
+|---|---|---|
+| `aliofficialfiverr@gmail.com` | 05/11/2022, ten containers | A Fiverr freelancer address, from a 2022 engagement |
+| `zainarshad866@gmail.com` | 12/13/2022, two containers | Personal Gmail |
+| `yas17sheikh@gmail.com` | seen in history | Personal Gmail |
+| `info@excellero.com` | 05/24/2026 pestcoverage; linked statewide's GA4↔Ads | Outside agency |
+| `kylewaters@max-conversion.com` | 04/23/2026, jumptruckinginsurance | Outside agency, still active |
+| `aztecinsurance@gmail.com` | current, most containers | Aaron's own working account |
+
+**Do this first, and it costs nothing to get wrong:** in GTM → Admin → User Management (at the account
+level, then check each container), remove every identity that is not currently doing work. The 2022
+freelancer addresses are the priority — a contractor from four years ago should not retain the ability
+to publish JavaScript to a live insurance site. For the two agencies still working, downgrade from
+Publish to **Edit** so changes need approval, and scope them to the one container they work on rather
+than the account. Do the same review in GA4 (Admin → Account access management) and Google Ads
+(Admin → Access and security).
+
+Nothing here suggests anything bad has happened. It is unused standing access, which is the ordinary
+way this goes wrong.
+
+---
+
+## GTM — the short list
+
+**Renames (2):** `www.cheaplandlordinsurance.com` → `cheaplandlordinsurance.com`, and
+`www.vacanthomeinsurance.com` → `vacanthomeinsurance.com` (or delete it, below).
+
+**Delete candidates (2):** `GTM-53H3GF24` mytruckinginsurance.ai and `GTM-W8F3276K`
+vacanthomeinsurance.com — both are empty containers, zero tags, one "Empty Container" version, absent
+from Search Console. Safe to delete; nothing references them.
+
+**Ten skeleton containers** (arizona, farmerinsurance, jumpins, restaurant-insurance, sacramento, san
+diego, texas, washington, and others) carry the same four tags published once in 2021–2022 and never
+touched. Decide per domain whether the site is still a live business. If yes, leave them; if no, the
+container and its GA4 property can retire together. They are not doing harm — they are just noise
+making the real containers harder to find.
+
+**Two quality flags to open and read**, since neither was itemised: `GTM-PJQ72VK` (statewide) shows
+**"Urgent — 2 issues"**, and `GTM-PBH839BH` (jumptrucking, agency-run) also shows Urgent. Statewide's
+is the one that matters for launch — find out what those two issues are before the cutover. CFI's
+"Needs Attention" is already explained: the AW base tag missing its Initialization trigger.
+
+---
+
+## GA4 — where the real work is
+
+**Delete the 14 empty accounts.** 4S Ranch, ApartmentInsuranceOnline, ATPinsuranceprograms, Carlsbad,
+contractorsinsurancepros, Del Mar, Encinitas, Escondido, floridafloodinsurance.net, Mira Mesa, New
+Mexico Flood, Oregon Flood, Rancho Bernardo, Scripps Ranch. No properties means no data means nothing
+to lose. This alone removes half the clutter.
+
+**Move the two misfiled properties** into their own accounts (or the right existing one):
+`Mrtacoshop.com` out of the arizonafloodinsurance.net account, `vacanthomeinsurance.com` out of the
+californiafloodinsurance.com account. A property move preserves the measurement ID and all history.
+
+**Retire the four dead duplicates.** Each is a www/non-www twin of a live property that has never
+received data: `cheapearthquakeinsurance.com-GA4 (389773239 / G-NT5FM4Q85H)`,
+`statewidefloodinsurance.com-GA4 (371465506 / G-NCF8CTTSQS)`, `jumpins.com-GA4 (371490137 /
+G-H4XXCW8HT4)`, and `TEMP - placeholder (545006633 / G-LBMCGFX7GC)`. A property that has never
+received a hit holds no history, so these are safe to delete — but rename each to
+`ZZ DELETE — never received data` first and leave it a week. Costs nothing, and makes a mistake
+recoverable.
+
+**Rename the survivors** to `<domain> (<measurement ID>)`. Current names are inconsistent enough that
+two properties are indistinguishable in a switcher: `Cali Flood Insurance - GA4`, `cheap earth quake
+insurance`, and one property with no name at all (`314801581`, cheapsoberlivinginsurance).
+
+**Fix nine `http://` stream URLs**: arizona, Cali Flood, sober living, farmerinsurance, HOA, statewide
+(the live one), restaurant-insurance, texas, washington.
+
+**Unmark `purchase` as a key event on CFI.** Three key events are marked — `Contact_Form_Submission`,
+`purchase`, `Submit_Online_Quote_Form_Submission` — and only the last has data. `purchase` is a
+GA4 default with no meaning on an insurance site; if it is ever imported into Ads it becomes a
+phantom conversion. Unmark it.
+
+---
+
+## Google Ads — the shared-account problem, quantified
+
+`AW-1012143191` is wired into **15 of the 18 containers**. This is not sloppiness, it is the
+architecture: one Ads account is the conversion home for flood, statewide flood, earthquake, sober
+living, pest, trucking, landlord, apartment, and pet insurance. That is the root cause of the July
+audit's finding, and it is why flood CPAs have been directional at best.
+
+**The recommendation still holds: campaign-level conversion goals, not an account split.** It fixes
+the bidding contamination for free and without re-learning. Three specifics the inventory adds:
+
+- **The TopDog actions count "Every" while every other business counts "One."** Six of them, at least
+  one Primary. On engagement events, "Every" inflates the conversions column that Smart Bidding
+  reads — so flood bidding has been partly chasing repeated button clicks on a pet insurance site.
+- **Engagement actions are Primary and should not be.** `Local actions - Website visits`, `Local
+  actions - Menu views`, `Get directions`, `Clicks to call`, `YouTube channel subscriptions`, and
+  `YouTube follow-on views` are all Primary, most counting "Every." These are the July plan's
+  "demote to Secondary" list, now with names.
+- **Earthquake and pest have no GA4↔Ads link** but their containers fire Ads conversion tags straight
+  to `AW-1012143191`. That path bypasses the GA4 link entirely, so those conversions arrive in the
+  shared column without ever appearing in a GA4 property. Worth knowing before anyone concludes a
+  number is missing.
+
+**One genuine split candidate: jumptruckinginsurance.com.** It is run by an outside agency that
+currently has Publish rights in GTM and whose conversions land in the account holding every other
+brand's data. That is a permissions problem, which is the one thing naming and campaign goals cannot
+solve — the case I flagged earlier for when a split is actually worth its cost. Its own Ads account
+and its own GTM container access would be cleaner for both sides.
+
+Also note the account already sits under a manager account, **"Aaron Manager Account" (909-487-9776)**
+— so brand-level separation is available whenever it is wanted without rebuilding anything.
+
+---
+
+## Search Console
+
+**CFI has no Domain property** — only `https://` URL-prefix and `http://www.` URL-prefix. Statewide
+has `https://` and `http://` URL-prefix, no Domain property. Both need one, and for statewide it is a
+launch blocker: its verification is an HTML file in the docroot that a docroot swap deletes. (That
+finding came from the earlier pass; this pass spot-checked two other properties and found DNS. Confirm
+statewide's specifically before cutover.)
+
+Once a Domain property exists per site, the URL-prefix duplicates can stay — harmless — but the
+sitemap and all reporting should move to the Domain property.
+
+---
+
+## Microsoft Ads — still outstanding
+
+Not reachable in the 4 Aug pass. From the UET tags embedded in GTM, the IDs cluster into three
+apparent accounts: the `142002xxx` block (eleven sites), the `531885x` pair (the two flood sites), and
+`295027961` (jumptrucking, agency-managed, native tag type rather than the custom-HTML pattern
+everything else uses).
+
+Worth confirming when a session is available: which conversion goals reference each UET tag, and
+whether the flood goals have the same click-text fragility as the Google side. `5318855` is statewide
+and `5318858` is CFI — consistent, and consistent with the rogue California tag having been removed
+in June.

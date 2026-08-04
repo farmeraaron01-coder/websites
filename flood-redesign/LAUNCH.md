@@ -31,7 +31,9 @@ The two-week watch afterwards is where the real attention goes.
 | 4 | Sign off content: 9 statewide articles, 10 claims pages, 18 drafted meta descriptions | Aaron | ☐ |
 | 5 | Sign off statewide palette and hero copy | Aaron | ☐ |
 | 6 | Correct the four "separate purchases" instances in the source PDFs (copy supplied; sites already fixed) | Aaron | ☐ |
-| 7 | **Add a DNS-verified Domain property for each site in Search Console** — statewide is verified by an HTML file that a docroot swap deletes | Aaron | ☐ |
+| 7 | **Add a DNS-verified Domain property for each site in Search Console** — neither flood site has one today (CFI has `https://` + `http://www.` URL-prefix only; statewide `https://` + `http://`), and statewide's HTML-file verification dies with the docroot swap | Aaron | ☐ |
+| 7c | **Open `GTM-PJQ72VK`'s two "Urgent" container-quality issues** and read what they are — statewide's container, unexamined, before launch | Aaron | ☐ |
+| 7d | Remove stale GTM publish access (2022 freelancer Gmail addresses); downgrade the two active agencies to Edit — see ACCOUNTS.md step zero | Aaron | ☐ |
 | 7b | Note a baseline week of GA4 pageviews — the number legitimately drops when Site Kit's duplicate tag goes | Aaron | ☐ |
 | 8 | **Full backup of each production site — files + database — downloaded off the server** | Aaron | ☐ |
 | 9 | Confirm the cutover method with InMotion (see *Rollback*) — docroot swap, not overwrite | Aaron | ☐ |
