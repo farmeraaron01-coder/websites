@@ -1,4 +1,4 @@
-# Cleanup worklist — seven sessions, in order
+# Cleanup worklist — six sessions to do, one deferred
 
 Each session is one sitting, one paste into Claude in Chrome, and one thing to report back.
 Do them in this order. `ACCOUNTS.md` holds the reasoning; this file is just the work.
@@ -17,10 +17,19 @@ covers the build; the switch-off is step 8 of the flip in `LAUNCH.md`.
 | 4 | Delete 14 empty GA4 accounts | None | 10 min | Any time |
 | 5 | GA4 renames, moves, and dead duplicates | Low | 45 min | Any time |
 | 6 | GTM tidy-up | Low | 30 min | Any time |
-| 7 | Google Ads goal cleanup | Resets bidding | 45 min | **Not** in cutover week |
 
 Sessions 4, 5 and 6 are hygiene. They are genuinely optional and they do not improve bidding — do
-them when there is a quiet hour, not before sessions 2 and 7.
+them when there is a quiet hour.
+
+**Session 7 (Google Ads goal cleanup) is deliberately not in that table.** It is the only session
+that touches a working system, and it is now **deferred with no date** — see *Deferred* at the end.
+
+### Nothing in sessions 0–6 changes a bid, a budget, or a campaign goal
+
+Worth stating plainly, because it is the thing to be sure of before starting: sessions 0 and 3 are
+read-only, session 1 touches user permissions only, session 2 adds dormant tags that cannot fire
+until the new sites are live, and sessions 4–6 rename and delete things no campaign references. None
+of them can affect what Google Ads or Microsoft Ads bids on.
 
 ---
 
@@ -426,14 +435,34 @@ Report the two Conversion Linker triggers from step 3.
 
 ---
 
-## Session 7 — Google Ads goal cleanup
+## Deferred — Session 7, Google Ads goal cleanup
 
-**Not in the cutover week.** This resets Smart Bidding learning, and if it runs alongside the site
-migration you will not be able to tell which change moved your numbers. Give it 2–3 weeks on a
-stable budget afterwards.
+**Deferred with no date, on Aaron's judgement, 4 Aug — and the judgement is right.**
 
-Do this only after Session 2 is live and the sites are switched over — it decides *which* signals
-count, and Session 2 is what makes the signals true.
+The account moved to a Maximize-Conversions-heavy structure recently and both conversions and real
+business are up. That is ground truth from the person who sees the leads and the bound policies, and
+it outranks anything visible in the Ads interface. The theoretically-correct cleanup is not worth
+risking a structure that is demonstrably working.
+
+Three specific reasons the caution is technically justified, not just prudent:
+
+1. **Narrowing goals reduces signal volume per campaign.** Smart Bidding learns from conversion
+   count. Today's campaigns feed on a broad, messy, *high-volume* goal set. Restricting each campaign
+   to only its own brand's lead actions cuts that volume — and for the thinner states it could drop a
+   campaign below the data threshold Maximize Conversions needs to work at all. Right in principle,
+   possibly worse in practice for low-volume campaigns.
+2. **Measurement changes will make the reported number fall on their own.** Once staff intake and
+   failed validations stop counting, conversions drop without a single lead being lost. Stacking a
+   goal change on top of that makes the two effects impossible to separate.
+3. **The staff-form problem does not need this session.** It resolves at cutover, with no campaign
+   touched: the new site emits the clean event and step 7 of the flip swaps the trigger.
+
+**Revisit when:** the sites have been live a month, the post-launch numbers have settled, and there is
+a baseline to compare against. Or never, if the numbers stay good — the cost of leaving this alone is
+imperfect attribution, and the cost of getting it wrong is lead volume.
+
+**If it is ever run:** not in the cutover week, on a stable budget, one brand at a time, with the
+Session 0 baseline as the comparison, and a written condition for putting it back.
 
 ```
 Google Ads account 890-760-9729. This is conversion-tracking cleanup. Do not delete any
@@ -549,7 +578,10 @@ The fix is already on this list: that contact-form action is exactly what Sessio
 
 ---
 
-## After all seven
+
+---
+
+## After all six
 
 Two things that are not account cleanup but are on the same list:
 
