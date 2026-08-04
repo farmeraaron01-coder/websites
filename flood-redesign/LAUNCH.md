@@ -23,7 +23,8 @@ The two-week watch afterwards is where the real attention goes.
 | 1c | Install **v1.4.0** — keeps the PDFs out of search via robots.txt instead, the one mechanism that works without the host | Aaron | ☐ |
 | 2 | ~~Confirm whether the GTM containers hold a GA4 config tag~~ — **done 4 Aug: they do. `CFI_GA4_ID` stays empty.** | — | ☑ |
 | 2b | **Build** the new conversion path in GTM — new triggers and tags on `cfi_form_submit` / `cfi_is_lead`, **added alongside** the existing click triggers, not replacing them. Dormant until cutover. Session 2 of CLEANUP-WORKLIST.md | Aaron | ☐ |
-| 2g | **Same session, Bing**: the flood UET goals are click goals too (`CALIFORNIA Submit Button Click`, `STATEWIDE Submit Form Click`), so staff intake inflates Bing as well. Add the UET event tag and create the Event-type goals — again alongside, not replacing | Aaron | ☐ |
+| 2g | **Same session, Bing — CALIFORNIA ONLY, and it is a trigger repoint, not a new tag.** Read 4 Aug: `Bing UET - request_quote (California)` already exists and fires on `Click – All Elements` / `Click Text contains Submit Application`. Change only its trigger; keep its code pushing `request_quote` verbatim so the existing Microsoft goal and its history keep working. **Adding a new tag would double-count California.** | Aaron | ☐ |
+| 2h | **Statewide Bing: find the mechanism before building anything.** Its container has no UET event tag, only the base page-load tag — yet Microsoft reports a recording goal. If it fires from a snippet in the Divi theme, it dies at cutover and statewide silently loses Bing conversion tracking. Read-only prompt in CLEANUP-WORKLIST.md | Aaron | ☐ |
 | 2c | ~~Resolve where CFI's Ads conversions come from~~ — **done 4 Aug: GA4-imported key events.** Confirm the Source column when convenient | — | ☑ |
 | 2e | Decide whether to apply the **July 15 conversion-tracking cleanup plan** (60 actions, dozens Primary across six brands) — still marked DRAFT. Sequenced in ACCOUNTS.md stage 3c: after the GTM repoint, and **not in the same week as the cutover** so the two effects stay separable | Aaron | ☐ |
 | 2f | Optional: point the flood ads at **/get-a-quote/** instead of the homepage — the new landing page puts the form on the page the click lands on | Aaron | ☐ |
@@ -73,11 +74,19 @@ Do CFI first; statewide gets the benefit of anything learned.
 6. **Flush the nginx cache** (Nginx Helper → Purge Entire Cache).
 7. **Switch the conversion tracking over — this step belongs here, not earlier.** The old Divi site
    does not emit `cfi_form_submit`, so the click triggers had to keep running until this moment.
-   Now that the new site is answering the domain: in GTM, remove the **Click Text** triggers from
-   the conversion and GA4 event tags (or pause those tags if they are duplicates of the new ones),
-   and in Microsoft Ads switch the campaigns to the new `quote_form_lead` Event goals and **pause**
-   the old click goals. Publish. Both paths firing at once would double-count, so keep the window
-   between the flip and this step short — do it immediately, before the verification pass.
+   Now that the new site is answering the domain:
+   - **Google:** remove the **Click Text** triggers from the Ads conversion and GA4 event tags (or
+     pause those tags if the new ones duplicate them).
+   - **Bing, California:** repoint `Bing UET - request_quote (California)` to the `cfi_form_submit —
+     is_lead true` trigger. Do **not** create a new tag and do **not** change its action string —
+     `request_quote` is what the existing Microsoft goal matches on, so the goal carries over
+     untouched with its history. No Microsoft-side change needed for California.
+   - **Bing, statewide:** whatever item 2h found determines this. If its goal fires from theme code
+     rather than GTM, that code is gone as of this step and statewide needs a UET event tag built to
+     match its goal's action string.
+
+   Publish. Both paths firing at once would double-count, so keep the window between the flip and
+   this step short — do it immediately, before the verification pass.
 8. **Verify before telling anyone** — the checklist below.
 
 ### Post-flip verification
