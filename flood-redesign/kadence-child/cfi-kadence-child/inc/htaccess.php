@@ -29,7 +29,7 @@
  */
 
 add_action( 'admin_init', function () {
-	if ( get_option( 'cfi_htaccess_cache_rules' ) === 'v2' ) {
+	if ( get_option( 'cfi_htaccess_cache_rules' ) === 'v3' ) {
 		return;
 	}
 	if ( ! current_user_can( 'manage_options' ) ) {
@@ -82,7 +82,45 @@ add_action( 'admin_init', function () {
 		'</IfModule>',
 	);
 
-	if ( insert_with_markers( $path, 'CFI static asset cache', $rules ) ) {
-		update_option( 'cfi_htaccess_cache_rules', 'v2', false );
+	$root_ok = insert_with_markers( $path, 'CFI static asset cache', $rules );
+
+	/*
+	 * The PDF rule again, one directory down — because the root block does not
+	 * reach the files it was written for.
+	 *
+	 * Measured on staging after v1.3.8: theme assets carry the Cache-Control this
+	 * file sets (css max-age=2592000, images 31536000 immutable), so mod_headers
+	 * is working and the root block is live. But /wp-content/uploads/ came back
+	 * with max-age=604800 and no X-Robots-Tag at all — the host configures that
+	 * directory separately, and its directives win there. Since every claim PDF
+	 * lives in uploads, the noindex applied to exactly nothing.
+	 *
+	 * mod_headers merges per-directory config after server config, so a block in
+	 * the uploads .htaccess takes precedence. Only X-Robots-Tag is set here:
+	 * the host's week-long cache on uploads is fine, and overriding it would be
+	 * changing something that is not broken.
+	 *
+	 * insert_with_markers() creates the file if it is missing, and leaves any
+	 * existing content outside its own markers untouched.
+	 */
+	$uploads    = wp_get_upload_dir();
+	$uploads_ok = false;
+	if ( empty( $uploads['error'] ) && ! empty( $uploads['basedir'] ) ) {
+		$up_path = trailingslashit( $uploads['basedir'] ) . '.htaccess';
+		if ( wp_is_writable( file_exists( $up_path ) ? $up_path : $uploads['basedir'] ) ) {
+			$uploads_ok = insert_with_markers( $up_path, 'CFI pdf noindex', array(
+				'<IfModule mod_headers.c>',
+				'  <FilesMatch "\.pdf$">',
+				'    Header always set X-Robots-Tag "noindex, noarchive"',
+				'  </FilesMatch>',
+				'</IfModule>',
+			) );
+		}
+	}
+
+	// Only record success once BOTH blocks are in place, so a failure on either
+	// one leaves this to retry on the next admin page load.
+	if ( $root_ok && $uploads_ok ) {
+		update_option( 'cfi_htaccess_cache_rules', 'v3', false );
 	}
 } );
