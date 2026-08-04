@@ -23,7 +23,14 @@ if ( 'swfi' === CFI_BRAND ) {
 	define( 'CFI_PHONE_TEL', '8552253566' );
 	define( 'CFI_QUOTE_URL', 'https://statewidefloodinsurance.com/get-a-quote/' );  /* non-www: statewide's canonical host */
 	define( 'CFI_LICENSE', 'CA License #0L75450' );
-	define( 'CFI_SISTER_NOTE', 'Insuring a California property? <a href="https://www.californiafloodinsurance.com/">Visit California Flood Insurance</a>.' );
+	define( 'CFI_SISTER_NOTE', 'Insuring a California property? <a href="https://californiafloodinsurance.com/">Visit California Flood Insurance</a>.' );
+	/* Hostname the tags may fire on, and the containers already running on
+	   production. See inc/tags.php. GTM-MZ6RZ94 also appears on statewide
+	   production as an orphaned <noscript> with no loader — a leftover from the
+	   Divi clone. It is CFI's container and is deliberately not carried over. */
+	define( 'CFI_PROD_HOST', 'statewidefloodinsurance.com' );
+	define( 'CFI_GTM_ID', 'GTM-PJQ72VK' );
+	define( 'CFI_GA4_ID', '' );  /* G-FH3Q6GKNHH — see inc/tags.php before filling this in */
 	/*
 	 * Same widget as CFI staging deliberately: both brands share one Google
 	 * Business Profile, and this widget copy is the one already tuned there
@@ -39,9 +46,20 @@ if ( 'swfi' === CFI_BRAND ) {
 	define( 'CFI_SITE_NAME', 'California Flood Insurance' );
 	define( 'CFI_PHONE_DISPLAY', '855-CAL-FLOOD (225-3566)' );
 	define( 'CFI_PHONE_TEL', '8552253566' );
-	define( 'CFI_QUOTE_URL', 'https://www.californiafloodinsurance.com/get-a-quote/' );
+	/*
+	 * Non-www on both hosts. Production canonicalises to the bare domain
+	 * (www.californiafloodinsurance.com 301s to californiafloodinsurance.com,
+	 * and its canonical tag agrees), so a www URL here would put a redirect hop
+	 * in front of the most important click on the site.
+	 */
+	define( 'CFI_QUOTE_URL', 'https://californiafloodinsurance.com/get-a-quote/' );
 	define( 'CFI_LICENSE', 'CA License #0L75450' );
-	define( 'CFI_SISTER_NOTE', 'Looking for coverage outside California? <a href="https://www.statewidefloodinsurance.com/">Visit Statewide Flood Insurance</a>.' );
+	define( 'CFI_SISTER_NOTE', 'Looking for coverage outside California? <a href="https://statewidefloodinsurance.com/">Visit Statewide Flood Insurance</a>.' );
+	/* See inc/tags.php. These are the containers already live on production —
+	   nothing new is created at cutover. */
+	define( 'CFI_PROD_HOST', 'californiafloodinsurance.com' );
+	define( 'CFI_GTM_ID', 'GTM-MZ6RZ94' );
+	define( 'CFI_GA4_ID', '' );  /* G-3YMN51H7LE — see inc/tags.php before filling this in */
 
 	/*
 	 * Trust Index review widget.
@@ -136,6 +154,9 @@ require_once get_stylesheet_directory() . '/inc/video.php';
 
 /* One-time .htaccess cache-header install — see inc/htaccess.php for why. */
 require_once get_stylesheet_directory() . '/inc/htaccess.php';
+
+/* GTM / GA4, gated to the production hostname — see inc/tags.php for why. */
+require_once get_stylesheet_directory() . '/inc/tags.php';
 
 /**
  * tokens.css is inlined into the page rather than enqueued as a file.
