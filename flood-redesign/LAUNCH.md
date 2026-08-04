@@ -22,7 +22,7 @@ The two-week watch afterwards is where the real attention goes.
 | 2 | ~~Confirm whether the GTM containers hold a GA4 config tag~~ — **done 4 Aug: they do. `CFI_GA4_ID` stays empty.** | — | ☑ |
 | 2b | **GTM pass**: repoint the **GA4 event tags** (and statewide's native Ads tags) to `cfi_form_submit` / `cfi_is_lead`, retire the Click Text triggers | Aaron | ☐ |
 | 2c | ~~Resolve where CFI's Ads conversions come from~~ — **done 4 Aug: GA4-imported key events.** Confirm the Source column when convenient | — | ☑ |
-| 2e | Decide whether to apply the **July 15 conversion-tracking cleanup plan** (60 actions, dozens Primary across six brands) — still marked DRAFT | Aaron | ☐ |
+| 2e | Decide whether to apply the **July 15 conversion-tracking cleanup plan** (60 actions, dozens Primary across six brands) — still marked DRAFT. Sequenced in ACCOUNTS.md stage 3c: after the GTM repoint, and **not in the same week as the cutover** so the two effects stay separable | Aaron | ☐ |
 | 2f | Optional: point the flood ads at **/get-a-quote/** instead of the homepage — the new landing page puts the form on the page the click lands on | Aaron | ☐ |
 | 2d | Copy out Divi → Theme Options → Integration head/body code before the theme goes (low risk — every tag was found arriving through GTM) | Aaron | ☐ |
 | 3 | Verify tags fire on staging: any page + `?cfi_tags=1`, logged in as admin, with Tag Assistant | Claude | ☐ |
@@ -36,6 +36,10 @@ The two-week watch afterwards is where the real attention goes.
 
 Not launch-blocking, decide later: the asymmetric-lanes / cross-domain canonical question for
 the duplicated claims content.
+
+Account naming and structure cleanup — the GTM/GA4/Ads/Search Console tidy-up — is in **ACCOUNTS.md**.
+Its stage 1 (renames) is zero-risk and can happen any time. Its stage 3 overlaps this runbook's GTM
+pass and should not run in the cutover week.
 
 ---
 
