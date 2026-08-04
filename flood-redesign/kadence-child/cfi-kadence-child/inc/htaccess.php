@@ -1,6 +1,12 @@
 <?php
 /**
- * One-time install of static-asset cache headers into .htaccess.
+ * Server-level rules for static files: cache headers via .htaccess, and keeping
+ * the claim PDFs out of search via robots.txt.
+ *
+ * The robots.txt half lives here rather than with the SEO code because it exists
+ * for the same reason as the .htaccess half — these files never reach PHP, so
+ * anything that governs them has to be configured rather than rendered. See the
+ * filter at the bottom for why a header could not do the job on this host.
  *
  * Why this exists: PageSpeed measured every asset under /wp-content/themes/
  * shipping with no cache headers at all (285 KiB wasted per mobile visit,
@@ -82,45 +88,53 @@ add_action( 'admin_init', function () {
 		'</IfModule>',
 	);
 
-	$root_ok = insert_with_markers( $path, 'CFI static asset cache', $rules );
-
-	/*
-	 * The PDF rule again, one directory down — because the root block does not
-	 * reach the files it was written for.
-	 *
-	 * Measured on staging after v1.3.8: theme assets carry the Cache-Control this
-	 * file sets (css max-age=2592000, images 31536000 immutable), so mod_headers
-	 * is working and the root block is live. But /wp-content/uploads/ came back
-	 * with max-age=604800 and no X-Robots-Tag at all — the host configures that
-	 * directory separately, and its directives win there. Since every claim PDF
-	 * lives in uploads, the noindex applied to exactly nothing.
-	 *
-	 * mod_headers merges per-directory config after server config, so a block in
-	 * the uploads .htaccess takes precedence. Only X-Robots-Tag is set here:
-	 * the host's week-long cache on uploads is fine, and overriding it would be
-	 * changing something that is not broken.
-	 *
-	 * insert_with_markers() creates the file if it is missing, and leaves any
-	 * existing content outside its own markers untouched.
-	 */
-	$uploads    = wp_get_upload_dir();
-	$uploads_ok = false;
-	if ( empty( $uploads['error'] ) && ! empty( $uploads['basedir'] ) ) {
-		$up_path = trailingslashit( $uploads['basedir'] ) . '.htaccess';
-		if ( wp_is_writable( file_exists( $up_path ) ? $up_path : $uploads['basedir'] ) ) {
-			$uploads_ok = insert_with_markers( $up_path, 'CFI pdf noindex', array(
-				'<IfModule mod_headers.c>',
-				'  <FilesMatch "\.pdf$">',
-				'    Header always set X-Robots-Tag "noindex, noarchive"',
-				'  </FilesMatch>',
-				'</IfModule>',
-			) );
-		}
-	}
-
-	// Only record success once BOTH blocks are in place, so a failure on either
-	// one leaves this to retry on the next admin page load.
-	if ( $root_ok && $uploads_ok ) {
-		update_option( 'cfi_htaccess_cache_rules', 'v3', false );
+	if ( insert_with_markers( $path, 'CFI static asset cache', $rules ) ) {
+		update_option( 'cfi_htaccess_cache_rules', 'v4', false );
 	}
 } );
+
+/**
+ * Keep the claim PDFs out of search — via robots.txt, because on this host no
+ * header can reach them.
+ *
+ * What was measured (4 Aug, both staging sites):
+ *  - A missing file under /wp-content/themes/ returns WordPress's own 404 page,
+ *    and theme assets carry the Cache-Control the block above sets. That path
+ *    goes through Apache, so .htaccess works there.
+ *  - A missing file under /wp-content/uploads/ returns *nginx's* 404 page, and
+ *    uploads carry max-age=604800 from the host rather than anything set here.
+ *    nginx serves that directory straight off disk.
+ *
+ * So requests for the PDFs never reach Apache, and no amount of .htaccess —
+ * root or per-directory — can add X-Robots-Tag to them. v1.3.5 through v1.3.9
+ * were writing a rule that could not fire. The FilesMatch above is left in
+ * place because it is correct for any PDF served from a path Apache does own,
+ * but it is not what keeps the claim documents out of the index.
+ *
+ * robots.txt is the mechanism that works without the host's help. Honest limit:
+ * Disallow prevents crawling, not indexing — a disallowed URL that is linked
+ * can still appear as a bare result with no snippet. That is acceptable here,
+ * because the goal is that the PDF never competes with the page holding the
+ * same content, and an uncrawled PDF has no content to rank.
+ *
+ * The complete fix is one line of nginx (`add_header X-Robots-Tag "noindex,
+ * noarchive"` on the uploads location) — worth bundling into the same InMotion
+ * ticket as the /wp-json/ cache exclusion. Until then, this stands on its own.
+ *
+ * No trailing `$`: leaving it off also covers cache-busted and tracking-suffixed
+ * URLs such as …/guide.pdf?utm_source=email.
+ */
+add_filter( 'robots_txt', function ( $output ) {
+	$rule = "\n# Claim PDFs are deliverables, not search results — the pages hold the same content.\nDisallow: /wp-content/uploads/*.pdf\n";
+
+	// Append inside the existing "User-agent: *" group rather than after the
+	// Sitemap line, so the directive belongs to a group crawlers are reading.
+	if ( false !== strpos( $output, 'Disallow: /wp-admin/' ) ) {
+		return str_replace(
+			"Disallow: /wp-admin/",
+			"Disallow: /wp-admin/" . rtrim( $rule ),
+			$output
+		);
+	}
+	return $output . $rule;
+}, 20 );

@@ -19,7 +19,8 @@ The two-week watch afterwards is where the real attention goes.
 | # | Item | Owner | Done |
 |---|------|-------|------|
 | 1 | ~~Install theme v1.3.8~~ — **done 4 Aug, verified on both sites.** Page role, submit event, and the host gate all confirmed live | — | ☑ |
-| 1b | Install **v1.3.9** — fixes the PDF `noindex`, which v1.3.5–1.3.8 wrote to the root `.htaccess` where it never reached `/wp-content/uploads/` | Aaron | ☐ |
+| 1b | ~~Install v1.3.9~~ — installed, but its approach cannot work: **nginx serves `/wp-content/uploads/` directly**, so no `.htaccess` rule reaches the PDFs | — | ☑ |
+| 1c | Install **v1.4.0** — keeps the PDFs out of search via robots.txt instead, the one mechanism that works without the host | Aaron | ☐ |
 | 2 | ~~Confirm whether the GTM containers hold a GA4 config tag~~ — **done 4 Aug: they do. `CFI_GA4_ID` stays empty.** | — | ☑ |
 | 2b | **GTM pass**: repoint the **GA4 event tags** (and statewide's native Ads tags) to `cfi_form_submit` / `cfi_is_lead`, retire the Click Text triggers | Aaron | ☐ |
 | 2c | ~~Resolve where CFI's Ads conversions come from~~ — **done 4 Aug: GA4-imported key events.** Confirm the Source column when convenient | — | ☑ |
@@ -81,9 +82,11 @@ Do CFI first; statewide gets the benefit of anything learned.
   as not fired. This is the regression that was live before v1.3.7.
 - Confirm the quote submission fires **one** conversion action, not two — the old `Click Text
   contains "SUBMIT"` trigger could also match "Submit Application".
-- `curl -I` any claims PDF → `X-Robots-Tag: noindex, noarchive`. **This check already earned its
-  place**: it caught the rule being written to the root `.htaccess`, where the host's own uploads
-  config overrode it. Fixed in v1.3.9; re-verify after installing it.
+- **PDF exclusion:** `curl /robots.txt` → contains `Disallow: /wp-content/uploads/*.pdf` inside the
+  `User-agent: *` group. Do **not** expect an `X-Robots-Tag` header on the PDFs — nginx serves that
+  directory off disk and Apache never sees the request. This check earned its place twice: it caught
+  the original rule landing in the root `.htaccess`, then caught the per-directory version being
+  equally unreachable.
 - Spot-check 10 old URLs from the redirect map, following redirects, and confirm each lands on a
   200 with the intended page.
 - View the served JSON-LD on the homepage: one Organization/InsuranceAgency node, no Article
@@ -98,8 +101,12 @@ Do CFI first; statewide gets the benefit of anything learned.
 - Wordfence: paid key, and 2FA set to Required.
 - **Revoke the three application passwords pasted into chat**: staging `AJFarmer`, production
   `farmeraaron`, statewide staging `AJFarmer`.
-- Ask InMotion to exclude `/wp-json/` from the nginx cache (authenticated REST responses are
-  currently cached, which is why purges needed a REST write to trigger).
+- Ask InMotion for two nginx changes in one ticket:
+  1. Exclude `/wp-json/` from the nginx cache (authenticated REST responses are currently cached,
+     which is why purges needed a REST write to trigger — and why a theme-version check read stale).
+  2. Add `add_header X-Robots-Tag "noindex, noarchive";` to the `/wp-content/uploads/` location for
+     `.pdf` files. This is the complete version of what robots.txt approximates: robots.txt stops
+     crawling, the header stops indexing. Neither is urgent; together they close it properly.
 
 ---
 
