@@ -95,9 +95,13 @@ function cfi_extract_faq_pairs( $raw ) {
 
 	$pairs = cfi_faq_pairs_from_headings( $section );
 
-	// Fall back to the state-page paragraph form only if no headings were found.
+	// Then the two paragraph forms, in order of specificity.
 	if ( empty( $pairs ) ) {
 		$pairs = cfi_faq_pairs_from_paragraphs( $section );
+	}
+
+	if ( empty( $pairs ) ) {
+		$pairs = cfi_faq_pairs_from_split_paragraphs( $section );
 	}
 
 	return $pairs;
@@ -142,6 +146,39 @@ function cfi_faq_pairs_from_headings( $section ) {
  */
 function cfi_faq_pairs_from_paragraphs( $section ) {
 	$pattern = '/<p[^>]*>\s*<strong>\s*([^<]*\?)\s*<\/strong>\s*(?:<br\s*\/?>\s*)+(.*?)<\/p>/is';
+
+	if ( ! preg_match_all( $pattern, $section, $found, PREG_SET_ORDER ) ) {
+		return array();
+	}
+
+	$pairs = array();
+	foreach ( $found as $pair ) {
+		$question = cfi_faq_text( $pair[1] );
+		$answer   = cfi_faq_text( $pair[2] );
+
+		if ( '' === $question || '' === $answer ) {
+			continue;
+		}
+
+		$pairs[] = compact( 'question', 'answer' );
+	}
+
+	return $pairs;
+}
+
+/**
+ * Read <p><strong>Question?</strong></p> followed by <p>Answer</p>.
+ *
+ * The third shape found on these sites, used by the California city and
+ * flood-zone pages: question and answer in separate paragraphs with no <br>
+ * joining them. Distinct enough from cfi_faq_pairs_from_paragraphs() to need
+ * its own pass, and tried last because it is the loosest of the three.
+ *
+ * @param string $section FAQ section markup.
+ * @return array<int,array{question:string,answer:string}>
+ */
+function cfi_faq_pairs_from_split_paragraphs( $section ) {
+	$pattern = '/<p[^>]*>\s*<strong>\s*([^<]*\?)\s*<\/strong>\s*<\/p>\s*<p[^>]*>(.*?)<\/p>/is';
 
 	if ( ! preg_match_all( $pattern, $section, $found, PREG_SET_ORDER ) ) {
 		return array();
@@ -225,3 +262,115 @@ function cfi_print_faq_schema() {
 	);
 }
 add_action( 'wp_head', 'cfi_print_faq_schema', 20 );
+
+/**
+ * Author authority properties, for merging into the Person entity.
+ *
+ * WHY THIS IS HERE, AND WHY IT IS NOT A STRAIGHT COPY OF THE DIVI VERSION
+ * Statewide's Divi bio page carried a hand-written Person node with jobTitle,
+ * eight knowsAbout topics, memberOf, three social profiles and a credentialed
+ * description. Rank Math emits a Person too, but a thin one — display name, a
+ * Gravatar default image, and the site as its only sameAs. So the migration
+ * traded a rich author entity for a bare one, which is the opposite of what
+ * E-E-A-T and the AI answer engines reward.
+ *
+ * The Divi node had a flaw worth not reproducing: its `@id` was
+ * `/aaron-farmer/#person`, which nothing else referenced. Every Article's author
+ * pointed at the author archive instead, so all that authority sat in an
+ * orphaned node attached to one page. Emitting these properties under the
+ * archive `@id` Rank Math already uses means consumers merge them into the
+ * entity the articles actually cite — better than either version alone.
+ *
+ * California never had this at all; it gets it here for the first time.
+ *
+ * @return array<string,mixed> Empty to disable.
+ */
+function cfi_author_profile() {
+	$profile = array(
+		'jobTitle'   => 'President & Licensed Flood Insurance Specialist',
+		'worksFor'   => array(
+			'@type' => 'InsuranceAgency',
+			'name'  => CFI_SITE_NAME,
+			'url'   => home_url( '/' ),
+		),
+		'knowsAbout' => array(
+			'Private Flood Insurance',
+			'NFIP',
+			'Flood Insurance',
+			"Lloyd's of London",
+			'Excess Flood Insurance',
+			'Commercial Flood Insurance',
+			'FEMA Flood Zones',
+			'Risk Rating 2.0',
+		),
+		'memberOf'   => array(
+			'@type' => 'Organization',
+			'name'  => 'National Flood Association',
+		),
+		'sameAs'     => array(
+			'https://www.linkedin.com/in/aaronfarmerinsurance/',
+			'https://www.facebook.com/FloodInsuranceOnline',
+			'https://www.youtube.com/channel/UCXuQldf8KarbLWEf3sg2z9g',
+		),
+		'description' => 'Aaron Farmer is a licensed flood insurance specialist and '
+			. "Lloyd's of London coverholder since 2016, who has helped 40,000+ homeowners "
+			. 'and businesses with private and NFIP flood coverage nationwide.',
+	);
+
+	/*
+	 * The headshot is deliberately absent unless CFI_AUTHOR_IMAGE is defined.
+	 * The Divi pages hot-link it from the production domain, and that file does
+	 * not exist in either new install — so naming a URL here would ship a
+	 * schema image that 404s the moment the docroot swaps. Define the constant
+	 * once the uploads are copied across.
+	 */
+	if ( defined( 'CFI_AUTHOR_IMAGE' ) && CFI_AUTHOR_IMAGE ) {
+		$profile['image'] = CFI_AUTHOR_IMAGE;
+	}
+
+	return apply_filters( 'cfi_author_profile', $profile );
+}
+
+/**
+ * Print the enriched Person node for the post's author.
+ *
+ * @return void
+ */
+function cfi_print_author_schema() {
+	if ( ! is_singular() || is_feed() ) {
+		return;
+	}
+
+	$post = get_queried_object();
+	if ( ! $post instanceof WP_Post || ! $post->post_author ) {
+		return;
+	}
+
+	$profile = cfi_author_profile();
+	if ( empty( $profile ) ) {
+		return;
+	}
+
+	$name = get_the_author_meta( 'display_name', $post->post_author );
+	if ( '' === (string) $name ) {
+		return;
+	}
+
+	$graph = array_merge(
+		array(
+			'@context' => 'https://schema.org',
+			'@type'    => 'Person',
+			// Matches the author-archive @id that Rank Math's author references use.
+			'@id'      => get_author_posts_url( (int) $post->post_author ),
+			'name'     => $name,
+			'url'      => get_author_posts_url( (int) $post->post_author ),
+		),
+		$profile
+	);
+
+	printf(
+		"<script type=\"application/ld+json\">%s</script>\n",
+		wp_json_encode( $graph, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE )
+	);
+}
+add_action( 'wp_head', 'cfi_print_author_schema', 21 );

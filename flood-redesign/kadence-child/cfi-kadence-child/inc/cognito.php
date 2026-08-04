@@ -74,6 +74,15 @@ function cfi_cognito_roles() {
 		'12' => array( 'service', false ),        // existing policyholder service request
 		'31' => array( 'claims', false ),         // existing policyholder reporting a loss
 		'34' => array( 'appointment', false ),    // agent asking to be appointed, not a customer
+		/*
+		 * Used by /contact-us/ on both production sites. Declared so the event
+		 * reports role=contact rather than the role=other fallback, which is all
+		 * this changes: is_lead stays false, so it cannot reach Ads. Google Ads
+		 * does have a historical "Contact_Form_Submission" action on both
+		 * brands — if contact enquiries should count as leads again, flip this
+		 * to true deliberately rather than by accident.
+		 */
+		'57' => array( 'contact', false ),
 	);
 }
 
