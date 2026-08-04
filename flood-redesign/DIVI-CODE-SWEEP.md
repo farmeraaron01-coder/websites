@@ -26,7 +26,10 @@ hand-placed in one carried its *visible prose* across the migration and left its
 California city and flood-zone pages. Those were exactly the set that had FAQPage on production and
 lost it. 1.4.3 reads all three shapes.
 
-**85 pages, 342 question-and-answer pairs**, verified against raw content on both sites.
+**85 pages, 342 question-and-answer pairs** — verified live on both sites after 1.4.3 was installed.
+81 pages returned the exact expected question count on a normal request; the remaining 4 returned it on a
+cache-bypassing request and were confirmed stale nginx entries (`x-proxy-cache: HIT`), not theme faults.
+See `LAUNCH.md` step 6, which that discovery changed.
 
 ### 2. Author authority schema — restored, and better placed than the original
 
@@ -123,13 +126,14 @@ Two notes if it is rebuilt: statewide's original markup is malformed — `<pee>`
 a doubled `</a>` — so copy California's version, not statewide's. And the popup image is one of the
 hot-linked assets in section A, so it needs copying too.
 
-### E. `/floodguru/` does not exist on staging
+### E. `/floodguru/` — already decided, no action
 
-Statewide production has a `/floodguru/` page running **Cognito form 68** — a form the theme does not
-know about. The page was not migrated.
+~~Needs your call.~~ **Withdrawn: this was settled on 30 July** and is already in `LAUNCH.md` step 5 —
+*"Delete `/floodguru/` outright on statewide, no redirect (your call)."* Its absence from staging is the
+decision being carried out, not something the migration dropped.
 
-Not necessarily a problem: it may be deliberately retired. But it is a live URL today, so if it is not
-coming across it wants a redirect rather than a 404. **Your call whether it returns.**
+Recorded here only so the sweep's inventory is complete: the page runs Cognito form 68, which is
+consequently the one production form the theme deliberately does not need to know about.
 
 ---
 

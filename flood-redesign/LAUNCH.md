@@ -111,7 +111,28 @@ Do CFI first; statewide gets the benefit of anything learned.
 5. **Install the redirects.** The 6 CFI redirects **with trailing slashes** (the defect noted in
    MIGRATION.md), plus `/media/` → `/video/`. Delete `/floodguru/` outright on statewide, no
    redirect (your call, recorded 30 July).
-6. **Flush the nginx cache** (Nginx Helper → Purge Entire Cache).
+6. **Flush the nginx cache** (Nginx Helper → Purge Entire Cache) — **then verify it actually
+   cleared, because a WordPress-level purge does not reliably clear nginx's proxy cache.**
+
+   Proven 4 Aug, installing theme 1.4.3: after a full purge, 81 of 85 pages served freshly
+   generated HTML (`x-proxy-cache: MISS`) while **4 URLs still returned pre-update HTML with
+   `x-proxy-cache: HIT`** — the four whose clean URLs had been requested repeatedly beforehand.
+   Nothing was wrong with the theme; the cache was answering.
+
+   How to check, on any page you changed:
+
+   ```
+   curl -sI https://<host>/<page>/ | grep -i x-proxy-cache
+   ```
+
+   `MISS` means you are seeing current output. `HIT` means you may not be — compare against
+   `https://<host>/<page>/?x=1`, which bypasses the cache because the query string makes it a
+   different key. **If the two disagree, the cache is stale, not the site.**
+
+   This matters most in the first minutes after the flip, when the pages people request most are
+   exactly the ones most likely to hold a cached pre-launch copy. If stale entries persist, they
+   age out on their own TTL — or ask InMotion to purge the proxy cache server-side, which is the
+   only purge that definitely reaches it.
 7. **Switch the conversion tracking over — this step belongs here, not earlier.** The old Divi site
    does not emit `cfi_form_submit`, so the click triggers had to keep running until this moment.
    Now that the new site is answering the domain:
