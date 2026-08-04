@@ -34,11 +34,11 @@ requires guessing.
 | 1 | Exact trigger logic for the California and Statewide Google Ads **and** Bing conversion tags | Session 2 read-backs | Google side confirmed (click triggers, "Click Text contains SUBMIT"); **Bing side unknown** |
 | 2 | One valid quote = one lead event; staff = zero; failed validation = zero | Test A above | Not yet run |
 | 3 | Proof the test cannot send a live conversion to either platform | Test A runs with no container loaded; plus the staging-hostname exception | Design settled |
-| 4 | Campaign-to-goal map for every flood campaign | Session 0 baseline + Session 7 step 3 read-back | Not yet built |
+| 4 | Campaign-to-goal map for every flood campaign | Delivered 4 Aug — 46 flood campaigns, 44 on Account-default, 2 Demand Gen campaign-specific | **Closed** |
 | 5 | Current Search Console verification method for both launch sites | Session 3 step 1 | Unknown for statewide |
 
-Evidence 1 and 5 are the two genuine unknowns. Everything else is either settled or is a task on this
-list.
+Evidence 1 and 5 are the two remaining unknowns, both cheap reads. Item 4 arrived on 4 Aug and
+surfaced a finding of its own — see *What the map showed* below.
 
 
 ---
@@ -469,14 +469,58 @@ conversion action — only change primary/secondary, counting, and campaign goal
    Do the same per brand for trucking, earthquake, pest, sober living, landlord and pet
    campaigns — each counting only its own brand's lead actions.
 
+4. ONE MORE READ, no changes: I count thirteen states running TWO flood campaigns each —
+   one Manual CPC and one Maximize Conversions — sharing the same account-default goals:
+   California, Florida, Georgia, Illinois, Louisiana, Massachusetts, Michigan, Missouri,
+   North Carolina, Ohio, South Carolina, Tennessee, Virginia.
+   For each of those 26 campaigns, give me last-90-day spend, conversions, cost per
+   conversion, and impression share lost to rank and to budget. Change nothing.
+
 Before you change any campaign goals, give me the list of flood campaigns you found and
 what their goals are set to now, and wait for me to confirm.
 
 Report step 1 and 2 as done/not-done lists, and stop for confirmation before step 3.
 ```
 
-**Report back:** steps 1 and 2 complete, plus the campaign list for step 3 — then confirm before it
-proceeds.
+**Report back:** steps 1 and 2 complete, plus the campaign lists for steps 3 and 4 — then confirm
+before step 3 proceeds.
+
+### What the map showed — thirteen states, not two
+
+The 4 Aug campaign map closes gate item 4, and reading down it turns up something bigger than the
+goal-governance point it was built to answer.
+
+**Thirteen states run two flood campaigns each** — one Manual CPC and one Maximize Conversions —
+on the same account-default goals: California, Florida, Georgia, Illinois, Louisiana, Massachusetts,
+Michigan, Missouri, North Carolina, Ohio, South Carolina, Tennessee, Virginia.
+
+The July audit found this pattern in **two** states and priced the self-competition at roughly
+$11,600/month. The full map says it is thirteen. Two things follow, and the second is the one that
+matters:
+
+1. They bid against each other in the same auction for the same geography, inflating their own CPCs.
+2. **They split the conversion signal.** Because both halves share the account-default goal set,
+   every conversion the Manual half takes is a conversion the Maximize Conversions half never learns
+   from — so the automated campaign is being starved by its own duplicate.
+
+The June re-look already measured what this costs in one of these very states: **Florida, Manual CPC
+at $203 CPA and 2% conversion rate, against the same state's Maximize Conversions campaign at $29 and
+23%.** Seven times better, same state, same product.
+
+That is why step 4 above only *reads*. The pattern is strong and the mechanism is clear, but which
+half to keep is a per-state question with real money attached, and the second review is right that a
+one-size-fits-all bid change would be reckless. Get the 26-campaign spend table first.
+
+Sequence note: this is a **campaign structure** change, which is a third category after measurement
+(sessions 2 and 7 steps 1–2) and goals (step 3). Do it last, one or two states at a time, with the
+Session 0 baseline as the comparison — not as a batch of thirteen.
+
+### One useful thing to copy rather than invent
+
+The two Demand Gen campaigns already carry campaign-specific goals, and one is named **"Statewide
+Flood - Quote & Contact Leads"**. So a brand-scoped goal set already exists in this account. Open it
+before building anything in step 3 — if it is well-formed, the flood search campaigns can point at
+the same pattern rather than a new one invented from scratch.
 
 ---
 
