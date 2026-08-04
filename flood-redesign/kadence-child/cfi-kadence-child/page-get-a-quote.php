@@ -32,7 +32,13 @@
 			<h1>Start your flood quote</h1>
 			<p class="cfi-lp-sub">Secure form &middot; about 2 minutes &middot; a licensed specialist compares available options and follows up promptly.</p>
 			<div class="cfi-lp-embed">
-				<script src="https://www.cognitoforms.com/f/seamless.js" data-key="8nmcIcFF1k6xZNCBaOzZxQ" data-form="5"></script>
+				<?php
+				/* Through the shortcode rather than a hardcoded embed: this is the page
+				   the Ads spend points at, so it has to emit the same cfi_form_submit
+				   event as every other form, and share one copy of the form key.
+				   See inc/cognito.php. */
+				echo do_shortcode( '[cfi_cognito form="5"]' );
+				?>
 			</div>
 		</section>
 

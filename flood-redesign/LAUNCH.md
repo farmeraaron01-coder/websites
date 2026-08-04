@@ -18,13 +18,17 @@ The two-week watch afterwards is where the real attention goes.
 
 | # | Item | Owner | Done |
 |---|------|-------|------|
-| 1 | Install theme **v1.3.6** on both sites (both are on 1.3.4 — this also activates the PDF `noindex` header and the tag snippet) | Aaron | ☐ |
-| 2 | Confirm whether the GTM containers already hold a GA4 configuration tag → see *Analytics* below | Aaron | ☐ |
+| 1 | Install theme **v1.3.7** on both sites (both are on 1.3.4 — brings the PDF `noindex` header, the tag snippet, and the `cfi_form_submit` conversion event) | Aaron | ☐ |
+| 2 | ~~Confirm whether the GTM containers hold a GA4 config tag~~ — **done 4 Aug: they do. `CFI_GA4_ID` stays empty.** | — | ☑ |
+| 2b | **GTM pass**: repoint Ads conversions to `cfi_form_submit` / `cfi_is_lead`, retire the Click Text triggers | Aaron | ☐ |
+| 2c | **Resolve where CFI's Ads conversions come from** — none in the container (Google Ads → Goals → Conversions → Source) | Aaron | ☐ |
+| 2d | **Copy out Divi → Theme Options → Integration head/body code** on both sites before the theme goes away | Aaron | ☐ |
 | 3 | Verify tags fire on staging: any page + `?cfi_tags=1`, logged in as admin, with Tag Assistant | Claude | ☐ |
 | 4 | Sign off content: 9 statewide articles, 10 claims pages, 18 drafted meta descriptions | Aaron | ☐ |
 | 5 | Sign off statewide palette and hero copy | Aaron | ☐ |
 | 6 | Correct the four "separate purchases" instances in the source PDFs (copy supplied; sites already fixed) | Aaron | ☐ |
-| 7 | **Verify both domains in Search Console by DNS TXT record** — see *Site Kit* below | Aaron | ☐ |
+| 7 | **Add a DNS-verified Domain property for each site in Search Console** — statewide is verified by an HTML file that a docroot swap deletes | Aaron | ☐ |
+| 7b | Note a baseline week of GA4 pageviews — the number legitimately drops when Site Kit's duplicate tag goes | Aaron | ☐ |
 | 8 | **Full backup of each production site — files + database — downloaded off the server** | Aaron | ☐ |
 | 9 | Confirm the cutover method with InMotion (see *Rollback*) — docroot swap, not overwrite | Aaron | ☐ |
 
@@ -65,6 +69,11 @@ Do CFI first; statewide gets the benefit of anything learned.
 - Tag Assistant on the live homepage: GTM container loads, GA4 fires **once** (not twice).
 - Google Ads: confirm a conversion registers from a real test submission, then note the time so
   you can identify the test row later.
+- **Submit the staff form as a test and confirm NO Ads conversion is recorded.** In GTM Preview
+  the push should read `cfi_form_role: "staff"`, `cfi_is_lead: false`, and the Ads tag should show
+  as not fired. This is the regression that was live before v1.3.7.
+- Confirm the quote submission fires **one** conversion action, not two — the old `Click Text
+  contains "SUBMIT"` trigger could also match "Submit Application".
 - `curl -I` any claims PDF → `X-Robots-Tag: noindex, noarchive`.
 - Spot-check 10 old URLs from the redirect map, following redirects, and confirm each lands on a
   200 with the intended page.
@@ -104,19 +113,98 @@ submission counts as a real lead and feeds Smart Bidding a fake conversion. At c
 hostname becomes the production one and tagging starts by itself — there is no step to forget.
 To test before then: `?cfi_tags=1` on any page while logged in as an administrator.
 
-**The one open question: `CFI_GA4_ID` is intentionally empty.** Site Kit is not in the new
-plugin stack, so GA4 needs a home — either as a configuration tag inside GTM (preferred: one
-tag system) or printed directly by the theme. If the container already has a GA4 tag and the
-theme prints gtag as well, every session is counted twice: page_view doubled, users inflated,
-conversion rate halved. Open the container, check for a GA4 configuration tag, and:
+**`CFI_GA4_ID` stays empty — settled 4 Aug.** Both containers already hold a Google Tag named
+"GA4 - Page Views" firing on All Pages: `G-3YMN51H7LE` in `GTM-MZ6RZ94`, `G-FH3Q6GKNHH` in
+`GTM-PJQ72VK`, each matching its property's data stream. GA4 therefore runs through GTM and the
+theme must not print gtag as well.
 
-- **Tag exists in GTM** → leave `CFI_GA4_ID` empty. Nothing more to do.
-- **No tag in GTM** → either add one there, or set `CFI_GA4_ID` to the measurement ID in
-  `functions.php`.
+**Which means production is double-counting GA4 today.** The GTM Google Tag configures the
+measurement ID *and* Site Kit prints its own gtag config for the same ID on every page. Dropping
+Site Kit removes the duplicate.
+
+> **Expect GA4 sessions and pageviews to fall after cutover, with no real traffic loss.** This is
+> the duplicate going away, not the new site underperforming. Before flipping, note a baseline
+> week of GA4 pageviews and check DebugView for two `page_view` events on one load so the size of
+> the drop is known in advance. Judge the migration on Search Console impressions, Ads conversion
+> volume, and phone calls — not on GA4 session counts across the cutover line.
 
 Also: statewide production carries an orphaned `GTM-MZ6RZ94` `<noscript>` iframe with no head
 loader — a leftover from when the site was cloned from CFI's Divi build. It only ever affected
 visitors with JavaScript off. Deliberately not carried over.
+
+### Conversion tracking — what the container audit found (4 Aug)
+
+Three problems, all live on production now. Theme v1.3.7 fixes the site half; the GTM half needs
+one pass in Tag Manager.
+
+**1. The staff form is being counted as a paid lead.** `/staff-form/` embeds **form 5 — the same
+Cognito form as the public quote page** — and its button carries the same "Submit Application"
+label. Statewide's Ads conversion `Submit_Online_Quote_Form` triggers on *All Elements → Click
+Text contains "Submit Application"*, so it cannot tell the two apart: every phone call the office
+types into the staff form registers as a Google Ads conversion. That is exactly the pollution the
+staff form was given its own noindexed URL to prevent. Verified in the DOM — the seamless embed
+renders in the parent document with no iframe, so the click listener does see it.
+
+**2. The triggers count clicks, not submissions.** A click trigger fires when the button is
+pressed, including when validation rejects the form and no entry is created. Conversions inflate
+and Smart Bidding optimises toward people who never finish.
+
+**3. Two conversion actions may fire on one submission.** `Contact - Form Submission` triggers on
+*Click Text contains "SUBMIT"*. `innerText` reflects CSS `text-transform`, so an uppercase-styled
+button can report `SUBMIT` — and "Submit Application" contains "Submit". Whether both fire depends
+on the trigger's case sensitivity. Check it in GTM Preview on the quote page.
+
+#### The site half — theme v1.3.7
+
+`[cfi_cognito]` now emits one explicit event on a genuinely successful submission:
+
+```js
+dataLayer.push({
+  event: 'cfi_form_submit',
+  cfi_form_id: '5',
+  cfi_form_role: 'quote',   // quote | staff | service | claims | appointment | other
+  cfi_is_lead: true         // false for staff intake, service, claims, appointments
+})
+```
+
+Detected two ways, both verified to exist in Cognito's own bundle: `Cognito.on('afterSubmit')`,
+and a MutationObserver watching for the `cog-confirmation` node that replaces the form after an
+entry is accepted. Whichever fires first wins and a flag stops the other reporting twice. Tested
+against the live staging form: the confirmation path fires and dedupes correctly, and neither DOM
+churn nor a submit click that fails validation produces an event.
+
+Fail-safe: role comes from the form id, but **any page whose slug contains "staff" is forced to
+`role=staff`, `cfi_is_lead=false`** regardless of the shortcode. Forgetting an attribute cannot
+turn staff intake into a paid conversion. The PPC landing page was also switched from a hardcoded
+embed to the shortcode, so the page the Ads spend points at emits the same event.
+
+#### The GTM half — Aaron, before cutover
+
+1. Create a Custom Event trigger: event name `cfi_form_submit`, condition `cfi_is_lead` **equals**
+   `true`. (Register `cfi_is_lead`, `cfi_form_role`, and `cfi_form_id` as dataLayer variables.)
+2. Repoint the Ads conversion tags to it and **remove the Click Text triggers.**
+3. Add a second GA4 event on `cfi_form_submit` *without* the is_lead condition, with
+   `cfi_form_role` as a parameter — staff and service volume stays measurable in GA4 while never
+   reaching Ads.
+4. Do the same for the Bing UET tags (`Bing UET - request_quote` is Custom HTML and likely carries
+   the same click fragility).
+5. **CFI has no Ads conversion tag in the container at all**, only Google Ads Remarketing
+   (`1012143191`, All Pages). So its conversions come from somewhere else — most likely GA4 key
+   events imported into Ads, since GA4 property 314823941 has been linked to Ads account
+   890-760-9729 since Nov 2022, or from the `AW-1012143191` gtag that GTM's health check reports
+   running outside the container. Resolve it in **Google Ads → Goals → Conversions**: for each
+   conversion action read the Source column (Website / Google Analytics 4 / Phone calls) and its
+   tag setup. Until that is known, CFI's conversion path cannot be confirmed to survive cutover.
+6. **Inventory Divi's Integration code before the theme goes away.** The GTM snippet was
+   hand-placed in Divi's header, so anything else living there — an Ads gtag, Bing UET, a
+   verification meta tag — dies with the theme and will not be visible in GTM. Copy the head and
+   body code boxes out of Divi → Theme Options → Integration on both sites and check every tag
+   against this list.
+
+Untouched, noted for completeness: statewide GA4 has a **second, orphaned property** (371465506 /
+`G-NCF8CTTSQS`, stream `https://statewidefloodinsurance.com`, no data, no Ads link). Leave it
+alone — just never point anything at that measurement ID. Both live streams also have `http://`
+stream URLs; cosmetic, worth updating to `https://` while you are in there.
 
 ### Site Kit — decided: not carried over (4 Aug)
 
@@ -130,17 +218,35 @@ worse prize for an attacker than the site itself (Site Kit ≤1.24 had a privile
 that let any subscriber become a Search Console owner). The rebuild's whole premise is that the
 theme does this work with no plugin layer.
 
-**The dependency this creates, and the fix.** Neither production site emits a
-`google-site-verification` meta tag, so Search Console verification is currently anchored to DNS,
-an uploaded HTML file, or the GA/GTM tag — possibly to the Site Kit connection itself. If it is
-the last of those, dropping the plugin costs verification exactly when the sitemap needs
-submitting.
+Leave Site Kit installed on the old production site until after cutover — removing it early has
+no upside.
 
-So before cutover: **add a DNS TXT verification for each domain as a Domain property.** It is
-permanent, independent of every plugin and tag, and covers www, non-www, and subdomains at once.
-Confirm the existing method under Search Console → Settings → Ownership verification first;
-leave Site Kit installed on the old production site until after cutover, since removing it early
-has no upside.
+### Search Console verification — statewide is the exposure (checked 4 Aug)
+
+Verification is **not** anchored to Site Kit on either site, so dropping the plugin is safe. But
+the two sites are anchored differently, and one of them breaks at cutover:
+
+| | CFI | Statewide |
+|---|---|---|
+| Properties | `https://californiafloodinsurance.com/` and `http://www.californiafloodinsurance.com/`, URL-prefix only | `http://statewidefloodinsurance.com/` and `https://statewidefloodinsurance.com/`, URL-prefix only |
+| Verified by | **DNS TXT** ("Domain name provider") | **HTML file upload** |
+| Survives a docroot swap? | Yes — DNS is independent of the filesystem | **No** |
+
+**Statewide's verification lives in a file in the production docroot.** Swap the docroot and the
+file is gone, which un-verifies the property at the moment the sitemap needs submitting. Two ways
+to fix, do the first:
+
+1. **Add a Domain property for each site, verified by DNS TXT** (Add property → Domain → TXT
+   record at the DNS host). Permanent, filesystem-independent, and covers www, non-www, http and
+   https in one property. CFI already has the DNS record proving ownership — Search Console even
+   shows the banner about it — so adding the Domain property there is a click plus a record.
+2. Failing that, copy the `google*.html` verification file into the new install's docroot before
+   flipping, and keep it out of any cleanup.
+
+Also worth doing while there: **CFI's www property is `http://`, not `https://`.** For a site that
+canonicalises to `https://` non-www, that property is the wrong shape to be reading data from — a
+Domain property replaces both and is the cleaner answer. Submit the sitemap to the Domain property
+once it exists.
 
 ---
 
@@ -169,9 +275,16 @@ What a revert does not undo:
   twice. Decide inside the first week or two.
 
 **Trigger conditions — revert rather than debug live** if: forms stop delivering and are not
-fixed within an hour; Ads conversions read zero for a full day; a material share of top pages
+fixed within an hour; Ads conversions read zero for a full day (check first that the GTM container
+was published — an unpublished container looks identical to a broken site); a material share of top pages
 404; or Search Console reports a coverage collapse rather than the normal post-migration
 wobble. Anything cosmetic gets fixed forward, not reverted.
 
-**Watch daily for two weeks:** Search Console coverage and Core Web Vitals, GA4 sessions against
-the same week last month, Ads conversion volume and cost per conversion, and the 404 log.
+**Watch daily for two weeks:** Search Console coverage and Core Web Vitals, Ads conversion volume
+and cost per conversion, phone call volume, and the 404 log.
+
+**Do not use GA4 session counts as the health check across the cutover line.** They will drop
+because production currently double-counts every pageview (GTM's Google Tag plus Site Kit's gtag,
+same measurement ID) and the duplicate goes away with Site Kit. Compare GA4 to itself only after
+the first full post-cutover week. Conversion *rate* will also appear to improve for the same
+reason — the denominator was inflated.

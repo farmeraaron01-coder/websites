@@ -263,6 +263,11 @@ body.cfi-lp{margin:0;background:var(--cfi-paper);font-family:var(--cfi-body);col
 .cfi-lp-form h1{font-family:var(--cfi-display);font-weight:640;font-size:clamp(28px,4vw,40px);margin:0 0 8px}
 .cfi-lp-sub{color:var(--cfi-ink-2);margin:0 0 24px;font-size:16px}
 .cfi-lp-embed{background:var(--cfi-card);border:1px solid var(--cfi-line);border-radius:12px;box-shadow:var(--cfi-shadow);padding:20px;min-height:max(760px,88vh)}
+/* The landing page now renders its form through [cfi_cognito], which brings its
+   own .cfi-embed wrapper. That wrapper reserves 88vh to hold layout while the
+   form loads — but .cfi-lp-embed already reserves it, and two stacked
+   min-heights would make the card taller than the space it needs. */
+.cfi-lp-embed .cfi-embed{min-height:0;margin:0}
 .cfi-lp-rail{display:flex;flex-direction:column;gap:18px}
 .cfi-lp-card{background:var(--cfi-card);border:1px solid var(--cfi-line);border-radius:12px;box-shadow:var(--cfi-shadow);padding:22px}
 .cfi-lp-stars{margin:0 0 14px;font-weight:700;font-size:15px}
