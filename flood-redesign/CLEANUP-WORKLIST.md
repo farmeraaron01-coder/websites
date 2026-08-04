@@ -262,7 +262,33 @@ the live /get-a-quote/ page source for uetq or bat.bing.com code GTM does not ac
 Change nothing.
 ```
 
-**The middle case is now ruled out — traced 4 Aug from the live page source.** There is **no hardcoded
+**Proven, not inferred — and one report of hardcoded UET code is wrong.** A third review reported that
+statewide's live quote page hard-codes the UET base snippet outside GTM. It does not, and the test that
+settles it is blocking GTM:
+
+| | Bing network requests | `window.uetq` | `bat.bing.com` script tags |
+|---|---:|---|---:|
+| Normal load | 10 | object | 2 |
+| **GTM blocked** | **0** | **undefined** | **0** |
+
+Every trace of UET disappears when `googletagmanager.com` is blocked, so **all of it comes from GTM's
+base UET tag.** Nothing Bing-related is hardcoded anywhere.
+
+Why it looked hardcoded, because this is an easy trap: inspect the live page in devtools and you see
+`<script src="https://bat.bing.com/bat.js">` sitting in `<head>` with no GTM comment beside it, which
+reads as hand-placed. But that is the **rendered DOM**, and GTM injected it. The tells are that it is
+absent from view-source — `uetq`, `bat.bing`, `5318855` and even the word "bing" return zero hits in
+the served HTML, including inside base64 blobs and escaped forms — and that it vanishes when GTM is
+blocked. **DOM ≠ source.** I nearly made the mirror-image error earlier by trusting a plain-text
+search alone; both checks are needed.
+
+(Incidentally, the UET tag is also pulling `clarity.ms/tag/uet/5318855` — Microsoft Clarity riding
+along on UET. Harmless, just worth knowing it is there.)
+
+**So the launch question is settled: nothing Bing-related dies at cutover.** Original finding below
+stands.
+
+**The middle case is ruled out — traced 4 Aug from the live page source.** There is **no hardcoded
 UET code on statewide**: `uetq`, `bat.bing.com`, `5318855`, `5318858` and `request_quote` all return
 zero hits in the raw HTML of the live `/get-a-quote/` page. So nothing Bing-related lives in the Divi
 theme, and **nothing about Bing tracking dies at cutover.** That was the launch-relevant worry and it
@@ -274,7 +300,19 @@ GTM4WP plugin); `GTM-MZ6RZ94` appears **only as a `<noscript>` iframe** with no 
 executes for a normal visitor. California's click-triggered event tag therefore cannot be firing on
 statewide's form.
 
-What remains is a data-quality question rather than a launch risk, and there are two candidates:
+What remains is a data-quality question rather than a launch risk — and with hardcoded code ruled out,
+there is now a leading hypothesis worth testing first:
+
+**The goal is probably a Destination URL goal, not an Event goal.** That would explain everything with
+no event tag anywhere: the base UET tag fires on every page, and a URL rule turns a *page view* into a
+recorded conversion. If the rule matches something like `/get-a-quote/`, then statewide's Bing
+"conversions" are **visits to the quote page, not submissions** — which would make its conversion count
+and its $95.66 CPA measure something entirely different from California's, and would explain part of
+why the same-state CPAs disagree so wildly between platforms. The goal being *named* "STATEWIDE Submit
+Form Click" does not make it an event goal; we already learned once in this project not to infer type
+from name.
+
+Two other candidates if that is not it:
 
 1. **A differently-named GTM tag pushes the event.** The search was done by tag *name* — anything
    matching "Bing" or "UET". A Custom HTML tag called something else entirely could contain a `uetq`
