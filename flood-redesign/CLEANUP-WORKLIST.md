@@ -497,6 +497,36 @@ that would actually be worth doing, because it optimises toward customers rather
 
 It is already on the loose-ends list below. It is worth more than its position there suggests.
 
+### The volume constraint on all of this (Aaron, 4 Aug: ~250 policies bound last month)
+
+Roughly **250 policies bound in the last month** — but that is a **blended** figure covering PPC
+leads, referrals, and policies written by other agents through the MGA. Recorded here because it is
+the only real business number in this entire document, and because two things follow from it.
+
+**1. It cannot validate PPC by itself, and the MGA share is the reason.** Policies written by other
+agents through the MGA are not marketing-attributable at all. A strong MGA month would mask a weak
+PPC month and vice versa, so the blended total is exactly the wrong number to judge an ads change by.
+What is needed is not precision — just a rough monthly split into three buckets: **web/PPC,
+referral, MGA/other agents.** Even an approximate split, tracked monthly, is enough to detect whether
+a measurement change cost real business. That is a report out of InsuredMine, not a tracking project,
+and it is worth having *before* anything in Session 7 is contemplated.
+
+**2. It reveals why "just optimise to bound policies" does not work, and shapes the design.** Offline
+conversion import is the right long-term idea, but Smart Bidding needs roughly 30 conversions per
+campaign per 30 days to bid reliably. If the PPC-attributable slice of 250 is, say, 60–90 policies
+spread across 46 flood campaigns, that is one or two per campaign — nowhere near enough to bid on
+directly, however clean the signal.
+
+So the correct architecture is two-tier, and it resolves the tension in this whole document:
+
+- **Bid on validated lead submissions.** High enough volume for the algorithm to learn from, and now
+  clean — no staff intake, no failed validations. This is what Session 2 delivers.
+- **Review on bound policies.** Too thin to bid on, but the right number for judging campaigns and
+  states periodically, by hand, with the GCLID plumbing supplying the attribution.
+
+That is why Session 7's question is "would a narrower goal set leave enough conversion volume" rather
+than "which goal is most accurate". Accuracy that starves the algorithm is not an improvement.
+
 **If it is ever run:** not in the cutover week, on a stable budget, one brand at a time, with the
 Session 0 baseline as the comparison, and a written condition for putting it back.
 
