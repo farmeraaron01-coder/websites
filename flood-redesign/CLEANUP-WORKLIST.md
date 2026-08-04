@@ -833,65 +833,36 @@ Two things that are not account cleanup but are on the same list:
 
 - **Move `google-ads-project/Google Ads/.env` out of Dropbox and rotate the Google Ads refresh
   token.** A refresh token is durable access to the whole Ads account, sitting in a synced folder.
-### Lead-source attribution — revised, additive only (4 Aug)
+### Lead-source attribution — already working. Read the form, 4 Aug
 
-Two constraints changed this. The Zapier Email Parser **does other things in Aaron's process**, so it
-must not be modified, and the webhook-to-InsuredMine route **needs InsuredMine's help**, so it is not
-self-service. My earlier five-step version violated both. Revised so that nothing existing is touched
-and nothing waits on a vendor.
+**Resolved by reading Cognito directly instead of reasoning about it. Nothing needs building.** Full
+detail in `baseline-2026-08-04/LEAD-TRUTH.md`; the short version:
 
-Current state: Cognito form 5 already captures `GCLID`, `MSCLKID` and the UTM set into hidden fields.
-The entry holds them. Form 5 delivers four ways — a webhook to the flood rater at
-`cfi.insuranceclouds.com`, and emails to `quote@`, `floodcognito@robot.zapier.com` (the Email Parser)
-and `data@insuredmine.com`. Only the emails omit hidden fields, and **the emails are the part that must
-not change.**
+All seven attribution fields exist on form 5, they are populated, and **every paid lead carries source,
+medium, campaign, keyword and the platform's click ID.** Two entries from 4 August show
+`google/cpc/search_hawaii_maxconv/"buy flood insurance"` with a real GCLID, and
+`bing/cpc/search_hawaii/"low cost flood insurance"` with a real MSCLKID. Click IDs are present on 145 of
+148 paid leads in the sample, so offline conversion import is available whenever wanted.
 
-**And there is no "Include hidden fields" checkbox to turn on — verified from the UI, 4 Aug.** The email
-action dialog offers only Entry Details, Blank Fields, Organization Name, Sender Name and Form Title.
-`IncludeHiddenFields` in the June notes is an **API-level property of the email action**, not something
-exposed in the interface; I read it as a UI toggle and it is not one. The only way to force hidden
-fields into an email would be to replace the default Entry Details layout with a custom body containing
-explicit field tokens — which changes the email's structure and is exactly the thing that could break
-the Email Parser. **So do not pursue it at all.** That removes the item rather than resequencing it, and
-it makes the webhook route below the only sensible path.
+The fields are set to `Show This Field → Never`, which is why they never appear in the form, the
+notification emails, or the entry summary — and why they looked absent.
 
-Two useful things that dialog also showed: the email carries a **"View full entry at CognitoForms.com"**
-link, so the complete entry with all hidden fields is always one click away — the data is never actually
-lost. And **Attach → Documents** is enabled, so a generated PDF of the entry rides along; depending on
-that document's template it may already contain the attribution fields. Worth a look at one recent email
-before building anything.
+**So this whole item collapses.** No webhook, no Zapier change, no InsuredMine involvement, no
+`IncludeHiddenFields`. Answering "which campaigns produce bound policies" is an **export and a match**:
+export form 5, filter `UTMMedium = cpc`, match against bound policies on name or email, group by
+`UTMCampaign`.
 
-**Step 0 — Check whether this is already solved.** Webhooks receive the *full* entry JSON, hidden fields
-included. So the rater at `insuranceclouds.com` **has been receiving GCLID and UTM values all along.**
-Before building anything, ask whether that system stores those fields and can report on them by campaign.
-If it can, the whole job is a report request and nothing needs building. This is the cheapest possible
-outcome and nobody has checked it.
+**And the measurement it enables changes the Session 7 picture in Aaron's favour.** Comparing
+flood-only campaigns against flood-only form submissions gives **1.35× on Google and 1.47× on
+Microsoft** — not the ~4× I implied earlier from a much sloppier comparison. Phone-call conversions
+alone probably explain most of that gap, and those are real leads. See LEAD-TRUTH.md for the
+decomposition and the correction.
 
-**If it cannot, then one additive step:**
-
-**Step 1 — Add a second Cognito webhook to a Zapier Catch Hook.** Cognito supports multiple webhooks
-and already has one, so adding another changes nothing about the existing flow: the rater keeps its
-webhook, all three emails stay byte-identical, and the Email Parser never sees a different message.
-Webhook failures do not block form submission either.
-
-- In Zapier, create a Zap with a **Webhooks by Zapier → Catch Hook** trigger. Zapier gives you a URL.
-- In Cognito form 5 → Submission → add that URL as an additional webhook.
-- Action: write one row per submission to **Google Sheets or Airtable** — name, email, phone, submission
-  time, plus `UTMSource`, `UTMMedium`, `UTMCampaign`, `UTMTerm`, `GCLID`, `MSCLKID`, `SourceWebsite`.
-
-That produces a lookup table: every web lead with the campaign and keyword that produced it. To answer
-"which campaigns produced bound policies", match your bound list against that sheet on name or email.
-Crude, but it answers the question, and it requires **no InsuredMine involvement, no parser change, and
-no vendor waiting.**
-
-**Later, optionally:** writing attribution onto the InsuredMine record itself is nicer for the sales
-team, and that is the conversation to have with InsuredMine when there is time. It is an enhancement to
-this, not a prerequisite.
-
-Why it earns the effort: it makes **bound policies attributable by campaign**, which is the measurement
-that turns the deferred Session 7 decision from a judgement call into a number — and the prerequisite
-for offline conversion import later, feeding *bound policies* back to the ad platforms rather than form
-fills.
+**One genuine gap found:** form 5 has `LeadMethod` (choice: Phone/Email/Referal/Mail/SMS/Text) and
+`TakenBy` (free text) fields built for staff intake, and **both are empty on all 250 entries sampled.**
+So staff phone leads are distinguishable only by the absence of UTMs — which also describes every
+organic lead. Either have staff fill them, or add a `Web` option and default it so web leads are
+positively labelled. That is the CRM-side twin of the Ads problem v1.4.0 already fixed.
 
 ---
 
