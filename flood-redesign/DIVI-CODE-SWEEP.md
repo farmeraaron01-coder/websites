@@ -19,6 +19,20 @@ hand-placed in one carried its *visible prose* across the migration and left its
 
 ## Fixed in the theme
 
+### 0. What the FAQ schema is actually worth — a correction
+
+**Google retired the FAQ rich result for all sites on 7 May 2026.** This JSON-LD will not produce the
+expandable accordion in search results for anyone, and my earlier description of this work as restoring
+"FAQ rich result eligibility" was wrong.
+
+The correction comes from a note left inside the production FAQ page itself, which is worth quoting
+because it states the remaining value precisely: the schema *"still helps AI Overviews / AI Mode / ChatGPT
+parse and cite these answers correctly."*
+
+So the work stands, but for the other reason — and on a site whose visitors increasingly arrive through an
+AI answer rather than a blue link, that is the more valuable of the two. It is also exactly the "AISEO"
+Aaron asked for. What it is not is a path back to rich snippets.
+
 ### 1. FAQPage schema — now broader than Divi ever had it
 
 1.4.2 covered 77 pages. The sweep then found a **third** Q&A markup shape —
@@ -93,18 +107,35 @@ picks up a real image instead of omitting one.
 **Add to the flip checklist:** after cutover, load `/aaron-farmer/` on both sites and confirm the
 headshot renders. It is the single quickest proof this class of problem is closed.
 
-### B. `/faqs/` lost its content — 60 KB down to 526 bytes
+### B. `/faqs/` — **resolved 4 Aug, and I had this half wrong**
 
-Production's FAQ page is a substantial accordion: **~60 KB on California, ~63 KB on statewide**, with
-FAQPage schema, its own CSS and JS. The staging version is a **526-byte stub** — the heading, an intro
-paragraph, and the "Reviewed by Aaron Farmer, CA License #0L75450" line. **Every question is gone.**
+**The correction first.** I reported this as a 526-byte stub on *both* sites. That was true only of
+California. **Statewide's page was fully migrated all along** — 23.5 KB, all 15 questions, in clean
+`<details>`/`<summary>` markup with none of production's broken tags. My scan reported it as having zero
+Q&A pairs because the parser did not yet read `<details>`, and I generalised California's genuine stub
+across both brands without checking statewide's size.
 
-This is genuine content loss, not a parser gap, which is why the FAQ work above does not touch it. It is
-also the one page whose entire purpose is questions — and per the production intro, they were pulled from
-real call recordings, so they are not reproducible from a template.
+That error had a consequence: I briefly overwrote statewide's good page with a shorter reconstruction
+before catching it. It was restored byte-for-byte from the pre-change copy, then improved deliberately.
 
-Recover the content from production before launch. Once the Q&A is back on the page in any of the three
-shapes the theme reads, its schema returns automatically.
+**Where both pages ended up:**
+
+- **Statewide** keeps its 15 original answers verbatim. Only the intro changed — production's version had
+  nested and unclosed `<p>` tags and a doubled heading line reading "Most Asked Flood Insurance Questions
+  Flood Insurance — Expert FAQ". Replaced with valid markup, plus a closing call-to-action.
+- **California** was a real stub and is now built from **statewide's clean version**, not from
+  production's malformed HTML and not from my own shorter reconstruction. Brand references adapted, and
+  the two questions California words differently — renewal and cost — carry "in California" as they did
+  on production. One phrase, "services your account nationwide", became "services your account", since
+  that describes the service area rather than a FEMA fact. FEMA's own "nationwide" Risk Rating 2.0
+  reference is left alone on both, because it is factually about the program.
+
+Both pages are now ~23.6 KB with 15 accordions, ~5,500 words rendered, and both emit FAQPage via theme
+1.4.5, which added `<details>` as a fourth readable pattern.
+
+**Why the accordion rather than flat prose:** 15 answers is roughly 7,000 characters of visible text.
+Native `<details>` collapses it with no JavaScript, is keyboard accessible by default, and keeps every
+answer in the DOM, so nothing is hidden from crawlers or AI parsers.
 
 ### C. `/contact-us/` has no form and no map
 

@@ -11,9 +11,20 @@
  *
  * A code module has no Kadence equivalent, so the migration carried the Q&A
  * *prose* across and dropped the *markup*. The staging sites emit no FAQPage at
- * all. Cutting over without this file would have silently surrendered FAQ rich
- * results on 77 pages — the kind of loss that shows up as a ranking drift weeks
- * later with no obvious cause.
+ * all.
+ *
+ * WHAT THE SCHEMA IS ACTUALLY WORTH — corrected 4 Aug
+ * Not rich results. **Google retired the FAQ rich result for all sites on 7 May
+ * 2026**, so this JSON-LD will not produce the expandable accordion in search
+ * for anyone. That correction comes from a note left in the production FAQ page
+ * itself; an earlier claim here that this restores "FAQ rich result
+ * eligibility" was wrong.
+ *
+ * What it still does, and why it is worth shipping: it gives AI Overviews, AI
+ * Mode, and the chat assistants an unambiguous question-to-answer mapping to
+ * parse and cite, instead of leaving them to infer it from heading levels. On a
+ * site whose visitors increasingly arrive via an AI answer, that is the more
+ * valuable of the two anyway.
  *
  * WHAT IT COVERS
  * 77 pages and posts, 302 question and answer pairs, counted from raw content
@@ -93,7 +104,12 @@ function cfi_extract_faq_pairs( $raw ) {
 		$section = substr( $section, 0, $stop[0][1] );
 	}
 
-	$pairs = cfi_faq_pairs_from_headings( $section );
+	// Accordions first: <details> is unambiguous, so it never needs a fallback.
+	$pairs = cfi_faq_pairs_from_details( $section );
+
+	if ( empty( $pairs ) ) {
+		$pairs = cfi_faq_pairs_from_headings( $section );
+	}
 
 	// Then the two paragraph forms, in order of specificity.
 	if ( empty( $pairs ) ) {
@@ -102,6 +118,40 @@ function cfi_extract_faq_pairs( $raw ) {
 
 	if ( empty( $pairs ) ) {
 		$pairs = cfi_faq_pairs_from_split_paragraphs( $section );
+	}
+
+	return $pairs;
+}
+
+/**
+ * Read <details><summary>Question</summary>Answer</details> accordions.
+ *
+ * Used by the FAQ pages, where fifteen answers on one page want collapsing.
+ * Native <details> needs no JavaScript, is keyboard accessible by default, and
+ * its contents are in the DOM, so nothing is hidden from crawlers.
+ *
+ * @param string $section FAQ section markup.
+ * @return array<int,array{question:string,answer:string}>
+ */
+function cfi_faq_pairs_from_details( $section ) {
+	if ( ! preg_match_all( '/<details[^>]*>(.*?)<\/details>/is', $section, $found, PREG_SET_ORDER ) ) {
+		return array();
+	}
+
+	$pairs = array();
+	foreach ( $found as $block ) {
+		if ( ! preg_match( '/<summary[^>]*>(.*?)<\/summary>/is', $block[1], $sum ) ) {
+			continue;
+		}
+
+		$question = cfi_faq_text( $sum[1] );
+		$answer   = cfi_faq_text( str_replace( $sum[0], '', $block[1] ) );
+
+		if ( '' === $question || '' === $answer ) {
+			continue;
+		}
+
+		$pairs[] = compact( 'question', 'answer' );
 	}
 
 	return $pairs;
