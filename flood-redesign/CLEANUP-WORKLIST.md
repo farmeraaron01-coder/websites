@@ -833,48 +833,50 @@ Two things that are not account cleanup but are on the same list:
 
 - **Move `google-ads-project/Google Ads/.env` out of Dropbox and rotate the Google Ads refresh
   token.** A refresh token is durable access to the whole Ads account, sitting in a synced folder.
-### Lead-source attribution into the CRM — five steps, not one checkbox
+### Lead-source attribution — revised, additive only (4 Aug)
 
-I earlier called this a two-minute checkbox. That was wrong: it modifies a **live lead-delivery path**,
-so it needs an order and a test.
+Two constraints changed this. The Zapier Email Parser **does other things in Aaron's process**, so it
+must not be modified, and the webhook-to-InsuredMine route **needs InsuredMine's help**, so it is not
+self-service. My earlier five-step version violated both. Revised so that nothing existing is touched
+and nothing waits on a vendor.
 
-The situation: Cognito form 5 already captures `GCLID`, `MSCLKID` and the UTM set into hidden fields
-(the June work did that, and the GTM prefill tag populates them). The entry has them and the rater
-webhook receives them. But the form's integration emails have **`IncludeHiddenFields: false`**, so the
-values never appear in the emails that Zapier and InsuredMine read. Captured, invisible to sales.
+Current state: Cognito form 5 already captures `GCLID`, `MSCLKID` and the UTM set into hidden fields.
+The entry holds them. Form 5 delivers four ways — a webhook to the flood rater at
+`cfi.insuranceclouds.com`, and emails to `quote@`, `floodcognito@robot.zapier.com` (the Email Parser)
+and `data@insuredmine.com`. Only the emails omit hidden fields, and **the emails are the part that must
+not change.**
 
-Form 5 delivers four ways: a webhook to `cfi.insuranceclouds.com/Raters/Flood/JSONSubmit.aspx`, and
-emails to `quote@californiafloodinsurance.com`, `floodcognito@robot.zapier.com` (a Zapier Email Parser)
-and `data@insuredmine.com` (InsuredMine's email-to-lead ingestion).
+**Step 0 — Check whether this is already solved.** Webhooks receive the *full* entry JSON, hidden fields
+included. So the rater at `insuranceclouds.com` **has been receiving GCLID and UTM values all along.**
+Before building anything, ask whether that system stores those fields and can report on them by campaign.
+If it can, the whole job is a report request and nothing needs building. This is the cheapest possible
+outcome and nobody has checked it.
 
-**Step 1 — Turn hidden fields on for the human inbox only.** Enable "Include hidden fields" on the
-`quote@` email first, submit a test entry, and look at what arrives. Nothing automated reads that
-address, so this is genuinely risk-free, and it shows you the new format before anything depends on it.
+**If it cannot, then one additive step:**
 
-**Step 2 — Do NOT simply enable it on the Zapier email.** `floodcognito@robot.zapier.com` is a Zapier
-**Email Parser**, and parser templates are anchored to the email's structure. Adding new lines can
-cause it to mis-parse or stop matching — which would break lead delivery to the CRM, the opposite of
-the goal.
+**Step 1 — Add a second Cognito webhook to a Zapier Catch Hook.** Cognito supports multiple webhooks
+and already has one, so adding another changes nothing about the existing flow: the rater keeps its
+webhook, all three emails stay byte-identical, and the Email Parser never sees a different message.
+Webhook failures do not block form submission either.
 
-**Step 3 — Replace the email path with a webhook instead.** This is the actual recommendation. Cognito
-supports webhooks natively and already posts one to the rater, so add a second: a Zapier **Catch Hook**
-trigger, with Cognito posting the full entry JSON to it. That delivers every field including the hidden
-ones, needs no parsing, and cannot break when the form changes. It replaces a fragile text-matching
-step with a structured one, permanently. Keep the Email Parser Zap running until the webhook Zap is
-proven, then turn the old one off.
+- In Zapier, create a Zap with a **Webhooks by Zapier → Catch Hook** trigger. Zapier gives you a URL.
+- In Cognito form 5 → Submission → add that URL as an additional webhook.
+- Action: write one row per submission to **Google Sheets or Airtable** — name, email, phone, submission
+  time, plus `UTMSource`, `UTMMedium`, `UTMCampaign`, `UTMTerm`, `GCLID`, `MSCLKID`, `SourceWebsite`.
 
-**Step 4 — Create the destination fields in InsuredMine** (Settings → Custom Fields), or the Zap has
-nowhere to write: map `UTM Source` → the built-in **Lead Source** field, and add custom fields for UTM
-Medium, Campaign, Keyword, Ad/Creative, Google Click ID, Bing Click ID, and Source Website.
+That produces a lookup table: every web lead with the campaign and keyword that produced it. To answer
+"which campaigns produced bound policies", match your bound list against that sheet on name or email.
+Crude, but it answers the question, and it requires **no InsuredMine involvement, no parser change, and
+no vendor waiting.**
 
-**Step 5 — Test end to end and confirm in InsuredMine.** Submit a test with a known query string, e.g.
-`/get-a-quote/?utm_source=test&utm_campaign=verify&gclid=TESTABC123`, and confirm those exact values
-land on the InsuredMine record. Then delete the test lead.
+**Later, optionally:** writing attribution onto the InsuredMine record itself is nicer for the sales
+team, and that is the conversation to have with InsuredMine when there is time. It is an enhancement to
+this, not a prerequisite.
 
-Why it is worth the five steps: this is what makes **bound policies attributable by campaign**, which is
-the number that turns the deferred Session 7 decision from a judgment call into a measurement. It is
-also the prerequisite for offline conversion import later — feeding *bound policies* back to the ad
-platforms rather than form fills.
+Why it earns the effort: it makes **bound policies attributable by campaign**, which is the measurement
+that turns the deferred Session 7 decision from a judgement call into a number — and the prerequisite
+for offline conversion import later, feeding *bound policies* back to the ad platforms rather than form
+fills.
 
 ---
 
