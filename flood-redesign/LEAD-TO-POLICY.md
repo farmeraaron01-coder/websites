@@ -65,10 +65,12 @@ Fifteen minutes once the first one is set up.
 
 1. **Export new leads** — Cognito form 5, entries since the last run. Append to `leads-master.csv`.
    (Or ask Claude to pull them through the Cognito API, which is how the first 749 were produced.)
-2. **Export policies written** — from the CRM, all policies bound since the last run, with the columns
-   above. Append to `policies-master.csv`.
-3. **Match.** On `Email` first, then `Phone`, then `Last name + Zip` as a fallback. Expect 70–90% match
-   rates; record the unmatched count as a data-quality figure rather than discarding it.
+2. **Pull policies bound** — from the Momentum AMP API, filtered on `bindDate` since the last run. See
+   `CRM-API.md` for the working request. **Filter out `isQuote: true`** — quotes share the endpoint with
+   policies and were 26% of a July sample. Append to `policies-master.csv`.
+3. **Match.** On `Email` first, then `Phone`, then `Last name + Zip` as a fallback. `insuredEmail` is
+   populated on ~99% of policies, so email alone should carry most of it. Record the unmatched count as a
+   data-quality figure rather than discarding it.
 4. **Report**, per lead-cohort month and per campaign:
    - leads, bound, bind rate
    - spend for that campaign in that month (from the Ads export)
@@ -112,19 +114,25 @@ Three ways, in increasing order of automation:
    maintain.
 2. **A Todoist recurring task** with these steps as the description, so the checklist travels with the
    task and nothing gets skipped.
-3. **A scheduled Claude session** (a Routine) that fires monthly, pulls the new Cognito entries through
-   the API itself, and produces the report — leaving you only the CRM policy export to drop in. This is
-   the least work per month, and the piece it cannot do is the CRM export, because that lives behind a
-   login Claude has no access to.
+3. **A scheduled Claude session** (a Routine) that fires monthly and produces the whole report with no
+   manual step at all — pulling leads from the Cognito API and policies from the Momentum API.
 
-Option 3 is worth it if this becomes a standing report. Option 1 is enough to prove the method first.
+**Option 3 became clearly the right answer on 4 Aug**, when the Momentum AMP API turned out to be
+reachable and to carry every field this method needs (`CRM-API.md`). This document originally assumed a
+manual CRM export was unavoidable and that any automation would still need you monthly. Both sides are
+API-reachable, so that is no longer the case.
 
-### Two things needed before the first real run
+### The two open questions are now closed
 
-1. **Your actual typical lead-to-bind window.** The 90–150 day maturity line above is my assumption, not
-   your data. If most binds land inside 45 days with an escrow tail out to 120, the thresholds move and
-   decisions can be made sooner.
-2. **Confirmation the CRM can export these columns:**
-   `Policy # | Bound date | Effective date | First | Last | Email | Phone | Premium | Carrier | State | Written by`
-   Bound date and email are the two that the method genuinely depends on. If email is not reliably
-   captured on the policy record, matching falls back to phone and name+zip, and the match rate drops.
+1. **The typical lead-to-bind window no longer has to be assumed.** Policies carry both `createDate` and
+   `bindDate`, so the real distribution can be measured from history. **The 90–150 day maturity line
+   above is my estimate and should be replaced with the measured number on the first run.**
+2. **The CRM does have the needed columns** — `bindDate`, `insuredEmail` (populated on ~99% of records),
+   premium, commission, carrier, MGA, and the policy number. It also has `totalAgencyCommission`, which
+   allows revenue per lead rather than only cost per policy.
+
+### Where this work happens
+
+Deliberately **not** in this session — the site cutover comes first. `CRM-API.md` is the handoff note so
+the separate project starts with the auth pattern, the working request, the field names, and the three
+traps already documented.
