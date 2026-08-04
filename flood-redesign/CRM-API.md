@@ -105,6 +105,42 @@ true.** Both sides are now API-reachable:
 So the monthly run can be fully automated, with no manual export step. That makes a scheduled monthly
 job genuinely worth setting up rather than marginal.
 
+## Running this from a cloud session
+
+**Cloud works. Verified from a cloud session on 4 Aug**, which is where all of the above was proven:
+
+- `api.momentumamp.com` is reachable from the container, so the environment's network policy already
+  permits it. Nothing to request.
+- Dropbox is reachable through the **connector**, not the filesystem. There is no `G:\` drive and no
+  synced folder — `mcp__Dropbox__fetch` with a path returns file contents directly. That is how the
+  `.env` above was read.
+
+So there is no reason to work locally. Two things to set up properly, though.
+
+### 1. Put the API key in the environment, not in Dropbox or chat
+
+Fetching the key out of Dropbox on every run works, but it means the credential passes through the
+session each time. Cloud environments support configured environment variables — set `MOMENTUM_API_KEY`
+there once and any session can use it without a Dropbox round-trip and without it appearing in a
+transcript. Do this **as part of rotating the key**, so the new value never lands in Dropbox at all.
+
+### 2. The master files cannot live in the container or the repo
+
+This is the real design constraint, and it follows from things already decided elsewhere:
+
+- **Not the container** — cloud containers are ephemeral. The repo is cloned fresh at session start and
+  the container is reclaimed afterwards. Anything written to disk and not pushed is gone.
+- **Not the repo** — `leads-master.csv` and `policies-master.csv` carry customer names, emails and phone
+  numbers. `LEAD-TO-POLICY.md` rules out committing them, and that stands.
+
+Both files are append-only and must survive between monthly runs, so they need a home outside both.
+**Dropbox is the right one**: already backed up weekly, already outside version control, and reachable
+from a cloud session through the connector.
+
+The monthly run therefore becomes: read both master files from Dropbox → pull new leads from Cognito and
+new policies from Momentum → append → write both files back to Dropbox → produce the report. The report
+itself has no PII once it is aggregated by campaign, so that part can be committed or published freely.
+
 ## Security note, and it is not minor
 
 The Dropbox `.env` at `/Aaron Farmer/Claude CoWork Files/call-intelligence/.env` contains, in plaintext:
