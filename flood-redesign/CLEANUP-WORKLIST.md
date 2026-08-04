@@ -224,18 +224,30 @@ In BOTH containers (GTM-MZ6RZ94 and GTM-PJQ72VK), add a blocking exception to ev
 Google Ads Conversion Tracking tag, every Bing/Microsoft UET conversion-event tag, and
 every GA4 event tag that Google Ads imports as a conversion.
 
-Create one trigger to use as the exception:
+Create the exception trigger with ONE condition, using a regex — because GTM combines
+multiple conditions inside a single trigger with AND, so two "contains" rows would mean
+"hostname contains new. AND contains staging.", which matches nothing and would block
+nothing while looking correct:
+
   - Type: Page View
   - Name: BLOCK — staging hostnames
-  - Fire on: Some Page Views, where Page Hostname contains "new." OR Page Hostname
-    contains "staging."
-  (If GTM only allows one condition per row, use two conditions on the same trigger, or
-  create two exception triggers and add both.)
+  - Fire on: Some Page Views
+  - Condition: Page Hostname  matches RegEx  ^(new|staging)\.
+
+That single condition matches new.californiafloodinsurance.com and
+staging.statewidefloodinsurance.com and nothing else.
+
+(If you would rather avoid regex: create TWO separate Page View triggers, one with
+Page Hostname contains "new." and one with contains "staging.", and attach BOTH as
+exceptions to each tag. Separate triggers are ORed; conditions within one trigger are
+ANDed. What you must not do is put both hostname tests in one trigger.)
 
 Add that trigger under "Exceptions" on each of those tags. Do not change their firing
 triggers. Publish as "Block conversion tags on staging hostnames".
 
-Then tell me which tags you added it to.
+Then tell me which tags you added it to, and confirm by opening GTM Preview on
+new.californiafloodinsurance.com/get-a-quote/?cfi_tags=1 that the conversion tags show
+as BLOCKED rather than fired. A safeguard nobody verified is not a safeguard.
 ```
 
 This is a keep-forever safeguard, not a temporary one: it means the staging sites can never report a
