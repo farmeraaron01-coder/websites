@@ -158,6 +158,9 @@ require_once get_stylesheet_directory() . '/inc/htaccess.php';
 /* GTM / GA4, gated to the production hostname — see inc/tags.php for why. */
 require_once get_stylesheet_directory() . '/inc/tags.php';
 
+/* FAQPage JSON-LD, read off the existing Q&A markup — see inc/schema.php for why. */
+require_once get_stylesheet_directory() . '/inc/schema.php';
+
 /**
  * tokens.css is inlined into the page rather than enqueued as a file.
  *
