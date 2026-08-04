@@ -40,14 +40,14 @@ requires guessing.
 
 | # | Evidence | Where it comes from | Status |
 |---|---|---|---|
-| 1 | Exact trigger logic for the California and Statewide Google Ads **and** Bing conversion tags | Session 2 read-backs | Google side confirmed (click triggers, "Click Text contains SUBMIT"); **Bing side unknown** |
+| 1 | Exact trigger logic for the California and Statewide Google Ads **and** Bing conversion tags | Read 4 Aug from the GTM trigger fields | **Closed for California** — its Bing event tag fires on `Click – All Elements`, condition `Click Text contains Submit Application`. **Statewide has no Bing event tag at all** — a narrower new question, below |
 | 2 | One valid quote = one lead event; staff = zero; failed validation = zero | Test A above | Not yet run |
 | 3 | Proof the test cannot send a live conversion to either platform | Test A runs with no container loaded; plus the staging-hostname exception | Design settled |
 | 4 | Campaign-to-goal map for every flood campaign | Delivered 4 Aug — 46 flood campaigns, 44 on Account-default, 2 Demand Gen campaign-specific | **Closed** |
-| 5 | Current Search Console verification method for both launch sites | Session 3 step 1 | Unknown for statewide |
+| 5 | Current Search Console verification method for both launch sites | Read 4 Aug | **Closed for statewide: `HTML file` → Successfully verified.** The risk is confirmed, not hypothetical. CFI still unread |
 
-Evidence 1 and 5 are the two remaining unknowns, both cheap reads. Item 4 arrived on 4 Aug and
-surfaced a finding of its own — see *What the map showed* below.
+All five are now answered, or resolved into a narrower question. Two of the answers change the work —
+see *Bing, resolved* below and the confirmed verification method in Session 3.
 
 
 ---
@@ -209,6 +209,65 @@ warnings on GTM-PJQ72VK and tell me exactly what the two "Urgent" issues are.
 **Report back:** the list of CFI's existing GA4 event tags with their triggers, and what
 statewide's two Urgent issues are.
 
+### Bing, resolved — and the two brands need different things
+
+**Read 4 Aug from the trigger fields.** Both reviews were right about different layers, which is why
+we disagreed: the Microsoft *goals* are Event-type and recording (ChatGPT's point, correct), but the
+*GTM tag firing the event* sits on a click trigger (my concern, also correct).
+
+| Container | Tag | UET ID | Trigger | Condition | Pushes |
+|---|---|---|---|---|---|
+| CFI | `Bing UET Tag` | 5318858 | Page View / All Pages | — | `pageLoad` only |
+| CFI | `Bing UET - request_quote (California)` | 5318858 | **Click – All Elements** | **`Click Text contains Submit Application`** | UET event action **`request_quote`** |
+| Statewide | `Bing UET Tag` | 5318855 | Page View / All Pages | — | `pageLoad` only |
+| Statewide | *(none)* | — | — | — | **no Bing event tag exists** |
+
+**California — a one-line repoint, and do NOT rename the action.** Run this only when instructed; the
+click trigger keeps working until the new sites are live.
+
+```
+In GTM container GTM-MZ6RZ94, open the tag "Bing UET - request_quote (California)".
+Change ONLY its trigger: remove "Submit_Online_Quote_Form_Submission" (the
+Click - All Elements trigger) and set it to the Custom Event trigger
+"cfi_form_submit — is_lead true".
+
+Do NOT touch the tag's code. It must keep pushing the UET event action exactly as
+`request_quote` — that string is what the existing Microsoft goal matches on, so
+keeping it means the goal and all its history carry on working untouched.
+
+Leave the base "Bing UET Tag" (Page View / All Pages) exactly as it is.
+```
+
+> **This corrects a snippet I gave earlier.** I proposed a new Custom HTML tag pushing
+> `quote_form_lead`. That would have been wrong twice: a second tag would double-count California, and
+> a new action string would not match the existing goal. Keep `request_quote`.
+
+**Statewide — nothing to repoint, which is a different problem.** An Event-type goal with no event tag
+anywhere cannot be firing from GTM, so find out what it is actually matching on before building a
+replacement:
+
+```
+Read-only. In Microsoft Ads (account X2012441), open the Statewide flood conversion
+goal and report:
+  - its exact TYPE as the interface states it
+  - if Event type: the exact Category / Action / Label it matches on
+  - if Destination URL type: the exact URL rule
+  - whether Microsoft reports it recording conversions, and how many in the last 30 days
+  - which UET tag it is attached to
+
+Then separately: is there any Bing/UET code on statewidefloodinsurance.com that is NOT
+in the GTM container — a snippet in the Divi theme header or integration settings? Check
+the live /get-a-quote/ page source for uetq or bat.bing.com code GTM does not account for.
+
+Change nothing.
+```
+
+Three possibilities, each leading somewhere different: the goal fires from a Microsoft-side
+auto-detected click (nothing in GTM to fix, but it keeps counting clicks); it fires from a hardcoded
+snippet outside GTM (**which dies with the Divi theme at cutover, so statewide would silently lose
+Bing conversion tracking**); or it is not really recording. The middle case is the one to rule out
+before launch.
+
 ### The end-to-end test — corrected, because my first version was unsafe
 
 A second review caught a real hole in the test I proposed, and it is worth being blunt about: I had
@@ -283,10 +342,20 @@ conversion no matter what anyone does to them.
 
 ## Session 3 — Search Console domain properties
 
-Statewide's verification is a **pre-launch risk to protect, not a launch blocker** — the flip itself
-is unaffected. But if the verification is an HTML file in the web root, the docroot swap deletes it
-and un-verifies the property exactly when the sitemap needs submitting. Fifteen minutes of insurance
-against an avoidable, badly-timed failure.
+**Confirmed 4 Aug, and it is the bad case.** `https://statewidefloodinsurance.com/` → Settings →
+Ownership verification reads **`HTML file` → Successfully verified.** That file sits in the current web
+root, so a docroot swap deletes it and un-verifies the property exactly when the sitemap needs
+submitting. Still not a blocker for the flip itself — but no longer hypothetical.
+
+**Two fixes; do both, they barely cost anything:**
+
+1. **Copy the file** (the belt). Find the `google*.html` verification file in statewide's current web
+   root and copy it into the new install's web root before the swap. One small file, no DNS access
+   required, and it preserves the existing verification exactly as it stands.
+2. **Add a DNS-verified Domain property** (the braces). Permanent, filesystem-independent, and covers
+   www, non-www, http and https at once — the fix that means this never comes up again.
+
+CFI's methods were not read and remain unknown. Same check, same two fixes if it also relies on a file.
 
 ```
 In Google Search Console:
