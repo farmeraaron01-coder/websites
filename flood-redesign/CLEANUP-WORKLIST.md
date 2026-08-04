@@ -360,7 +360,15 @@ submitting. Still not a blocker for the flip itself — but no longer hypothetic
 2. **Add a DNS-verified Domain property** (the braces). Permanent, filesystem-independent, and covers
    www, non-www, http and https at once — the fix that means this never comes up again.
 
-CFI's methods were not read and remain unknown. Same check, same two fixes if it also relies on a file.
+**CFI, read 4 Aug: no file dependency at all.** Both URL-prefix properties — `https://` and
+`http://www.` — are verified by **"Domain name provider"**, and HTML file is verified on neither. So
+CFI's Search Console verification is entirely unaffected by the docroot swap, and nothing needs doing
+for it.
+
+That result also predicts statewide's outcome: CFI's *URL-prefix* properties read "Domain name
+provider", which proves DNS ownership propagates down to URL-prefix properties on this account. So once
+statewide's Domain property verifies by DNS, its URL-prefix property should show the same method — at
+which point its HTML file becomes redundant and the copy step can be dropped from the cutover.
 
 ```
 In Google Search Console:
