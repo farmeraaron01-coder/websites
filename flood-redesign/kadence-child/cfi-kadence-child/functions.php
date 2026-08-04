@@ -84,6 +84,17 @@ if ( 'swfi' === CFI_BRAND ) {
  */
 define( 'CFI_AREA_SERVED', 'United States' );
 
+/*
+ * Author headshot, as a site-relative path — the same filename is uploaded on
+ * both brands, so one constant covers them and inc/schema.php makes it absolute
+ * against home_url(). Feeds the Person entity's image property.
+ *
+ * Chosen by Aaron on 4 Aug from the two in the design-handoff folder. Do NOT
+ * point this at the older Divi-era headshot: it is retired, and it lived only on
+ * the production domain, so referencing it would break at the docroot swap.
+ */
+define( 'CFI_AUTHOR_IMAGE', '/wp-content/uploads/2026/08/aaron-farmer-flood-insurance-specialist.jpg' );
+
 /**
  * Fill the two gaps Rank Math's free tier cannot express on the
  * Organization / LocalBusiness node.

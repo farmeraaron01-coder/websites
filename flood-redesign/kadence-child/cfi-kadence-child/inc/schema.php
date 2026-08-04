@@ -318,14 +318,15 @@ function cfi_author_profile() {
 	);
 
 	/*
-	 * The headshot is deliberately absent unless CFI_AUTHOR_IMAGE is defined.
-	 * The Divi pages hot-link it from the production domain, and that file does
-	 * not exist in either new install — so naming a URL here would ship a
-	 * schema image that 404s the moment the docroot swaps. Define the constant
-	 * once the uploads are copied across.
+	 * CFI_AUTHOR_IMAGE is a site-relative path, made absolute here against the
+	 * current host so each brand cites its own copy. Kept relative in the
+	 * constant for the same reason the page markup is: an absolute URL baked in
+	 * anywhere is what broke the previous headshot at the docroot swap.
 	 */
 	if ( defined( 'CFI_AUTHOR_IMAGE' ) && CFI_AUTHOR_IMAGE ) {
-		$profile['image'] = CFI_AUTHOR_IMAGE;
+		$profile['image'] = 0 === strpos( CFI_AUTHOR_IMAGE, 'http' )
+			? CFI_AUTHOR_IMAGE
+			: home_url( CFI_AUTHOR_IMAGE );
 	}
 
 	return apply_filters( 'cfi_author_profile', $profile );
