@@ -846,6 +846,21 @@ The entry holds them. Form 5 delivers four ways — a webhook to the flood rater
 and `data@insuredmine.com`. Only the emails omit hidden fields, and **the emails are the part that must
 not change.**
 
+**And there is no "Include hidden fields" checkbox to turn on — verified from the UI, 4 Aug.** The email
+action dialog offers only Entry Details, Blank Fields, Organization Name, Sender Name and Form Title.
+`IncludeHiddenFields` in the June notes is an **API-level property of the email action**, not something
+exposed in the interface; I read it as a UI toggle and it is not one. The only way to force hidden
+fields into an email would be to replace the default Entry Details layout with a custom body containing
+explicit field tokens — which changes the email's structure and is exactly the thing that could break
+the Email Parser. **So do not pursue it at all.** That removes the item rather than resequencing it, and
+it makes the webhook route below the only sensible path.
+
+Two useful things that dialog also showed: the email carries a **"View full entry at CognitoForms.com"**
+link, so the complete entry with all hidden fields is always one click away — the data is never actually
+lost. And **Attach → Documents** is enabled, so a generated PDF of the entry rides along; depending on
+that document's template it may already contain the attribution fields. Worth a look at one recent email
+before building anything.
+
 **Step 0 — Check whether this is already solved.** Webhooks receive the *full* entry JSON, hidden fields
 included. So the rater at `insuranceclouds.com` **has been receiving GCLID and UTM values all along.**
 Before building anything, ask whether that system stores those fields and can report on them by campaign.
