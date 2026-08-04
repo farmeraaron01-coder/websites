@@ -18,11 +18,13 @@ The two-week watch afterwards is where the real attention goes.
 
 | # | Item | Owner | Done |
 |---|------|-------|------|
-| 1 | Install theme **v1.3.7** on both sites (both are on 1.3.4 — brings the PDF `noindex` header, the tag snippet, and the `cfi_form_submit` conversion event) | Aaron | ☐ |
+| 1 | Install theme **v1.3.8** on both sites (both are on 1.3.4 — brings the PDF `noindex` header, the tag snippet, the `cfi_form_submit` conversion event, and the `cfi_page_role` dataLayer variable) | Aaron | ☐ |
 | 2 | ~~Confirm whether the GTM containers hold a GA4 config tag~~ — **done 4 Aug: they do. `CFI_GA4_ID` stays empty.** | — | ☑ |
-| 2b | **GTM pass**: repoint Ads conversions to `cfi_form_submit` / `cfi_is_lead`, retire the Click Text triggers | Aaron | ☐ |
-| 2c | **Resolve where CFI's Ads conversions come from** — none in the container (Google Ads → Goals → Conversions → Source) | Aaron | ☐ |
-| 2d | **Copy out Divi → Theme Options → Integration head/body code** on both sites before the theme goes away | Aaron | ☐ |
+| 2b | **GTM pass**: repoint the **GA4 event tags** (and statewide's native Ads tags) to `cfi_form_submit` / `cfi_is_lead`, retire the Click Text triggers | Aaron | ☐ |
+| 2c | ~~Resolve where CFI's Ads conversions come from~~ — **done 4 Aug: GA4-imported key events.** Confirm the Source column when convenient | — | ☑ |
+| 2e | Decide whether to apply the **July 15 conversion-tracking cleanup plan** (60 actions, dozens Primary across six brands) — still marked DRAFT | Aaron | ☐ |
+| 2f | Optional: point the flood ads at **/get-a-quote/** instead of the homepage — the new landing page puts the form on the page the click lands on | Aaron | ☐ |
+| 2d | Copy out Divi → Theme Options → Integration head/body code before the theme goes (low risk — every tag was found arriving through GTM) | Aaron | ☐ |
 | 3 | Verify tags fire on staging: any page + `?cfi_tags=1`, logged in as admin, with Tag Assistant | Claude | ☐ |
 | 4 | Sign off content: 9 statewide articles, 10 claims pages, 18 drafted meta descriptions | Aaron | ☐ |
 | 5 | Sign off statewide palette and hero copy | Aaron | ☐ |
@@ -107,7 +109,7 @@ tags, triggers, and Ads conversions intact.
 | How it loads today | GTM hand-placed in the Divi header; **GA4 via the Site Kit plugin** | same |
 | How it loads on the new site | theme, `inc/tags.php` | theme, `inc/tags.php` |
 
-Theme v1.3.6 prints the GTM snippet **only on the production hostname**, so staging cannot send
+Theme v1.3.6+ prints the GTM snippet **only on the production hostname**, so staging cannot send
 data. That matters less for GA4 pageviews than for Ads conversion tags, where one test
 submission counts as a real lead and feeds Smart Bidding a fake conversion. At cutover the
 hostname becomes the production one and tagging starts by itself — there is no step to forget.
@@ -188,23 +190,77 @@ embed to the shortcode, so the page the Ads spend points at emits the same event
    reaching Ads.
 4. Do the same for the Bing UET tags (`Bing UET - request_quote` is Custom HTML and likely carries
    the same click fragility).
-5. **CFI has no Ads conversion tag in the container at all**, only Google Ads Remarketing
-   (`1012143191`, All Pages). So its conversions come from somewhere else — most likely GA4 key
-   events imported into Ads, since GA4 property 314823941 has been linked to Ads account
-   890-760-9729 since Nov 2022, or from the `AW-1012143191` gtag that GTM's health check reports
-   running outside the container. Resolve it in **Google Ads → Goals → Conversions**: for each
-   conversion action read the Source column (Website / Google Analytics 4 / Phone calls) and its
-   tag setup. Until that is known, CFI's conversion path cannot be confirmed to survive cutover.
-6. **Inventory Divi's Integration code before the theme goes away.** The GTM snippet was
-   hand-placed in Divi's header, so anything else living there — an Ads gtag, Bing UET, a
-   verification meta tag — dies with the theme and will not be visible in GTM. Copy the head and
-   body code boxes out of Divi → Theme Options → Integration on both sites and check every tag
-   against this list.
+5. **CFI's conversions come from GA4, so the GA4 event tags are what must be repointed.**
+   Resolved 4 Aug from the June/July Ads project files plus a runtime check. There is no rogue
+   page-level Ads tag: `AW-1012143191` loads *through* GTM, from the Google Ads Remarketing tag
+   firing on All Pages, which is also why GTM shows a "missing Google tag" nag. And CFI has no
+   Ads conversion tag in the container — but the Ads account does hold conversion actions named
+   `californiafloodinsurance.com - Contact_Form` (Submit Lead Form) and
+   `californiafloodinsurance.com - Submit_Online…` (Request Quote). That `<domain> - <event>`
+   naming, plus the GA4↔Ads link in place since Nov 2022, plus GA4 event tags in the container
+   with exactly those names, means these are **GA4 key events imported into Ads**.
+
+   Consequence for the GTM pass: on CFI, repointing only the Ads tags would change nothing,
+   because there are none. **Repoint the GA4 event tags** (`Submit_Online_Quote_Form_Submission`,
+   `Contact - Form Submission`) to `cfi_form_submit` — that is the whole fix for CFI. On statewide,
+   repoint the GA4 event tags *and* the two native Ads conversion tags. While there, check whether
+   statewide double-counts: it has native Ads conversions *and* the same GA4 events that CFI
+   imports, so the same submission may be landing twice.
+
+   Confirm in **Google Ads → Goals → Conversions** — the Source column should read Google
+   Analytics 4 for the CFI pair.
+6. Divi's Integration boxes are worth a glance, but the runtime check found **every tag arriving
+   through GTM** (`AW-1012143191`, `G-3YMN51H7LE`, Bing UET via `bat.bing.com`) with no
+   independent page-level tag on either site. So the only thing known to live in Divi's header is
+   the GTM snippet itself, which the theme now replaces. Copy the boxes out anyway before the
+   theme goes — cheap, and it is the last chance to see them.
 
 Untouched, noted for completeness: statewide GA4 has a **second, orphaned property** (371465506 /
 `G-NCF8CTTSQS`, stream `https://statewidefloodinsurance.com`, no data, no Ads link). Leave it
 alone — just never point anything at that measurement ID. Both live streams also have `http://`
 stream URLs; cosmetic, worth updating to `https://` while you are in there.
+
+### What the Ads project files established (Dropbox, read 4 Aug)
+
+From `/Aaron Farmer/Claude CoWork Files/google-ads-project/` — the June UTM work and the 15 July
+account audit. Everything here was already known; it just was not written down anywhere the
+migration could see it.
+
+**Lead delivery does not touch WordPress.** Cognito form 5 posts to a webhook at
+`cfi.insuranceclouds.com/Raters/Flood/JSONSubmit.aspx` plus three emails: `quote@…`, the Zapier
+parser (`floodcognito@robot.zapier.com`), and InsuredMine (`data@insuredmine.com`). So the runbook's
+claim that submissions survive any cutover or rollback is not just true of the entries — the whole
+delivery path is external. **Nothing about the migration can break lead delivery.**
+
+**Form 5 is shared four ways.** CFI's quote page, statewide's quote page, and *both* staff forms all
+submit the same form (org key `8nmcIcFF1k6xZNCBaOzZxQ`). The prefill tag stamps `SourceWebsite` with
+the hostname, which separates California from Statewide — but **not** staff intake from a real web
+lead. Theme v1.3.8 publishes `cfi_page_role` early in the head so the existing prefill tag can write
+it into a hidden "Lead Type" field on form 5, giving the CRM the same separation v1.3.7 gives Ads.
+Worth doing at the same time as the GTM pass.
+
+**Still open from June, unrelated to the migration but worth closing:** form 5 has
+`IncludeHiddenFields: false`, so the captured UTM/GCLID values never appear in the emails Zapier and
+InsuredMine read. They are on the entry and in the rater webhook, invisible to sales. Fix is a
+checkbox on each of the two integration emails.
+
+**The Cognito prefill tag survives cutover unchanged.** It carries UTMs across pages in
+`sessionStorage` because ads land on the homepage while the form lives on `/get-a-quote/`. Nothing
+about it depends on the theme — which is also the argument for pointing the ads at `/get-a-quote/`
+instead: the new landing page puts the form on the page the click lands on, so the cross-page carry
+stops being load-bearing at all.
+
+**The 15 July audit's headline finding is still open and still bigger than anything here.** 60
+conversion actions, dozens Primary across six unrelated brands, so flood campaigns bid partly toward
+non-flood conversions and every CPA is directional. Its plan is still marked DRAFT. That fix and
+this one are complementary: the cleanup plan decides *which signals count*, v1.3.7/v1.3.8 fix
+*whether the signals are true*. Doing the cleanup on top of a feed that counts staff intake and
+failed validations would just optimise toward cleaner garbage.
+
+> **Security, unrelated to launch:** `google-ads-project/Google Ads/.env` holds the Google Ads
+> developer token, client secret, and refresh token in a synced Dropbox folder. I did not open it.
+> A refresh token is a durable credential to the whole Ads account — worth moving out of Dropbox
+> and rotating.
 
 ### Site Kit — decided: not carried over (4 Aug)
 

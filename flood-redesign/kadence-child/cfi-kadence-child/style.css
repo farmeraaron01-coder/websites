@@ -4,7 +4,7 @@ Theme URI: https://californiafloodinsurance.com/
 Template: kadence
 Author: Farmer Agency
 Description: Kadence child theme for CaliforniaFloodInsurance.com and StatewideFloodInsurance.com. One theme serves both brands — the brand is detected from the site URL (constants in functions.php, palette override in assets/css/brand-swfi.css). Designed pages are coded PHP templates; global styles live in assets/css/tokens.css.
-Version: 1.3.7
+Version: 1.3.8
 Requires at least: 6.4
 Requires PHP: 8.0
 Text Domain: cfi-kadence-child

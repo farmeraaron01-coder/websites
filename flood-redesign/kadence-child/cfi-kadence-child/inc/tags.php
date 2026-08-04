@@ -51,6 +51,56 @@ function cfi_tags_active() {
 }
 
 /**
+ * What this page is for, in one word, derived from the page itself rather than
+ * from the shortcode inside it.
+ *
+ * Why it cannot come from [cfi_cognito]: shortcodes run while the content is
+ * rendered, long after wp_head. The Cognito prefill tag in GTM fires on All
+ * Pages and writes hidden fields into the form BEFORE anyone submits, so it
+ * needs this value early — hence a slug lookup here rather than reusing the
+ * role the shortcode works out later. The two agree because both key off the
+ * same slugs.
+ *
+ * The use case: both flood sites and BOTH staff forms submit the same Cognito
+ * form 5, and the prefill tag stamps `SourceWebsite` with the hostname. So a
+ * staff-entered lead and a customer-entered lead from the same site are
+ * indistinguishable once they reach the rater, Zapier, and InsuredMine.
+ * Publishing the page role lets the prefill tag write a "Lead Type" field, so
+ * the office can tell its own phone intake apart from real web leads in the CRM
+ * — the same separation v1.3.7 gives Google Ads, one layer further down.
+ */
+function cfi_page_role() {
+	$slug = get_queried_object() instanceof WP_Post ? (string) get_queried_object()->post_name : '';
+	if ( '' === $slug ) {
+		return 'other';
+	}
+	if ( false !== strpos( $slug, 'staff' ) ) {
+		return 'staff';           // checked first: never mislabel staff intake
+	}
+	$map = array(
+		'get-a-quote'       => 'quote',
+		'claims'            => 'claims',
+		'service-center'    => 'service',
+		'agent-appointment' => 'appointment',
+	);
+	return $map[ $slug ] ?? 'other';
+}
+
+/**
+ * Page-level context, pushed before the container loads so All Pages tags can
+ * read it. Printed regardless of the host gate: it is a local JS object that
+ * sends no request, and having it on staging is what makes the tag testable.
+ */
+add_action( 'wp_head', function () {
+	if ( is_admin() ) {
+		return;
+	}
+	?>
+<script>window.dataLayer=window.dataLayer||[];window.dataLayer.push({cfi_page_role:<?php echo wp_json_encode( cfi_page_role() ); ?>,cfi_brand:<?php echo wp_json_encode( CFI_BRAND ); ?>});</script>
+	<?php
+}, 1 );
+
+/**
  * GTM loader, plus the GA4 config when one is set. Priority 2 so the container
  * initialises before anything else in the head that might push to dataLayer.
  */
