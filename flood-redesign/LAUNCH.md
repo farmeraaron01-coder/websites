@@ -22,8 +22,8 @@ The two-week watch afterwards is where the real attention goes.
 | 1b | ~~Install v1.3.9~~ — installed, but its approach cannot work: **nginx serves `/wp-content/uploads/` directly**, so no `.htaccess` rule reaches the PDFs | — | ☑ |
 | 1c | Install **v1.4.0** — keeps the PDFs out of search via robots.txt instead, the one mechanism that works without the host | Aaron | ☐ |
 | 2 | ~~Confirm whether the GTM containers hold a GA4 config tag~~ — **done 4 Aug: they do. `CFI_GA4_ID` stays empty.** | — | ☑ |
-| 2b | **GTM pass**: repoint the **GA4 event tags** (and statewide's native Ads tags) to `cfi_form_submit` / `cfi_is_lead`, retire the Click Text triggers | Aaron | ☐ |
-| 2g | **Same pass, Bing**: the flood UET goals are click goals too (`CALIFORNIA Submit Button Click`, `STATEWIDE Submit Form Click`), so staff intake inflates Bing as well. Add a UET event tag on `cfi_form_submit` and switch the goals to Event type — snippet in ACCOUNTS.md | Aaron | ☐ |
+| 2b | **Build** the new conversion path in GTM — new triggers and tags on `cfi_form_submit` / `cfi_is_lead`, **added alongside** the existing click triggers, not replacing them. Dormant until cutover. Session 2 of CLEANUP-WORKLIST.md | Aaron | ☐ |
+| 2g | **Same session, Bing**: the flood UET goals are click goals too (`CALIFORNIA Submit Button Click`, `STATEWIDE Submit Form Click`), so staff intake inflates Bing as well. Add the UET event tag and create the Event-type goals — again alongside, not replacing | Aaron | ☐ |
 | 2c | ~~Resolve where CFI's Ads conversions come from~~ — **done 4 Aug: GA4-imported key events.** Confirm the Source column when convenient | — | ☑ |
 | 2e | Decide whether to apply the **July 15 conversion-tracking cleanup plan** (60 actions, dozens Primary across six brands) — still marked DRAFT. Sequenced in ACCOUNTS.md stage 3c: after the GTM repoint, and **not in the same week as the cutover** so the two effects stay separable | Aaron | ☐ |
 | 2f | Optional: point the flood ads at **/get-a-quote/** instead of the homepage — the new landing page puts the form on the page the click lands on | Aaron | ☐ |
@@ -69,7 +69,14 @@ Do CFI first; statewide gets the benefit of anything learned.
    MIGRATION.md), plus `/media/` → `/video/`. Delete `/floodguru/` outright on statewide, no
    redirect (your call, recorded 30 July).
 6. **Flush the nginx cache** (Nginx Helper → Purge Entire Cache).
-7. **Verify before telling anyone** — the checklist below.
+7. **Switch the conversion tracking over — this step belongs here, not earlier.** The old Divi site
+   does not emit `cfi_form_submit`, so the click triggers had to keep running until this moment.
+   Now that the new site is answering the domain: in GTM, remove the **Click Text** triggers from
+   the conversion and GA4 event tags (or pause those tags if they are duplicates of the new ones),
+   and in Microsoft Ads switch the campaigns to the new `quote_form_lead` Event goals and **pause**
+   the old click goals. Publish. Both paths firing at once would double-count, so keep the window
+   between the flip and this step short — do it immediately, before the verification pass.
+8. **Verify before telling anyone** — the checklist below.
 
 ### Post-flip verification
 
