@@ -111,6 +111,32 @@ Do CFI first; statewide gets the benefit of anything learned.
 5. **Install the redirects.** The 6 CFI redirects **with trailing slashes** (the defect noted in
    MIGRATION.md), plus `/media/` → `/video/`. Delete `/floodguru/` outright on statewide, no
    redirect (your call, recorded 30 July).
+
+   **5b. STATEWIDE HAS 48 LIVE BLOG POSTS THAT DO NOT EXIST ON THE NEW SITE.** Found 4 Aug by
+   `tools/preflight.py`, which compares every live URL against its replacement. Statewide production
+   serves **48 posts**; the new statewide install has **7**. Every one of the other 48 returns 200
+   today and **404 the moment DNS moves** — including `/how-much-does-flood-insurance-cost/`,
+   `/what-does-flood-insurance-not-cover/`, `/loss-of-use-coverage-in-flood-insurance/`,
+   `/master-flood-policies-hoas/`, `/understanding-base-flood-elevation-bfe/`,
+   `/when-is-flood-insurance-required/` and `/which-flood-zone-requires-flood-insurance/`.
+
+   These are indexed pages accumulating links and rankings. Dropping them without redirects is the
+   single largest avoidable traffic loss in this migration, and unlike a missing image it will not
+   be obvious — it shows up weeks later as a decline nobody can source.
+
+   **The useful accident: every one of them also exists on California's new site**, verified
+   individually. So there are three options and none requires writing content:
+
+   1. **Migrate the 48 posts to the new statewide install** — keeps the URLs, the rankings and the
+      content on the brand that earned them. Most work, best outcome.
+   2. **301 each to California's copy** — cross-domain, so the ranking benefit largely moves to
+      California rather than being retained. Cheap, and much better than a 404.
+   3. **301 all 48 to `/insights/`** — the blog index. Preserves crawl equity crudely, loses topical
+      relevance per URL. A stopgap, not an answer.
+
+   **Do not launch statewide without picking one.** Run
+   `python3 tools/preflight.py --live https://statewidefloodinsurance.com --new <new host>` to
+   regenerate the exact list.
 6. **Flush the nginx cache** (Nginx Helper → Purge Entire Cache) — **then verify it actually
    cleared, because a WordPress-level purge does not reliably clear nginx's proxy cache.**
 
@@ -133,6 +159,31 @@ Do CFI first; statewide gets the benefit of anything learned.
    exactly the ones most likely to hold a cached pre-launch copy. If stale entries persist, they
    age out on their own TTL — or ask InMotion to purge the proxy cache server-side, which is the
    only purge that definitely reaches it.
+6b. **Confirm GA4 is still collecting — it breaks silently otherwise.** Found 4 Aug, and it is not
+   what anyone assumed. GA4 does **not** reach either live site through GTM or Site Kit: both serve a
+   **hardcoded `gtag/js` snippet in the Divi header**, verified in the served HTML with no Site Kit
+   markers present. That snippet dies with the theme.
+
+   Statewide's container cannot cover for it — `GTM-PJQ72VK` reports the Urgent warning *"Missing
+   Google tags"*, meaning its GA4 event tags name `G-FH3Q6GKNHH` with no Google tag behind them. So
+   **statewide's GA4 would have stopped collecting at cutover, and nothing would have said so.**
+
+   Already handled for statewide: theme 1.4.7 sets `CFI_GA4_ID` to `G-FH3Q6GKNHH`. Done in the theme
+   rather than by adding a Google tag in GTM on purpose — a container publish takes effect
+   immediately and would double-count every session on the still-live Divi site, whereas the constant
+   cannot fire until the new site answers the domain.
+
+   **Still open for California** — `GTM-MZ6RZ94` has not been read. Before the flip, look for a
+   Google tag / GA4 Configuration tag referencing `G-3YMN51H7LE`:
+   - none exists → set California's `CFI_GA4_ID` to `G-3YMN51H7LE`
+   - one exists → leave it empty, GA4 continues through GTM
+
+   Filling it blind is the one change that could make measurement worse: a second configuration
+   halves the reported conversion rate.
+
+   **Either way, after the flip open GA4 Realtime on both properties and confirm traffic.** Not the
+   tag assistant — the actual property.
+
 7. **Switch the conversion tracking over — this step belongs here, not earlier.** The old Divi site
    does not emit `cfi_form_submit`, so the click triggers had to keep running until this moment.
    Now that the new site is answering the domain:
