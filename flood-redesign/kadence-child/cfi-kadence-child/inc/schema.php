@@ -2,22 +2,33 @@
 /**
  * FAQPage structured data, generated from the content that is already there.
  *
- * WHY THIS EXISTS
- * Twenty-nine pages and posts across the two sites carry an H2 reading "Common
- * questions" followed by H3 questions and paragraph answers — 107 question and
- * answer pairs in total, counted from raw post content on 4 Aug (36 on
- * statewide, 71 on California, whose city and flood-zone pages run five
- * questions each). None of it was marked up, so Google and the AI answer
- * engines had to infer the Q&A relationship from heading levels alone. Marking
- * it up makes the same content eligible for FAQ rich results and gives the
- * answer engines an unambiguous parse.
+ * WHY THIS EXISTS — IT FIXES A MIGRATION REGRESSION, NOT A GAP
+ * The live Divi sites emit FAQPage structured data on both brands: verified 4
+ * Aug on seven statewide state pages and five California pages, all returning a
+ * FAQPage node. That schema was hand-written into Divi `et_pb_code` modules —
+ * see `statewidefloodinsurance.com-hub/tn-template.txt` in Dropbox for the
+ * Tennessee original.
+ *
+ * A code module has no Kadence equivalent, so the migration carried the Q&A
+ * *prose* across and dropped the *markup*. The staging sites emit no FAQPage at
+ * all. Cutting over without this file would have silently surrendered FAQ rich
+ * results on 77 pages — the kind of loss that shows up as a ranking drift weeks
+ * later with no obvious cause.
+ *
+ * WHAT IT COVERS
+ * 77 pages and posts, 302 question and answer pairs, counted from raw content
+ * on 4 Aug: 49 items / 176 pairs on statewide (including all 29 state pages),
+ * 28 items / 126 pairs on California, whose city and flood-zone pages run five
+ * questions each. That is more than Divi ever marked up, because the template's
+ * hand-written JSON-LD only ever covered the pages someone remembered to paste
+ * it into.
  *
  * WHY IT PARSES INSTEAD OF ASKING THE EDITOR
- * The alternative is an FAQ block, which would mean re-authoring the Q&A
- * section on twenty pages by hand and remembering to use the block every time
- * anyone adds a question. The existing markup is already perfectly regular, so
- * reading it is both cheaper and harder to get wrong. Write the content the way
- * it has always been written and the schema follows automatically.
+ * The alternative is an FAQ block, which would mean re-authoring 77 pages by
+ * hand and remembering to use the block every time anyone adds a question —
+ * which is precisely how the Divi version ended up incomplete. Reading the
+ * existing markup is cheaper, harder to get wrong, and self-maintaining: write
+ * the content the way it has always been written and the schema follows.
  *
  * WHY RAW CONTENT, NOT RENDERED
  * Running the_content filters this early triggers other plugins' hooks and can
@@ -36,19 +47,28 @@
 defined( 'ABSPATH' ) || exit;
 
 /**
- * Headings that mark the start of a question-and-answer section.
+ * Regex fragments that identify the heading opening a Q&A section.
  *
- * @return string[] Lower-case heading texts, matched exactly after trimming.
+ * The state pages title theirs per state — "Tennessee flood insurance FAQ" —
+ * so this matches a heading that CONTAINS one of these rather than equals it.
+ *
+ * @return string[] Regex alternatives, matched case-insensitively.
  */
 function cfi_faq_headings() {
 	return apply_filters(
 		'cfi_faq_headings',
-		array( 'common questions', 'frequently asked questions', 'faq', 'faqs' )
+		array( 'common questions', 'frequently asked questions', '\bFAQs?\b' )
 	);
 }
 
 /**
  * Pull question and answer pairs out of a post's content.
+ *
+ * TWO MARKUP PATTERNS, BECAUSE THE SITES CONTAIN BOTH
+ * The articles and claims pages use <h3>Question</h3> followed by prose. The 29
+ * state pages, authored from the Divi template, use
+ * <p><strong>Question?</strong><br>Answer</p> in a single paragraph. Both are
+ * read here so neither body of content needs re-authoring.
  *
  * @param string $raw Raw post_content.
  * @return array<int,array{question:string,answer:string}> Ordered pairs, possibly empty.
@@ -61,21 +81,36 @@ function cfi_extract_faq_pairs( $raw ) {
 	// Block delimiters are HTML comments; drop them so the headings sit adjacent.
 	$html = preg_replace( '/<!--.*?-->/s', '', (string) $raw );
 
-	$headings = array_map( 'preg_quote', cfi_faq_headings() );
-	$pattern  = '/<h2[^>]*>\s*(?:' . implode( '|', $headings ) . ')\s*:?\s*<\/h2>/i';
+	$pattern = '/<h2[^>]*>[^<]*(?:' . implode( '|', cfi_faq_headings() ) . ')[^<]*<\/h2>/i';
 
 	if ( ! preg_match( $pattern, $html, $m, PREG_OFFSET_CAPTURE ) ) {
 		return array();
 	}
 
-	// The FAQ section runs from that heading to the next H2, or to the end.
+	// The section runs from that heading to the next H2, or to the end of content.
 	$section = substr( $html, $m[0][1] + strlen( $m[0][0] ) );
-	$next_h2 = preg_match( '/<h2[^>]*>/i', $section, $stop, PREG_OFFSET_CAPTURE )
-		? substr( $section, 0, $stop[0][1] )
-		: $section;
+	if ( preg_match( '/<h2[^>]*>/i', $section, $stop, PREG_OFFSET_CAPTURE ) ) {
+		$section = substr( $section, 0, $stop[0][1] );
+	}
 
-	// Each question owns everything up to the following question.
-	if ( ! preg_match_all( '/<h3[^>]*>(.*?)<\/h3>(.*?)(?=<h3[^>]*>|$)/is', $next_h2, $found, PREG_SET_ORDER ) ) {
+	$pairs = cfi_faq_pairs_from_headings( $section );
+
+	// Fall back to the state-page paragraph form only if no headings were found.
+	if ( empty( $pairs ) ) {
+		$pairs = cfi_faq_pairs_from_paragraphs( $section );
+	}
+
+	return $pairs;
+}
+
+/**
+ * Read <h3>Question</h3> + following prose pairs.
+ *
+ * @param string $section FAQ section markup.
+ * @return array<int,array{question:string,answer:string}>
+ */
+function cfi_faq_pairs_from_headings( $section ) {
+	if ( ! preg_match_all( '/<h3[^>]*>(.*?)<\/h3>(.*?)(?=<h3[^>]*>|$)/is', $section, $found, PREG_SET_ORDER ) ) {
 		return array();
 	}
 
@@ -89,10 +124,39 @@ function cfi_extract_faq_pairs( $raw ) {
 			continue;
 		}
 
-		$pairs[] = array(
-			'question' => $question,
-			'answer'   => $answer,
-		);
+		$pairs[] = compact( 'question', 'answer' );
+	}
+
+	return $pairs;
+}
+
+/**
+ * Read <p><strong>Question?</strong><br>Answer</p> pairs.
+ *
+ * The trailing question mark is required deliberately. The state pages follow
+ * their FAQ with an author box whose first paragraph also opens with <strong>,
+ * and requiring "?" excludes it without needing to know the box is there.
+ *
+ * @param string $section FAQ section markup.
+ * @return array<int,array{question:string,answer:string}>
+ */
+function cfi_faq_pairs_from_paragraphs( $section ) {
+	$pattern = '/<p[^>]*>\s*<strong>\s*([^<]*\?)\s*<\/strong>\s*(?:<br\s*\/?>\s*)+(.*?)<\/p>/is';
+
+	if ( ! preg_match_all( $pattern, $section, $found, PREG_SET_ORDER ) ) {
+		return array();
+	}
+
+	$pairs = array();
+	foreach ( $found as $pair ) {
+		$question = cfi_faq_text( $pair[1] );
+		$answer   = cfi_faq_text( $pair[2] );
+
+		if ( '' === $question || '' === $answer ) {
+			continue;
+		}
+
+		$pairs[] = compact( 'question', 'answer' );
 	}
 
 	return $pairs;
