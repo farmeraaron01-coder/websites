@@ -42,7 +42,7 @@ The two-week watch afterwards is where the real attention goes.
 | 7d | Remove stale GTM publish access (2022 freelancer Gmail addresses); downgrade the two active agencies to Edit — see ACCOUNTS.md step zero | Aaron | ☐ |
 | 7b | Note a baseline week of GA4 pageviews — the number legitimately drops when Site Kit's duplicate tag goes | Aaron | ☐ |
 | 8 | **Full backup of each production site — files + database — downloaded off the server** | Aaron | ☐ |
-| 9 | **Read the Document Root column in cPanel → Domains** for all four hostnames. That answers the cutover-method question without support — see Phase 1 step 2 for what each answer means | Aaron | ☐ |
+| 9 | ~~Read the Document Root column in cPanel → Domains~~ — **done 4 Aug. Method A confirmed available:** neither flood site is the primary domain (`mrtacoshop.com` holds `/public_html`), both are addon domains with editable roots, staging installs are siblings not nested. The cutover is two field edits, reversible by editing them back | — | ☑ |
 | 10 | **Do not delete the old Divi install** until the new sites have run clean for a month. It is the rollback target *and* the only remaining copy of Divi's Integration code, Custom CSS, and theme settings | Aaron | ☐ |
 | 9b | File `INMOTION-TICKET.md` as fire-and-forget for the two nginx changes (`/wp-json/` cache exclusion, PDF header). Neither is urgent and neither blocks launch — the PDF one is already mitigated by robots.txt. Drop request 1 from the ticket if item 9 answered it | Aaron | ☐ |
 
@@ -61,37 +61,45 @@ Do CFI first; statewide gets the benefit of anything learned.
 
 1. **Backup again**, immediately before. The Phase 0 backup is the safety net; this one is the
    restore point.
-2. **Point the domain at the new install, leaving the old one on disk.** Do NOT use a "push to
-   live" that overwrites production — that is what makes rollback a restore instead of a click.
+2. **Point the domain at the new install — two field edits, confirmed available.** cPanel → Domains
+   (read 4 Aug) shows **neither flood site is the primary domain** — `mrtacoshop.com` holds
+   `/public_html`. Both flood sites are addon domains with their own editable document roots, and both
+   staging installs are **sibling directories, not nested**. So Method A applies cleanly:
 
-   **Which method applies depends on one cPanel screen, and you can check it yourself in two
-   minutes — InMotion support is slow and this does not need them.** In cPanel → **Domains**, read
-   the **Document Root** column for all four hostnames: both production domains and both staging
-   subdomains. Then:
+   | Domain | From | To |
+   |---|---|---|
+   | `californiafloodinsurance.com` | `/californiafloodinsurance.com` | `/new.californiafloodinsurance.com` |
+   | `statewidefloodinsurance.com` | `/statewidefloodinsurance.com` | `/staging.statewidefloodinsurance.com` |
 
-   **Method A — docroot repoint (best).** If the domain's Document Root is editable (cPanel shows a
-   *Manage* link with an editable path), just point it at the staging install's directory. Nothing
-   moves on disk. Rollback is editing that one field back. Addon domains and subdomains are almost
-   always editable this way.
+   Nothing moves on disk. **Rollback is editing that one field back** — write the original path down
+   before you change it. This is the good case, and it means the pre-cutover backup is a belt rather
+   than the only way home.
 
-   **Method B — directory rename (for a primary domain).** A primary domain's docroot is usually
-   locked to `public_html` and cannot be edited. In that case, do not fight it — rename instead:
+   **Then deal with the alias hostnames, because two of them create duplicates.** Every site on this
+   account has `ipv6.<domain>` and `<domain>.mrtacoshop.com` aliases, plus the staging subdomain, all
+   with their own docroot entries:
 
-   ```
-   mv public_html public_html-divi-OLD
-   mv <staging-install-dir> public_html
-   ```
+   - **The staging subdomain keeps pointing at the same directory the production domain now serves.**
+     So after the flip, the new site answers on *both* `californiafloodinsurance.com` and
+     `new.californiafloodinsurance.com`. The `noindex` comes off at step 4, so that second hostname
+     becomes indexable duplicate content. Canonicals point at the production domain, which mitigates
+     it, but do not leave it: either delete the staging subdomain in cPanel (removes the hostname,
+     leaves the files) or add a hostname redirect in `.htaccess`:
 
-   Equally reversible: swap the two names back. Two cautions. First, if the staging install lives
-   *inside* `public_html` (e.g. `public_html/new/`), move its **contents** up rather than nesting
-   directories — check the Document Root column before assuming. Second, the staging subdomain will
-   404 afterwards, since its docroot no longer exists; that is expected and harmless, but point it at
-   the old directory if you want the Divi site reachable for comparison.
+     ```
+     RewriteCond %{HTTP_HOST} ^(new|staging)\. [NC]
+     RewriteRule ^(.*)$ https://californiafloodinsurance.com/$1 [R=301,L]
+     ```
 
-   **Either way the property that matters is the same:** the old install still exists, complete and
-   untouched, and going back is a rename or a field edit rather than a restore. Confirm which method
-   applies *before* scheduling the flip, and write the exact reverse command down before running the
-   forward one.
+     Do **not** add that redirect before cutover — it would cut off staging access.
+
+   - **`statewidefloodinsurance.mrtacoshop.com` currently serves the statewide site with a 200 and no
+     `noindex`** (canonical correctly points at the real domain). It stays pointed at
+     `/statewidefloodinsurance.com`, so **after cutover it keeps serving the old Divi site
+     indefinitely.** Decide: repoint it to the new directory alongside the production domain, or
+     leave it as a private before/after reference and accept a stale public copy. CFI's equivalent
+     alias already 301s, so only statewide has this.
+
 3. **Fix the site address.** WordPress `siteurl` and `home` → `https://californiafloodinsurance.com`
    (no `www`, no trailing slash). Then search-replace the staging hostname across the database:
    `new.californiafloodinsurance.com` → `californiafloodinsurance.com`. Statewide:
