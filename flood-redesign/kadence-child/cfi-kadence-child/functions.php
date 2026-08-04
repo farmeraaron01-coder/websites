@@ -126,6 +126,16 @@ if ( 'swfi' === CFI_BRAND ) {
 define( 'CFI_AREA_SERVED', 'United States' );
 
 /*
+ * Review figures for the business schema. Must stay in step with what the pages
+ * actually display — the Trustindex widget and the quote landing page's
+ * "4.9 · 900+ Google reviews". Matches what California's live site has emitted
+ * for years. See the aggregateRating block in the rank_math/json_ld filter for
+ * why this is parity rather than an expectation of review stars.
+ */
+define( 'CFI_RATING_VALUE', '4.9' );
+define( 'CFI_RATING_COUNT', '900' );
+
+/*
  * Author headshot, as a site-relative path — the same filename is uploaded on
  * both brands, so one constant covers them and inc/schema.php makes it absolute
  * against home_url(). Feeds the Person entity's image property.
@@ -174,6 +184,36 @@ add_filter( 'rank_math/json_ld', function ( $data, $jsonld ) {
 			'@type' => 'Country',
 			'name'  => CFI_AREA_SERVED,
 		);
+
+		/*
+		 * aggregateRating — restoring parity, with a caveat worth knowing.
+		 *
+		 * Found 4 Aug by tools/preflight.py: California's live site emits an
+		 * InsuranceAgency node carrying aggregateRating 4.9 from 900 reviews, and
+		 * the new site emitted none. Rank Math's free tier has no field for it.
+		 *
+		 * THE CAVEAT: Google has not shown review stars for self-serving
+		 * LocalBusiness ratings since 2019, so this almost certainly produces no
+		 * rich result. It is added because (a) it matches what production has
+		 * emitted for years, so it changes nothing about the site's current
+		 * standing, and (b) AI answer engines do read it. It is NOT added on the
+		 * expectation of stars returning.
+		 *
+		 * The figures must keep matching what the page actually shows — the
+		 * Trustindex widget renders the real Google reviews, and the quote
+		 * landing page states "4.9 · 900+ Google reviews". If those diverge,
+		 * update the constants or drop this block; a rating the page cannot
+		 * substantiate is the version of this that causes problems.
+		 */
+		if ( defined( 'CFI_RATING_VALUE' ) && defined( 'CFI_RATING_COUNT' )
+			&& CFI_RATING_VALUE && CFI_RATING_COUNT && empty( $node['aggregateRating'] ) ) {
+			$data[ $key ]['aggregateRating'] = array(
+				'@type'       => 'AggregateRating',
+				'ratingValue' => (string) CFI_RATING_VALUE,
+				'reviewCount' => (string) CFI_RATING_COUNT,
+				'bestRating'  => '5',
+			);
+		}
 
 		if ( empty( $node['openingHours'] ) ) {
 			continue;

@@ -118,17 +118,23 @@ add_action( 'wp_head', function () {
 	}
 
 	/*
-	 * GA4 direct — OFF by default, and deliberately so.
+	 * GA4 direct — per brand, and the reasoning here was wrong until 4 Aug.
 	 *
-	 * On production GA4 arrives via Site Kit, separately from GTM. If the GTM
-	 * container ALSO holds a GA4 configuration tag, printing gtag here as well
-	 * double-counts every session: two page_view hits per pageview, sessions and
-	 * users inflated, conversion rate halved. Which of those is true can only be
-	 * answered by opening the container.
+	 * This comment used to say GA4 arrives via Site Kit on production. It does
+	 * not. Both live sites serve a **hardcoded gtag/js snippet in the Divi
+	 * header** — verified in the served HTML, with no Site Kit markers present.
+	 * That distinction matters because it changes what happens at cutover: a
+	 * plugin would have kept working, and a hardcoded snippet dies with the
+	 * theme. GA4 stops collecting the moment the domain moves.
 	 *
-	 * So: leave CFI_GA4_ID empty and let GA4 run through GTM (one tag system,
-	 * one place to look). Fill it in ONLY after confirming the container has no
-	 * GA4 configuration tag.
+	 * The container only covers for it if it holds a Google tag. GTM-PJQ72VK
+	 * does not — it reports the Urgent warning "Missing Google tags" — so
+	 * statewide sets CFI_GA4_ID. California's stays empty until GTM-MZ6RZ94 has
+	 * been read, because the failure mode of guessing wrong in that direction is
+	 * worse: two configurations means two page_view hits per pageview, inflated
+	 * users, and a halved conversion rate.
+	 *
+	 * See the notes beside each CFI_GA4_ID in functions.php.
 	 */
 	if ( CFI_GA4_ID ) {
 		?>
