@@ -24,8 +24,9 @@ The two-week watch afterwards is where the real attention goes.
 | 4 | Sign off content: 9 statewide articles, 10 claims pages, 18 drafted meta descriptions | Aaron | ☐ |
 | 5 | Sign off statewide palette and hero copy | Aaron | ☐ |
 | 6 | Correct the four "separate purchases" instances in the source PDFs (copy supplied; sites already fixed) | Aaron | ☐ |
-| 7 | **Full backup of each production site — files + database — downloaded off the server** | Aaron | ☐ |
-| 8 | Confirm the cutover method with InMotion (see *Rollback*) — docroot swap, not overwrite | Aaron | ☐ |
+| 7 | **Verify both domains in Search Console by DNS TXT record** — see *Site Kit* below | Aaron | ☐ |
+| 8 | **Full backup of each production site — files + database — downloaded off the server** | Aaron | ☐ |
+| 9 | Confirm the cutover method with InMotion (see *Rollback*) — docroot swap, not overwrite | Aaron | ☐ |
 
 Not launch-blocking, decide later: the asymmetric-lanes / cross-domain canonical question for
 the duplicated claims content.
@@ -116,6 +117,30 @@ conversion rate halved. Open the container, check for a GA4 configuration tag, a
 Also: statewide production carries an orphaned `GTM-MZ6RZ94` `<noscript>` iframe with no head
 loader — a leftover from when the site was cloned from CFI's Divi build. It only ever affected
 visitors with JavaScript off. Deliberately not carried over.
+
+### Site Kit — decided: not carried over (4 Aug)
+
+Asked and answered. It is not reinstalled on either new site.
+
+Why: its main job on these sites is inserting the GA4 tag, which GTM now does from the theme —
+running both double-counts every session. What remains is a read-only dashboard of tools we open
+directly anyway. It is the largest plugin in the old stack, it ships releases every couple of
+weeks, and it stores an OAuth token to the Google account in the WordPress database, which is a
+worse prize for an attacker than the site itself (Site Kit ≤1.24 had a privilege-escalation bug
+that let any subscriber become a Search Console owner). The rebuild's whole premise is that the
+theme does this work with no plugin layer.
+
+**The dependency this creates, and the fix.** Neither production site emits a
+`google-site-verification` meta tag, so Search Console verification is currently anchored to DNS,
+an uploaded HTML file, or the GA/GTM tag — possibly to the Site Kit connection itself. If it is
+the last of those, dropping the plugin costs verification exactly when the sitemap needs
+submitting.
+
+So before cutover: **add a DNS TXT verification for each domain as a Domain property.** It is
+permanent, independent of every plugin and tag, and covers www, non-www, and subdomains at once.
+Confirm the existing method under Search Console → Settings → Ownership verification first;
+leave Site Kit installed on the old production site until after cutover, since removing it early
+has no upside.
 
 ---
 
