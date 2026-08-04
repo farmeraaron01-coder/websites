@@ -266,8 +266,10 @@ conversion no matter what anyone does to them.
 
 ## Session 3 — Search Console domain properties
 
-Statewide's verification is the launch blocker: if it is an HTML file in the web root, the cutover
-deletes it and un-verifies the property exactly when the sitemap needs submitting.
+Statewide's verification is a **pre-launch risk to protect, not a launch blocker** — the flip itself
+is unaffected. But if the verification is an HTML file in the web root, the docroot swap deletes it
+and un-verifies the property exactly when the sitemap needs submitting. Fifteen minutes of insurance
+against an avoidable, badly-timed failure.
 
 ```
 In Google Search Console:
@@ -454,12 +456,46 @@ Three specific reasons the caution is technically justified, not just prudent:
 2. **Measurement changes will make the reported number fall on their own.** Once staff intake and
    failed validations stop counting, conversions drop without a single lead being lost. Stacking a
    goal change on top of that makes the two effects impossible to separate.
-3. **The staff-form problem does not need this session.** It resolves at cutover, with no campaign
-   touched: the new site emits the clean event and step 7 of the flip swaps the trigger.
+3. **The staff-form problem does not need this session** — but it does not fix itself either, and
+   my earlier wording said so. Correcting that, because it matters: it takes **four** things, and
+   only the first is done.
+   - v1.4.0 installed on both sites, so the clean event is emitted ✅
+   - **Session 2** — the new triggers and tags built in GTM ❌
+   - **Step 7 of the flip** — the old Click Text triggers removed ❌
+   - **The post-flip check** — a staff-form submission recording no conversion ❌
 
-**Revisit when:** the sites have been live a month, the post-launch numbers have settled, and there is
-a baseline to compare against. Or never, if the numbers stay good — the cost of leaving this alone is
-imperfect attribution, and the cost of getting it wrong is lead volume.
+   Skip Session 2 and nothing improves at cutover: the new staff form still has a "Submit
+   Application" button in the page, so the old click trigger still fires on it. What is true is
+   narrower and still useful — **all four steps can be done without touching a bid, a budget, or a
+   campaign goal.**
+
+**Revisit when** there is a deliberate performance review with real data behind it — not on a
+calendar. The trigger is not "a month has passed"; it is being able to answer *this*: for each flood
+campaign, how many CRM-qualified leads and bound policies did it produce, and would a narrower goal
+set still leave that campaign enough conversion volume for Maximize Conversions to function? Until
+that question is answerable, deferring is the correct answer rather than the cautious one.
+
+Or never. The cost of leaving this alone is imperfect attribution. The cost of getting it wrong is
+lead volume.
+
+### The measurement that would make this decidable — and it is nearly built
+
+Tracking bound policies by campaign is the missing piece, and most of it already exists. The June
+attribution work put `GCLID`, `MSCLKID`, and the UTM set into hidden fields on Cognito form 5, and
+those values reach the rater webhook on every entry.
+
+**One checkbox is in the way.** Form 5 has `IncludeHiddenFields: false` on its two integration
+emails, so the click IDs never arrive at Zapier or InsuredMine — captured on the entry, invisible to
+the CRM. Turn that on for the emails to `floodcognito@robot.zapier.com` and `data@insuredmine.com`,
+map the fields in the Zap, and every lead lands in InsuredMine carrying the campaign and keyword that
+produced it.
+
+That unlocks two things: bound-policy counts by campaign and state, which is the number that decides
+this whole question — and later, **offline conversion import**, where a stored GCLID lets you feed
+*bound policies* back to Google Ads instead of form submissions. That is the version of this cleanup
+that would actually be worth doing, because it optimises toward customers rather than toward leads.
+
+It is already on the loose-ends list below. It is worth more than its position there suggests.
 
 **If it is ever run:** not in the cutover week, on a stable budget, one brand at a time, with the
 Session 0 baseline as the comparison, and a written condition for putting it back.
@@ -567,11 +603,16 @@ Withdrawn: it holds two Website actions and **one of them is dead.**
 `statewidefloodinsurance.com - Submit_Online_Quote_Form` is active and recording;
 `statewidefloodinsurance.com - Contact_Form_Submission` is reported by Google Ads as **tag inactive**.
 
-That is worth more than the template idea was. A **live** Demand Gen campaign is optimising against a
-goal set where half the actions do not fire — so it is effectively running on one goal while appearing
-to run on two. It also connects to an earlier count nobody had attached to anything specific: the
-account shows 5 tag-inactive and 4 unverified conversion actions, and this is one of them, sitting
-inside a live campaign's goals.
+That is worth more than the template idea was — though it is a configuration issue, not proof the
+campaign is impaired, and my first wording ("effectively running on one goal") implied more than the
+evidence supports. The accurate statement: **one of the two actions contributes nothing, so the
+campaign optimises on the quote action alone.** Whether that is a problem depends on whether
+contact-form submissions were ever meant to count as conversions for it. The active quote action may
+well be doing the whole job perfectly adequately.
+
+It also connects to an earlier count nobody had attached to anything specific: the account shows 5
+tag-inactive and 4 unverified conversion actions, and this is one of them, sitting inside a live
+campaign's goals. Worth asking which campaigns the other four appear in — same question, same read.
 
 The fix is already on this list: that contact-form action is exactly what Session 2's
 `cfi_form_submit` path is built to feed. Reconcile it there rather than copying it anywhere.
