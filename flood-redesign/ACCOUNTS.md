@@ -292,6 +292,12 @@ Publish to **Edit** so changes need approval, and scope them to the one containe
 than the account. Do the same review in GA4 (Admin → Account access management) and Google Ads
 (Admin → Access and security).
 
+**Also check pending invitations, not just active users.** Microsoft Ads was found to hold a *pending*
+Max Conversion invite (4 Aug). An unaccepted invitation is standing access waiting to be claimed —
+whoever controls that mailbox can accept it at any point, including long after the engagement ends, and
+it does not show up in a list of current users. Aaron is revoking it. Re-inviting later takes thirty
+seconds, so a pending invite of uncertain age should always be revoked rather than left open.
+
 Nothing here suggests anything bad has happened. It is unused standing access, which is the ordinary
 way this goes wrong.
 
