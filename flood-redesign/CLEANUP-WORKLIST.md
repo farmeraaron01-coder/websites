@@ -662,3 +662,34 @@ Two things that are not account cleanup but are on the same list:
   `floodcognito@robot.zapier.com` and `data@insuredmine.com`). The UTM and GCLID values you capture
   are on the entry but invisible to Zapier and InsuredMine, so sales cannot see where a lead came
   from.
+
+---
+
+## Decided: no new access provisioned (4 Aug)
+
+Asked and answered, recorded so it does not get re-litigated.
+
+**No account access is provisioned for Claude, because no task on this list is blocked on it.**
+Sessions 0–3 need no account data — Session 0's baseline is a Chrome Claude export, and everything
+else is site-side or permissions. Provisioning credentials speculatively adds exposure and buys
+nothing this month.
+
+**Honest accounting of what access would have bought:** two of my three errors in this project came
+from reading relayed tables rather than source data. The "thirteen live pairs" claim came from a table
+with no status column; an API query returns status. The "Bing goals are click goals" claim came from
+goal names; an API query returns type. So direct reads have real value — this is not modesty.
+
+**When account data is next needed** (the Session 7 review, months out), the answer is already built:
+the June scripts in `Claude CoWork Files/google-ads-project/Google Ads/` —
+`pull_conversion_goals.py`, `diagnose_conversions.py`, `google_growth_audit.py`,
+`google_tracking_health.py` — query the Ads API directly and produce structured output. Aaron or
+Chrome Claude runs them, pastes the output. Zero new credentials, better data than screenshots.
+
+**If standing read access is ever wanted:** a Google Ads user at the **Read only** access level, with
+a refresh token generated for *that* user rather than Aaron's own, held in a secret store and never
+pasted into chat. Write access: no, at any point. Every change on this list is executed by a human
+after a read-back, and that is the check that caught all three of my errors.
+
+**Unrelated and still outstanding:** the existing Ads refresh token sits in a synced Dropbox folder
+(`google-ads-project/Google Ads/.env`). That is the real access problem in front of us, and it is not
+mine. Move it out and rotate it.
