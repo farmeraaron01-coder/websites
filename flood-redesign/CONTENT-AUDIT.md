@@ -129,3 +129,60 @@ Fixed 5 Aug, with real descriptions written and verified live on four pages:
 2. **Delete the three placeholder pages** and let the redirects cover them.
 3. **Optional, post-launch:** 16 California posts sit between 150 and 599 words — the judgement band.
    Worth revisiting once the site is live and Search Console can say which of them earn anything.
+
+---
+
+## Internal link integrity — added 5 Aug after Aaron queried `/before-a-flood/`
+
+Aaron noticed `before-a-flood` was newly written content and asked why a link in it was being
+repointed. Checking that produced the largest defect found in the whole audit, and it had nothing to do
+with the pruning.
+
+**Every internal link on both sites was fetched: 813 links, 106 distinct targets. 22 targets were
+404ing.** They fell into one pattern — **each site linking to the other's URLs with a relative path.**
+
+### Statewide's state pages were the worst affected
+
+The state pages were built from `tn-template.txt`, which carries "learn more" links written against
+**California's** article URLs. Those articles were never created on the new statewide install, so:
+
+| Broken target | Pages linking to it |
+|---|---:|
+| `/what-does-flood-insurance-not-cover/` | **29** |
+| `/which-flood-zone-requires-flood-insurance/` | **29** |
+| `/how-much-does-flood-insurance-cost/` | **24** |
+| `/comparing-the-admitted-vs-non-admitted-insurance-markets/` | 10 |
+
+Nearly every one of statewide's 29 state pages — the pages carrying its commercial intent — shipped with
+three or four dead "learn more" links. **These worked on production**, because statewide production holds
+those 48 posts. They broke precisely because the posts were correctly not migrated, which makes this a
+direct and unforeseen consequence of that decision rather than a pre-existing fault.
+
+### And seven were mine
+
+California's `/faqs/` linked to seven **statewide** page URLs — `/private-flood-insurance-cost/`,
+`/switch-nfip-to-private-flood/` and five others. I introduced those on 4 Aug by porting statewide's FAQ
+answers to California without adjusting the internal links in them. Exactly the mistake the audit exists
+to catch, committed while doing the audit.
+
+### Fixed
+
+**125 links repointed across 39 pages** — 112 on statewide, 13 on California — each to the same-site
+equivalent: `/what-does-flood-insurance-not-cover/` → `/flood-coverage-gaps/`,
+`/which-flood-zone-requires-flood-insurance/` → `/high-risk-flood-insurance/`,
+`/understanding-base-flood-elevation-bfe/` → `/elevation-certificates-2026/`, and so on. Also corrected
+`href="/get-a-quote"` to `/get-a-quote/` on nine pages, removing a 301 hop from the highest-value link on
+either site.
+
+**Re-verified: 813 links, 85 distinct targets, zero non-200.**
+
+### Did the pruning delete good posts?
+
+Aaron's follow-up question, and the answer is no — checked rather than assumed. The 14 surviving
+California posts hold **44 cross-links to each other**, 5–8 H2 headings each. That is the interlinked set.
+**Not one of the 45 pruned items contained a single internal link**, nor a heading, nor the theme's
+`_cfi_standfirst` or `_cfi_takeaways` fields. They could not have been part of an interlinked cluster.
+The cluster is intact and complete.
+
+**The lasting lesson: `preflight.py` compares each site against its own predecessor and would never have
+caught this.** Internal link integrity within a site is a separate check, and it belongs in the tool.
