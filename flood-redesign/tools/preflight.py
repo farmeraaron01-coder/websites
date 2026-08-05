@@ -47,6 +47,7 @@ from __future__ import annotations
 import argparse
 import concurrent.futures
 import json
+import random
 import re
 import subprocess
 import sys
@@ -75,10 +76,19 @@ IGNORE_IFRAME_HOSTS = ('googletagmanager.com',)
 
 
 def fetch(url: str, auth: str | None = None, head: bool = False) -> tuple[int, str]:
-    """Return (status, body). Cache-busted, because a stale proxy cache reads as a defect."""
+    """Return (status, body), bypassing any proxy cache.
+
+    The buster must be UNIQUE PER REQUEST. An earlier version appended a fixed
+    `?_pf=1`, which nginx simply cached as its own URL — so the first run populated
+    it and every run after that read back the stale copy the tool had created. That
+    produced eight phantom broken links on a site that had already been fixed, and
+    the header said MISS while the body was old, because HEAD and GET were not
+    hitting the same entry. A checker that caches its own results is worse than no
+    checker.
+    """
     sep = '&' if '?' in url else '?'
     cmd = ['curl', '-sS', '-A', UA, '--max-time', str(TIMEOUT),
-           '-w', '\n%{http_code}', f'{url}{sep}_pf=1']
+           '-w', '\n%{http_code}', f'{url}{sep}_pf={random.randint(1, 2**31)}']
     if head:
         cmd += ['-o', '/dev/null', '-I']
     if auth:
