@@ -260,6 +260,49 @@ def compare(path: str, live: str, new: str, auth: str | None) -> list[Finding]:
     return out
 
 
+def check_internal_links(new: str, paths: list[str], auth: str | None,
+                         workers: int) -> list[Finding]:
+    """Fetch every internal link on the new site and report the ones that 404.
+
+    WHY THIS IS SEPARATE FROM compare()
+    Everything else here diffs a page against its predecessor. This cannot: a link
+    that is broken on the new site is usually broken *because* the new site is
+    different, so the live version is no help. Added 5 Aug after the page-by-page
+    diff passed cleanly while 22 link targets were 404ing — statewide's 29 state
+    pages each carried three or four dead "learn more" links inherited from a
+    template written against the other brand's URLs. The comparison could not see
+    it, because both sites were internally consistent with their own predecessors.
+    """
+    seen: dict[str, set[str]] = {}
+    for path in paths:
+        code, html = fetch(new + path, auth)
+        if code != 200:
+            continue
+        for href in re.findall(r'href="(/[^"#?]*)"', html):
+            if href.startswith('/wp-content') or href.startswith('//'):
+                continue
+            seen.setdefault(href, set()).add(path)
+
+    out: list[Finding] = []
+
+    def probe(target: str) -> tuple[str, int]:
+        code, _ = fetch(new + target, auth, head=True)
+        return target, code
+
+    with concurrent.futures.ThreadPoolExecutor(max_workers=workers) as pool:
+        for target, code in pool.map(probe, sorted(seen)):
+            if code >= 400:
+                srcs = sorted(seen[target])
+                where = f'{len(srcs)} page(s)' if len(srcs) > 3 else ', '.join(srcs)
+                out.append(Finding(FAIL, 'broken-internal-link', target,
+                                   f'{code} — linked from {where}',
+                                   {'sources': srcs}))
+            elif code in (301, 302, 307, 308):
+                out.append(Finding(INFO, 'redirecting-internal-link', target,
+                                   f'{code} — an unnecessary hop; link the final URL'))
+    return out
+
+
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__,
                                  formatter_class=argparse.RawDescriptionHelpFormatter)
@@ -295,6 +338,9 @@ def main() -> int:
             findings.extend(fut.result())
             if i % 10 == 0:
                 print(f'  {i}/{len(paths)}', flush=True)
+
+    print('Checking internal links on the new site ...', flush=True)
+    findings.extend(check_internal_links(new, paths, args.user, args.workers))
 
     findings.sort(key=lambda f: (RANK[f.severity], f.category, f.path))
 

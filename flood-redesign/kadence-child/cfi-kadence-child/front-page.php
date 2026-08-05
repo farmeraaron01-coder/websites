@@ -153,7 +153,16 @@ $theme_uri = get_stylesheet_directory_uri();
 						<li>Gap coverage for unit owners</li>
 						<li>Board-ready proposals &amp; comparisons</li>
 					</ul>
-					<a href="/homeownwers-association-flood-insurance/">RCBAP review &rarr;</a>
+					<?php
+					/* The two brands genuinely differ here: California's page slug carries a
+					   typo — "homeownwers" — and statewide's is spelled correctly. Both are
+					   live and indexed, so this follows the slugs rather than "fixing" a URL
+					   that people and search engines already hold. */
+					$rcbap = 'swfi' === CFI_BRAND
+						? '/homeowners-association-flood-insurance/'
+						: '/homeownwers-association-flood-insurance/';
+					?>
+					<a href="<?php echo esc_url( $rcbap ); ?>">RCBAP review &rarr;</a>
 				</article>
 			</div>
 		</div>
@@ -198,16 +207,35 @@ $theme_uri = get_stylesheet_directory_uri();
 					<p style="color:var(--cfi-ink-2)">Most people land here because a lender or escrow officer just named their zone. Every zone has a plain-English guide: what it means, whether coverage is required, and what drives your price.</p>
 					<div class="cfi-zchips">
 						<?php
-						/* Adjust slugs to match the live zone-guide URLs. */
-						$zones = array(
-							'Zone X'                    => '/navigating-flood-zone-x/',
-							'Zone A'                    => '/flood-zone-a/',
-							'Zone AE'                   => '/flood-zone-ae/',
-							'Zones AH &amp; AO'         => '/flood-zone-ah-and-ao/',
-							'Zones V &amp; VE'          => '/flood-zone-v-and-ve/',
-							'Which zones need coverage?' => '/which-flood-zone-requires-flood-insurance/',
-							'When is it required?'      => '/when-is-flood-insurance-required/',
-						);
+						/*
+						 * These were California's zone-guide URLs, hardcoded for both brands
+						 * behind a comment reading "Adjust slugs to match the live zone-guide
+						 * URLs" that was never acted on. Statewide has no zone-guide pages, so
+						 * all seven chips 404ed on its homepage — found 5 Aug by the internal
+						 * link check in tools/preflight.py, which sees template output that a
+						 * scan of post content structurally cannot.
+						 *
+						 * Statewide gets the nearest equivalents it actually has. Every URL in
+						 * both arrays was verified to return 200.
+						 */
+						$zones = 'swfi' === CFI_BRAND
+							? array(
+								'Which zones need coverage?' => '/high-risk-flood-insurance/',
+								'When is it required?'       => '/lender-flood-insurance-requirements-over-250k/',
+								'Elevation certificates'     => '/elevation-certificates-2026/',
+								'What is not covered'        => '/flood-coverage-gaps/',
+								'NFIP vs private'            => '/private-flood-insurance-vs-nfip/',
+								'Cost by state'              => '/flood-insurance-cost-by-state/',
+							)
+							: array(
+								'Zone X'                     => '/navigating-flood-zone-x/',
+								'Zone A'                     => '/flood-zone-a/',
+								'Zone AE'                    => '/flood-zone-ae/',
+								'Zones AH &amp; AO'          => '/flood-zone-ah-and-ao/',
+								'Zones V &amp; VE'           => '/flood-zone-v-and-ve/',
+								'Which zones need coverage?'  => '/which-flood-zone-requires-flood-insurance/',
+								'When is it required?'       => '/when-is-flood-insurance-required/',
+							);
 						foreach ( $zones as $label => $url ) {
 							echo '<a class="cfi-zchip" href="' . esc_url( $url ) . '">' . wp_kses_post( $label ) . '</a>';
 						}
