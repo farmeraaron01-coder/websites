@@ -6,8 +6,8 @@ what was written and why.
 
 ## el-nino-california-flood-risk.html
 
-Published to California 5 Aug 2026 as `/el-nino-california-flood-risk/`. 1,367 words,
-7 H2s, 5 FAQ pairs (the theme converts these to FAQPage schema automatically), 5 internal
+Published to California 5 Aug 2026 as `/el-nino-california-flood-risk/`. **1,663 words,
+8 H2s, 6 FAQ pairs** (the theme converts these to FAQPage schema automatically), 6 internal
 links, all verified 200.
 
 **Every figure is sourced, and two were corrected during drafting:**
@@ -29,6 +29,19 @@ links, all verified 200.
 - FEMA FloodSmart — *"From 2014 - 2024, nearly one-third of NFIP claims came from outside
   high-risk flood areas."* Used over the looser "about 40%" that circulates in secondary
   sources.
+
+**Two corrections from Aaron, both incorporated 5 Aug.**
+
+- **Private binding is faster than first written.** The draft said "around 7 to 10 days". It is
+  **as little as 7 days with some carriers, commonly 10** — a sharper contrast against the
+  NFIP's 30 and a genuine selling point, so it now has its own paragraph rather than a clause.
+- **A price was missing, and it was the most important omission.** A low-risk-zone California
+  home **commonly runs about $450 a year** in our book of business. This now has its own H2
+  and its own FAQ entry. Corroborated independently: a customer posted on Nextdoor that he had
+  just bought a one-year policy at approximately $480 because of El Niño, and the first reply
+  on that thread was "Any idea what a one year policy would run?" — price was the first thing a
+  real prospect asked, unprompted. Competitors writing about El Niño will not print a number;
+  that is exactly why it belongs here.
 
 **Perishability.** ENSO outlooks update on the second Thursday monthly. The slug carries no
 year so the URL survives revision; the year lives in the title and a closing note states the
