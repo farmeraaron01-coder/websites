@@ -82,6 +82,29 @@ mostly `-2` duplicates from a re-migration (`video-2`, `claims-2`, `staff-form-2
 
 To do it: **Posts → Trash → Empty Trash**, then **Pages → Trash → Empty Trash**. Permanent.
 
+## FIXED — breadcrumbs said "Uncategorized" on 13 of 19 posts
+
+Spotted from Aaron's Posts screen on 6 Aug. It was not only the trashed posts: 13 of the 19
+**published** posts sat in Uncategorized, and it surfaced in the rendered HTML and in the
+BreadcrumbList schema, so Google would read `Home › Uncategorized › El Niño and California Flood
+Risk`.
+
+Renamed the default category to **Flood Insurance Guides** (slug `flood-insurance-guides` — not
+`guides`, which the real hub page already holds). One change, all 13 breadcrumbs fixed, no new URLs,
+and future uncategorised posts now land somewhere sensible. Verified: `Uncategorized` no longer
+appears in the HTML.
+
+Assigning the 13 to the site's real topic categories would be better, but that is content
+architecture rather than a launch step.
+
+### Check this at step 4, when the noindex comes off
+
+Whether `/category/…/` archives are indexable after launch **cannot be read on staging** — every
+page type there returns `nofollow, noindex` from the site-wide "Discourage search engines" setting,
+which masks whatever Rank Math would do on its own. Thin category archives on a 19-post site are a
+liability worth ruling out, so check Rank Math → Titles & Meta → Categories once the site-wide
+noindex is lifted.
+
 ## FOR AARON TO DECIDE — the new Terms of Service drops mandatory arbitration
 
 Not a migration defect. The new Terms is a **rewrite**, not a truncation: 47 headings against
