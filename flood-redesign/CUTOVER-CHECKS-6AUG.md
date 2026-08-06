@@ -61,6 +61,27 @@ Then verified by actually rendering both in Chromium at a mobile viewport:
 
 Same form, same field count, plus a noscript fallback and a conversion hook production lacks.
 
+## NOT a pre-flip blocker — emptying the Trash
+
+I told Aaron twice that the pruned posts had to be deleted out of the Trash before the redirects
+would take effect. **That is wrong**, and it is worth writing down because it sounds plausible.
+
+**WordPress frees the slug the moment a post is trashed**, by appending `__trashed` to it. Verified
+on the new site: 46 of 46 trashed posts carry the suffix, and all 38 redirect sources return 404
+there. Separately, the redirects are Apache `Redirect` directives — they fire before WordPress is
+involved at all, so the trash state cannot affect them either way.
+
+So emptying the Trash is **optional hygiene, not a launch step.** There is one real reason to do it:
+if anyone later restores a trashed post it reclaims its original slug, and the `.htaccess` redirect
+would then shadow it — a page that exists but redirects, which is miserable to debug six months on.
+Emptying removes that trap.
+
+It is safe. 45 of the 46 trashed posts are backed up in `pruned-content-backup-pass1.json` and
+`pass2.json`; the 46th is `hello-world`, WordPress's sample post. The 25 trashed **pages** are
+mostly `-2` duplicates from a re-migration (`video-2`, `claims-2`, `staff-form-2`).
+
+To do it: **Posts → Trash → Empty Trash**, then **Pages → Trash → Empty Trash**. Permanent.
+
 ## FOR AARON TO DECIDE — the new Terms of Service drops mandatory arbitration
 
 Not a migration defect. The new Terms is a **rewrite**, not a truncation: 47 headings against
