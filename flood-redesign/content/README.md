@@ -6,7 +6,7 @@ what was written and why.
 
 ## el-nino-california-flood-risk.html
 
-Published to California 5 Aug 2026 as `/el-nino-california-flood-risk/`. **1,663 words,
+Published to California 5 Aug 2026 as `/el-nino-california-flood-risk/`. **1,705 words,
 8 H2s, 6 FAQ pairs** (the theme converts these to FAQPage schema automatically), 6 internal
 links, all verified 200.
 
@@ -52,3 +52,34 @@ advisory date. Update the figures rather than publishing a second article.
 Google Business Profile version, ~1,050 characters, with notes on timing — chiefly that the
 post argues from the 30-day waiting period, so it only works while nothing is in the
 forecast, and that both brands share one GBP so only the California framing should be posted.
+
+## Where it lives on the site — and a misconfiguration this exposed
+
+Aaron asked where the article would sit. Answering that found California's blog had no working
+index at all.
+
+**`/insights/` was not a blog archive.** Statewide had `page_for_posts` pointing at its
+insights page, so WordPress rendered the post archive there correctly. **California had
+`page_for_posts: 0`**, so `/insights/` rendered its own 785-byte static content instead — two
+hardcoded links, a base64 placeholder image, and three production-absolute URLs. Zero posts
+listed. Every article on the site was reachable only from the homepage's four-item recent grid.
+
+Fixed by setting California's `page_for_posts` to 75, matching statewide. `/insights/` now lists
+17 items including the new article, the placeholder is gone, and the homepage is unaffected.
+
+So the article now appears in three places, none of which needs maintaining by hand except the
+third:
+
+1. **`/insights/`** — the chronological archive, automatic
+2. **The homepage recent-guides grid** — automatic, picks up the four newest posts
+3. **`/guides/`** — the curated hub, under a new "Seasonal outlook" heading. This one is
+   hand-built, so a future article has to be added to it deliberately.
+
+## GBP-POST-el-nino.txt
+
+Google Business Profile version. **1,482 characters against GBP's 1,500 limit** — the first
+draft came in at 1,593 and had to be trimmed, so re-measure rather than trusting a stated count
+if the text is edited.
+
+Includes Eric's approved testimonial, attributed as "Eric D., Quail Lake" and deliberately
+without the staff name and extension his original post carried.

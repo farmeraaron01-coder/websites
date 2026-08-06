@@ -1,0 +1,92 @@
+GOOGLE BUSINESS PROFILE POST — EL NIÑO
+California Flood Insurance Services · prepared 5 August 2026
+
+════════════════════════════════════════════════════════════════════════
+HOW TO ADD IT
+════════════════════════════════════════════════════════════════════════
+
+1. Google Business Profile → Promote → Add update
+2. Paste everything between the ===== POST TEXT ===== markers below
+3. Add a photo (see PHOTO below)
+4. Button: choose "Learn more"
+5. Button link:
+   https://californiafloodinsurance.com/el-nino-california-flood-risk/
+6. Publish
+
+Character count: 1,482 of the 1,500 allowed.
+
+
+════════════════════════════════════════════════════════════════════════
+===== POST TEXT — copy from the next line =====
+
+NOAA has an El Niño Advisory in effect, and this one is strong. As of the Climate Prediction Center's July update there's a 97% chance it lasts into spring 2027 and an 81% chance it reaches "very strong" by year end — among the biggest since 1950.
+
+For California, El Niño reliably tilts Southern California wetter: eight of the last ten moderate-to-strong events landed in the wettest third of years. It's not a guarantee. 2015-16 was just as strong and came in below average. But the odds move.
+
+Here's what most homeowners miss. From 2014 to 2024, nearly one-third of all NFIP flood claims came from OUTSIDE high-risk flood zones. In a wet California winter the damage usually isn't a river overflowing — it's drainage that can't keep up, ground already saturated from the last storm, and runoff off wildfire burn scars. None of that follows flood-zone lines.
+
+Cost: in our book, a low-risk-zone California home commonly runs about $450 a year.
+
+"We just got a 1 year flood policy for approximately $480 with pretty good coverage… we have peace of mind for a year during the increased El Niño threat." — Eric D., Quail Lake
+
+The timing trap: a new NFIP policy takes 30 days to take effect — 30 days from when you buy, not before the storm. Our private carriers can bind in as little as 7 days, commonly 10. Waiting until rain is in the forecast is waiting too long.
+
+Your homeowners policy does not cover flood. If you're not sure whether you have it, this is the month to check.
+
+===== END POST TEXT =====
+════════════════════════════════════════════════════════════════════════
+
+
+PHOTO
+─────
+Use an image already in the California media library — it is sized and
+optimised, and reusing it keeps the post consistent with the article:
+
+  /wp-content/uploads/2026/07/atmospheric-river-rain-neighborhood.webp
+
+That one shows rain on a residential street, which matches the post's actual
+argument better than a dramatic flood photo would. Avoid disaster imagery
+here: the post's case is "this is cheap and you have time", and a wall of
+floodwater argues for panic instead, which reads as fear-selling on a
+business profile.
+
+
+TIMING — the one thing that matters
+────────────────────────────────────
+Post it now. The whole argument rests on the 30-day waiting period, which
+only works as a call to action while nothing is in the forecast. By November
+this post argues against itself.
+
+Do not post it in the days right after a local flood event. The same words
+read as opportunism. Wait a week and lead with the claims process instead.
+
+
+KEEPING IT CURRENT
+──────────────────
+NOAA refreshes its ENSO discussion on the second Thursday of each month. If
+the numbers move materially, edit the figures rather than posting the same
+ones again — the specificity is what makes this credible, and stale specifics
+are worse than none.
+
+
+TESTIMONIAL — permission on file
+────────────────────────────────
+Eric approved the quote for use. Two things to keep in mind:
+
+  • Keep the attribution as "Eric D., Quail Lake". No full surname, no
+    street. That is what he agreed to.
+  • His original Nextdoor comment also named a staff member and a direct
+    extension. Those are deliberately not in this post: extensions change,
+    and pointing strangers at one person dates the material the moment
+    they change role.
+
+Save his approval email wherever you keep signed documents. California
+treats testimonials as advertising content, so the reply is your record.
+
+
+ONE PROFILE, TWO BRANDS
+───────────────────────
+Both websites share a single Google Business Profile under the California
+Flood Insurance Services name. So this California framing is the right one —
+do not also post a statewide version to the same profile, or it competes
+with itself.
