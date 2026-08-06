@@ -160,8 +160,21 @@ def video_ids(html: str) -> set[str]:
 
 
 def visible_words(html: str) -> int:
-    body = re.sub(r'<(script|style|template)[^>]*>.*?</\1>', ' ', html, flags=re.S | re.I)
+    """Words of page content, with site chrome removed from both sides equally.
+
+    Counting the whole document compares navigation, not content. The two sites
+    have very different chrome — Divi ships a long nav and a four-column footer,
+    the Kadence child ships less — so a raw count reported /get-a-quote/ as 43%
+    thinner when the actual content and the Cognito form were identical.
+
+    Stripping <main> out instead would be worse, not better: production emits no
+    <main> element at all, so the new site would be measured on its content while
+    production was measured on its content *plus* all its chrome. The rule has to
+    be symmetric, so nav/header/footer/aside come out of both.
+    """
+    body = re.sub(r'<(script|style|template|noscript)[^>]*>.*?</\1>', ' ', html, flags=re.S | re.I)
     body = re.sub(r'<!--.*?-->', ' ', body, flags=re.S)
+    body = re.sub(r'<(nav|header|footer|aside)\b[^>]*>.*?</\1>', ' ', body, flags=re.S | re.I)
     return len(re.sub(r'<[^>]+>', ' ', body).split())
 
 
