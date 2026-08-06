@@ -11,9 +11,18 @@ I have no credentials for jumpins.com and cannot publish there.
 
 Post cadence: six substantial posts in June–July 2026, then nothing. Newest was 12 July.
 
+## Scope: San Diego only
+
+**Content for this site targets San Diego County and does not promote the Palm Desert office.**
+Aaron's instruction, 6 Aug 2026. Do not add Coachella Valley geography, do not link
+`/palm-desert-office/`, and do not propose Palm Desert or Coachella Valley topics. An earlier
+draft of the FAIR Plan article had a Coachella Valley section and a Palm Desert office link in
+the CTA; both were removed. Statewide and county-wide framing is fine — it is the second
+location specifically that stays out.
+
 ## fair-plan-rate-increase-october-2026.html
 
-**Not yet published.** 1,868 words, 8 H2s, 6 FAQ pairs, 9 internal links (all verified 200
+**Not yet published.** 1,882 words, 8 H2s, 6 FAQ pairs, 8 internal links (all verified 200
 with no redirect hop), 1 cross-domain link to californiafloodinsurance.com.
 
 ### Suggested metadata
@@ -88,3 +97,34 @@ them word for word. Verified programmatically: 6 of 6 schema questions present i
 
 Worth going back and fixing the two existing posts by pasting their schema answers into visible
 copy. Cheap, and it is currently wasted content.
+
+## GBP-POST-fair-plan.txt
+
+The Google Business Profile version. **1,494 characters against GBP's 1,500 limit** — the first
+draft measured 1,533 despite a stated 1,463, so re-measure rather than trusting the header if
+the text is edited.
+
+Deliberately narrower than the article in two ways. **No carrier names**: in 1,800 words with a
+disclaimer attached, naming Mercury, CSAA, Farmers and Travelers as dated market facts is
+defensible; in 1,500 characters above a quote button it reads as an appointment claim. **No
+premium figure**, because there is no Jump premium data available to me — if Aaron supplies one
+it would strengthen the post considerably, since a concrete number is what turns a news post
+into a phone call.
+
+## fair-plan-gbp-photo.jpg / -alt.jpg
+
+1200 x 900 JPGs for the GBP post, ready to upload. Generated with nano banana (`nano_banana` is
+the model ID in the Higgsfield MCP — `nano-banana` with hyphens is rejected), then centre-cropped
+to exact 4:3 and saved at quality 88.
+
+The primary shows an inland San Diego County home with dry chaparral hillside behind and
+gravel-and-succulent landscaping set back from the walls — a wildland-urban-interface property
+that has done the defensible-space work, which is the article's argument in one frame. The
+alternate is a flatter street view with no hillside context.
+
+**The media library's three wildfire images are the wrong choice and the post file says so.**
+`altadena-wildfire-damage-california.jpg` is a photograph of real destroyed homes, and using it
+to sell rate shopping is the kind of thing people notice and resent. The other two are dramatic
+flame shots, one of which appears to be a fuel-fire training exercise rather than a wildfire.
+Beyond the taste problem they argue the wrong case: this post is about a rate, a deadline and a
+way out, and flame imagery says "be afraid" on a profile that is asking for a phone call.

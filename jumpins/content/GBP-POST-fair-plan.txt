@@ -1,0 +1,106 @@
+GOOGLE BUSINESS PROFILE POST — FAIR PLAN RATE INCREASE
+Jump Insurance Services · prepared 6 August 2026
+
+════════════════════════════════════════════════════════════════════════
+HOW TO ADD IT
+════════════════════════════════════════════════════════════════════════
+
+1. Google Business Profile → Promote → Add update
+2. Paste everything between the ===== POST TEXT ===== markers below
+3. Add a photo (see PHOTO below — do NOT use the wildfire shots)
+4. Button: choose "Learn more"
+5. Button link:
+   https://jumpins.com/fair-plan-rate-increase-october-2026/
+6. Publish
+
+Character count: 1,494 of the 1,500 allowed.
+
+Post it before the article is more than a week old, and in any case well
+before 15 October — the whole argument is that there is still time to act.
+
+
+════════════════════════════════════════════════════════════════════════
+===== POST TEXT — copy from the next line =====
+
+California has approved a 29.1% average rate increase for the FAIR Plan, effective October 15, 2026 — on renewals and new policies alike.
+
+If you're one of the 668,600+ California households on the FAIR Plan, two things matter before then.
+
+First: 29.1% is a statewide average, not your increase. The new rates are set using catastrophe models, so the increase concentrates where wildfire risk is highest. Some homes go well past 29% and some wildfire premiums roughly double. Lower-exposure homes see less, and a minority will see a decrease. You won't know your number until the renewal arrives.
+
+Second — and this is the part worth acting on — the regular market has reopened. California's Sustainable Insurance Strategy requires carriers that want to use catastrophe models to commit to writing in wildfire areas, and the list of companies accepting new California homeowners business is growing for the first time since 2022.
+
+So a home pushed onto the FAIR Plan during the 2023-2025 pullback may now have real options. In San Diego County the risk runs inland and east, and two homes a few miles apart can price very differently.
+
+Don't wait for the renewal notice. Quoting can require an inspection and takes time to bind. Starting now beats an October renewal comfortably; starting in October does not.
+
+If you carry a companion policy alongside the FAIR Plan, bring both declarations pages. Comparing the FAIR Plan premium by itself is how people wrongly conclude they can't do better.
+
+===== END POST TEXT =====
+════════════════════════════════════════════════════════════════════════
+
+
+PHOTO — upload this file
+────────────────────────
+  fair-plan-gbp-photo.jpg       (1200 x 900, 270 KB)  ← use this one
+  fair-plan-gbp-photo-alt.jpg   (1200 x 900, 218 KB)  ← alternate
+
+Generated with nano banana, the same way the flood site's images were, then
+centre-cropped to exact 4:3 and saved as JPG. GBP needs an uploaded file —
+it cannot reference a URL, and it is unreliable with .webp. Upload as-is.
+
+The primary is an inland San Diego County home with a dry chaparral hillside
+behind it and gravel-and-succulent landscaping set back from the walls. That
+is the article in one frame: a house in the wildland-urban interface that has
+done the defensible-space work, which is exactly the property most likely to
+have been put on the FAIR Plan unnecessarily and most likely to get a quote
+now. The alternate is a flatter street view — cleaner, more generic, no
+hillside context.
+
+
+WHAT NOT TO USE
+───────────────
+Do not use the three wildfire images in the media library:
+
+  firefighters-california-wildfire.jpg
+  altadena-wildfire-damage-california.jpg
+  wildfire_homeowners_insurance1.jpg
+
+Two reasons. The Altadena photograph is real destroyed homes, and using it
+to sell rate shopping is the kind of thing people notice and resent. The
+other two are dramatic flame shots — one appears to be a fuel-fire training
+exercise rather than a wildfire at all.
+
+The bigger problem is that they argue the wrong case. This post is not about
+fire. It is about a rate, a deadline, and the fact that there is now a way
+off the FAIR Plan. Flames say "be afraid"; the post says "you have options
+and about ten weeks". Fear imagery on a profile that is asking for a phone
+call reads as fear-selling, and it undercuts the calm, factual tone that
+makes the post credible in the first place.
+
+The rule the attached photo follows: show the thing being insured, not the
+thing that destroys it.
+
+Worth trying instead on a future post — a photograph of the San Diego office
+or the team. Real people outperform generated and stock imagery on GBP, and
+it reinforces that this is a local agency. Nothing suitable exists in the
+media library today; the only calm images there are low-resolution house
+illustrations from 2021.
+
+
+ONE THING NOT TO PUT IN THE POST
+────────────────────────────────
+No carrier names. The article names Mercury, CSAA, Farmers and Travelers as
+dated market facts, which is defensible in 1,800 words with a disclaimer
+attached. In 1,500 characters with a "Request a quote" button underneath, a
+carrier name reads as an appointment claim. Left out deliberately — the
+mechanism is the point, not the roster.
+
+
+NO PREMIUM FIGURES
+──────────────────
+Unlike the flood posts, which carry the $450 low-risk-zone figure from your
+own book, there is no Jump premium number here because I do not have that
+data. If you want a price in this post it has to come from you — and it
+would strengthen it considerably, because a concrete number is what turns a
+news post into a phone call.
