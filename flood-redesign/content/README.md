@@ -47,12 +47,6 @@ links, all verified 200.
 year so the URL survives revision; the year lives in the title and a closing note states the
 advisory date. Update the figures rather than publishing a second article.
 
-## ELNINO-GBP-POST.md
-
-Google Business Profile version, ~1,050 characters, with notes on timing — chiefly that the
-post argues from the 30-day waiting period, so it only works while nothing is in the
-forecast, and that both brands share one GBP so only the California framing should be posted.
-
 ## Where it lives on the site — and a misconfiguration this exposed
 
 Aaron asked where the article would sit. Answering that found California's blog had no working
@@ -83,3 +77,25 @@ if the text is edited.
 
 Includes Eric's approved testimonial, attributed as "Eric D., Quail Lake" and deliberately
 without the staff name and extension his original post carried.
+
+An earlier draft, `ELNINO-GBP-POST.md`, is deleted rather than kept — it predated Eric's
+approval, the 7-day binding correction and the $450 figure, so leaving two GBP files in the
+folder invited pasting the wrong one. This file is the only one.
+
+## el-nino-gbp-photo.jpg
+
+The photo for the GBP post, ready to upload. 1200 x 900, 247 KB.
+
+Two things made this necessary rather than just citing a media-library path, and the first was
+my error:
+
+- **The path I first gave was staging-only.** `atmospheric-river-rain-neighborhood.webp` is one
+  of the redesign's generated images and exists on `new.californiafloodinsurance.com`, not on
+  production, so the production URL 404s and the production Media Library has no such file.
+  Aaron searched for it before I caught this.
+- **GBP cannot reference a URL at all.** It takes an upload, and it is unreliable with `.webp`.
+  So a path was never going to be usable regardless of which server it was on.
+
+Converted from the staging source with PIL, centre-cropped 16:9 → 4:3 because that is the
+aspect GBP renders posts at, JPEG quality 88. When the media library moves to production at
+cutover the `.webp` will be available there too, but GBP will still need this JPG.

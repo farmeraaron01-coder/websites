@@ -37,16 +37,24 @@ Your homeowners policy does not cover flood. If you're not sure whether you have
 ════════════════════════════════════════════════════════════════════════
 
 
-PHOTO
-─────
-Use an image already in the California media library — it is sized and
-optimised, and reusing it keeps the post consistent with the article:
+PHOTO — upload this file
+────────────────────────
+  flood-redesign/content/el-nino-gbp-photo.jpg   (1200 x 900, 247 KB)
 
-  /wp-content/uploads/2026/07/atmospheric-river-rain-neighborhood.webp
+Google Business Profile needs an actual file upload — you cannot point a post
+at a URL — and it is unreliable with .webp, so this is a JPG at the 4:3 size
+GBP renders posts at. Upload it as-is; no resizing needed.
 
-That one shows rain on a residential street, which matches the post's actual
-argument better than a dramatic flood photo would. Avoid disaster imagery
-here: the post's case is "this is cheap and you have time", and a wall of
+Where it came from, so nobody hunts for it later: the source is
+atmospheric-river-rain-neighborhood.webp, which lives only on the STAGING
+site (new.californiafloodinsurance.com), not on production. That is why the
+production URL 404s. It moves to production with the rest of the media at
+cutover; until then the JPG above is the copy to use.
+
+Why this image: it shows rain and street runoff in an ordinary suburban
+neighbourhood, which is the post's actual argument — the damage is drainage
+that cannot keep up, not a river leaving its banks. Avoid disaster imagery
+here. The post's case is "this is cheap and you have time"; a wall of
 floodwater argues for panic instead, which reads as fear-selling on a
 business profile.
 
