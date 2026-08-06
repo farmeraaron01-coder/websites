@@ -120,22 +120,38 @@ Slug note: `/setting-flood-insurance-coverage-limits/` deliberately avoids
 `/how-much-flood-insurance-do-i-need/` page for the same intent. The post links to that page as
 the longer written treatment.
 
-## 5. Two things still open
+## 5. Upload dates and durations — done
 
-**`uploadDate` is wrong on all four, and it needs Aaron.** The shortcode's `upload` attribute
-was left unset, so it falls back to the post date — today. YouTube rate-limited the requests
-that would have retrieved the real publish dates. Production's current schema is no better: it
-claims `2026-06-25` for all four, which is that page's modified date, not when the videos went
-up (the Divi page dates from 2022).
+Aaron supplied the real figures from YouTube Studio on 6 Aug. All four are Sep 2022, which
+confirms production's `2026-06-25` was that page's modified date rather than an upload date.
 
-Google uses `uploadDate`. Get the real dates from YouTube Studio and add them:
+| Video | Upload | Duration | YouTube views |
+|---|---|---|---|
+| Private Flood Insurance VS FEMA | 20 Sep 2022 | `PT2M55S` | 1,145 |
+| Flood Insurance Carrier Rating | 7 Sep 2022 | `PT1M53S` | 58 |
+| What is the Mortgage Clause | 7 Sep 2022 | `PT3M18S` | 2,171 |
+| How Much Flood Coverage Do I Need | 7 Sep 2022 | `PT2M17S` | 147 |
 
-```
-[cfi_video id="vdslGDfJgIQ" title="Private Flood Insurance vs FEMA" upload="2022-03-14" desc="…"]
-```
+Written into the shortcodes and verified live: each of the four pages emits exactly one
+`VideoObject` with `uploadDate` in 2022, a `duration`, a 200-status `maxresdefault` thumbnail, and
+no required field missing. `duration` is what Google uses for the runtime badge on a video result.
 
-Adding `duration="PT4M12S"` at the same time is worth it — Google uses it for the video result's
-runtime badge.
+Two things worth noting from the view counts, since they are the only real demand signal available
+for these topics:
+
+- **The mortgage clause video has 2,171 views — nearly double the next.** That is a lender-driven,
+  deadline-shaped question people search under pressure, and it is the least "insurance marketing"
+  of the four. Worth remembering when picking the next video topic.
+- **Carrier Rating has 58.** It is a good explainer but nobody is looking for it cold. It earns its
+  place as supporting material rather than as a page expected to pull traffic.
+
+One YouTube-side gap: **the FEMA-vs-private video has no description on YouTube** (Studio shows
+"Add description"). The other three have one. That affects ranking on YouTube itself, which is a
+separate search engine from Google web search — the `desc` in our shortcode only feeds the
+VideoObject on our own page. Worth filling in on YouTube, and the post body at
+`/private-flood-insurance-vs-fema/` is the obvious source for it.
+
+## 6. Still open
 
 **The indexed video changes pages at cutover.** Google currently associates `vdslGDfJgIQ` with
 `/video/`. After cutover that video lives on `/private-flood-insurance-vs-fema/` and `/video/`

@@ -254,9 +254,9 @@ Do CFI first; statewide gets the benefit of anything learned.
   `/flood-insurance-carrier-ratings/`, `/flood-insurance-mortgage-clause/` and
   `/setting-flood-insurance-coverage-limits/`. `/video/` keeps its URL as the hub, so no redirect
   is needed. See `VIDEO-INDEXING.md`.
-- **Fill in the real YouTube upload dates** on the four `[cfi_video]` shortcodes. They currently
-  fall back to the post date, which Google reads as the upload date and which is wrong. Production
-  is no better — it claims `2026-06-25` for all four. YouTube Studio has the real dates.
+- On YouTube itself, add a description to the **Private Flood Insurance VS FEMA** video — Studio
+  shows "Add description" and the other three have one. It affects ranking on YouTube, which is a
+  separate engine from web search. The body of `/private-flood-insurance-vs-fema/` is the source.
 - Do **not** add VideoObject markup to the homepage hero video. It is a decorative loop and
   "not indexed" is the correct state for it; the new site's `poster` attribute already removes the
   Search Console error's cause. Reasoning in `VIDEO-INDEXING.md`.
