@@ -1,0 +1,15 @@
+# Python bytecode caches. Regenerated on every run of tools/*.py, so tracking
+# them means a spurious binary diff after each preflight.
+__pycache__/
+*.py[cod]
+
+# OS and editor cruft
+.DS_Store
+Thumbs.db
+*.swp
+
+# Customer PII must never enter this repo. Lead and policy exports are read
+# from Dropbox at runtime and stay there.
+leads-master.csv
+policies-master.csv
+*-leads-*.csv
