@@ -20,12 +20,21 @@ ad account. Everything else here is recoverable.
 
 ---
 
-## TIER 2 — Claims on a licensed agency's live site
+## TIER 2 — Legal wording
 
 | # | Item | Source |
 |---|---|---|
-| 4 | **The 40,000+ / 900+ / 4.9 figures were to be verified *before* launch. They were not.** They are live on California now. Also outstanding: the exact private-market count, and the **agency/coverholder wording, which was to be checked with counsel.** For a licensed agency (CA Lic. #0L75450), unverifiable advertising claims are a real exposure, not a copy nitpick. | `REVIEW.md:57` |
-| 5 | **Terms of Service arbitration decision.** Production compelled binding arbitration with a class-action waiver; the new §24 explicitly does not. That is a deliberate change to customers' legal rights and it is a lawyer's call, not ours. | earlier session |
+| 4 | **Terms of Service arbitration decision.** Production compelled binding arbitration with a class-action waiver; the new §24 explicitly does not. That is a deliberate change to customers' legal rights and it is a lawyer's call, not ours. | earlier session |
+
+### CLOSED 8 Aug — the 40,000+ / 900+ / 4.9 figures
+
+**Verified by Aaron directly, as the owner who set up the underlying systems.** He confirmed the
+numbers are real. `REVIEW.md:57` had carried this as an open pre-launch verification item; it is closed
+and the source has been annotated so it is not re-raised.
+
+Two smaller parts of that same `REVIEW.md` line were not addressed and may already be settled — the
+exact private-market count, and the agency/coverholder wording with counsel. Mentioned once here so
+they are not silently dropped; dismiss if they are done.
 
 ---
 
@@ -103,9 +112,12 @@ that needed migrating.
 
 ## The honest summary
 
-**Tiers 1 and 2 outrank the entire migration.** A refresh token in a synced folder and unverified
-statistics on a licensed agency's live site are both larger exposures than anything about themes,
-containers or Core Web Vitals — and both were flagged before launch and carried forward anyway.
+**Tier 1 outranks the entire migration.** A refresh token in a synced folder is a larger exposure than
+anything about themes, containers or Core Web Vitals, and it was flagged twice before launch and carried
+forward anyway.
+
+The claims item that sat beside it in Tier 2 is **closed** — Aaron verified the figures himself as the
+owner who built the systems behind them.
 
 **Tier 3 item 6 is the one that keeps generating new problems.** Tonight's contamination finding was a
 symptom of it. It has been open since 15 July with its plan still in DRAFT.

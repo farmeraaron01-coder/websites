@@ -54,8 +54,10 @@ best of both.
 - The audit recommends national positioning for CFI, while DECISIONS.md keeps CFI
   California-only with Statewide owning national content. v2 follows DECISIONS.md; revisit only
   if the state-page strategy moves under one domain.
-- Verify the 40,000+ / 900+ / 4.9 numbers and the exact private-market count before launch, and
-  the agency/coverholder wording with counsel (audit §Trust and compliance risks).
+- ~~Verify the 40,000+ / 900+ / 4.9 numbers~~ — **DONE, 8 Aug 2026. Verified by Aaron directly as the
+  owner who set up the underlying systems; the figures are real. Do not re-raise this.** Still open from
+  this line: the exact private-market count, and the agency/coverholder wording with counsel
+  (audit §Trust and compliance risks).
 - Final raindrop asset: compress to WebM+MP4 720p with an optimized poster and reserved height.
 
 ## v3 revisions (owner feedback, July 22)
