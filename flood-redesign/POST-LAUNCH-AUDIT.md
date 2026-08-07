@@ -31,7 +31,26 @@ later — but it is not urgent and not an SEO problem.
 
 ---
 
-## One real defect: production `robots.txt` is still the Divi-era file
+## One real defect: production `robots.txt` is still the Divi-era file — **RESOLVED, see correction below**
+
+> **CORRECTION, 8 Aug.** The diagnosis in this section was wrong and the fix in it should not be
+> followed. **Rank Math was not the cause.** Its field was empty and its dynamic output was already
+> correct, including the PDF rule. The served content came from a **stale nginx page-cache entry**
+> holding the Divi site's robots.txt — verified: no physical `robots.txt` exists in the docroot, checked
+> in File Manager with hidden files shown, in the folder confirmed by `DB_NAME mrtaco5_wp441`.
+> **A cache purge fixed it**, and the correct output is now live and independently re-verified (PDF rule
+> present, `sitemap.rss` gone, `farmerflood` gone, `sitemap_index.xml` returns 200).
+>
+> **Do not paste anything into Rank Math's box.** Leave it empty; purge instead.
+>
+> The reasoning error is worth keeping: my own wire test said "dynamic response" from the start — no
+> `Last-Modified`, no `ETag`, no `Accept-Ranges`, `x-proxy-cache: HIT`, matching a WordPress page and not
+> matching a static file on the same host. I had that measurement and talked myself out of it because
+> Rank Math's settings screen carries a generic notice about physical `robots.txt` files. **A generic
+> warning in a plugin UI is weaker evidence than a header you measured yourself.**
+>
+> The lasting lesson: **robots.txt is a cached page.** It served the old site's crawl directives for four
+> hours after cutover because nobody thinks to purge or check it. Added to the statewide checklist.
 
 Served on production:
 
