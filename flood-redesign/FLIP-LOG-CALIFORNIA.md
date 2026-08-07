@@ -173,6 +173,20 @@ read an Organization node pointing at it.
 becomes an indexable duplicate — it still serves the same directory. Canonicals point at
 production, which limits it, but delete the subdomain or add the hostname redirect the same day.
 
+## Final state — California is live and verified
+
+```
+20 / 20   301 redirects fire and land on a 200 page
+18 / 18   410 redirects return 410, not a redirect
+63 / 63   live URLs return 200, self-canonical, indexable
+ 0        staging-hostname references anywhere in the rendered site
+ 1        deliberate noindex, /staff-form/, still intact
+```
+
+`.htaccess` edit went in above `# BEGIN WordPress`, with
+`htaccess-backup-before-redirects.txt` left alongside it. The WordPress block, the cPanel PHP
+handler block and the CFI static-asset cache block were all left untouched.
+
 ## Confirmed working the moment the domain moved
 
 - `cfi-kadence-child` serving, no Divi markup anywhere
