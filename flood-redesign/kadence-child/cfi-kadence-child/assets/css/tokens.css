@@ -36,7 +36,29 @@
    Lighthouse while leaving every existing visitor on the old bytes — and the
    declared weight range here would then describe a file they do not have.
    So: any future change to a font file gets a NEW filename, bumped here and
-   in the two preload lines in functions.php. Never edit a font in place. */
+   in the two preload lines in functions.php. Never edit a font in place.
+
+   BUT RENAMING ALONE BROKE THE LIVE SITE FOR HALF AN HOUR (1.5.4 -> 1.5.5).
+   tokens.css is INLINED into the HTML and the HTML is held in an nginx page
+   cache. Renaming the file changed the fresh render but every cached page kept
+   asking for the old filename, which now 404'd — so cached pages served TWO
+   404s and no webfonts at all, and Lighthouse Best Practices fell 100 -> 96
+   on "Browser errors were logged to the console". It was missed because the
+   verifying request used a cache-busting query string, which bypassed the very
+   cache that was broken.
+
+   The lesson is structural, not procedural: on a full-page-cached site an
+   asset URL cannot change in the same step that the HTML referencing it
+   changes. So `sourceserif4.woff2` and `inter.woff2` still exist as byte-identical
+   copies of the -v2 files, purely so cached HTML keeps working. They are
+   deletable once no cached page references them — check with
+   `curl -s https://californiafloodinsurance.com/ | grep -c 'sourceserif4.woff2'`
+   returning 0 on a cache HIT. The old cached CSS declares wider weight ranges
+   (200 900 / 100 900) than these files carry (600 800 / 400 700); every weight
+   the design actually uses is inside both, so the clamp is invisible.
+
+   Whenever a font URL changes again: ship the new file, KEEP the old one,
+   purge, and only then remove the old. */
 @font-face{font-family:'Source Serif 4';font-style:normal;font-weight:600 800;font-stretch:100%;src:url(../fonts/sourceserif4-v2.woff2) format('woff2');font-display:optional}
 @font-face{font-family:'Inter';font-style:normal;font-weight:400 700;src:url(../fonts/inter-v2.woff2) format('woff2');font-display:optional}
 
