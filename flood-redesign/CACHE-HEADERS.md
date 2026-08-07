@@ -1,5 +1,29 @@
 # Static asset cache headers — the largest single PageSpeed win available
 
+> ## CORRECTION, 7 Aug 2026 — read this before trusting anything below
+>
+> This file states that the theme's `.htaccess` rules put `max-age=31536000, immutable` on `woff2`.
+> **That is true for the image types and false for fonts and CSS.** Measured on the live site:
+>
+> | Asset | Actual served `Cache-Control` |
+> |---|---|
+> | `assets/media/hero-poster.webp` | `public, max-age=31536000, immutable` — as intended |
+> | `assets/fonts/inter-v2.woff2` | `max-age=604800` **and** `public, must-revalidate` |
+> | `assets/css/tokens.css` | `max-age=604800` **and** `public, must-revalidate` |
+>
+> The responses carry `x-proxy-cache: STATIC/TYPE`: on this UltraStack stack **nginx serves fonts and
+> CSS itself and never passes them to Apache**, so the `mod_headers` block in `inc/htaccess.php` never
+> executes for those extensions. It reaches webp because webp falls through to Apache.
+>
+> Two consequences. Fonts and CSS get **7 days with revalidation**, not a year — so the repeat-visit
+> saving claimed below is overstated for them. And two conflicting `Cache-Control` headers on one
+> response is a defect in its own right; the theme cannot fix it from `.htaccess` because Apache is
+> not in the path for these files. **Needs an InMotion ticket to set the header in nginx.**
+>
+> Practical fallout: font files must carry **versioned filenames** (`-v2`) rather than being
+> overwritten in place, so deployment does not depend on host behaviour this file got wrong. Done in
+> theme 1.5.4. See `PERFORMANCE.md`.
+
 PageSpeed Insights, July 29 2026, on `https://new.californiafloodinsurance.com/`:
 
 | | Est. savings from cache lifetimes |

@@ -27,9 +27,18 @@
    font-optical-sizing:auto still adjusts stroke contrast by size; pinning it
    would have saved another 48KB and been visible on the 84px .cfi-bignum.
    If a new rule ever needs a weight outside these ranges the browser clamps to
-   the nearest end silently — widen the range here AND re-instance the file. */
-@font-face{font-family:'Source Serif 4';font-style:normal;font-weight:600 800;font-stretch:100%;src:url(../fonts/sourceserif4.woff2) format('woff2');font-display:optional}
-@font-face{font-family:'Inter';font-style:normal;font-weight:400 700;src:url(../fonts/inter.woff2) format('woff2');font-display:optional}
+   the nearest end silently — widen the range here AND re-instance the file.
+
+   THE `-v2` IN THE FILENAMES IS LOAD-BEARING. inc/htaccess.php serves woff2
+   with `max-age=31536000, immutable`, which means a browser that already has
+   the old file will keep it for up to a year and never see a replacement at
+   the same URL. Overwriting in place ships the fix to new visitors and to
+   Lighthouse while leaving every existing visitor on the old bytes — and the
+   declared weight range here would then describe a file they do not have.
+   So: any future change to a font file gets a NEW filename, bumped here and
+   in the two preload lines in functions.php. Never edit a font in place. */
+@font-face{font-family:'Source Serif 4';font-style:normal;font-weight:600 800;font-stretch:100%;src:url(../fonts/sourceserif4-v2.woff2) format('woff2');font-display:optional}
+@font-face{font-family:'Inter';font-style:normal;font-weight:400 700;src:url(../fonts/inter-v2.woff2) format('woff2');font-display:optional}
 
 /* Brand palette. The statewide (swfi) values live in brand-swfi.css as a
    :root override block that functions.php appends when the theme detects it

@@ -419,9 +419,16 @@ add_action( 'wp_enqueue_scripts', function () {
  * fonts in the Kadence customizer.
  */
 add_action( 'wp_head', function () {
+	/*
+	 * Filenames carry a version suffix and MUST match the two @font-face rules
+	 * in assets/css/tokens.css. Fonts are served immutable for a year (see
+	 * inc/htaccess.php), so a changed font at an unchanged URL never reaches a
+	 * returning visitor. New bytes always mean a new filename — bump it in both
+	 * places. The reasoning is written out in full in tokens.css.
+	 */
 	$base = get_stylesheet_directory_uri() . '/assets/fonts/';
-	echo '<link rel="preload" href="' . esc_url( $base . 'sourceserif4.woff2' ) . '" as="font" type="font/woff2" crossorigin>' . "\n";
-	echo '<link rel="preload" href="' . esc_url( $base . 'inter.woff2' ) . '" as="font" type="font/woff2" crossorigin>' . "\n";
+	echo '<link rel="preload" href="' . esc_url( $base . 'sourceserif4-v2.woff2' ) . '" as="font" type="font/woff2" crossorigin>' . "\n";
+	echo '<link rel="preload" href="' . esc_url( $base . 'inter-v2.woff2' ) . '" as="font" type="font/woff2" crossorigin>' . "\n";
 
 	/*
 	 * Preload the hero poster on the front page only — it is the LCP element.

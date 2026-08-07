@@ -159,16 +159,28 @@ which hosts are allowed to load:
 
 ### Two separate findings in that table
 
-**1. The `www.` redirect is worth ~14 points, and it was inside every measurement.**
+**1. The `www.` redirect is worth roughly 20 points, and it was inside every measurement.**
 
-```
-www  : 301 -> https://californiafloodinsurance.com/   TTFB 1.165 s
-apex : 200                                            TTFB 0.754 s
-```
+The first version of this section said 411 ms, from one sample each. Re-measured properly —
+5 interleaved TTFB samples and 3 interleaved Lighthouse runs per hostname, so drift hits both equally:
 
-411 ms of pure redirect, paid before a single byte of HTML. Apex is the canonical hostname and that
-is correct — real visitors arriving from search go straight there, so **field data is not affected**.
-But every lab number in this file taken against `www.` is understated. **Test the apex URL.**
+| | apex | `www.` |
+|---|---|---|
+| TTFB median | **0.478 s** | 0.632 s |
+| Perf, 3 runs | 64, 80, 71 → **median 71** | 48, 49, 53 → **median 49** |
+| LCP median | **3.4 s** | 5.2 s |
+
+**The TTFB penalty is 154 ms, not 411 ms** — the single sample overstated it 2.7×. The Lighthouse gap
+is *larger* than the single-run comparison suggested (22 points, not 14), because a redirect on a
+throttled connection shifts the whole downstream critical chain, not just TTFB.
+
+Read the apex figure with care: its own spread is 64–80, so **71 ± 8**. The `www.` runs are tight
+(48–53). What is solid is the direction and the rough size; what is not solid is any precise apex
+number from three runs.
+
+Apex is the canonical hostname and that is correct — visitors arriving from search go straight there,
+so **field data is unaffected**. But every lab number in this file taken against `www.` is
+understated. **All future comparisons use `https://californiafloodinsurance.com/`.**
 
 **2. Trimming the container is worth ~20 points**, from 62 to 82 — and it gets there by freeing
 bandwidth, not main thread. `gtm.js` itself is 158 KiB; what it *pulls in* is the cost:
@@ -259,8 +271,34 @@ Pinning `opsz` as well would have taken Source Serif to **32.7 KiB** — another
 declined: it would flatten the optical adaptation on the 84 px `.cfi-bignum` and the clamp(56,7vw,84)
 display headings, which is exactly where a serif shows it. Available if the trade is ever wanted.
 
-Same filenames on purpose. The 1-year immutable cache header means returning visitors re-download
-nothing, while new visitors and every Lighthouse run get the smaller files.
+**Versioned filenames — `sourceserif4-v2.woff2`, `inter-v2.woff2`.** The first cut of 1.5.4
+overwrote the files in place, which was wrong: a changed file at an unchanged URL never reaches a
+browser that already holds the old one. New visitors and Lighthouse would have got the fix while
+existing visitors kept the old bytes — and the narrowed `font-weight` range in the CSS would then
+have described a file they did not have. New bytes now always mean a new filename, and the reasoning
+is written into `tokens.css` and `functions.php` so it does not get undone.
+
+**While fixing that, the cache header we had documented turned out not to be real.** Measured on the
+live site:
+
+| Asset | Served `Cache-Control` |
+|---|---|
+| `hero-poster.webp` | `public, max-age=31536000, immutable` — as designed |
+| `inter-v2.woff2` | `max-age=604800` **and** `public, must-revalidate` |
+| `tokens.css` | `max-age=604800` **and** `public, must-revalidate` |
+
+`x-proxy-cache: STATIC/TYPE` is the explanation: **nginx serves fonts and CSS itself and never hands
+them to Apache**, so the `mod_headers` rule in `inc/htaccess.php` only ever applied to the image
+types. Two consequences:
+
+1. `CACHE-HEADERS.md` records a 1-year immutable header on `woff2`. That is true for webp and **false
+   for woff2 and css**. Corrected there.
+2. The stranding window for an in-place font overwrite was therefore **7 days with revalidation**,
+   not a year. Smaller than feared — but the versioned filename is still the right fix, because it
+   makes deployment deterministic instead of dependent on host behaviour we had mis-recorded.
+
+Two conflicting `Cache-Control` headers on one response is also a defect in its own right. Worth an
+InMotion ticket: the theme cannot fix it from `.htaccess` because Apache is not in the path.
 
 **Do not oversell this.** 51 KiB against a 542 KiB tag stack is worth a point or two, not ten. It is
 in this file because it is real, measured, and the last thing in the theme worth doing — not because
@@ -270,15 +308,18 @@ it closes the gap.
 
 Re-ordered 7 Aug against the measured ladder rather than against a guess.
 
-1. **Trim `GTM-MZ6RZ94`. Worth ~20 points** (62 → 82 mobile), and it is the only item on this list
-   that is worth double digits. `ACCOUNTS.md` lists the dead tags — **eight of fourteen Ads tags
-   carry zero goals.** Note the corrected reasoning: this helps by freeing **bandwidth**, so what
-   matters is bytes removed, not tags fired. Deleting a tag that fires on no pages saves nothing;
-   removing a destination that pulls a 155 KiB script saves a lot.
-2. **Decide about Microsoft Clarity (25 KiB) and Bing UET (15 KiB).** Clarity records sessions, which
-   is a privacy decision as much as a weight one. Bing UET is carrying $12,607 of Microsoft Ads
-   spend, so it is probably not optional.
-3. **Test the apex URL, not `www`.** Worth ~14 lab points and it costs nothing — it is a measurement
+1. **Trim `GTM-MZ6RZ94`.** → **`GTM-AUDIT.md`** now holds the full read-only audit: all 39 tags, their
+   triggers, which three of them actually download anything, the duplicates, byte savings per action,
+   conversion risk per action, and a sequenced plan with a seven-day observation window on the one
+   step that carries any. Headline: **there are no Google Ads conversion tags in the container at
+   all**, so the 155 KiB Ads script is carrying *remarketing*, not conversion measurement. Corrected
+   reasoning: this helps by freeing **bandwidth**, so what counts is bytes removed, not tags deleted.
+2. **Decide about Microsoft Clarity — and note it is not where anyone thought it was.** Clarity is
+   loaded *by Bing UET*, keyed to UET tag `5318858`, because the integration is enabled in the
+   Microsoft Advertising account. It is in neither GTM nor WordPress; verified in all three. So it is
+   switched off in the Microsoft Ads UI. ~28 KiB and three extra origins. Bing UET itself carries
+   $12,607/mo of spend and is not optional.
+3. **Test the apex URL, not `www`.** Worth ~20 lab points and it costs nothing — a measurement
    correction, not an optimisation. `https://californiafloodinsurance.com/`.
 4. **Set the site icon.** `/favicon.ico` 404s, `site_icon` is `0`, zero icon tags in the served head
    (re-verified 7 Aug). Not a performance item at all — Google shows a favicon beside every mobile
