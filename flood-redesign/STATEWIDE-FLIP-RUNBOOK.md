@@ -777,3 +777,70 @@ Softaculous correction as part of that work rather than discovering it afterward
 - The README warning originally drafted here named the wrong hazard — the Login button, which is only
   confusing. The Softaculous DB crossing is the one that destroys data. Both READMEs carry the corrected
   text.
+
+---
+
+## PHASE 4 — VERIFICATION COMPLETE, 7 Aug 2026
+
+### Content sweep: 70/70 clean
+
+Every sitemap URL, on **bare** URLs:
+
+| Check | Result |
+|---|---|
+| 200 OK | **70 / 70** |
+| noindex leaks | **0** |
+| Missing canonical | **0** |
+| Canonical not self-referential | **0** |
+| `staging.` hostname references | **0** |
+| Missing JSON-LD schema | **0** |
+| Missing meta description | **0** |
+
+Redirects **50/50**, `www`/`http://`/`ipv6.`/`…mrtacoshop.com` all 301 to the apex, `staging.` serves 403.
+
+### Lighthouse — and the comparison had to be re-based
+
+**PSI's anonymous API quota was exhausted, so these are local Lighthouse 12.8.2 runs.** That turned out to
+matter more than it sounds, because it forced a like-for-like California run and **that corrected a claim
+made repeatedly in this project.**
+
+| | Performance | A11y | Best Practices | SEO |
+|---|---|---|---|---|
+| **Statewide** mobile ×3 | 70, 65, 76 → **median 70** | 100 | **75** | 100 |
+| **California** mobile ×2 | 74, 74 | 100 | **79** | 100 |
+| **Statewide** desktop ×2 | 83, 84 | 100 | 74 | 100 |
+| **California** desktop ×1 | 79 | 100 | 78 | 100 |
+
+CLS 0 on every run, both form factors. TBT 10 ms on desktop.
+
+**Performance: statewide 70 mobile / 83–84 desktop, against California 74 / 79.** Inside the forecast
+(~66–70 mobile, ~88 desktop) and inside run-to-run noise of the sister site. Statewide is actually *faster*
+on desktop. The migration did what it was supposed to.
+
+**Best Practices: California does NOT score 100 under this tool — it scores 79.** Its 100 came from Google
+PSI on an older Lighthouse that lacked the `third-party-cookies` audit. `PERFORMANCE.md` and
+`OPEN-ITEMS.md` both cite "Best Practices back to 100 confirmed by Google", which is true of PSI and **not
+true of current Lighthouse.** Statewide's 75 is therefore **not a regression**.
+
+Failing audits, and they explain the gap exactly:
+
+| Audit | Statewide | California | Cause |
+|---|---|---|---|
+| `third-party-cookies` (9 cookies) | FAIL | FAIL | Bing UET `5318855`/`5318858`, Clarity, DoubleClick |
+| `inspector-issues` | FAIL | FAIL | same cookies |
+| `errors-in-console` | **FAIL** | pass | **`/favicon.ico` 404** |
+
+**Both sites 404 on `/favicon.ico`. California has 3 icon `<link>` tags so the browser never requests it;
+statewide has zero, so the request fires and logs a console error.** The whole 4-point difference is item
+0c. Setting the site icon closes it exactly — this is the first time that item has had a measured cost
+attached rather than being asserted.
+
+**The `third-party-cookies` failure is a policy question, not a bug.** It cannot be fixed while Bing UET
+and Microsoft Clarity are live, which is `OPEN-ITEMS.md` item 32 — and that item was already framed as a
+privacy decision. It now also carries a measurable Best Practices cost on both brands.
+
+### Method note
+
+**Never compare a PSI score to a local Lighthouse score.** Different Lighthouse versions have different
+audit sets, so a "drop" can be a tooling change. When a score looks worse than a documented baseline, run
+the baseline site through the same binary before reporting a regression.
