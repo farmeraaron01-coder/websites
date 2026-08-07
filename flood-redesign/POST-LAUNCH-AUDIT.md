@@ -209,7 +209,69 @@ More to the point, **the new theme scores Accessibility 100 and lab CLS 0 withou
 patches are a record of problems the rebuild solved outright, not work to carry forward. Read them as
 documentation, then leave them in the archive.
 
-## OPEN: does California still have a working Ads quote conversion?
+## RESOLVED IN PART, 8 Aug — and my proposed fix would have broken something
+
+**The "Get a Quote" action is not California's. It is Jump Trucking's.**
+
+Its Webpages report attributes recent conversions to `jumptruckinginsurance.com`, on
+`/commercial-auto-liability`, `/owner-operator-insurance` and `/small-fleet-trucking-insurance`. **No
+California URL appears in it.** Setup is "Manual event", Enhanced Conversions on, managed through the
+Google tag, and there is **no element-click or URL rule inside Google Ads** — so nothing in Ads was
+firing it for California either.
+
+**My proposed fix was dangerous and was stopped at the gate.** I had suggested reusing label
+`juS4CKXmyYUcENeo0OID` in a new `__awct` tag in `GTM-MZ6RZ94`, to "repair California's conversion and
+preserve its history". That would have pointed California's quote form at a **working Jump Trucking
+conversion action**, corrupting a live conversion on a third brand. The agent declined to act on it
+without confirmation and was right to.
+
+**The lesson:** an action's *name* is not evidence of what fires it, and neither is its label. The
+Webpages report is. I reasoned from the name ("Click the Get a Quote button on Homepage... We dont have
+subdomain") and built a plan on it.
+
+### So California has exactly one quote conversion: the GA4 import
+
+`californiafloodinsurance.com - Submit_Online_Quote_Form` imports the GA4 event
+**`Submit_Online_Quote_Form_Submission`**, which is a key event.
+
+### The count discrepancy that now matters most
+
+GA4 property `G-3YMN51H7LE`, last 7 days:
+
+| Event | Count | Key event? |
+|---|---|---|
+| `Submit_Online_Quote_Form_Submission` | **80** | Yes |
+| `quote_form_lead` | **2** | **No** |
+| `form_submit_any` | **2** | **No** |
+| `Contact_Form_Submission` | 0 | Yes |
+
+80 over 7 days is ~11/day. The theme's own events have produced 2 apiece since 6 Aug. Both cannot be
+counting form submissions.
+
+**Reading 1 (likely): the old event is click-inflated.** It fires on `gtm.click` where element text
+contains "Submit Application" — intent, not completion. An 8:1 click-to-completion ratio on a quote form
+is unremarkable. The equal 2/2 supports it: every submission qualified as a lead, which is what
+`inc/cognito.php` should produce.
+
+**Reading 2: the new events are under-firing** and there is a real defect.
+
+**The resolving evidence is DAILY event counts across the 6 Aug boundary.** Requested, not yet answered.
+
+**If Reading 1 holds, California's reported Ads conversions will fall by roughly 90%** when the old
+click-based event stops. That is the number becoming honest, not a regression — **written down here in
+advance so nobody reads it as a failed cutover.**
+
+**And the same applies to statewide.** Its `Submit_Online_Quote_Form` runs 344.50/month, also ~11/day,
+also click-triggered by tag 45. The flip substitutes real-lead counting for click counting, so expect the
+same drop. Predicted here in advance.
+
+### Safe regardless of which reading is right
+
+**`quote_form_lead` is not a key event.** Until it is marked as one in GA4 it cannot be imported into
+Ads, so the theme is firing the correct event into a dead end. Marking it is additive and reversible, and
+it is the prerequisite for any proper fix.
+
+## SUPERSEDED: does California still have a working Ads quote conversion?
 
 Unresolved, and it is the most consequential open item — ahead of anything on the statewide list.
 
