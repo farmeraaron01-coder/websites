@@ -514,6 +514,65 @@ lever that reaches 90 is not loading the tags during initial page load — which
 declined, deliberately and for good reasons about data completeness. **Recording that as a decision
 taken, not an oversight.** Everything else measured tonight moves single digits at best.
 
+## The settled answer — interleaved, n=5 each, 8 Aug
+
+This supersedes every partial conclusion above it. Five interleaved pairs (live, blocked, live,
+blocked...) on the apex URL, identical CSS, fonts, images, cache state, viewport and Lighthouse
+settings. The only variable is whether `googletagmanager.com` may load.
+
+| Median | Tags live | GTM blocked | delta |
+|---|---|---|---|
+| **Score** | **66** | **97** | **+31** |
+| FCP | 2,361 ms | 1,379 ms | -982 |
+| LCP (simulated, scored) | 3,345 ms | 2,430 ms | -915 |
+| **TBT** | **900 ms** | **0 ms** | **-900** |
+| Speed Index | 3,447 ms | 2,279 ms | -1,168 |
+| observed **load delay** | **20 ms** | **19 ms** | **-1** |
+| observed render delay | 161 ms | 194 ms | +33 |
+
+### Three findings
+
+**1. Execution is the mechanism. Confirmed, not inferred.** TBT falls from 900 ms to **exactly zero**.
+Every millisecond of blocking time on this page comes from GTM's subtree. Load delay does not move at
+all, so request scheduling is not affected — the tags do not get in front of the hero image, they
+occupy the main thread.
+
+**2. GTM is also the entire source of run-to-run variance.**
+
+```
+blocked : 96, 97, 97, 97, 97     spread 1
+live    : 53, 66, 66, 68, 74     spread 21
+```
+
+The page is stable to about half a point. The +/-10 variance this file spent all night working around
+is injected by the tag stack, not by the harness or the host. Any future A/B on this page should block
+GTM to get a usable signal, then unblock to get the real score.
+
+**3. There is no hero-delivery problem, and a "3.7 s load delay" reading is a harness artifact.**
+
+A separate five-run baseline reported load delay as the dominant LCP phase at ~3,658 ms median. That
+does not survive contact with the observed trace. Every one of the eight diagnostics comes back clean:
+
+| Check | Result |
+|---|---|
+| Preload URL vs LCP request URL | **byte-for-byte identical** |
+| Hero WebP requests | **exactly 1** — no double download |
+| Priority | **High** |
+| Request start | 799 ms, against a TTFB of 784 ms — **15 ms later** |
+| Request end | 1,050 ms — **251 ms of transfer** |
+| Unused-preload warning | none |
+| Navigation final URL | apex, **no `www` redirect paid** |
+| Redirects in run | 2, both third-party (Clarity + Bing beacons) |
+
+**Observed load delay is 20 ms with tags and 19 ms without.** The confusion comes from mixing two
+different clocks: `lcp-breakdown-insight` reports **observed** trace timings, which sum to ~1,195 ms,
+while the **scored** LCP is Lantern-simulated at ~3,298 ms. A harness that spreads that ~2,100 ms of
+simulator scaling across the four phases will make load delay look like the whale. It is not.
+
+**Rule for future work on this page: never mix observed phases with a simulated metric.** State which
+clock a number came from, or the diagnosis will point at the wrong subsystem — as it did here, at a
+preload that is working perfectly.
+
 ## Things deliberately not done
 
 **No click-to-load facade on the Cognito form.** It is 379 KiB and 863 ms, and it is the largest
