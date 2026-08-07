@@ -234,7 +234,59 @@ subdomain") and built a plan on it.
 `californiafloodinsurance.com - Submit_Online_Quote_Form` imports the GA4 event
 **`Submit_Online_Quote_Form_Submission`**, which is a key event.
 
-### The count discrepancy that now matters most
+### RESOLVED 8 Aug — and it refutes my own prediction
+
+Daily GA4 counts across the boundary:
+
+| Date | `Submit_Online_Quote_Form_Submission` | `quote_form_lead` | `form_submit_any` |
+|---|---|---|---|
+| Jul 30 – Aug 5 | 17, 13, 5, 8, 18, 19, 9 = **89** | 0 | 0 |
+| **Aug 6 — cutover 18:41** | **8** | **2** | **2** |
+| Aug 7 (partial) | 0 | 0 | 0 |
+
+**The arithmetic settles it.** Baseline is 89/7 = **12.7 events/day**. Cutover at 18:41 left 5h19m of new
+site on 6 Aug — **0.22 of a day**. Expected new-theme events at the old rate: **2.8**. Observed: **2**.
+The old event's own 8 that day, across its 18.7 pre-cutover hours, is **10.3/day** — its own baseline.
+And 8 + 2 = 10 against a 12.7 average.
+
+**One continuous stream of submissions**, measured by the old event before 18:41 and the new events after.
+Rates match.
+
+**So the 8:1 click-inflation theory recorded above was wrong.** It should have been obvious: on a
+single-step Cognito form the submit button is clicked **once per submission**, so a click trigger and a
+submit trigger count the same event. There was never an inflation ratio to find. **The predicted "90%
+drop" is withdrawn.**
+
+**The real problem is worse, not better.** The site is fine and the measurement is fine, but **Ads imports
+the old event**, and the old event appears to have stopped at cutover. That is not a decline in a noisy
+number — it is California's Ads conversion signal going to **zero** while leads keep arriving at the
+normal rate.
+
+One reservation: 7 Aug reads zero across **all four** events including the legacy one, which looks like
+reporting lag rather than truth. One further day resolves it. The direction is clear enough to act on.
+
+### Why statewide is safe and California never was
+
+| | California `GTM-MZ6RZ94` | Statewide `GTM-PJQ72VK` |
+|---|---|---|
+| `__awct` Ads conversion tags | **0** | **4** |
+| How the Ads conversion is fed | GA4 **import** of a click-based event | **direct label** from the container |
+| Continuity across the flip | **none** | tag 45 (click) and tag 57 (`cfi_form_submit`) send the **same label** |
+
+At statewide's flip the signal simply hands off from one tag to another on the same conversion label.
+**Statewide's 344.50/month will not collapse** — that earlier prediction is withdrawn too. California
+had no such continuity because its container carries no conversion tag at all.
+
+### The Jump Trucking action, confirmed completely
+
+The full Webpages report for "Click the Get a Quote button on Homepage" is **four of four rows on
+`jumptruckinginsurance.com`** — the homepage (56 conversions, 2 tags), `/commercial-auto-liability` (2),
+`/owner-operator-insurance` (3), `/small-fleet-trucking-insurance` (2). **No California hostname or path
+appears at all.** All 63 conversions are Jump Trucking's. The California-sounding name is legacy
+mislabelling and nothing more — worth renaming for hygiene, but it is not California's conversion and must
+not be repurposed as one.
+
+### Superseded discrepancy note, kept for the reasoning trail
 
 GA4 property `G-3YMN51H7LE`, last 7 days:
 
