@@ -785,10 +785,38 @@ Upgrade" with plugin and theme auto-upgrade disabled, nothing scheduled, and zer
 not even exposing backup frequency or rotation controls on this account. So no Softaculous automation will
 act on the crossed records; the risk there is entirely a human pressing a button.
 
-**WP Toolkit's automation is the open question**, because its task panel shows a completed
-"Site backed up on 2026-08-07 15:30:11" plus three clone jobs. A recurring WP Toolkit backup running against
-a record that pairs live files with the archive database is the thing that would turn this from latent into
-self-firing. Confirm whether that backup was one-off or scheduled before deciding anything else.
+**WP Toolkit is NOT latent, and "the safety is on" was only ever true of Softaculous.** Checked 7 Aug:
+
+- **Core auto-update is `Yes, all (minor and major updates)`** — unattended major version installs on
+  production. Plugins and themes are `Defined individually` with the default-on boxes unchecked, which is
+  fine. Smart Update is off.
+- WP Toolkit believes the install is **WordPress 6.4.3** while the files are **7.0.3**, and its File Manager
+  link resolves to the **live docroot**.
+- Something runs **hourly as `root`** logging `Vulnerability check initiated`, and it has been reporting
+  `WordPress < 7.0.3` findings for this instance.
+
+**So an hourly process believes this site needs a core update, and the site is authorised to install major
+versions by itself.** That is a mechanism on a schedule acting against a stale record, not a button waiting
+to be pressed. It also contradicts Softaculous, which has "Do not Auto Upgrade" for the same files, and
+contradicts the policy on California (`OPEN-ITEMS.md` item 33).
+
+**Order of remediation matters: restrict the auto-update BEFORE fixing the record**, because that removes
+the thing that can fire unattended. Then press the row's **Refresh** (circular arrows), which is a detection
+operation — it re-reads the install's own metadata and writes to no database. If it then reports 7.0.3 /
+`mrtaco5_wp_rbanj` / `8DjxVi_`, WP Toolkit has corrected itself and only the two Softaculous rows need
+support. **If it does not, stop — do not press the global "Scan"**, which searches the whole filesystem and
+could attach further entries; that goes to support.
+
+**No scheduled backups exist.** The cPanel edition of WP Toolkit has no scheduler at all — that is
+Plesk-only — and `/home/mrtaco5/wordpress-backups` is empty with "No backup files to restore." This entry's
+own `action-logs.log` for 3–7 Aug contains nothing but the hourly vulnerability checks; not one backup event.
+
+**Unresolved, and deliberately left that way:** the account-wide task panel shows a
+"Site backed up on 2026-08-07 15:30:11" notice whose timestamp **changed to 15:34:42 on a reload four
+minutes later**. Something is generating repeated "site backed up" events while writing no artefacts. The
+likeliest benign reading — the panel is account-wide across all 7 WP Toolkit sites and is surfacing the most
+recent backup among them — fits the empty backup directory and the silent per-entry log, but it is not
+established. Treat the origin as unidentified rather than assumed harmless.
 
 **The latent-versus-active distinction matters:** a stale record does nothing on its own. What turns it
 into an incident is something automated acting on it, so **check Auto Upgrade and Automated Backups on both
