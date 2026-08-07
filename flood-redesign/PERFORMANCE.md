@@ -8,7 +8,8 @@ worse. Both belong on the record.
 
 ## The headline correction
 
-**Staging measured 98–99 mobile. The live site measures 60.** Nothing about the pages changed.
+**Staging measured 98–99 mobile. The live site measures 63 on PSI, 65 locally.** Nothing about the
+pages changed.
 
 The theme's host gate (`inc/tags.php`) prints the GTM snippet only on the production hostname —
 deliberately, so test submissions could never feed a real Ads conversion. On staging that meant
@@ -73,11 +74,33 @@ be right for **CrUX field metrics** — real visitors are not Lighthouse, and ta
 the hero image is a genuine field-level gain. That cannot be judged until the new site has 28 days
 of field data, so **revisit in early September**, with CrUX as the evidence rather than a lab score.
 
+## Measurement method — two mistakes worth not repeating
+
+**Warm the cache before measuring.** The 54 that started tonight's alarm was taken minutes after a
+full cache purge and 26 page re-saves, so the homepage was an `x-proxy-cache: MISS` — a complete
+WordPress render. Every run since has been a warm HIT. Same code, and the honest figure is **65**,
+not 54. A cold-cache run overstates the problem by roughly ten points on this host.
+
+**Run repeats before concluding anything.** Four consecutive local runs on identical code and page:
+
+```
+perf : 64, 67, 64, 68     spread 4 points    median 65.5
+LCP  : 4.1, 3.8, 4.1, 3.9 s
+TBT  : 746, 754, 752, 662 ms
+```
+
+So the harness is stable to about ±2 points — stable enough to trust a 10-point delta, not a
+3-point one. Mid-session I claimed the opposite, that it swung ±10; that was wrong and was itself
+the result of comparing single runs taken at different cache temperatures.
+
+PSI reads lower than a local run (63 vs 65 mobile) because it throttles harder — Moto G Power on
+Slow 4G against the local default. The two are consistent, not contradictory.
+
 ## The honest numbers
 
 | | Mobile | Desktop |
 |---|---|---|
-| Performance | **60** | **82** |
+| Performance | **63** PSI / **65** local | **82** |
 | Accessibility | **100** | **100** |
 | Best Practices | **100** | **100** |
 | SEO | **100** | **100** |
