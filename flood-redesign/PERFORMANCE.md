@@ -374,6 +374,37 @@ Re-ordered 7 Aug against the measured ladder rather than against a guess.
 Nothing on this list is a theme change. That is the conclusion: the theme measures 95 with the tags
 blocked, and the pages are not what is slow.
 
+## The site icon, and one host behaviour behind three separate bugs
+
+**Done 7 Aug.** Site Icon published; `<link rel="icon">` at 32/192, `apple-touch-icon` 180, and
+`msapplication-TileImage` 270 all render. Verified after: **`errors-in-console` scores 1 with zero
+errors, and no 4xx request anywhere in the page.** Best Practices returns to 100.
+
+Two notes worth keeping.
+
+**`/favicon.ico` still 404s on a direct request, and that is fine.** WordPress's favicon handler only
+runs when a request reaches WordPress; nginx answers `/favicon.ico` itself and 404s before PHP is
+involved. It does not matter, because a browser only falls back to `/favicon.ico` when no icon `<link>`
+is present — confirmed by measurement: **Chrome did not request it at all.** If a crawler that ignores
+icon tags ever matters, the fix is a physical `favicon.ico` in the docroot, not a WordPress setting.
+
+**That is the third bug tonight with the same root cause.** Worth stating as a rule for this host:
+
+| Symptom | Same underlying cause |
+|---|---|
+| Fonts and CSS served `max-age=604800` instead of the theme's 1-year immutable | nginx serves them; Apache `mod_headers` never runs |
+| Nginx Helper's purge returning 403 (found earlier in the project) | `proxy_cache`, not `fastcgi_cache` |
+| `/favicon.ico` 404 despite `site_icon` being set | nginx answers it; WordPress never sees the request |
+
+**On this UltraStack stack, anything WordPress or `.htaccess` tries to do to a static path may simply
+not happen.** Verify at the wire with `curl -I`, never from the WordPress side. Three separate hours
+were lost tonight to variations of this.
+
+**An unexplained detail, recorded rather than guessed at:** the REST index at `/wp-json/` still reports
+`site_icon: 0` and an empty `site_icon_url` on an uncached (`x-proxy-cache: MISS`) response, while the
+rendered page carries all four icon tags. The rendered output is authoritative and correct. I did not
+chase the discrepancy and do not have a confirmed explanation for it.
+
 ## Things deliberately not done
 
 **No click-to-load facade on the Cognito form.** It is 379 KiB and 863 ms, and it is the largest
