@@ -755,9 +755,40 @@ site's files with the other site's database.
 - **Backup or Restore on either row** operates on a mismatched file/DB pair. A restore would write one
   site's database over the other's.
 
-**Do not use Softaculous or WordPress Management on this domain until the records are corrected.** Fix via
-InMotion support, not the Remove/Uninstall buttons — getting the "what to delete" checkboxes wrong in that
-dialog is the same accident by another route.
+**Do not use either WordPress manager on this domain until the records are corrected.** Fix via InMotion
+support, not the Remove/Uninstall buttons — getting the "what to delete" checkboxes wrong in that dialog is
+the same accident by another route.
+
+**The two sidebar labels are the reverse of what you would guess**, and getting them backwards wastes a
+round trip:
+
+| Sidebar label | Actually is | URL |
+|---|---|---|
+| **WordPress Manager by InMotion Hosting** | **Softaculous** | `softaculous/index.live.php?act=wordpress` |
+| **WordPress Management** | **Plesk WP Toolkit** | `wp-toolkit/index.live.php` |
+
+**Three sources disagree three ways. Only the on-disk `wp-config.php` is trustworthy.**
+
+| Source | Path | Database | Prefix |
+|---|---|---|---|
+| **on disk — the truth** | live | `mrtaco5_wp_rbanj` | `8DjxVi_` |
+| Softaculous row 1 (`26_36003`, installed 12 Jan 2024) | live | `mrtaco5_wp_zpezw` | — |
+| Softaculous row 2 (`26_90808`, installed 30 Jul 2026) | dead staging path | `mrtaco5_wp_rbanj` | — |
+| **WP Toolkit** (single entry, no staging or archive row) | live | `mrtaco5_wp_zpezw` | **`eCcGUgvc_`** |
+
+WP Toolkit is wrong in an additional way: its prefix `eCcGUgvc_` **does not exist** in the live database, and
+it still reports WordPress 6.4.3 with a thumbnail of the old Divi design while the files at that path are
+7.0.3 on `cfi-kadence-child`. It is a stale scan from before the relaunch.
+
+**Checked 7 Aug: the Softaculous half is LATENT, not active.** Both rows have core set to "Do not Auto
+Upgrade" with plugin and theme auto-upgrade disabled, nothing scheduled, and zero backups — Softaculous is
+not even exposing backup frequency or rotation controls on this account. So no Softaculous automation will
+act on the crossed records; the risk there is entirely a human pressing a button.
+
+**WP Toolkit's automation is the open question**, because its task panel shows a completed
+"Site backed up on 2026-08-07 15:30:11" plus three clone jobs. A recurring WP Toolkit backup running against
+a record that pairs live files with the archive database is the thing that would turn this from latent into
+self-firing. Confirm whether that backup was one-off or scheduled before deciding anything else.
 
 **The latent-versus-active distinction matters:** a stale record does nothing on its own. What turns it
 into an incident is something automated acting on it, so **check Auto Upgrade and Automated Backups on both
