@@ -261,6 +261,39 @@ The same trap is waiting: `staging.statewidefloodinsurance.com/` will become pro
 `statewidefloodinsurance.com/` holds the dead Divi site. Write the README files **at flip time**
 rather than afterwards — that is the moment the knowledge is in your head.
 
+## Search Console — two things that cost a round trip each
+
+**A Domain property rejects a relative sitemap path.** Entering `sitemap_index.xml` on the
+`sc-domain:` property fails client-side with *"Invalid sitemap address"* — before any fetch is
+attempted, so it looks like the file is missing when it is not. Domain properties span multiple
+hostnames and protocols, so there is no single root to resolve a path against. **Submit the full
+URL:** `https://californiafloodinsurance.com/sitemap_index.xml`. URL-prefix properties accept
+relative paths; Domain properties do not.
+
+**"Discovered pages: 0" alongside "Status: Success" is normal.** Search Console populates the
+status on fetch-and-parse and the discovered count asynchronously, often hours later. Verify the
+file directly instead of waiting: index parses, 2 children, 62 URLs advertised, 62 of 62 returning
+200 to Googlebot, and `robots.txt` pointing at it.
+
+**Two dead sitemaps had to be removed.** `sitemap.xml` and `sitemap.rss` were AIOSEO's, submitted
+in 2025–26 and still listed as Success with 130 and 51 discovered pages. Both 404 after the flip.
+Left in place they generate permanent "Couldn't fetch" errors. Removing a sitemap entry de-indexes
+nothing — it only stops Google chasing a file that is gone.
+
+## Category archives: noindexed deliberately
+
+Four categories, two of which held a **single post** — a page that restates one post's title and
+excerpt and adds nothing. With `/insights/` serving chronological discovery and `/guides/` as a
+curated hub, they earned nothing on a 19-post site.
+
+Rank Math → Titles & Meta → Categories → Robots Meta → No Index. It keeps `follow`, which is what
+you want: Google still walks through to the posts, it just does not index the archive. Rank Math
+also drops noindexed archives from the sitemap automatically, taking it from 66 URLs to 62.
+
+Verified afterwards that **nothing outside categories** picked up a noindex — a mis-click in
+Global Meta on that same screen would have silently noindexed all 63 pages, which is the one
+expensive failure mode in that operation.
+
 ## Confirmed working the moment the domain moved
 
 - `cfi-kadence-child` serving, no Divi markup anywhere
