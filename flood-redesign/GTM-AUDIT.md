@@ -6,6 +6,61 @@ no risk to anything live.
 
 Container **version 9**: **39 tags, 22 triggers, 33 conditions, 29 variables.**
 
+---
+
+> # RETRACTION, same night — tag 10 must NOT be removed
+>
+> **The largest recommendation in the first version of this document was wrong. It has been removed.**
+>
+> This audit found no `__awct` tags in the container and concluded from that absence that the 155 KiB
+> `gtag/destination?id=AW-1012143191` was carrying remarketing only, and was therefore removable.
+>
+> **Checked in the Google Ads UI: `AW-1012143191` has an active Primary Website conversion action with
+> Enhanced Conversions.** That conversion is measured through the Ads destination this tag loads.
+> Removing tag 10 would stop a Primary conversion and cut Smart Bidding's signal — on an account
+> spending ~$24,771/mo. Not a degradation. A break.
+>
+> **The reasoning error is worth naming**, because it is the kind that survives being technically
+> correct: "no `__awct` tag exists" is true, and "therefore no conversion depends on the Ads
+> destination" does not follow. A Website conversion action can be measured through the Google
+> Ads destination loaded by *any* gtag-family tag, `__sp` included. Absence of a conversion *tag* is
+> not absence of conversion *measurement*. The container alone could never have answered this — only
+> the Ads UI could, which is why Step 1 was written as a gate. **The gate worked and it caught this.**
+>
+> Consequence for the numbers: realistic savings drop from ~250–270 KiB to **~95–115 KiB**, and the
+> "mid 80s mobile" extrapolation goes with it. Corrected throughout below.
+>
+> Tag 10 now sits in category C — **do not touch** — alongside the Google tag and Conversion Linker.
+
+---
+
+## Desktop and mobile have different bottlenecks — do not treat them as one problem
+
+Established 7 Aug from PSI on the live site. This matters for choosing what to cut:
+
+| | Mobile | Desktop |
+|---|---|---|
+| Bottleneck | **LCP** (0/25 and 2/25 across two runs) | **TBT / main-thread JS** |
+| FCP | 3.9–4.1 s | **0.4 s** |
+| LCP | 6.9–9.3 s | **1.9 s** |
+| TBT | 160–310 ms | **1,330 ms** |
+| CLS (lab) | 0 | 0 |
+| Main-thread work | — | 2.7 s, JS execution 1.5 s, **14 long tasks** |
+
+**Desktop rendering is already excellent** — 0.4 s FCP, 1.9 s LCP, zero CLS. Its score is almost
+entirely third-party JavaScript execution. **Mobile is the opposite**: blocking time is nearly fine
+and LCP is starved of bandwidth.
+
+So the two form factors want different things from this container. Mobile wants **fewer bytes**.
+Desktop wants **less code executing at startup**. Clarity is the only safe removal that helps both,
+and it helps desktop out of proportion to its 25 KiB because session recording instruments the DOM.
+
+**A correction to this document's own earlier reasoning:** the 1/2/5-minute timer tags were listed as
+main-thread contributors. They are not, for a Lighthouse run — **the run finishes long before a
+one-minute timer fires.** Registering the listeners at init is nearly free. Removing them is still
+right (they duplicate GA4 native measurement and add container weight), but **it will not move TBT**
+and should not be sold as if it would.
+
 Read `PERFORMANCE.md` first for why this matters. Short version: the theme measures **95** on mobile
 with the tag scripts blocked and **~62–71** with them, so the container is where the remaining
 performance is. This document is about doing that safely.
@@ -59,12 +114,15 @@ switches it off — and only after confirming nobody is relying on the session r
 | **57** `form_submit_any` | Denominator for completion rate. |
 | **45** Cognito prefill | Writes UTM / `gclid` / `msclkid` into the form. Removing it breaks lead-source attribution in the CRM — not in Ads, but in the place the office actually reads. |
 | **14 / 43** Bing UET base + `request_quote` | $12,607/mo of Microsoft spend depends on these. |
+| **10** Ads remarketing `AW-1012143191` | **Moved here from category D after verification.** Loads the Ads destination that carries an active **Primary Website conversion with Enhanced Conversions**. Removing it breaks that conversion and Smart Bidding. |
 
-### D. Diagnostic and remarketing — real function, no bidding dependency
+### D. Diagnostic only — no bidding or conversion dependency
+
+*(Tag 10 was here in the first draft. It is now in category C — see the retraction. It does build audiences,
+but it also carries a Primary conversion, so its byte cost is not recoverable.)*
 
 | Item | Size | Function |
 |---|---|---|
-| **10** Ads remarketing | 155.3 KiB | Builds RLSA / audience lists. **Not conversion measurement.** |
 | Clarity *(category B)* | ~28 KiB | Session recording and heatmaps. Diagnostic only. |
 | **36** + listener **72** | — | Scroll depth |
 | **38, 40, 42** + listeners **73–75** | — | Time on page at 1 / 2 / 5 min |
@@ -84,18 +142,21 @@ switches it off — and only after confirming nobody is relying on the session r
 | Action | Saving | Confidence | Measurement risk |
 |---|---|---|---|
 | Disable Clarity *(Microsoft Ads UI)* | **~28 KiB** + 3 origins | Measured | **None.** Not a bidding or conversion source. Loses session recordings. |
-| Remove tag 10 (Ads remarketing) | **155.3 KiB** | Measured | **None to conversions** *if* §1 verified. **Real to audiences** — RLSA and audience targeting degrade until GA4-shared audiences replace them. |
+| ~~Remove tag 10~~ | ~~155.3 KiB~~ | **RETRACTED** | **Breaks an active Primary Website conversion with Enhanced Conversions.** Not available at any price. |
 | Delete tag 19 (duplicate linker) | ~0 | Measured | None. |
-| Prune 8 engagement + 3 orphaned tags | 15–35 KiB | **Estimated** — needs a publish to measure | None. Verify the 3 orphans in Preview first. |
+| Prune 8 engagement + 3 orphaned tags | 15–35 KiB | **Estimated** — needs a publish to measure | None. Verify the 3 orphans in Preview first. **Will not move TBT** — the timers never fire inside a Lighthouse run. |
 | Fonts (**shipped, theme 1.5.4**) | **50.7 KiB** | Measured | None. |
 | Fix the triple form event | 0 KiB | — | **This one reduces risk.** But reported conversions will *drop*. Not a regression — note the date. |
 
-Sum: **~250–270 KiB of 854.** Extrapolated to the mid 80s on mobile. **Not 90, and not promised.**
+Sum after the retraction: **~95–115 KiB of 854** — Clarity ~28, container pruning 15–35, fonts 50.7.
+That is roughly 12% of page weight, so **expect single-digit movement on mobile, not a jump to the 80s.**
+Desktop may do better than that ratio suggests, because Clarity's cost there is execution rather than
+bytes.
 
-## 1. The single most important finding
+## 1. The tag-type census — and the inference I drew from it, which was wrong
 
-**There are no Google Ads conversion tags in this container.** Not one `__awct`. I checked all 39
-tags by function type:
+**There are no Google Ads conversion tags in this container.** Not one `__awct`. That part is a fact;
+I checked all 39 tags by function type:
 
 | Type | Count | What it is |
 |---|---|---|
@@ -111,9 +172,14 @@ tags by function type:
 | `__sdl` | 1 | listener: scroll depth |
 | **`__awct`** | **0** | **Ads conversion tracking — absent** |
 
-So Google Ads conversions are almost certainly **imported from GA4 key events**, not measured by a
-tag on the page. That single fact changes the whole calculus, because it means the 155 KiB Ads
-script is *not* carrying conversion measurement.
+**From that absence I inferred that Ads conversions must be GA4-imported and the 155 KiB Ads script
+was therefore carrying remarketing only. That inference was wrong** — see the retraction at the top.
+`AW-1012143191` has an active **Primary Website conversion with Enhanced Conversions**, measured
+through the Ads destination that tag 10 loads.
+
+The census stays because it is still useful — it is how you know there are only three
+byte-bearing tags. But it establishes what is *in the container*, and conversion configuration lives
+in the **Ads account**. A container audit cannot settle it. The check below is the one that can.
 
 > **Confirm this before acting on it.** In Google Ads → Goals → Conversions, check the *source*
 > column of each active conversion action. If it reads "Google Analytics 4 (property)", the finding
@@ -236,27 +302,33 @@ and to the 18 listener tags competing for the main thread.
 
 | Action | Saving | Confidence |
 |---|---|---|
-| Remove tag 10 (Ads remarketing) | **155.3 KiB** | **Measured** — the exact transfer size of `gtag/destination` |
+| ~~Remove tag 10 (Ads remarketing)~~ | ~~155.3 KiB~~ | **RETRACTED — carries a Primary conversion. Not available.** |
 | Disable Clarity in Microsoft Ads | **~28 KiB** | **Measured** — clarity.js 25.2 + tag 1.3 + beacons |
 | Prune 11 dead/duplicate tags + 8 listeners | **15–35 KiB** | **Estimated.** `gtm.js` is 158.8 KiB for 39 tags. It cannot be measured without publishing a container version, so treat the range as a range. |
-| Fonts (**already shipped in theme 1.5.4**) | **50.7 KiB** | **Measured** |
-| **Total** | **~250–270 KiB** of 854 KiB | |
+| Fonts (**shipped, theme 1.5.4/1.5.5**) | **50.7 KiB** | Measured — but **no score benefit demonstrated**, see `PERFORMANCE.md` |
+| **Total** | **~95–115 KiB** of 854 KiB | |
 
-Landing around **590–600 KiB**, from 854.
+Landing around **740–760 KiB**, from 854. That is ~12% of page weight.
 
 ### Will that reach 90 on mobile?
 
-**Probably not, and I am not going to promise it.** Reference points, all measured on the apex URL:
+**No.** Reference points, all measured on the apex URL:
 
 | Page total | Mobile perf |
 |---|---|
-| 854 KiB (today) | 62–71 |
-| ~600 KiB (after everything above) | **low-to-mid 80s — extrapolated, not measured** |
-| 471 KiB (`gtm.js` only) | 82 |
-| 312 KiB (no tags at all) | 95 |
+| 854 KiB (today) | 68–77, median **71** |
+| ~750 KiB (after everything still available) | **mid 70s — extrapolated, single digits of movement** |
+| 471 KiB (`gtm.js` only — *not shippable*, drops GA4 and Ads) | 82 |
+| 312 KiB (no tags at all — *not shippable*) | 95 |
 
-The 471 KiB run scored 82, so ~600 KiB reaching the mid 80s is a reasonable read. **90 on mobile
-while running GA4 + Ads + Bing is not something this list gets to.**
+With tag 10 off the table, the recoverable weight is ~12% of the page, so **expect single-digit
+movement, and remember the run-to-run spread is ±4–5 points.** The honest statement is that this
+container cannot be cleaned into a 90 on mobile while carrying GA4, an Ads Primary conversion with
+Enhanced Conversions, and Bing UET. Anything beyond the mid 70s needs a different approach —
+server-side tagging, or a deliberate decision to measure less.
+
+**Desktop is a better prospect than mobile**, because its bottleneck is execution rather than bytes,
+and Clarity's cost there is disproportionate to its 25 KiB.
 
 **But my earlier claim that 90 requires "giving up GA4 or Ads" was wrong and too absolute.** What the
 list above gives up is Ads *remarketing via the on-page tag* — recoverable through the GA4↔Ads link —
@@ -300,9 +372,10 @@ any step is Versions → the previous version → Publish.**
 GA4 conversions for the last 14 days by event, Ads conversions by conversion action, and the current
 mobile PSI score **on the apex URL**. Note the container version number (currently **9**).
 
-**Step 1 — verify the premise.** Ads → Goals → Conversions → check the source of every *active*
-conversion action. If any is a Google-tag website conversion, stop and re-plan. This step is the gate
-for Step 4.
+**Step 1 — verify the premise. DONE 7 Aug, and it failed.** Ads → Goals → Conversions showed an active
+**Primary Website conversion with Enhanced Conversions** on `AW-1012143191`. So Step 4 below is
+cancelled, not deferred. Leaving the step here because the gate is the reusable part: it is what
+stopped a $24,771/mo account from losing its Primary conversion to a plausible-looking inference.
 
 **Step 2 — the free wins.** Delete tag 19 (duplicate Conversion Linker) and the engagement
 duplicates: tags 36, 38, 40, 42 and their listeners 72, 73, 74, 75. Publish. Nothing here can affect
@@ -313,16 +386,10 @@ submission, then re-run PSI on the apex URL.
 and 34. They match Divi button text that the new theme does not use. **Only delete the ones you can
 confirm do not fire.** Publish.
 
-**Step 4 — the 155 KiB, and only after Step 1 passed.** Do this in the right order:
-1. In GA4 → Admin → Product links → Google Ads links, confirm the link exists and personalised
-   advertising is enabled.
-2. Build the replacement audiences in GA4 and confirm they appear in the Ads shared audience library
-   **and are populating.** Audiences need time to accumulate; do not proceed on an empty list.
-3. **Pause** tag 10 in GTM (leave it in place). Publish.
-4. **Wait 7 days.** Watch Ads conversions daily against the Step 0 baseline. Conversions should not
-   move. If they move at all, republish version 9 immediately — that is the signal that section 1 was
-   wrong.
-5. Only after a clean week, delete the tag.
+**~~Step 4 — the 155 KiB.~~ CANCELLED.** Step 1 failed: tag 10's Ads destination carries an active
+Primary Website conversion with Enhanced Conversions. **Do not pause, delete, or otherwise touch tag
+10.** The 155 KiB stays. Every earlier version of this document that described removing it is
+superseded by the retraction at the top.
 
 **Step 5 — Clarity, in Microsoft Advertising, not GTM.** Microsoft Advertising → Tools → UET tag
 `5318858` → turn off the Clarity integration. Verify with

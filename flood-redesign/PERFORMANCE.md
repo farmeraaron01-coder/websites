@@ -190,6 +190,24 @@ Apex is the canonical hostname and that is correct — visitors arriving from se
 so **field data is unaffected**. But every lab number in this file taken against `www.` is
 understated. **All future comparisons use `https://californiafloodinsurance.com/`.**
 
+### Desktop is not the main-thread problem one bad sample made it look like
+
+A PSI desktop run at 21:09 reported TBT **1,330 ms** with 14 long tasks, which read as a standing
+JavaScript problem. It was not. Three local desktop runs on apex, same code:
+
+| Desktop, apex | Perf | TBT median | Main-thread median |
+|---|---|---|---|
+| Baseline | 83, 83, 95 → **83** | **64 ms** | 0.64 s |
+| Clarity blocked | 80, 87, 97 → 87 | 50 ms | 0.52 s |
+| Clarity + Bing blocked | 79, 82, 82 → 82 | 48 ms | 0.51 s |
+
+The 20:36 PSI run also showed 60 ms. So **1,330 ms was an outlier** and desktop on apex sits around
+**83**. Note also that Clarity+Bing scored *lower* than Clarity alone — causally impossible, and a
+plain demonstration that a 12–17 point spread at n=3 swamps the effect being measured.
+
+What survives: main-thread work drops a consistent ~120 ms with Clarity blocked. Real, small, and
+**not** a demonstrated score gain.
+
 ### The font change is not measurable, and that should be said plainly
 
 1.5.4 took 50.7 KiB off the wire. Apex median before: **71**. Apex median after: **71**.
@@ -332,12 +350,13 @@ it closes the gap.
 
 Re-ordered 7 Aug against the measured ladder rather than against a guess.
 
-1. **Trim `GTM-MZ6RZ94`.** → **`GTM-AUDIT.md`** now holds the full read-only audit: all 39 tags, their
-   triggers, which three of them actually download anything, the duplicates, byte savings per action,
-   conversion risk per action, and a sequenced plan with a seven-day observation window on the one
-   step that carries any. Headline: **there are no Google Ads conversion tags in the container at
-   all**, so the 155 KiB Ads script is carrying *remarketing*, not conversion measurement. Corrected
-   reasoning: this helps by freeing **bandwidth**, so what counts is bytes removed, not tags deleted.
+1. **Trim `GTM-MZ6RZ94` — but far less than first thought.** → **`GTM-AUDIT.md`** holds the full
+   read-only audit and its retraction. The audit found no `__awct` conversion tags and inferred the
+   155 KiB Ads script was removable. **Checked in the Ads UI: `AW-1012143191` carries an active
+   Primary Website conversion with Enhanced Conversions, so tag 10 must stay.** Recoverable weight
+   falls from ~250 KiB to **~95–115 KiB**, or about 12% of the page — expect **single-digit**
+   movement, not a jump to the 80s. What remains: Clarity (~28 KiB), container pruning (15–35 KiB),
+   and the fonts already shipped.
 2. **Decide about Microsoft Clarity — and note it is not where anyone thought it was.** Clarity is
    loaded *by Bing UET*, keyed to UET tag `5318858`, because the integration is enabled in the
    Microsoft Advertising account. It is in neither GTM nor WordPress; verified in all three. So it is
