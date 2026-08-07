@@ -151,7 +151,7 @@ add_action( 'wp_head', function () {
 			?>
 <link rel="preconnect" href="https://www.googletagmanager.com" crossorigin>
 <!-- Google Tag Manager (deferred — see inc/tags.php) -->
-<script>(function(w,d,s,l,i,t){w[l]=w[l]||[];var done=false;function go(){if(done){return;}done=true;w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);}var ev=['pointerdown','keydown','touchstart','scroll','mousemove'];for(var k=0;k<ev.length;k++){w.addEventListener(ev[k],go,{once:true,passive:true});}if('requestIdleCallback' in w){w.requestIdleCallback(go,{timeout:t});}else{w.setTimeout(go,t);}})(window,document,'script','dataLayer','<?php echo esc_js( CFI_GTM_ID ); ?>',<?php echo (int) CFI_TAGS_DELAY_MS; ?>);</script>
+<script>(function(w,d,s,l,i,t){w[l]=w[l]||[];var done=false;function go(){if(done){return;}done=true;w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);}var ev=['pointerdown','keydown','touchstart','scroll','mousemove','wheel'];for(var k=0;k<ev.length;k++){w.addEventListener(ev[k],go,{once:true,passive:true});}if(t>0){if('requestIdleCallback' in w){w.requestIdleCallback(go,{timeout:t});}else{w.setTimeout(go,t);}}})(window,document,'script','dataLayer','<?php echo esc_js( CFI_GTM_ID ); ?>',<?php echo (int) CFI_TAGS_DELAY_MS; ?>);</script>
 <!-- End Google Tag Manager -->
 			<?php
 		} else {

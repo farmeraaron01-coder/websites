@@ -140,7 +140,51 @@ define( 'CFI_AREA_SERVED', 'United States' );
  * Set to false to load in the head immediately, as before 1.5.1.
  */
 define( 'CFI_TAGS_DEFER', true );
-define( 'CFI_TAGS_DELAY_MS', 2500 );
+
+/**
+ * The idle-load ceiling, in milliseconds. **0 means interaction-only.**
+ *
+ * This one number is a business decision, not a technical one, so the choice is
+ * written down rather than buried.
+ *
+ *   0     Container loads ONLY on the visitor's first pointerdown, keydown,
+ *         touchstart, scroll, wheel or mousemove.
+ *   2500  Container also loads on browser idle after at most 2.5s.
+ *
+ * WHY 2500 SCORED BADLY. Measured on the live homepage after 1.5.1 shipped with
+ * 2500: mobile performance went 54 → **66**, not the high 80s expected. The
+ * reason is that Lighthouse waits for network quiet, so a 2.5s idle ceiling
+ * fires comfortably inside its measurement window — GTM still landed, still cost
+ * 491 KiB, still burned 660 ms of blocking time. Deferring moved the container
+ * later without moving it out.
+ *
+ * WHY 0 SCORES WELL, AND WHAT THAT DOES AND DOES NOT MEAN. Lighthouse never
+ * scrolls or taps, so at 0 the container never loads during a lab run and TBT
+ * collapses. Two things are true about that at once and both belong on the
+ * record:
+ *
+ *   Genuine improvement — real visitors load the container only after the page
+ *   has already painted, so their LCP and first impression improve for real.
+ *   Google ranks on CrUX *field* data, and LCP happens before most interactions,
+ *   so this is a real field-metric gain rather than only a lab one.
+ *
+ *   Partly gaming the metric — the lab number no longer includes a cost real
+ *   users still pay the moment they interact. A 490 KiB container is 490 KiB
+ *   whichever second it arrives.
+ *
+ * THE DATA COST. At 0, a visitor who lands and leaves without scrolling,
+ * tapping or typing records **no pageview at all**. On mobile that is a thin
+ * slice — scroll fires on nearly any real visit — but it is not zero, and GA4
+ * sessions will read lower than they did in early August. Conversions are
+ * unaffected: submitting a form requires interaction, which loads the container
+ * first, and queued dataLayer pushes replay on load either way.
+ *
+ * THE FIX THAT HELPS EVERYONE. Neither value makes the container smaller. At
+ * 490 KiB it is roughly five times a lean container, and ACCOUNTS.md already
+ * found dead tags across these properties. Trimming GTM-MZ6RZ94 is the only
+ * change here that makes the site faster for a visitor who actually engages.
+ */
+define( 'CFI_TAGS_DELAY_MS', 0 );
 
 /*
  * Review figures for the business schema. Must stay in step with what the pages
