@@ -51,11 +51,35 @@ conversions with different labels the moment the new theme goes live. Details in
 Statewide's sitemap has **three** children (post, page, **category**); California's has two. Six thin
 archive pages would enter the index competing with their own posts.
 
-Rank Math → Titles & Meta → Categories → set **noindex**. Rank Math then drops them from the sitemap
-automatically. Verify afterwards that `sitemap_index.xml` lists only post and page.
+Rank Math → Titles & Meta → Categories → turn on **Category Archives Robots Meta**, then check
+**No Index**. Rank Math drops them from the sitemap automatically.
 
 The six: `hurricanes-storm-surge`, `excess-flood`, `lenders-closings`, `flood-basics`, `nfip-pricing`,
 `claims`.
+
+**DONE 8 Aug — but it needed a second step, and this is the part that generalises.** After the setting
+saved, the setting was live in PHP while the *public* URLs still served the old XML:
+
+| URL | bare | with `?cb=` |
+|---|---|---|
+| `sitemap_index.xml` | 3 children, still listing `category-sitemap.xml` | 2 children |
+| `category-sitemap.xml` | 200 with all 6 URLs | 404 |
+
+**This is not the nginx page cache.** Both responses came back `x-proxy-cache: MISS` with
+`cache-control: no-cache`, and there are no cache-plugin fingerprints. It is **Rank Math's own sitemap
+cache**, which is bypassed when a query string is present. Cleared via Rank Math → Status & Tools →
+**Database Tools → Delete Sitemap Cache**.
+
+Two lessons, both already paid for once on California's robots.txt:
+
+1. **A Rank Math setting being correct in the admin does not mean the served file changed.** Sitemaps and
+   robots.txt are generated output with their own caches in front of them.
+2. **Verify logged out, with no query string.** A logged-in browser and a `?cb=` fetch both bypass the
+   cache, so both show the correct answer while crawlers get the stale one. That is the same mistake that
+   made the 1.5.4 font 404s invisible for half an hour.
+
+California was checked for the same condition and is clean — bare and cache-busted agree on its index and
+its 42-URL page sitemap.
 
 ### 0c. Set the site icon
 
@@ -146,9 +170,24 @@ Expect `Disallow: /wp-content/uploads/*.pdf` present, **no** `sitemap.rss`, and
 `Sitemap: .../sitemap_index.xml`. **Leave Rank Math's robots.txt box empty** — do not paste anything into
 it.
 
-### 7. Submit the sitemap in Search Console
+### 7. Re-clear the sitemap cache, verify it logged out, THEN submit to Search Console
 
-Domain property, **full URL** — `sc-domain:` properties reject relative paths:
+**Clear Rank Math's sitemap cache again after the flip**, not just before it. Every URL inside the
+sitemap changes hostname at the flip (`staging.` disappears), so whatever Rank Math cached on staging is
+wrong the moment the docroot moves. Rank Math → Status & Tools → Database Tools → **Delete Sitemap Cache**.
+
+Then verify **logged out and with no query string** — see §0b for why anything else proves nothing:
+
+```
+curl -s https://statewidefloodinsurance.com/sitemap_index.xml | grep -o '<loc>[^<]*</loc>'
+curl -sI https://statewidefloodinsurance.com/category-sitemap.xml | head -1
+```
+
+Expect exactly `post-sitemap.xml` and `page-sitemap.xml` on the **apex** hostname, and 404 on the
+category sitemap. **Any `staging.` URL inside the sitemap means the cache is still stale — do not submit
+it to Google in that state.**
+
+Only then submit. Domain property, **full URL** — `sc-domain:` properties reject relative paths:
 `https://statewidefloodinsurance.com/sitemap_index.xml`
 
 "Discovered pages: 0" alongside "Success" is normal async lag.
@@ -202,7 +241,18 @@ a bonus, not the expectation.
 
 1. **Forgetting the noindex removal.** Costs the most, hardest to notice. Step 4.
 2. **robots.txt still cached.** Google gets the old crawl rules. Step 6.
-3. **Tag 56 unpaused.** Doubles reported Ads conversions from the first lead. Step 0a.
-4. **cPanel refusing a folder rename** because it is an active document root. If Phase 3 step 8 is
+3. **The sitemap still cached with `staging.` hostnames**, then submitted to Search Console in that
+   state. Step 7. This one already happened once today at §0b, in a different cache layer.
+4. **Tag 56 unpaused.** Doubles reported Ads conversions from the first lead. Step 0a.
+5. **cPanel refusing a folder rename** because it is an active document root. If Phase 3 step 8 is
    blocked, the site is briefly down: recreate the folder name, repoint, and fall back to deferring the
    rename — then tell me.
+
+---
+
+## Noted, not a blocker
+
+Statewide runs the **same child theme folder** as California, so its `style.css` header still reads
+"California Flood Insurance (Kadence Child)" in Appearance → Themes. Admin-only — verified that no
+"California Flood Insurance" string reaches statewide's public HTML. Cosmetic; fix whenever the theme is
+next touched, not today.
