@@ -264,19 +264,48 @@ Two sources, neither fixed by `WP_HOME`:
 **This is a Phase 3 blocker, not a cosmetic one.** Step 13 deletes the `staging.` subdomain; at that
 moment every nav link on every page stops resolving. Before then they merely bounce through a redirect.
 
-Also: **the Site Title still read `Statewide Flood Insurance - Staging`**, published in `og:site_name` and
-the schema logo caption. Any social share would carry the word Staging.
+Also: **`og:site_name` and the schema logo caption still read `Statewide Flood Insurance - Staging`.** Any
+social share would carry the word Staging.
+
+**This is NOT Settings → General, and I sent Aaron to the wrong screen first.** The apex login page renders
+`<title>Log In ‹ Statewide Flood Insurance — WordPress</title>`, which is built from `blogname` — so
+`blogname` is already correct and editing it would have been the wrong fix. The string is **Rank Math's own
+Website Name field** (Titles & Meta → Global Meta), which falls back to `blogname` only when empty. Both
+bad strings trace to that one field, which is what makes a single source the right conclusion.
+
+The general form of the mistake: two settings can render the same-looking string, so **find a surface that
+renders only one of them** before deciding which to edit. The login page renders `blogname` and nothing
+else, which is what settled it.
 
 **The nginx cache was the only thing hiding this** — the bare apex still served Divi on three consecutive
 requests with `x-proxy-cache: HIT`, so no visitor saw the broken nav. Had the cache been purged first, it
 would have gone public. **This is why the fix goes before the purge.**
 
-**A.** Settings → General → strip ` - Staging` from **Site Title**; check the Tagline too.
+**All of it is doable from cPanel → Terminal with no WordPress login**, which matters because Aaron could
+not recall the staging password and **this domain cannot reliably deliver a reset email** — checked 8 Aug:
+TXT holds only the Google verification, so there is **no SPF**, there is **no DMARC**, and MX points at the
+host itself. `OPEN-ITEMS.md` item 30 confirmed as live, not theoretical.
 
-**B.** cPanel → Terminal:
+WP-CLI runs as the system user and does not authenticate through WordPress, so it sidesteps the login
+entirely. The admin username is **`AJFarmer`** (California production is `farmeraaron` — a different
+account). Application passwords do **not** work for browser login; they only authenticate REST and XML-RPC.
 
 ```
 cd /home/mrtaco5/staging.statewidefloodinsurance.com
+wp --info                                                   # confirm WP-CLI exists
+wp user list --role=administrator --fields=ID,user_login,user_email
+wp user update AJFarmer --prompt=user_pass                  # --prompt keeps it out of shell history
+```
+
+**A.** The Website Name field, no login needed:
+
+```
+wp option patch update rank_math_options_titles website_name 'Statewide Flood Insurance'
+```
+
+**B.** The URLs:
+
+```
 wp search-replace 'https://staging.statewidefloodinsurance.com' 'https://statewidefloodinsurance.com' \
   --all-tables-with-prefix --skip-columns=guid --dry-run
 ```

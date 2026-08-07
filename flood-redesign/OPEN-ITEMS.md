@@ -122,7 +122,7 @@ execution order with the commands; this table is only the index. Items 11, 15 an
 | 27 | GBP posts written and never posted: El Niño, FAIR Plan. Also set the GBP website URL to `https://`. |
 | 28 | Wordfence licence key + 2FA. |
 | 29 | Add a description to the *Private Flood Insurance VS FEMA* YouTube video — the only one of four without. |
-| 30 | Statewide appears to have **no SPF record** while California and jumpins do. Affects whether quote emails reach inboxes. |
+| 30 | **Statewide has no SPF and no DMARC — confirmed at DNS 8 Aug, not just suspected.** TXT holds only `google-site-verification=JXdoRp-…`; `_dmarc` returns nothing; MX is `0 statewidefloodinsurance.com.`, so the hosting server sends its own mail unauthenticated. This already bit us: the WordPress password-reset email could not be relied on during the flip, and it affects **quote notification emails reaching inboxes** — a lead-loss path, not just a nuisance. Promote out of housekeeping when the flip is done. |
 | 31 | Delete the superseded `READ-ME-FIRST.md` in Dropbox `Flood Site Cutover/` (2.69 KB, 4:58 pm). The current one is a level up. |
 | 32 | Decide on **Microsoft Clarity** — a Microsoft Advertising setting on UET `5318858` (CFI) and `5318855` (statewide). Privacy call as much as performance. |
 | 33 | Decide **core auto-updates** on California — currently *Do not Auto Upgrade* with plugins and themes disabled. Suggest core minor/security only. |
