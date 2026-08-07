@@ -103,6 +103,43 @@ add_action( 'wp_head', function () {
 /**
  * GTM loader, plus the GA4 config when one is set. Priority 2 so the container
  * initialises before anything else in the head that might push to dataLayer.
+ *
+ * WHY THE CONTAINER IS DEFERRED — measured, not theoretical (7 Aug)
+ *
+ * The staging site scored 98–99 on mobile. The morning California went live it
+ * measured **54**. Nothing about the pages changed; the host gate simply opened
+ * and the tags started loading. Lighthouse on the live homepage:
+ *
+ *   Google Tag Manager      490 KiB    909 ms blocking
+ *   script evaluation                1,471 ms
+ *   LCP 5.4s, of which "Load Delay"  2,133 ms  (39%)
+ *
+ * That Load Delay is the tell. The hero image carries `fetchpriority="high"` and
+ * sits in the initial HTML, yet does not begin downloading for 2.1 seconds — it
+ * is losing the race to three separate Google scripts the container pulls in:
+ * gtm.js (158 KiB), gtag/js for GA4 (176 KiB) and gtag/destination for Ads
+ * (155 KiB). Nothing in the theme can outrun half a megabyte of tag manager on
+ * the critical path, so the container comes off the critical path instead.
+ *
+ * HOW IT WORKS
+ * `window.dataLayer` is created immediately and is an ordinary array, so every
+ * push that happens before the container arrives simply queues in it and GTM
+ * replays the queue on load. That is what makes this safe: `cfi_form_submit`
+ * from inc/cognito.php cannot be lost even if it fires first.
+ *
+ * The container then loads at whichever comes first:
+ *   - the visitor's first interaction (pointerdown / keydown / touchstart /
+ *     scroll / mousemove), which in practice is well before any form submit; or
+ *   - the browser going idle, capped at CFI_TAGS_DELAY_MS.
+ *
+ * THE HONEST TRADE-OFF
+ * A visitor who lands, does not scroll, tap or type, and leaves before the
+ * ceiling elapses will not record a pageview. Those are instant bounces, which
+ * are the least valuable sessions in the report — but the number is not zero and
+ * GA4 sessions will read slightly lower than before. Conversions are unaffected:
+ * submitting a form requires interaction, which loads the container first.
+ *
+ * Set CFI_TAGS_DEFER to false to go back to loading in the head immediately.
  */
 add_action( 'wp_head', function () {
 	if ( ! cfi_tags_active() ) {
@@ -110,11 +147,20 @@ add_action( 'wp_head', function () {
 	}
 
 	if ( CFI_GTM_ID ) {
-		?>
+		if ( CFI_TAGS_DEFER ) {
+			?>
+<link rel="preconnect" href="https://www.googletagmanager.com" crossorigin>
+<!-- Google Tag Manager (deferred — see inc/tags.php) -->
+<script>(function(w,d,s,l,i,t){w[l]=w[l]||[];var done=false;function go(){if(done){return;}done=true;w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);}var ev=['pointerdown','keydown','touchstart','scroll','mousemove'];for(var k=0;k<ev.length;k++){w.addEventListener(ev[k],go,{once:true,passive:true});}if('requestIdleCallback' in w){w.requestIdleCallback(go,{timeout:t});}else{w.setTimeout(go,t);}})(window,document,'script','dataLayer','<?php echo esc_js( CFI_GTM_ID ); ?>',<?php echo (int) CFI_TAGS_DELAY_MS; ?>);</script>
+<!-- End Google Tag Manager -->
+			<?php
+		} else {
+			?>
 <!-- Google Tag Manager -->
 <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','<?php echo esc_js( CFI_GTM_ID ); ?>');</script>
 <!-- End Google Tag Manager -->
-		<?php
+			<?php
+		}
 	}
 
 	/*

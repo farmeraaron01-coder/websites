@@ -122,6 +122,26 @@ if ( 'swfi' === CFI_BRAND ) {
  */
 define( 'CFI_AREA_SERVED', 'United States' );
 
+/**
+ * Keep the GTM container off the critical path.
+ *
+ * Measured on the live California homepage the morning after cutover: the
+ * container costs 490 KiB and 909 ms of blocking time, holds the main thread for
+ * 1,471 ms of script evaluation, and delays the hero image — which is marked
+ * `fetchpriority="high"` — by 2.1 seconds. Mobile performance went from 98 on
+ * staging, where the host gate kept tags off, to 54 live.
+ *
+ * Deferring loads the container on first interaction, or on browser idle capped
+ * at CFI_TAGS_DELAY_MS. `dataLayer` is an array from the first line of the head,
+ * so anything pushed before the container arrives queues and replays — no event
+ * is lost. Full reasoning, and the honest trade-off about instant bounces, is in
+ * the docblock above the loader in inc/tags.php.
+ *
+ * Set to false to load in the head immediately, as before 1.5.1.
+ */
+define( 'CFI_TAGS_DEFER', true );
+define( 'CFI_TAGS_DELAY_MS', 2500 );
+
 /*
  * Review figures for the business schema. Must stay in step with what the pages
  * actually display — the Trustindex widget and the quote landing page's
