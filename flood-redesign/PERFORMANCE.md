@@ -159,28 +159,52 @@ which hosts are allowed to load:
 
 ### Two separate findings in that table
 
-**1. The `www.` redirect is worth roughly 20 points, and it was inside every measurement.**
+**1. The `www.` redirect is worth ~18 points, and it was inside every measurement.**
 
-The first version of this section said 411 ms, from one sample each. Re-measured properly —
-5 interleaved TTFB samples and 3 interleaved Lighthouse runs per hostname, so drift hits both equally:
+The first version of this section said 411 ms and 14 points, from one run each. Both were wrong.
+Re-measured with 5 interleaved TTFB samples and **5 interleaved Lighthouse runs per hostname**, all
+post-1.5.4 so the theme is constant:
 
 | | apex | `www.` |
 |---|---|---|
-| TTFB median | **0.478 s** | 0.632 s |
-| Perf, 3 runs | 64, 80, 71 → **median 71** | 48, 49, 53 → **median 49** |
-| LCP median | **3.4 s** | 5.2 s |
+| Perf, 5 runs | 68, 70, 71, 73, 77 | 48, 50, 53, 53, 56 |
+| **Median** | **71** | **53** |
+| Spread | 9 pts | 8 pts |
+| LCP median | **2.7 s** | 4.5 s |
+| TTFB median (unthrottled curl) | 0.478 s | 0.632 s |
 
-**The TTFB penalty is 154 ms, not 411 ms** — the single sample overstated it 2.7×. The Lighthouse gap
-is *larger* than the single-run comparison suggested (22 points, not 14), because a redirect on a
-throttled connection shifts the whole downstream critical chain, not just TTFB.
+**The distributions do not overlap**: apex's worst run (68) beats `www.`'s best (56). Across ten runs
+the only variable was the hostname, so the 18-point gap is a real effect and not variance.
 
-Read the apex figure with care: its own spread is 64–80, so **71 ± 8**. The `www.` runs are tight
-(48–53). What is solid is the direction and the rough size; what is not solid is any precise apex
-number from three runs.
+**But do not explain it with the TTFB number.** 154 ms unthrottled cannot account for 18 points or a
+1.8 s LCP difference, and it should not be expected to — they measure the same cause at different
+throttling levels. Under Lighthouse's simulated Slow 4G, `www.` and apex are **separate origins**, so
+the redirect costs a fresh DNS + TCP + TLS handshake *and* a round trip before the critical chain
+begins, after which the chain restarts. That compounds; the unthrottled TTFB delta does not.
+
+**The variance floor is ±4–5 points per hostname** (spread 8–9 over 5 runs). Nothing smaller than
+about a 10-point difference is interpretable from single runs. Two of my own conclusions tonight
+violated that before this table existed.
 
 Apex is the canonical hostname and that is correct — visitors arriving from search go straight there,
 so **field data is unaffected**. But every lab number in this file taken against `www.` is
 understated. **All future comparisons use `https://californiafloodinsurance.com/`.**
+
+### The font change is not measurable, and that should be said plainly
+
+1.5.4 took 50.7 KiB off the wire. Apex median before: **71**. Apex median after: **71**.
+
+| | pre-1.5.4 (n=3) | post-1.5.4 (n=5) |
+|---|---|---|
+| apex median | 71 | **71** |
+| apex LCP median | 3.4 s | 2.7 s |
+| apex TBT median | 763 ms | 1,031 ms |
+
+LCP moved the right way, TBT moved the wrong way, and both moves are inside the ±4–5 point noise
+floor established above. **51 KiB less on the wire is real; a score improvement from it is not
+demonstrated.** The change stays — it is strictly less data over the network with no rendering
+difference — but it buys nothing that can be measured at this sample size, which is exactly what was
+predicted when it shipped. Anyone re-reading this later should not count it as a win.
 
 **2. Trimming the container is worth ~20 points**, from 62 to 82 — and it gets there by freeing
 bandwidth, not main thread. `gtm.js` itself is 158 KiB; what it *pulls in* is the cost:
