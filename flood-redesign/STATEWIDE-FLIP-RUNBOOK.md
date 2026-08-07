@@ -726,3 +726,54 @@ The gate for that — canonicals present, noindex gone, no staging hostnames in 
 - The site icon (0c) — still needs a 512×512 PNG, still only a Best Practices point.
 - A redundant `.htaccess.pre-prune-2026-08-07.bak` sits in the dormant Divi directory; the reverted
   `.htaccess` there is byte-identical to the original, so the backup can go whenever.
+
+---
+
+## ⚠⚠ AFTER ANY FOLDER RENAME: SOFTACULOUS RECORDS GO STALE IN OPPOSITE DIRECTIONS
+
+**Found 7 Aug 2026, after Phase 3. Not anticipated in this runbook, and it applies to California's pending
+rename too.** This is the most dangerous state the migration has produced, and it is silent.
+
+Softaculous stores the **install path recorded at install time**. Option A renames two folders and swaps
+the filesystem out from under both records at once:
+
+| Softaculous row | Recorded path | What is there now | Recorded DB |
+|---|---|---|---|
+| `statewidefloodinsurance.com` | `/home/mrtaco5/statewidefloodinsurance.com` | **the live site** (was Divi) | `mrtaco5_wp_zpezw` — **the archive** |
+| `staging.statewidefloodinsurance.com` | `/home/mrtaco5/staging.…` | empty | `mrtaco5_wp_rbanj` — **the live DB** |
+
+Neither record was corrupted. Both were invalidated in **opposite** directions, so each row now pairs one
+site's files with the other site's database.
+
+**What this costs if a button is pressed:**
+
+- **Uninstall on the dead-looking staging row → drops `mrtaco5_wp_rbanj`, the LIVE database.** The files
+  are untouched, so the site does not vanish; it starts throwing database errors instead, which reads like
+  a hosting fault rather than an intentional deletion.
+- **Uninstall on the live-looking row → deletes the live docroot files** while dropping the *archive*
+  database.
+- **Backup or Restore on either row** operates on a mismatched file/DB pair. A restore would write one
+  site's database over the other's.
+
+**Do not use Softaculous or WordPress Management on this domain until the records are corrected.** Fix via
+InMotion support, not the Remove/Uninstall buttons — getting the "what to delete" checkboxes wrong in that
+dialog is the same accident by another route.
+
+**The latent-versus-active distinction matters:** a stale record does nothing on its own. What turns it
+into an incident is something automated acting on it, so **check Auto Upgrade and Automated Backups on both
+rows.** An auto-update that resolves files at one path and a database at another is how this stops being
+theoretical.
+
+**Before renaming California's folders (`OPEN-ITEMS.md` item 23), expect the same crossing** and plan the
+Softaculous correction as part of that work rather than discovering it afterwards.
+
+### Also outstanding from Phase 3
+
+- `/home/mrtaco5/staging.statewidefloodinsurance.com` is now an **empty directory**, and
+  `ipv6.statewidefloodinsurance.com` still has its document root pointed at it. Harmless today because
+  `ipv6.` 301s to the apex before the docroot matters — but repoint it and remove the empty folder.
+- cPanel removed the `staging.statewidefloodinsurance.com` domain and its redirections by itself when the
+  folder disappeared, so Phase 3 step 13 needed no action. The hostname now serves 403.
+- The README warning originally drafted here named the wrong hazard — the Login button, which is only
+  confusing. The Softaculous DB crossing is the one that destroys data. Both READMEs carry the corrected
+  text.
