@@ -8,8 +8,11 @@ worse. Both belong on the record.
 
 ## The headline correction
 
-**Staging measured 98–99 mobile. The live site measures 63 on PSI, 65 locally.** Nothing about the
-pages changed.
+> **Read "The controlled experiment — 7 Aug" first.** It is the section that actually answers the
+> question, and it supersedes the diagnosis in the two sections above it. Short version: **the theme
+> measures 95 on mobile with the tag scripts blocked.** The pages are not what is slow.
+
+**Staging measured 98–99 mobile. The live site measures 61 on PSI.** Nothing about the pages changed.
 
 The theme's host gate (`inc/tags.php`) prints the GTM snippet only on the production hostname —
 deliberately, so test submissions could never feed a real Ads conversion. On staging that meant
@@ -22,15 +25,21 @@ in week one, and was not.
 
 Live homepage, mobile Lighthouse:
 
+Re-measured 7 Aug from the network log rather than the summary panel:
+
 | | |
 |---|---|
-| Google Tag Manager | **490 KiB**, ~198 KiB of it unused |
-| — `gtm.js` | 158 KiB |
-| — `gtag/js` (GA4 `G-3YMN51H7LE`) | 176 KiB |
-| — `gtag/destination` (Ads `AW-1012143191`) | 155 KiB |
-| Microsoft Clarity | 28 KiB |
-| Bing Ads UET | 18 KiB |
+| — `gtag/js` (GA4 `G-3YMN51H7LE`) | **176.4 KiB** |
+| — `gtm.js` (`GTM-MZ6RZ94` itself) | **158.8 KiB** |
+| — `gtag/destination` (Ads `AW-1012143191`) | **155.3 KiB** |
+| — Microsoft Clarity | 25.2 KiB |
+| — Bing Ads UET | 15.5 KiB |
+| **Total third-party tag load** | **531 KiB** |
+| Whole page, tags included | 854 KiB |
+| Whole page, tags blocked | **312 KiB** |
 | Cognito Forms (`/get-a-quote/` only) | 379 KiB, 863 ms blocking |
+
+PSI reports ~200 KiB of that as *unused* JavaScript on the homepage.
 
 **Microsoft Clarity was a surprise** — session recording, not in the earlier tag inventory. Worth a
 deliberate decision, on privacy grounds as much as weight.
@@ -98,15 +107,82 @@ Slow 4G against the local default. The two are consistent, not contradictory.
 
 ## The honest numbers
 
+PSI, 6 Aug 20:36, `www.californiafloodinsurance.com`:
+
 | | Mobile | Desktop |
 |---|---|---|
-| Performance | **63** PSI / **65** local | **82** |
+| Performance | **61** | **87** |
 | Accessibility | **100** | **100** |
 | Best Practices | **100** | **100** |
 | SEO | **100** | **100** |
 | CLS (lab) | **0** | **0** |
 
 The three 100s are the hard ones and they hold on every run.
+
+### The score composition is the whole story
+
+PSI publishes the per-metric point contribution, and it says something different from what
+everything above this line assumed:
+
+| Metric | Mobile | pts | Desktop | pts |
+|---|---|---|---|---|
+| FCP | 3.9 s | 3 / 10 | 1.0 s | 9 / 10 |
+| **LCP** | **9.3 s** | **0 / 25** | 2.1 s | 15 / 25 |
+| **TBT** | **160 ms** | **28 / 30** | 60 ms | **30 / 30** |
+| CLS | 0 | 25 / 25 | 0 | 25 / 25 |
+| SI | 6.1 s | 5 / 10 | 1.4 s | 9 / 10 |
+
+**Total blocking time is effectively solved** — 28/30 mobile, full marks desktop. Every conclusion
+earlier in this file that treats TBT as the problem is out of date, including the recommendation at
+the bottom of the old "what is left" list. The entire remaining gap on both form factors is **LCP**,
+and on mobile it scores a flat zero.
+
+That matters because it changes the mechanism. TBT is main-thread execution; LCP at this TTFB is
+**bandwidth**. Half a megabyte of third-party script does not have to block the main thread to hurt
+— on Slow 4G it simply consumes the throughput the hero image needs. Which is also the retrospective
+explanation for why 1.5.1 and 1.5.2 failed: both deferred *execution*. Neither deferred the
+*download*.
+
+## The controlled experiment — 7 Aug, and it settles the argument
+
+Four Lighthouse runs, same night, same harness, caches warmed first, mobile. The only variable is
+which hosts are allowed to load:
+
+| Scenario | Perf | LCP | TBT | Transfer |
+|---|---|---|---|---|
+| `www.` + full tags — **what every PSI report used** | **48** | 5.5 s | 810 ms | 854 KiB |
+| apex + full tags | **62** | 3.9 s | 920 ms | 854 KiB |
+| apex + `gtm.js` only (GA4, Ads, Clarity, Bing blocked) | **82** | 3.9 s | 180 ms | 471 KiB |
+| apex + no tags at all | **95** | 2.9 s | **0 ms** | **312 KiB** |
+
+**The theme is a 95.** The tag stack costs 39 points and 542 KiB. Nothing in the pages is slow.
+
+### Two separate findings in that table
+
+**1. The `www.` redirect is worth ~14 points, and it was inside every measurement.**
+
+```
+www  : 301 -> https://californiafloodinsurance.com/   TTFB 1.165 s
+apex : 200                                            TTFB 0.754 s
+```
+
+411 ms of pure redirect, paid before a single byte of HTML. Apex is the canonical hostname and that
+is correct — real visitors arriving from search go straight there, so **field data is not affected**.
+But every lab number in this file taken against `www.` is understated. **Test the apex URL.**
+
+**2. Trimming the container is worth ~20 points**, from 62 to 82 — and it gets there by freeing
+bandwidth, not main thread. `gtm.js` itself is 158 KiB; what it *pulls in* is the cost:
+
+| | |
+|---|---|
+| `gtag/js` — GA4 `G-3YMN51H7LE` | 176 KiB |
+| `gtag/destination` — Ads `AW-1012143191` | 155 KiB |
+| Microsoft Clarity | 25 KiB |
+| Bing UET | 15 KiB |
+
+The 82 run is not a shippable configuration — it has no analytics and no conversion tracking. It is
+the ceiling that container work is aiming at, and the gap between 62 and 82 is how much of it is
+recoverable without giving up data.
 
 ## What Divi actually scored — the comparison that matters
 
@@ -125,20 +201,94 @@ assumption in the room was that Divi scored better:
 0. Google ranks on field data, not lab scores. So on the measure that counts, the new site is
 replacing a failing one — and its own field data will not exist until roughly 4 September.
 
+### Divi's lab score, since the recollection is that it was higher
+
+It was measured during this project and written down twice — `CACHE-HEADERS.md` (twice) and
+`TRUSTINDEX-SETUP.md`, all three against the live Divi California homepage with the same
+`GTM-MZ6RZ94` container hand-placed in the Divi header:
+
+| Live Divi, californiafloodinsurance.com | Mobile | Desktop |
+|---|---|---|
+| Performance | **58** | **79** |
+| Mobile LCP | **12.6 s** | |
+
+Against 61 / 87 today. The new site is ahead on both form factors and its mobile LCP is a third of
+Divi's. The 90-and-96 figures that feel like the "before" number were **this theme on staging with
+tagging switched off** — not Divi.
+
+### But statewide, still on Divi, scored 60 tonight — worth understanding why
+
+A live control was available: `statewidefloodinsurance.com` is still Divi, on the same server, same
+host stack, same plugin load. Run alongside California on the same night:
+
+| Mobile, 7 Aug | Statewide (Divi) | California (new) |
+|---|---|---|
+| Performance | **60** | 62 |
+| LCP | **2.0 s** | 3.9 s |
+| TBT | 1,430 ms | **920 ms** |
+| CLS | **0.231** — fails | **0** |
+| Transfer | **3,338 KiB** | **854 KiB** |
+
+Divi is four times the weight, 55% more blocking time, and fails CLS outright — and still wins on
+LCP. The reason is the container, not the theme: **`GTM-PJQ72VK` holds no Google tag** (it reports
+GTM's "Missing Google tags" warning — the whole reason `CFI_GA4_ID` had to be set for statewide).
+So statewide never loads the 176 KiB GA4 script or the 155 KiB Ads script. It is 3.3 MB of theme
+bloat with a light tag load, against 312 KiB of clean theme with a heavy one.
+
+Which is the same finding as the table above, arrived at from the other direction: **the variable is
+the container, both times.** It is also a warning for statewide's own cutover — the moment it gets a
+Google tag, it inherits this exact problem.
+
+## 1.5.4 — the font instancing, and its honest size
+
+Both webfonts are variable and both shipped with their **full factory weight axes**. The design uses
+Source Serif at 600/640/700/800 and Inter at 400/500/600/620/650/700; everything outside those ranges
+was outline data nothing renders.
+
+| | Before | After |
+|---|---|---|
+| `sourceserif4.woff2` | 119.3 KiB | **80.8 KiB** |
+| `inter.woff2` | 47.3 KiB | **35.1 KiB** |
+| Total, both preloaded at high priority | 166.6 KiB | **115.9 KiB** |
+
+**51 KiB off the critical path with no rendering change.** All 231/230 codepoints are retained and
+Source Serif's `opsz` axis is deliberately **kept**, so the browser's default
+`font-optical-sizing: auto` still adjusts stroke contrast by size.
+
+Pinning `opsz` as well would have taken Source Serif to **32.7 KiB** — another 48 KiB — and was
+declined: it would flatten the optical adaptation on the 84 px `.cfi-bignum` and the clamp(56,7vw,84)
+display headings, which is exactly where a serif shows it. Available if the trade is ever wanted.
+
+Same filenames on purpose. The 1-year immutable cache header means returning visitors re-download
+nothing, while new visitors and every Lighthouse run get the smaller files.
+
+**Do not oversell this.** 51 KiB against a 542 KiB tag stack is worth a point or two, not ten. It is
+in this file because it is real, measured, and the last thing in the theme worth doing — not because
+it closes the gap.
+
 ## What is actually left, in order of value
 
-1. **Trim `GTM-MZ6RZ94`.** 490 KiB against ~100 KiB for a lean container, ~198 KiB unused. This is
-   the only change that improves lab *and* field together, loses no data, and needs no cleverness in
-   the theme. `ACCOUNTS.md` already lists the dead tags — eight of fourteen Ads tags carry zero
-   goals. **Nothing in the code beats this.**
-2. **Decide about Microsoft Clarity.** 28 KiB and it records sessions.
-3. **Set the site icon.** `/favicon.ico` 404s, `site_icon` is `0`, zero icon tags. Google shows a
-   favicon beside every mobile search result. `assets/media/cfi-site-icon-512.png` is in the theme;
-   upload it at Appearance → Customize → Site Identity.
-4. **Test the bare domain, not `www`.** Every PSI run this week used
-   `www.californiafloodinsurance.com`, which 301s. That redirect sits inside the measurement and on
-   Slow 4G a round trip is not free.
-5. **Revisit deferral in September** against CrUX, not against Lighthouse.
+Re-ordered 7 Aug against the measured ladder rather than against a guess.
+
+1. **Trim `GTM-MZ6RZ94`. Worth ~20 points** (62 → 82 mobile), and it is the only item on this list
+   that is worth double digits. `ACCOUNTS.md` lists the dead tags — **eight of fourteen Ads tags
+   carry zero goals.** Note the corrected reasoning: this helps by freeing **bandwidth**, so what
+   matters is bytes removed, not tags fired. Deleting a tag that fires on no pages saves nothing;
+   removing a destination that pulls a 155 KiB script saves a lot.
+2. **Decide about Microsoft Clarity (25 KiB) and Bing UET (15 KiB).** Clarity records sessions, which
+   is a privacy decision as much as a weight one. Bing UET is carrying $12,607 of Microsoft Ads
+   spend, so it is probably not optional.
+3. **Test the apex URL, not `www`.** Worth ~14 lab points and it costs nothing — it is a measurement
+   correction, not an optimisation. `https://californiafloodinsurance.com/`.
+4. **Set the site icon.** `/favicon.ico` 404s, `site_icon` is `0`, zero icon tags in the served head
+   (re-verified 7 Aug). Not a performance item at all — Google shows a favicon beside every mobile
+   search result. `assets/media/cfi-site-icon-512.png` is in the theme; Appearance → Customize →
+   Site Identity.
+5. **Revisit deferral in September** against CrUX, not against Lighthouse — and revisit it knowing
+   the mechanism is download, not execution. A deferral that does not delay the *fetch* cannot help.
+
+Nothing on this list is a theme change. That is the conclusion: the theme measures 95 with the tags
+blocked, and the pages are not what is slow.
 
 ## Things deliberately not done
 
