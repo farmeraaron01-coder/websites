@@ -37,14 +37,52 @@ across the cutover line.**
 
 ## PHASE 0 — before touching the docroot
 
-### 0a. Confirm tag 56 is actually paused ⚠ BLOCKER
+### 0a. Tag 56 paused — ✅ DONE 8 Aug, verified at the wire
 
-Codex reached the confirmation gate and I approved it, but then moved on to the GA4 work. **Confirm it
-published.** In `GTM-PJQ72VK` → Versions, there should be a version **above 14** named for pausing tag 56.
+Version 14 (`Remove wrong California Google tag from Statewide`) had it unpaused. **Version 15**,
+`Pause tag 56 - duplicate Ads conversion on quote submit`, contains exactly one change.
 
-If it did not publish: **stop and do it before flipping.** Unpaused, one submitted quote fires two Ads
-conversions with different labels the moment the new theme goes live. Details in
-`STATEWIDE-PREFLIP.md` §2.
+**Verified from the published `gtm.js`, not from the UI** — the count method, which is what makes this
+provable:
+
+| | v14 | v15 |
+|---|---|---|
+| `I0VbCLiCgoQYENeo0OID` occurrences | 2 (tags 46 + 56) | **1** (tag 46 only, click-triggered, correctly left alone) |
+| `COU0CK2O12cQ16jQ4gM` occurrences | 2 | **2** (tags 45 + 57 both live) |
+| `__awct` tags | 4 | **3** |
+
+`GTM-MZ6RZ94` does not appear anywhere in this container.
+
+**Tag 56's exception was `BLOCK - staging hostnames`** — the blocking trigger conditioned on
+`e eq gtm.js`. That can only block tags firing on container load; it could never have stopped a tag
+firing on `cfi_form_submit`. It was false comfort, and pausing was the only real fix. Rollback if ever
+needed: Versions → 14 → Publish.
+
+### 0a-bis. The two "Urgent" container-quality issues — read, and deliberately NOT applied
+
+`LAUNCH.md` item 7c, finally answered.
+
+**1. "Missing Google tags" → `Google Tag AW-1012143191`, suggested *Added*.** Correct on the facts:
+`AW-1012143191` appears in the container **only** inside `productSettings` as a `preAutoPii` flag, never
+as a Google tag destination. The single configured destination is `G-FH3Q6GKNHH`. Conversions still
+record through the legacy `__awct` path — that action booked 344.50 in 30 days.
+
+**Not applied, and this is the reason: California's container is identical.** Only a `__googtag` for
+`G-3YMN51H7LE`, with `AW-1012143191` again confined to `productSettings`. **Both brands fire into the same
+Ads conversion ID, 1012143191.** So this is systemic, not statewide-specific, and adding the Google tag is
+a measurement change across both brands on an account spending ~$24,771/mo. Doing it alongside the flip
+and the pending tag 27 / `quote_form_lead` work would make any change in conversion volume
+unattributable. **It belongs after that work, in its own change window.** Filed in `OPEN-ITEMS.md` Tier 3.
+
+**2. "Additional domains detected for configuration" → `Conversion Linker`, suggested *Modified*.** Tag 16
+has `enableCrossDomain: false`, `enableUrlPassthrough: false`, `enableCookieOverrides: false` — no domains
+configured at all. The extra hostname is almost certainly `staging.statewidefloodinsurance.com`, which
+**ceases to exist after Phase 3**. **Recheck in a week; it may clear itself.**
+
+On the 7 cross-domain redirects and this tag: Apache's `Redirect` preserves the query string, so a
+`?gclid=` survives the hop, and both sites report to the same Ads conversion ID — so Ads attribution is
+not broken by the domain change. GA4 sees a new session on the other property. Those are seven dead blog
+posts. The decision stands.
 
 ### 0b. Noindex the category archives — statewide has 6 that California doesn't
 
@@ -87,12 +125,21 @@ Staging renders **zero** icon tags, so statewide would inherit California's `/fa
 Best Practices ding. Appearance → Customize → Site Identity → Site Icon, upload the 512×512 PNG, then
 **Publish** — California's failed the first time because Publish was not clicked.
 
-Do it on staging now; it is a database setting and carries through the flip.
+**Not a flip blocker.** It is a database setting and carries through, so it can be done at any point
+during Phase 2. Do it before Phase 4 or the Lighthouse Best Practices score will show the ding.
 
-### 0d. Read `GTM-PJQ72VK`'s two "Urgent" container-quality issues
+### 0d. Read `GTM-PJQ72VK`'s two "Urgent" container-quality issues — ✅ DONE, see §0a-bis
 
-`LAUNCH.md` item 7c, never done. I audited the container's *contents* but never read what GTM itself is
-complaining about. Read them and tell me what they say before flipping.
+---
+
+## Phase 0 status — CLEAR TO FLIP
+
+| | | |
+|---|---|---|
+| 0a tag 56 paused | ✅ done, verified in the published container | was the only real blocker |
+| 0b category noindex | ✅ setting saved; **cache purge folded into Phase 2 step 7** | not a blocker — every sitemap URL changes hostname at the flip anyway, so it has to be purged after |
+| 0c site icon | ⏳ needs a 512×512 PNG from Aaron | not a blocker; do it during Phase 2 |
+| 0d Urgent issues | ✅ read, neither applied, both justified above | no action |
 
 ---
 
