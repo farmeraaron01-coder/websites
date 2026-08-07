@@ -163,7 +163,22 @@ Divi install's `DB_NAME`.
 Verified 8 Aug: themes folder holds `cfi-kadence-child`, `kadence`, and three twenty-* defaults, no Divi.
 **`DB_NAME` is `mrtaco5_wp_rbanj`**, table prefix `8DjxVi_`.
 
-From here the staging URL stops working. That is expected.
+From here the staging URL stops working. That is expected — but **not uniformly, and the difference will
+confuse you if you do not expect it.** Measured immediately after the edit, 8 Aug:
+
+| Request | Result |
+|---|---|
+| `staging.../` bare | **200**, `x-proxy-cache: HIT` — nginx serving a page cached *before* the edit, still full of staging URLs |
+| `staging.../?cb=…` | **301 → `https://statewidefloodinsurance.com/`**, `x-proxy-cache: MISS` |
+| `staging.../wp-admin/` | **302 → `https://statewidefloodinsurance.com/wp-login.php?redirect_to=…`** |
+
+**Already-cached staging pages keep serving stale 200s until they expire.** Staging appearing to still work
+is not evidence the edit failed. I checked the bare URL first and briefly doubted a correct edit because of
+it — the third time in this project that testing the cached path produced a wrong conclusion. The
+uncached path is the only one that tells you anything.
+
+That last row is the back-to-back rule proven at the wire, not assumed: staging's admin now bounces to the
+apex login, which until step 2 is the **Divi** site's login.
 
 ### ⚠ Do steps 1 and 2 back to back. Do no admin work between them.
 
@@ -309,6 +324,16 @@ production. Have both cPanel tabs open before starting; downtime is the gap betw
 12. **Write the two READMEs** while the knowledge is in your head — one in each folder, naming which
     install it is and quoting its `DB_NAME`. Copy California's and change the names. Add the line that
     California's lacked: *the hosting manager's Login button on the other row opens THIS site.*
+
+    Both values are already confirmed, so no lookup is needed:
+
+    | Folder after Phase 3 | Install | `DB_NAME` |
+    |---|---|---|
+    | `statewidefloodinsurance.com/` | **new** Kadence child, live | `mrtaco5_wp_rbanj` (prefix `8DjxVi_`) |
+    | `archive-divi-statewide-2026/` | old Divi, archived | `mrtaco5_wp_zpezw` |
+
+    Separate databases, as required. For reference, California's Divi archive is a third database again,
+    `mrtaco5_wp_2b1xy` (prefix `F01Hh8gh_`) — so no two installs share one.
 13. Delete the `staging.` subdomain. cPanel will now allow it — its folder is gone.
 
 **Rollback at any point:** set the Document Root to `archive-divi-statewide-2026`.
