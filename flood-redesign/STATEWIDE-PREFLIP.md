@@ -173,6 +173,69 @@ Note `/sitemap_index.xml` currently **302s to `/sitemap.xml`** on Divi; after th
 - Statewide will need its own **site icon** set in Customize → Site Identity, or it inherits
   California's `/favicon.ico` 404 and a Best Practices ding.
 
+## 8. preflight.py run — 50 URLs would 404 at cutover
+
+Run 8 Aug against live production vs staging. **108 live URLs discovered, 50 of them 404 on the new
+site.** Every one loses its traffic and accumulated ranking the moment DNS moves.
+
+`statewide-prune-redirects.conf` handles all 50. It was validated before shipping, because
+California's first draft had ten dead rules and two that collided with new post slugs:
+
+| Check | Result |
+|---|---|
+| Missing URLs covered | **50 / 50**, each exactly once |
+| Rules pointing at a URL that is not missing | **0** |
+| Distinct 301 targets returning 200 | **18 / 18** |
+| Source paths that prefix-collide | **0** |
+
+Breakdown: **31 topic 301s**, **7 California geo pages needing a decision**, **12 × 410 Gone**.
+
+Some of the matches are unusually good, because the new site happens to carry the modern version of
+the old article:
+
+| Old URL | New target |
+|---|---|
+| `/how-risk-rating-2-0-affects-federal-flood-insurance-policy-holders/` | `/nfip-risk-rating-2-premium-increases/` |
+| `/understanding-base-flood-elevation-bfe/` | `/elevation-certificates-2026/` |
+| `/master-flood-policies-hoas/` | `/homeowners-association-flood-insurance/` |
+| `/when-is-flood-insurance-required/` | `/lender-flood-insurance-requirements-over-250k/` |
+| `/hiscox-flood-plus-comprehensive-flood-insurance-coverage/` | `/lloyds-of-london-flood-insurance/` |
+
+### The one block that needs your decision
+
+Seven California city/region pages — Sacramento ×3, San Diego ×2, Long Beach, and a Central Valley
+multi-city page. **The new statewide site is national and has no California page at all**, because
+California is now the sister site's job.
+
+- **Active default:** same-domain 301 to `/get-a-quote/`. Safe, keeps everything on one domain, loses
+  topical relevance.
+- **Commented alternative, and my recommendation:** cross-domain 301 to
+  `californiafloodinsurance.com`. Better for a visitor actually searching for Sacramento flood
+  insurance, and passes ranking signal to the site that should hold it.
+
+Left commented because moving traffic between brands is a business decision. Pick one; do not enable
+both.
+
+### Two other preflight findings, neither blocking
+
+**Schema loss on 4 pages** — types present live and absent on the new site:
+
+| Page | Missing |
+|---|---|
+| `/` | `AboutPage`, `ContactPoint` |
+| `/contact-us/` | `ContactPage` |
+| `/get-a-quote/` | `Article` |
+| `/insights/` | `Article`, `Organization`, `Person`, `WebPage` |
+
+`ContactPoint` was already on the post-launch list for California. The `Article` types on `/get-a-quote/`
+and `/insights/` are Divi artefacts — an Article schema on a quote form is wrong and losing it is an
+improvement, not a regression. `AboutPage` / `ContactPage` are worth adding.
+
+**`/terms-of-service/` 5,593 words live vs 3,148 new.** Same as California, and the cause there was the
+new text using plain English rather than boilerplate — six keyword "losses" turned out to be false
+positives, with arbitration the only real difference. Expect the same, but it is a lawyer's call, not
+mine.
+
 ## What this audit could not check
 
 Whether the two conversion labels are Primary or Secondary. That lives in the Ads account and is
