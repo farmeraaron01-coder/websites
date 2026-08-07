@@ -374,3 +374,82 @@ trained as if a click on a homepage button were worth the same as a submitted qu
 Also: **13 Primary actions recorded zero conversions in 30 days**, and there are visible duplicate pairs
 outside the flood brands (`Earthquake Insurance - Residential` vs `Earthquake - Residential`, same for
 Commercial; three Jump Trucking call actions). Out of scope here, worth a separate pass.
+
+
+---
+
+# CROSS-SITE CONTAMINATION — California's container runs on Jump Trucking's site
+
+Found 8 Aug while chasing the conversion question. **This is the most consequential finding in the file**
+and it changes how every California GA4 number above should be read.
+
+## Confirmed by fetching the pages
+
+`jumptruckinginsurance.com` serves:
+
+```
+GTM-MZ6RZ94      <- CALIFORNIA'S container
+GTM-PBH839BH     <- Jump Trucking's own container
+G-FH3Q6GKNHH     <- STATEWIDE'S GA4 measurement ID, hardcoded in the HTML
+```
+
+And `GTM-PBH839BH` contains `juS4CKXmyYUcENeo0OID`, which finally answers what fires the 63 conversions
+on the renamed action. It carries four Ads labels and `AW-1012143191`.
+
+## The defect: California's tags are not hostname-scoped
+
+```
+tag 27  Submit_Online_Quote_Form_Submission
+        e eq gtm.click AND aev cn "Submit Application"
+        BLOCK: e eq gtm.js AND u re ^(new|staging)\.
+        hostname-restricted (non-block): FALSE
+```
+
+The only condition is a block on staging **subdomains** — nothing scopes it to a brand. So a click
+anywhere on Jump Trucking's site whose element text contains "Submit Application" fires **California's**
+GA4 quote event. That event is a key event and is imported into Ads as
+`californiafloodinsurance.com - Submit_Online_Quote_Form`.
+
+Tag 13 (`__googtag` `G-3YMN51H7LE`) fires on All Pages, so **Jump Trucking pageviews also land in
+California's GA4 property.**
+
+## This re-explains the 80-vs-2 gap better than either earlier theory
+
+Both of my explanations were wrong. It was not click inflation (withdrawn above) and not the new events
+under-firing. It is **contamination**: if most of the ~12.7/day legacy event is Jump Trucking, and
+California's honest lead rate is the ~1.3/day the new theme reports, the numbers reconcile exactly.
+
+**Falsifiable prediction, recorded before the data exists.** When 7–8 Aug finishes processing,
+`Submit_Online_Quote_Form_Submission` should **still** run 8–19/day, because Jump Trucking has not
+changed, while `quote_form_lead` runs 1–3/day. If the legacy event keeps its old rate after California's
+theme swap, contamination is proved.
+
+## What is safe, and why
+
+**`quote_form_lead` and `form_submit_any` are uncontaminated by construction.** They fire on
+`cfi_form_submit`, which only the new Kadence theme pushes, and only California runs it. So the intended
+fix — importing `quote_form_lead` as California's Ads conversion — is clean without any further work.
+
+**Tag 27 is the contaminated one**, and it is the one Ads currently depends on.
+
+## Not fixed here, and needs a decision
+
+Three separate questions, none urgent enough to act on tonight:
+
+1. **Why is California's container on Jump Trucking's site at all?** Either deliberate (one container
+   reused across brands) or a copy-paste from a shared header. If deliberate, every non-scoped tag in it
+   needs a hostname condition.
+2. **How much of California's historical GA4 data is Jump Trucking?** Answerable with a Hostname
+   secondary dimension in GA4. Worth knowing before anyone quotes a year-on-year figure.
+3. **Statewide's `G-FH3Q6GKNHH` is hardcoded on Jump Trucking's pages**, so statewide's property is
+   taking Jump Trucking traffic too — a separate instance of the same problem.
+
+## Correction to ACCOUNTS.md: `purchase` cannot be unmarked
+
+`ACCOUNTS.md` carries an item to unmark `purchase` as a key event on California's property "before the
+Ads work". **That is impossible.** GA4 hard-codes a small set of events as permanent key events —
+`purchase` among them — and the toggle renders disabled. Verified: 0 events in 30 days, absent from
+Realtime.
+
+It is harmless as it stands. The real safeguard is **never importing it into Ads**, not trying to
+unmark it. Item withdrawn.
