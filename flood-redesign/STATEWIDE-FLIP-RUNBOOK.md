@@ -239,6 +239,66 @@ Expect `200` and a non-zero count. **Tell me at this point and I will run the fu
 
 ## PHASE 2 — immediately after, in this order
 
+### ⚠ 3b. FIRST: the database still holds staging URLs. Fix before purging, before noindex.
+
+**Found 8 Aug immediately after the docroot moved.** The flip itself was clean — cache-busted apex showed
+12 `cfi-kadence-child` refs, **0** Divi markers, `GTM-PJQ72VK` present, `GTM-MZ6RZ94` absent, **0**
+hardcoded `gtag/js` and **0** inline `G-FH3Q6GKNHH` (confirming the duplicate `page_view` died with Divi),
+noindex still on. But:
+
+**Every page carried 37–44 `staging.statewidefloodinsurance.com` URLs.**
+
+```
+/                              37      /claims/                39
+/residential/                  38      /faqs/                  38
+/commercial-flood-insurance/   38      /insights/              44
+/contact-us/                   37      /get-a-quote/            1
+```
+
+Two sources, neither fixed by `WP_HOME`:
+
+1. **The nav is `menu-item-type-custom`** — Custom Links storing absolute URLs verbatim in the database.
+   Nothing rewrites those.
+2. **Rank Math schema** — `Organization.url`, and the logo's `url` and `contentUrl`.
+
+**This is a Phase 3 blocker, not a cosmetic one.** Step 13 deletes the `staging.` subdomain; at that
+moment every nav link on every page stops resolving. Before then they merely bounce through a redirect.
+
+Also: **the Site Title still read `Statewide Flood Insurance - Staging`**, published in `og:site_name` and
+the schema logo caption. Any social share would carry the word Staging.
+
+**The nginx cache was the only thing hiding this** — the bare apex still served Divi on three consecutive
+requests with `x-proxy-cache: HIT`, so no visitor saw the broken nav. Had the cache been purged first, it
+would have gone public. **This is why the fix goes before the purge.**
+
+**A.** Settings → General → strip ` - Staging` from **Site Title**; check the Tagline too.
+
+**B.** cPanel → Terminal:
+
+```
+cd /home/mrtaco5/staging.statewidefloodinsurance.com
+wp search-replace 'https://staging.statewidefloodinsurance.com' 'https://statewidefloodinsurance.com' \
+  --all-tables-with-prefix --skip-columns=guid --dry-run
+```
+
+Read the dry-run, then re-run without `--dry-run`.
+
+**Never do this with phpMyAdmin SQL.** Menus, widgets and theme options are stored as **PHP-serialized
+arrays**, which embed the byte length of every string. Dropping `staging.` shortens the string by 8
+characters, so a raw `REPLACE()` leaves every length prefix wrong and silently corrupts those rows.
+`wp search-replace` unserializes, replaces, and re-serializes. Fallback if WP-CLI is missing: the Better
+Search Replace plugin, removed afterwards.
+
+Keep the two `wp-config.php` defines. Redundant once the database agrees, but a useful guard.
+
+**C.** Rank Math → Status & Tools → Database Tools → Delete Sitemap Cache. **D.** Purge the host cache.
+**Then re-verify before touching the noindex.**
+
+**The general lesson:** `WP_HOME`/`WP_SITEURL` change what WordPress *generates*. They do nothing to
+absolute URLs already *stored* — custom menu links, content, plugin options, schema. Any hostname change
+needs a search-replace as well as a config change, and the check for it is a count of the old hostname in
+the rendered HTML of several pages, not just the homepage.
+
 ### 4. Remove the staging noindex
 
 Rank Math → Titles & Meta, or Settings → Reading. Verify:
@@ -369,10 +429,13 @@ a bonus, not the expectation.
 
 1. **Forgetting the noindex removal.** Costs the most, hardest to notice. Step 4.
 2. **robots.txt still cached.** Google gets the old crawl rules. Step 6.
-3. **The sitemap still cached with `staging.` hostnames**, then submitted to Search Console in that
+3. **Staging URLs left in the database** — nav, schema, `og:site_name`. **This one actually happened.**
+   Step 3b. Fatal at Phase 3 step 13 when the subdomain is deleted, because every nav link stops
+   resolving. The nginx cache is what hid it.
+4. **The sitemap still cached with `staging.` hostnames**, then submitted to Search Console in that
    state. Step 7. This one already happened once today at §0b, in a different cache layer.
-4. **Tag 56 unpaused.** Doubles reported Ads conversions from the first lead. Step 0a.
-5. **cPanel refusing a folder rename** because it is an active document root. If Phase 3 step 8 is
+5. **Tag 56 unpaused.** Doubles reported Ads conversions from the first lead. Step 0a. *(Closed.)*
+6. **cPanel refusing a folder rename** because it is an active document root. If Phase 3 step 8 is
    blocked, the site is briefly down: recreate the folder name, repoint, and fall back to deferring the
    rename — then tell me.
 
