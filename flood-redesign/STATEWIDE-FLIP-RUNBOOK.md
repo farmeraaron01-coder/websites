@@ -297,11 +297,17 @@ wp user list --role=administrator --fields=ID,user_login,user_email
 wp user update AJFarmer --prompt=user_pass                  # --prompt keeps it out of shell history
 ```
 
-**A.** The Website Name field, no login needed:
+**A.** The Website Name field, no login needed. **The option name uses HYPHENS, not underscores** — I got
+this wrong first and `wp option patch` errored with `No data exists for key "website_name"`, which reads
+like a missing key but was a missing *option*. Found with
+`wp db query "SELECT option_name FROM 8DjxVi_options WHERE option_value LIKE '%Staging%'"`:
 
 ```
-wp option patch update rank_math_options_titles website_name 'Statewide Flood Insurance'
+wp option pluck rank-math-options-titles website_name
+wp option patch update rank-math-options-titles website_name 'Statewide Flood Insurance'
 ```
+
+`pluck` first, always — a `patch` against a guessed name either errors or writes a key nothing reads.
 
 **B.** The URLs. **Name the three tables explicitly. Do NOT use `--all-tables-with-prefix` here:**
 
@@ -388,6 +394,39 @@ Expect **nothing**, on the **bare** URL. This is the single most damaging thing 
 
 Verified state before removal, 8 Aug: `noindex` present on **70/70** sitemap URLs, all returning 200, with
 **0** staging hostnames anywhere and `www`/`http://`/`staging.` all 301ing to the apex.
+
+**The noindex was NOT in Rank Math.** Its Global Meta screen had Index checked and No Index unchecked the
+whole time. It was WordPress core's `blog_public` option — Settings → Reading, "Discourage search engines".
+The tell is `nofollow` in the served string: Rank Math's own No Follow box was unchecked, so something
+outside Rank Math was adding it. `wp option get blog_public` returned `0`; `wp option update blog_public 1`
+fixed it. **Check `blog_public` before touching Rank Math's settings.**
+
+### ⚠ The false alarm that followed, and the method change it forced
+
+Measured right after the change, the sweep read **46/70 indexable, 24/70 still noindex** — including
+`/get-a-quote/` and all seven state landing pages. I reported that as pages being excluded from Google and
+proposed clearing per-post `rank_math_robots` meta in bulk.
+
+**All of it was wrong.** The query showed only **one** post carries that key — `staff-form`, set to
+`noindex,nofollow`, which is correct and should stay. **The bulk `DELETE` I proposed would have removed a
+legitimate protection on the staff intake form while fixing nothing.** The 24 were stale cache entries
+written before `blog_public` changed. Re-measured cache-busted: **70/70 indexable, 70/70 canonical, 0
+noindex.** Bare at the same moment still read 46/24 — the identical split, which is what proves it was the
+cache.
+
+A second error inside the same investigation: I claimed California deliberately noindexes
+`/flood-insurance-glossary/`. It **404s** on California, and I had read its 404 page's robots tag.
+**Check the status code before comparing robots meta across sites.**
+
+**The method fix, because this was the fifth cache-induced wrong conclusion in one day** (font 404s,
+category sitemap, post-wp-config redirect, robots.txt, this):
+
+> For **correctness** questions — is the setting right? — read **cache-busted**.
+> For **"what does the public get"** — read **bare**.
+> Never mix them in one table, and always say which one is being reported.
+
+Both deliberate noindexes verified intact afterwards: the 6 category archives at `follow, noindex`, and
+`staff-form` at `nofollow, noindex` **and absent from the sitemap**.
 
 ### 5. Install the redirects
 
