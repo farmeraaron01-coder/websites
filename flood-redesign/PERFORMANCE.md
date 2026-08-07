@@ -461,6 +461,59 @@ It also shows the byte theory is incomplete. Blocking the whole tag stack remove
 their bytes: connection setup to four extra origins, and main-thread execution. Byte-count alone is
 not the model, and anyone reasoning from KiB → points on this page will be wrong in both directions.
 
+## The decisive experiment — 8 Aug, and it names the cause
+
+A local harness at `--throttling.cpuSlowdownMultiplier=8` reproduces PSI almost exactly (60 against
+PSI's 61), which finally makes lab work here comparable to what Google reports. Three runs each, apex,
+**identical CSS, identical fonts, identical images** — the only variable is whether the tag scripts
+are allowed to load:
+
+| 8x CPU, n=3 | Perf | LCP | TBT |
+|---|---|---|---|
+| Tags live | **60** | 3,299 ms | **1,702 ms** |
+| Tags blocked | **92** | **2,430 ms** | **287 ms** |
+
+### What this rules out
+
+**The five render-blocking Kadence stylesheets are not the bottleneck.** They are present, unchanged,
+in the run that scores 92. Consolidating them cannot be worth much.
+
+**Font-dependent paint is not the bottleneck either.** Both fonts load normally in both runs.
+
+One measurement disposes of both hypotheses. Neither had been eliminated before, and both were
+plausible enough to have cost a day.
+
+**The blocked-tags LCP is 2,430 ms across three runs with zero variance** — which is the page's floor.
+An LCP breakdown circulating separately summed to 2,450 ms; that is within 20 ms of this floor, and
+supports the reading that it came from a run where the tags barely landed rather than describing the
+9.0 s headline.
+
+### What it confirms
+
+**Main-thread contention from tag execution.** TBT 1,702 ms -> 287 ms with nothing else changed.
+
+### Two of my own claims this corrects
+
+**"The container hurts through bandwidth."** Wrong mechanism. It is execution. Same conclusion about
+what to do, but it matters, because byte-shaving cannot fix execution — and most of this file's
+earlier reasoning was byte-based. The +70 KiB / -1 point measurement recorded above is the clue I had
+already collected and misread: 531 KiB of tags cost 24 points where 70 KiB cost 1, because payload
+was never the dominant term.
+
+**"Pruning the 11 dead tags will not move TBT."** Right about the timers *firing* — a Lighthouse run
+ends before a one-minute timer does — but wrong about *initialisation*. Eighteen listener
+registrations and 33 predicates evaluated on every dataLayer push are startup work, and startup is
+exactly where the damage is. Pruning may cut TBT measurably. **Untested**, and now testable on the 8x
+harness once the container is pruned.
+
+### The uncomfortable implication
+
+At PSI-equivalent throttling the page scores **92 with the tags not executing** and **60 with them
+executing**. Mobile therefore stays in the 60s while the full stack loads during page load. The only
+lever that reaches 90 is not loading the tags during initial page load — which was offered and
+declined, deliberately and for good reasons about data completeness. **Recording that as a decision
+taken, not an oversight.** Everything else measured tonight moves single digits at best.
+
 ## Things deliberately not done
 
 **No click-to-load facade on the Cognito form.** It is 379 KiB and 863 ms, and it is the largest
