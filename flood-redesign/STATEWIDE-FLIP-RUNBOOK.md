@@ -374,15 +374,20 @@ absolute URLs already *stored* — custom menu links, content, plugin options, s
 needs a search-replace as well as a config change, and the check for it is a count of the old hostname in
 the rendered HTML of several pages, not just the homepage.
 
-### 4. Remove the staging noindex
+### 4. Remove the staging noindex — then PURGE AGAIN before verifying
 
-Rank Math → Titles & Meta, or Settings → Reading. Verify:
+Rank Math → Titles & Meta, or Settings → Reading. **Then purge the host cache a second time.** Cached
+copies keep serving the old `noindex` header, so verifying before the purge shows failure where there is
+none — and, worse, verifying with `?cb=` shows success while crawlers still get `noindex`.
 
 ```
 curl -s https://statewidefloodinsurance.com/ | grep -i "noindex"
 ```
 
-Expect **nothing**. This is the single most damaging thing to forget.
+Expect **nothing**, on the **bare** URL. This is the single most damaging thing to forget.
+
+Verified state before removal, 8 Aug: `noindex` present on **70/70** sitemap URLs, all returning 200, with
+**0** staging hostnames anywhere and `www`/`http://`/`staging.` all 301ing to the apex.
 
 ### 5. Install the redirects
 
@@ -422,6 +427,24 @@ Live Divi currently serves `sitemap.xml` **and** `sitemap.rss` and no PDF rule. 
 `Disallow: /`**, which was worth confirming — a blanket disallow would have stopped Google ever seeing the
 noindex removal. The `staging.` sitemap line is the stale-cache tell: if you still see it here after the
 purge, robots.txt has not regenerated.
+
+**What actually happened, 8 Aug.** After the host cache purge, every page came good — bare homepage on the
+Kadence child, 0 Divi markers, 0 staging refs — but **robots.txt kept serving Divi's version and flapped**:
+
+| Request | Content |
+|---|---|
+| `robots.txt` bare | Divi's old one |
+| `robots.txt?cb=…` | correct |
+| via the `staging.` 301 | correct |
+
+Origin was right; a stale cache entry survived the purge. **I first called this urgent and that was wrong.**
+Reading the stale content settles it: there is **no `Disallow: /`** — only two dead `Sitemap:` lines and a
+missing PDF rule. **Nothing is blocked from crawling**, and Google takes the sitemap from the Search Console
+submission anyway. Fix it, but it gates nothing.
+
+The general point: **"the wrong file is being served" is a severity question, not just a correctness one.**
+Read what the wrong version actually says before deciding what it costs. A stale robots.txt with
+`Disallow: /` is an emergency; this one was an untidiness.
 
 ### 7. Re-clear the sitemap cache, verify it logged out, THEN submit to Search Console
 
