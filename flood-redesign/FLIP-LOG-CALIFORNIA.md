@@ -80,6 +80,35 @@ individually.
 with *all tables selected* and a dry run — the menu items live in `wp_postmeta`, which a
 posts-only replace would miss.
 
+## Four sources of stray hostname, not one — and two were unexpected
+
+`new.californiafloodinsurance.com` appeared **47 times** across the site after the database was
+clean. It came from four places, and only the first two were the obvious ones:
+
+| # | Source | Where it lives | Fix |
+|---|---|---|---|
+| 1 | 6 nav menu items (custom links, claims cluster) | `wp_postmeta` | REST `menu-items` |
+| 2 | 6 pages with absolute URLs in content | `wp_posts` | REST `pages` |
+| 3 | **Rank Math Organization URL + logo** | Rank Math options | Titles & Meta → Local SEO |
+| 4 | **Rank Math breadcrumb "Homepage Link"** | Rank Math options | General Settings → Breadcrumbs |
+| 5 | **The WordPress user's "Website" profile field** | `wp_users.user_url` | REST `users/<id>` |
+
+**Number 5 is the one to remember.** User 1's Website field held the staging homepage, and it fed
+two things at once: the visible author byline link (`<a class="url fn n">`) on every post and
+archive listing, and `sameAs` on the Person schema node. `/insights/` alone carried 10 of them,
+one per listed post. Nothing about "search and replace the database" suggests looking in the users
+table, and a posts-only replace would never have found it.
+
+**Number 4 is the one that survives everything else.** The breadcrumb home link renders twice per
+interior page — once in the visible `rank-math-breadcrumb` nav, once in the `BreadcrumbList`
+JSON-LD — and it is invisible on the homepage, which is exactly where you would check first and
+conclude you were done.
+
+Diagnostic order that worked: fix, then re-scan **rendered pages** rather than the database, and
+grep the surrounding 80 characters of every remaining hit. The context string names the culprit
+immediately — `rank-math-breadcrumb`, `class="url fn n"`, `"logo"` — where a bare count tells you
+nothing.
+
 ## The cache lied about the result, twice
 
 Both times the fix was fine and the verification was wrong.
