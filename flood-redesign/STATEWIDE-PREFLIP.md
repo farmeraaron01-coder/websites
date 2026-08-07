@@ -143,21 +143,26 @@ Cleaner than California's (no `farmerflood`, no `/commercial/`), but two things 
 
 - **`/sitemap.rss` currently returns 200 and will 404** once Rank Math takes over, exactly as it now
   does on California. Remove the line.
-- The theme's claim-PDF `Disallow` will be missing for the same reason it is missing on California —
-  Rank Math's robots.txt editor replaces the output. Set it there.
+- The claim-PDF `Disallow` may appear to be missing for the same reason it appeared missing on
+  California. **That cause is now known and it was NOT Rank Math** — Rank Math's field was empty and its
+  dynamic output was already correct. It was a **stale nginx page-cache entry** holding the Divi site's
+  robots.txt. So the fix is a purge, not an edit. Leave Rank Math's box empty, purge, then verify.
 
-Target content:
+Expected content after the purge — this is what WordPress generates on its own, with Rank Math's box
+left **empty**:
 
 ```
-User-agent: *
+User-Agent: *
 Disallow: /wp-admin/
-Allow: /wp-admin/admin-ajax.php
-
 # Claim PDFs are deliverables, not search results — the pages hold the same content.
 Disallow: /wp-content/uploads/*.pdf
+Allow: /wp-admin/admin-ajax.php
 
 Sitemap: https://statewidefloodinsurance.com/sitemap_index.xml
 ```
+
+Do not paste this into Rank Math. If the box is empty and the output is still wrong, the cache has not
+been purged.
 
 Note `/sitemap_index.xml` currently **302s to `/sitemap.xml`** on Divi; after the flip that reverses.
 
