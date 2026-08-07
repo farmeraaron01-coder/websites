@@ -679,3 +679,50 @@ Statewide runs the **same child theme folder** as California, so its `style.css`
 "California Flood Insurance (Kadence Child)" in Appearance → Themes. Admin-only — verified that no
 "California Flood Insurance" string reaches statewide's public HTML. Cosmetic; fix whenever the theme is
 next touched, not today.
+
+---
+
+## PHASE 2 — VERIFIED COMPLETE, 7 Aug 2026
+
+Measured on **bare** URLs after the final cPanel → Cache Manager → Purge Full Cache, so this is what
+crawlers get, not what a cache-buster shows:
+
+| Check | Result |
+|---|---|
+| Sitemap URLs returning 200 | **70 / 70** |
+| noindex leaks | **0** |
+| Missing canonical | **0** |
+| `staging.` hostname references | **0** |
+| robots.txt | PDF rule present, `sitemap_index.xml`, no `sitemap.rss` |
+| Sitemap index children | 2, both on the apex |
+| 6 category archives | `follow, noindex` — deliberate, intact |
+| `staff-form` | `nofollow, noindex`, absent from the sitemap |
+
+**Redirects: 50 / 50**, verified by parsing the rules out of `statewide-prune-redirects.conf` rather than
+from anyone's summary of it, with redirect-following disabled:
+
+- 37 × `Redirect 301` — **status *and* exact `Location` header** matched. Checking status alone would let a
+  302, or a 301 to the wrong target, pass.
+- 12 × `Redirect 410` — 410, not 404.
+- Rule 50, the anchored `RedirectMatch`: `/media` and `/media/` → 301 to `/video/`; `/media/test.pdf` and
+  `/media/2013/photo.jpg` **404 rather than being rewritten**; `/media-kit/` also unaffected, so the anchor
+  does not over-match a sibling slug.
+- All 19 distinct targets return 200, including the cross-domain
+  `californiafloodinsurance.com/get-a-quote/`.
+- Controls unchanged: `/`, `/faqs/`, `/get-a-quote/`, `/insights/`, `/resources/` all 200; `/blog/` 404;
+  `/wp-content/uploads/` 403; no 500s.
+
+**Remaining in Phase 2:** submit `https://statewidefloodinsurance.com/sitemap_index.xml` in Search Console.
+The gate for that — canonicals present, noindex gone, no staging hostnames in the sitemap — has passed.
+
+### Still open, neither blocking nor ranking-relevant
+
+- `og:site_name` and the schema logo caption still read `Statewide Flood Insurance - Staging`. The string
+  lives in `rank-math-options-titles` (hyphens): `wp option pluck rank-math-options-titles website_name`,
+  then `wp option patch update rank-math-options-titles website_name 'Statewide Flood Insurance'`.
+- `wp option update admin_email 'afarmer@californiafloodinsurance.com'` — the **site** admin email is a
+  separate setting from the user's and still points at the dead
+  `admin@staging.statewidefloodinsurance.com` mailbox. User 1's own email is already fixed.
+- The site icon (0c) — still needs a 512×512 PNG, still only a Best Practices point.
+- A redundant `.htaccess.pre-prune-2026-08-07.bak` sits in the dormant Divi directory; the reverted
+  `.htaccess` there is byte-identical to the original, so the backup can go whenever.
