@@ -440,6 +440,35 @@ same-domain option that was not chosen. Do not uncomment them.
 Validated today: all 50 sources 404 on the new site, no collisions, no duplicates, every 301 target
 returns 200.
 
+### ⚠ There are TWO purges on this host, and only one of them works for a site-wide change
+
+**This cost an hour on 8 Aug.** After removing the noindex, three separate purges left the *same 24* pages
+serving `noindex` on bare URLs while cache-busted requests were correct. Headers showed why:
+
+```
+/get-a-quote/ bare   x-proxy-cache: HIT   nofollow, noindex   ← stale entry
+/get-a-quote/?cb=    x-proxy-cache: MISS  follow, index       ← correct
+/residential/ bare   x-proxy-cache: HIT   follow, index       ← entry written after the change
+```
+
+Both HITs. One stale. So the entries were surviving the purge, not being rewritten.
+
+| Purge | Where | Scope |
+|---|---|---|
+| **Purge Cache** | WordPress admin bar | **Per-URL**, triggered on post save. Explains why `/residential/` was fresh — it had been edited — and 24 untouched pages were not. |
+| **Purge Full Cache** | **cPanel → Cache Manager** (InMotion plugin) | **The nginx layer, all domains in the cPanel.** This is the one that works. |
+
+The nginx flush fixed all 24 **and** robots.txt in one action — which also proves robots.txt was never a
+separate problem, just the same cache layer.
+
+**A site-wide setting change needs the cPanel-level flush.** The WordPress button cannot clear entries for
+pages it has no reason to think changed. And note the client cannot force it: nginx here ignores
+`Cache-Control: no-cache` from the requester, so this is only fixable server-side.
+
+**The Purge Full Cache button is account-wide.** On this cPanel that is 14 entries including
+`californiafloodinsurance.com` — live production. Harmless, but first hits rebuild slowly, so do not run a
+PageSpeed test on California right after using it or the TTFB will read artificially badly.
+
 ### 6. Purge the cache — then verify robots.txt
 
 **robots.txt is a cached page.** On California it served the Divi site's crawl directives for four hours
