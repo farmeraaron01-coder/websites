@@ -236,6 +236,62 @@ new text using plain English rather than boilerplate — six keyword "losses" tu
 positives, with arbitration the only real difference. Expect the same, but it is a lawyer's call, not
 mine.
 
+## 9. Do NOT repeat California's folder-naming mistake
+
+California is now in a state Aaron predicted and disliked, correctly: the hosting WordPress manager
+lists **two installs both reporting `https://californiafloodinsurance.com`**, and the folder names are
+inverted — `new.californiafloodinsurance.com/` is production, `californiafloodinsurance.com/` is the
+corpse. The only reliable discriminator is `DB_NAME` (`mrtaco5_wp441` = live). That is a live risk
+every time someone uses the manager's checkboxes to bulk-update or bulk-delete.
+
+Statewide has the identical trap set: `staging.statewidefloodinsurance.com/` would become production
+while `statewidefloodinsurance.com/` holds the dead Divi site.
+
+### Option A — repeat California's method, then tidy up the SAME DAY (recommended)
+
+1. Add `WP_HOME` / `WP_SITEURL` = `https://statewidefloodinsurance.com` to the **new** install's
+   `wp-config.php`.
+2. Repoint the domain's document root to `staging.statewidefloodinsurance.com/`. **Live on the new
+   theme** — this is the proven path, identical to California.
+3. Verify everything: redirects, robots.txt, purge, GTM, sitemap.
+4. **Then, same session — do not defer this by a month:**
+   - rename `statewidefloodinsurance.com/` → `archive-divi-statewide-2026/`
+   - rename `staging.statewidefloodinsurance.com/` → `statewidefloodinsurance.com/`
+   - repoint the document root back to `statewidefloodinsurance.com/`
+   Downtime is the gap between the renames — under a minute with both tabs open.
+5. Delete the `staging.` subdomain. Its folder is gone, so cPanel will no longer grey out Remove.
+
+Rollback stays available throughout: point the document root at `archive-divi-statewide-2026/`.
+
+**Why the same day.** California deferred this to ~6 Sept and the consequence is a month of two
+identically-named installs in a manager with delete checkboxes. Deferring is what created the problem,
+not the method.
+
+### Option B — rename first, never touch the document root
+
+Because the domain's document root is *already* `statewidefloodinsurance.com/`, renaming the folders
+swaps which install serves the domain with no docroot edit at all:
+
+1. `WP_HOME` / `WP_SITEURL` on the new install.
+2. Rename Divi `statewidefloodinsurance.com/` → `archive-divi-statewide-2026/` — **site down.**
+3. Rename `staging.statewidefloodinsurance.com/` → `statewidefloodinsurance.com/` — **site up, new
+   theme, correct name, no docroot change.**
+
+Fewer moving parts and the names are right from the first second.
+
+**The unknown that makes this Option B and not Option A:** cPanel may refuse to rename a folder that
+is an active document root. It already greys out Remove on the `new.` subdomain for that reason. If
+the rename at step 2 is blocked, the site is down at that moment with no quick fix except recreating
+the name. **Test the rename mechanic on a throwaway folder first.** If cPanel allows it, Option B is
+cleaner; if not, fall back to Option A.
+
+### Either way, write the folder READMEs at flip time
+
+Two files, `LIVE-SITE--DO-NOT-DELETE.txt` and `ARCHIVE-DIVI--NOT-THE-LIVE-SITE.txt`, naming which
+install is which and quoting its `DB_NAME`. California's versions were written 8 Aug and can be copied
+with the names changed. Write them **during** the flip, while the knowledge is in your head — this is
+the cheaper half of the whole fix by a wide margin.
+
 ## What this audit could not check
 
 Whether the two conversion labels are Primary or Secondary. That lives in the Ads account and is
