@@ -122,3 +122,98 @@ CLS of 0.2; new-site lab CLS is 0 on every run.
 
 **Whether the 62 sitemap URLs are the *right* 62.** This checked that everything in the sitemap works,
 not that nothing is missing from it. `preflight.py` covers URL parity and was run before the flip.
+
+
+---
+
+# The Divi archive rescue, and an open conversion question — 8 Aug
+
+## The Integration boxes held nothing that needed migrating
+
+Extracted read-only from the dead Divi install (`DB_NAME mrtaco5_wp_2b1xy`, table prefix
+**`F01Hh8gh_`** — not `wp_`, worth remembering). All four Integration toggles were `on`;
+`single_top` and `single_bottom` were enabled but empty.
+
+| Box | Bytes | What is actually in it |
+|---|---|---|
+| `divi_integration_head` | 2,849 | GTM loader **424 B** + font preloads 371 B + a CLS `<style>` 860 B + an a11y `<script>` 1,146 B |
+| `divi_integration_body` | 1,134 | GTM `<noscript>` **245 B** + a second a11y `<script>` 794 B |
+
+**Tracking is ~15% of it.** The container is exactly `GTM-MZ6RZ94` in both, one container, no second
+measurement ID of any kind. Pattern-matched for `GTM-`, `G-`, `AW-`, `UA-`, `DC-`, Bing UET, Facebook,
+Clarity, Hotjar, LinkedIn, TikTok, Twitter, Pinterest and HubSpot: **the only hit across all 3,983 bytes
+was that single GTM container.** No hardcoded gtag. Nothing non-Google. The only two hosts referenced
+are `googletagmanager.com` and the site's own domain.
+
+**So nothing was lost at cutover from the Integration boxes.** That was the question the rescue existed
+to answer, and it could not have been answered without doing it.
+
+## The rest of it is obsolete by construction
+
+The other ~3,200 bytes are patches, two of them tagged as AI-authored (`claude-a11y-fixes v10`, and an
+"Agentic browsing a11y fix"). They are:
+
+- a fixed-header CLS reservation forcing `#page-container{padding-top:176px !important}` so Divi's late
+  JS setting the same value caused no shift;
+- `aria-label` repair on "Read More" links and a `tabindex` fix on a Pojo accessibility skip link;
+- preloads for two self-hosted OMGF fonts (Open Sans, Montserrat).
+
+**None of it is portable and none of it should be copied.** The CSS targets `#page-container`,
+`#et-top-navigation`, `#top-menu`, `.et_pb_section_0`; the JS keys off `et-main-area` and Pojo markup.
+None exist in Kadence. The fonts are not the new fonts (Inter / Source Serif 4).
+
+More to the point, **the new theme scores Accessibility 100 and lab CLS 0 without any of it.** These
+patches are a record of problems the rebuild solved outright, not work to carry forward. Read them as
+documentation, then leave them in the archive.
+
+## OPEN: does California still have a working Ads quote conversion?
+
+Unresolved, and it is the most consequential open item — ahead of anything on the statewide list.
+
+California has **two Primary conversion actions** in the same `Request quotes` goal:
+
+| Action | Source | Label | 30 days |
+|---|---|---|---|
+| Click the "Get a Quote" button on Homepage | Website | `juS4CKXmyYUcENeo0OID` | **63** |
+| californiafloodinsurance.com - Submit_Online_Quote_Form | Website (GA4) | n/a | **143.12** |
+
+**Neither has a confirmed firing mechanism on the new site.**
+
+`juS4CKXmyYUcENeo0OID` is **not in `GTM-MZ6RZ94`** (0 occurrences; the container holds **zero** `__awct`
+tags, against statewide's four) and **not inline** on `/`, `/get-a-quote/` or `/contact-us/` — 0 hits for
+`juS4CK`, `send_to` or `AW-1012143191`. It is also **not in the Divi Integration code**, which is what
+this rescue established. The remaining candidate is an **Ads-side click rule measured by the Google
+tag**, configured in Google Ads rather than GTM — the action's own name supports that reading ("Best way
+to track Quote form. We dont have subdomain"). If so it rides the Google tag the new site still loads
+and may be unaffected; if its click rule keys off Divi markup, it stopped on 6 Aug.
+
+The GA4-imported action is a separate risk. The GTM tag that fires
+`Submit_Online_Quote_Form_Submission` triggers on `gtm.click` where element text contains **"Submit
+Application"** — Divi-era button text. The theme's own events are `quote_form_lead` and
+`form_submit_any`, and **neither appears in the 39-action inventory**, so neither is imported into Ads.
+Mitigating factor: the Cognito button text comes from the shared form, not the theme, so that trigger
+may still match.
+
+**The decisive test is conversions by day, 30 July to now, per action.** A flatline on or after 7 Aug
+confirms it. Requested; not yet answered.
+
+**If it did stop, the fix is small and the theme needs no change** — it is already pushing
+`cfi_form_submit`. Either import `quote_form_lead` from GA4 as an Ads conversion, or add one `__awct`
+tag to `GTM-MZ6RZ94` triggered on `cfi_form_submit` + `cfi_is_lead`.
+
+## Two account-level problems found on the way
+
+**Statewide will double-count at the flip — confirmed.** Both labels are Primary, both in
+account-default goals used by 54 of 60 campaigns. `Submit_Online_Quote_Form` runs **344.50** conversions
+while `Contact_Form_Submission` sits at **zero / "Needs attention"**, so tag 46 is not firing today. At
+the flip, tag 56 starts firing that dormant label on every lead, so reported statewide quote conversions
+roughly **double with no change in real leads.** Fix first: set `Contact_Form_Submission` to Secondary,
+or pause tag 56.
+
+**California is already double-counting, today.** A Primary *button click* (63) and a Primary *completed
+form* (143.12) feed the same bidding goal. Those are different funnel stages, and Smart Bidding is being
+trained as if a click on a homepage button were worth the same as a submitted quote.
+
+Also: **13 Primary actions recorded zero conversions in 30 days**, and there are visible duplicate pairs
+outside the flood brands (`Earthquake Insurance - Residential` vs `Earthquake - Residential`, same for
+Commercial; three Jump Trucking call actions). Out of scope here, worth a separate pass.
