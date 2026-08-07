@@ -122,6 +122,36 @@ Both times the fix was fine and the verification was wrong.
 Check `x-proxy-cache` on anything you are using to make a decision. `MISS` means you are reading
 reality.
 
+## A server-side purge left 41% of the site stale — and a re-save fixes it
+
+After the noindex came off and Aaron purged server-side, **26 of 63 URLs were still serving
+pre-purge HTML with `nofollow, noindex`**. Every one was an `x-proxy-cache: HIT`; every `MISS` was
+correct. This is the 4 Aug behaviour again but far worse — that time it was 4 of 85, this time 26
+of 63.
+
+**A 21-URL spot check found only 7 of the 26.** Sampling is not good enough here. Enumerate every
+published URL from the REST API and check them all, because the stale set is arbitrary — it is
+whichever clean URLs happened to be requested and cached beforehand.
+
+**The fix that worked, with no plugin and no server access:** write a post's *identical* content
+back via `POST /wp/v2/<type>/<id>`. That fires WordPress's save hooks, Nginx Helper purges that
+one URL, and the next request regenerates it. Verified: `/claims/` went `HIT/noindex` →
+`MISS/index` in under three seconds.
+
+```
+GET  /wp/v2/pages/<id>?context=edit&_fields=content   → read raw
+POST /wp/v2/pages/<id>  {"content": <same raw>}        → no-op save, purges that URL
+```
+
+**Its limit:** it only reaches things that are a post or page. The homepage, archives, category
+pages and anything template-driven cannot be purged this way. Those need a working purge.
+
+**Aaron's purge is partly broken and it should be fixed before statewide.** Two symptoms point at
+one cause: there is no `Purge Cache` item in the admin toolbar, *and* Nginx Helper's own
+"Purge Entire Cache" button returns "you do not have the necessary privileges" for an
+administrator. With Nginx Helper's **Enable Purge** unchecked the toolbar item does not render at
+all, which fits both symptoms. Check Settings → Nginx Helper first.
+
 ## Order that matters, confirmed by doing it
 
 1. Docroot
@@ -130,9 +160,18 @@ reality.
 3. Database hostname replace — nav menu items, page content
 4. **Rank Math Organization URL + logo** — schema-only, but Google reads it
 5. Only then take the noindex off
+6. **Purge, then verify every URL — not a sample.** Expect a large stale set.
+7. **Install the redirects immediately.** Between the flip and the `.htaccess` install, every
+   pruned URL is a hard 404 on the live domain. On California that was 37 URLs that had been 200
+   that morning. This gap is the one genuinely damaging interval in the whole procedure, and it is
+   easy to leave open because the site looks finished.
 
 Taking the noindex off before 3 and 4 would invite Google to index the staging hostname and to
 read an Organization node pointing at it.
+
+**One thing to schedule, not defer:** the moment the noindex comes off, the staging hostname
+becomes an indexable duplicate — it still serves the same directory. Canonicals point at
+production, which limits it, but delete the subdomain or add the hostname redirect the same day.
 
 ## Confirmed working the moment the domain moved
 
