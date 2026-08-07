@@ -107,17 +107,27 @@ Slow 4G against the local default. The two are consistent, not contradictory.
 
 ## The honest numbers
 
-PSI, 6 Aug 20:36, `www.californiafloodinsurance.com`:
+PSI, 6 Aug **21:22**, `www.californiafloodinsurance.com` — after the site icon fix:
 
 | | Mobile | Desktop |
 |---|---|---|
-| Performance | **61** | **87** |
+| Performance | ~61 | **88** |
 | Accessibility | **100** | **100** |
 | Best Practices | **100** | **100** |
 | SEO | **100** | **100** |
 | CLS (lab) | **0** | **0** |
 
-The three 100s are the hard ones and they hold on every run.
+Best Practices is **confirmed back at 100 by Google's own run**, from 96 — the site icon was the last
+console error. Verified externally, not just in the local harness.
+
+**Desktop has exactly one weakness left.** Point contribution at 21:22: FCP 9/10, **LCP 15/25**,
+TBT **30/30**, CLS 25/25, SI 9/10. Blocking time is at full marks and rendering is fast; the whole
+gap is a 2.1 s LCP — **which still has the `www.` redirect inside it.** An apex run should land in the
+low 90s. That is a prediction, not a measurement, and it is the cheapest remaining test.
+
+**Three consecutive PSI desktop runs settle the outlier question:** 87 (20:36) → 61 (21:09) →
+88 (21:22), on effectively identical code. The 61 with 1,330 ms TBT was one bad sample, and treating
+it as a JavaScript problem was wrong. Three local apex runs agreed: TBT median 64 ms.
 
 ### The score composition is the whole story
 
