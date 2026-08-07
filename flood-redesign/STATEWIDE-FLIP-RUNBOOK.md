@@ -715,6 +715,20 @@ from anyone's summary of it, with redirect-following disabled:
 **Remaining in Phase 2:** submit `https://statewidefloodinsurance.com/sitemap_index.xml` in Search Console.
 The gate for that — canonicals present, noindex gone, no staging hostnames in the sitemap — has passed.
 
+### CLOSED 7 Aug — two items that were never actually broken
+
+- **`admin_email` was already `afarmer@californiafloodinsurance.com`.** `wp option update` replied "Value
+  passed for 'admin_email' option is unchanged." I had inferred the *site* admin email was the dead
+  `admin@staging.…` address because the *user* record was, and that inference was wrong — only the user
+  record needed fixing, and it was fixed with `wp user update 1`. **Two settings with similar names are not
+  one setting; check each before asserting both are wrong.**
+- **The `- Staging` string is gone**, in the stored option and in the served output:
+  `wp option pluck rank-math-options-titles website_name` returns `Statewide Flood Insurance`, and
+  `og:site_name` reads correctly on `/`, `/get-a-quote/` and `/faqs/` with **0** occurrences of "Staging"
+  anywhere in the rendered markup. When it cleared is not established — possibly a Rank Math screen edit,
+  possibly `wp transient delete --all` dropping a stale cache. Not worth chasing once both the stored value
+  and the served output are correct.
+
 ### Still open, neither blocking nor ranking-relevant
 
 - `og:site_name` and the schema logo caption still read `Statewide Flood Insurance - Staging`. The string
