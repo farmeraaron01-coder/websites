@@ -1,0 +1,114 @@
+# California flip — what actually happened, 6 Aug 2026
+
+Written during the cutover. **Statewide will hit every one of these**, which is the whole reason
+for doing California first. Read this before flipping statewide.
+
+---
+
+## The docroot edit worked exactly as documented
+
+cPanel → Domains → Manage → **New Document Root**. Result:
+`/home/mrtaco5/californiafloodinsurance.com` → `/home/mrtaco5/new.californiafloodinsurance.com`.
+Kadence child serving immediately, zero Divi markup. Nothing moved on disk.
+
+**Two details the runbook did not have and should have:**
+
+1. **The field takes a path relative to the home directory, with no leading slash.** The `🏠/`
+   icon is the prefix. The field contained `californiafloodinsurance.com`, not
+   `/californiafloodinsurance.com`. The runbook showed leading slashes because that is how the
+   Document Root *displays* on the right-hand panel.
+2. **A red "Remove Domain" button sits directly below the blue Update button**, and it
+   permanently deletes the domain from the account with no undo. Worth knowing before you are
+   clicking quickly.
+
+Also worth doing first: read the target path off the **staging subdomain's own row** in List
+Domains and copy it, rather than assuming the folder is named after the subdomain. cPanel does not
+always name it that way, and a path that does not exist gets you a blank site rather than an error.
+
+## Then the site 301'd everything to the staging hostname
+
+Expected, not a fault — WordPress redirects to `home_url` to match itself. But it means **the
+public domain hands every visitor to a noindexed staging URL** until the site address is fixed, so
+step 3 is genuinely urgent rather than merely next.
+
+`x-redirect-by: WordPress` in the response headers is what proves it is WordPress and not the
+cache or a plugin. Check that header before assuming anything.
+
+## The mistake that cost a round trip: the wrong wp-config.php
+
+The docroot swap means the file WordPress loads is now
+`/home/mrtaco5/new.californiafloodinsurance.com/wp-config.php`. Editing the one in the
+`californiafloodinsurance.com` folder — the natural habit — changes the **old Divi install** and
+does nothing. It is harmless (that site is not being served, and the values are right for it
+anyway), but it looks like the fix failed.
+
+**Positive check before editing:** the new install's `DB_NAME` is `mrtaco5_wp441`, and the old
+one's differs. Confirm the database name, not just the path.
+
+## A real gotcha: REST `settings.url` is `siteurl`, NOT `home`
+
+Worth stating flatly because I got it wrong live. The WordPress REST settings endpoint exposes a
+field called `url`. **It maps to `siteurl`.** `home` is not exposed at all.
+
+So `POST /wp/v2/settings {"url": "..."}` sets `siteurl` and leaves `home` alone, producing a split
+state where the site still redirects (because the redirect follows `home_url`) even though the
+write reported success. One useful side effect: with `siteurl` correct, `wp-login.php` becomes
+reachable on the production domain, which is convenient mid-flip.
+
+**There is no REST route to `home`.** It has to be `WP_HOME` in `wp-config.php`, WP-CLI, or
+Settings → General.
+
+Setting both constants is the right move regardless — it pins the URLs somewhere a bad
+search-replace cannot reach, so the site cannot lock you out.
+
+## Step 3b: there was no search-replace plugin installed
+
+Only five plugins on the live install: EWWW, Nginx Helper, Rank Math, Widgets for Google Reviews,
+Wordfence. **No Better Search Replace.** Rather than install one mid-cutover, the 15 stray URLs
+were fixed surgically over REST, because there were only three sources:
+
+| Source | Count | Fixed by |
+|---|---|---|
+| 6 nav menu items (custom links, claims cluster) | 12 rendered (nav renders twice) | `POST /wp/v2/menu-items/<id>` |
+| 6 pages with absolute URLs in content | 12 stored | `POST /wp/v2/pages/<id>` |
+| Rank Math Organization URL + logo | 3 per page | **Rank Math settings — not REST-reachable** |
+
+Being surgical beat a blanket replace here: fewer rows touched, and every change verifiable
+individually.
+
+**For statewide, check the plugin list first.** If Better Search Replace is present there, use it
+with *all tables selected* and a dry run — the menu items live in `wp_postmeta`, which a
+posts-only replace would miss.
+
+## The cache lied about the result, twice
+
+Both times the fix was fine and the verification was wrong.
+
+- A REST re-scan without a cache-buster reported **12 occurrences remaining** when the database
+  actually had 0. InMotion's nginx caches authenticated `/wp-json/` responses. The individual
+  `POST` responses were trustworthy because POSTs are not cached.
+- Every read needs a **unique** cache-buster per request. A fixed token becomes its own cacheable
+  URL — the same bug that made `preflight.py` report phantom broken links on 4 Aug.
+
+Check `x-proxy-cache` on anything you are using to make a decision. `MISS` means you are reading
+reality.
+
+## Order that matters, confirmed by doing it
+
+1. Docroot
+2. **`WP_HOME` + `WP_SITEURL` in the correct wp-config.php** — before anything else, because the
+   site is bouncing visitors to staging until this lands
+3. Database hostname replace — nav menu items, page content
+4. **Rank Math Organization URL + logo** — schema-only, but Google reads it
+5. Only then take the noindex off
+
+Taking the noindex off before 3 and 4 would invite Google to index the staging hostname and to
+read an Organization node pointing at it.
+
+## Confirmed working the moment the domain moved
+
+- `cfi-kadence-child` serving, no Divi markup anywhere
+- **GTM-MZ6RZ94 started printing by itself** — the theme's host gate woke up on the production
+  hostname exactly as designed, with no intervention. That was the single most uncertain piece of
+  the theme and it worked.
+- `noindex` still in place throughout, protecting the site while the URLs were being cleaned up
