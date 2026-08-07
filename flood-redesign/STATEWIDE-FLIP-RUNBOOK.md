@@ -303,14 +303,48 @@ wp user update AJFarmer --prompt=user_pass                  # --prompt keeps it 
 wp option patch update rank_math_options_titles website_name 'Statewide Flood Insurance'
 ```
 
-**B.** The URLs:
+**B.** The URLs. **Name the three tables explicitly. Do NOT use `--all-tables-with-prefix` here:**
 
 ```
-wp search-replace 'https://staging.statewidefloodinsurance.com' 'https://statewidefloodinsurance.com' \
-  --all-tables-with-prefix --skip-columns=guid --dry-run
+wp db export ~/statewide-preflip-db.sql
+wp search-replace 'staging.statewidefloodinsurance.com' 'statewidefloodinsurance.com' 8DjxVi_options 8DjxVi_postmeta 8DjxVi_posts --skip-columns=guid --report-changed-only
 ```
 
-Read the dry-run, then re-run without `--dry-run`.
+Searching for the bare hostname rather than `https://staging…` is deliberate — it is shorter to paste into
+cPanel's terminal and it also catches `http://` and protocol-relative `//` forms.
+
+**Why not `--all-tables-with-prefix`, which is what I first told Aaron to run.** The dry run reported
+**12,867** replacements. Only **43** were URLs:
+
+| Table | Column | Count | What it is |
+|---|---|---|---|
+| `wfknownfilelist` | `path` | **6,408** | **filesystem paths** |
+| `wffilemods` | `real_path` | **6,407** | **filesystem paths** |
+| `options` | `option_value` | 7 | real URLs (incl. all Rank Math settings) |
+| `postmeta` | `meta_value` | 18 | real URLs — the nav's `_menu_item_url` |
+| `posts` | `post_content` | 18 | real URLs |
+| `users` | `user_email` / `user_url` | 1 / 1 | an email address, and a profile field |
+| `wfhits`, `wfnotifications` | | 7 | Wordfence log noise |
+
+**12,815 of them were Wordfence rows holding paths on disk**, like
+`/home/mrtaco5/staging.statewidefloodinsurance.com/wp-content/…`. The directory is still *named*
+`staging.statewidefloodinsurance.com` until Phase 3, so rewriting those would have pointed Wordfence's
+file-integrity baseline at a nonexistent directory and made it report all ~6,400 files as changed or
+missing. Wordfence rebuilds both tables on its next scan regardless, so there was nothing to gain either.
+
+**`users` is excluded on purpose.** One account's **email address** contains the staging hostname. A
+hostname search-replace is the wrong instrument for an email address — check it with
+`wp user list --fields=ID,user_login,user_email` and set it deliberately in the UI.
+
+**The lesson, and it is the general one:** a search-replace scoped by *table set* replaces a string
+everywhere it appears, but the same string can mean different things in different columns — a URL in
+`postmeta`, a **path** in `wffilemods`, an **identity** in `user_email`. `--all-tables-with-prefix` is
+convenient and, for a hostname that is also a directory name, actively dangerous. **Read the
+`--report-changed-only` dry run and scope to named tables.** `--report-changed-only` is what made this
+legible: the full dry run buried the two 6,400-row tables in pages of zero-hit output.
+
+Also: **take the `wp db export` first, to `~/` and never inside the docroot** — a dump under the web root is
+a downloadable copy of the whole database. Restore is `wp db import ~/statewide-preflip-db.sql`.
 
 **Never do this with phpMyAdmin SQL.** Menus, widgets and theme options are stored as **PHP-serialized
 arrays**, which embed the byte length of every string. Dropping `staging.` shortens the string by 8
