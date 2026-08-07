@@ -156,11 +156,53 @@ define( 'WP_SITEURL', 'https://statewidefloodinsurance.com' );
 ```
 
 **Positive check before editing** — California's near-miss was editing the wrong `wp-config.php`. Confirm
-this file's folder contains `wp-content/themes/cfi-kadence-child/`. Note its `DB_NAME` and keep it
-somewhere; you will need it for the READMEs in Phase 3. It must **differ** from the Divi install's
-`DB_NAME`.
+this file's folder contains `wp-content/themes/cfi-kadence-child/` and **no `Divi` folder**. Note its
+`DB_NAME` and keep it somewhere; you will need it for the READMEs in Phase 3. It must **differ** from the
+Divi install's `DB_NAME`.
+
+Verified 8 Aug: themes folder holds `cfi-kadence-child`, `kadence`, and three twenty-* defaults, no Divi.
+**`DB_NAME` is `mrtaco5_wp_rbanj`**, table prefix `8DjxVi_`.
 
 From here the staging URL stops working. That is expected.
+
+### ⚠ Do steps 1 and 2 back to back. Do no admin work between them.
+
+Between the wp-config edit and the docroot repoint, `staging.statewidefloodinsurance.com` redirects to the
+apex — which is **still the Divi docroot**, including `/wp-admin`. So in that window, navigating to
+"staging" lands you in the **live Divi admin**. That is California's two-installs-one-URL confusion
+reappearing for a few minutes. Have the Domains tab already open before editing wp-config.
+
+**Rollback never depends on browser access to the site**, which is what makes this safe: `wp-config.php`
+is edited through cPanel File Manager, so removing the two lines is always available no matter what any
+hostname resolves to.
+
+**If you want a backup of `wp-config.php`, do NOT name it `wp-config.php.bak` in the docroot.** PHP does
+not execute `.bak`, so `https://statewidefloodinsurance.com/wp-config.php.bak` would be served as
+**plaintext** — DB password and every auth salt. Scanners probe that exact path. Put backups above all
+docroots instead: `/home/mrtaco5/wp-config-statewide-preflip-2026-08-08.php`.
+
+### What the wp-config edit does and does not do
+
+It changes `home_url()` / `site_url()`. **It does not switch tagging on.** The gate is
+`inc/tags.php:46-50`, and it reads the request's `Host` header, not any config value:
+
+```php
+$host = strtolower( (string) ( $_SERVER['HTTP_HOST'] ?? '' ) );
+$host = preg_replace( '/^www\./', '', $host );
+$host = preg_replace( '/:\d+$/', '', $host );
+return $host === CFI_PROD_HOST;
+```
+
+So tags begin printing at **step 2**, when requests start arriving with `Host: statewidefloodinsurance.com`.
+The admin banner's phrase "once the site answers on `statewidefloodinsurance.com`" means the hostname on
+the wire — it is easy to misread as the config value, and one agent did.
+
+`CFI_BRAND` *is* derived from `home_url()`, but `staging.statewidefloodinsurance.com` already contains the
+`statewidefloodinsurance` substring, so brand and container are already `swfi` / `GTM-PJQ72VK` and do not
+change. The gate strips `www.`, so `www.` fires tags too.
+
+**⚠ From step 2 onward, do not test-submit the quote form on the apex.** Tags are live; tag 57 fires a real
+Ads conversion. Use GTM Preview instead.
 
 ### 2. Repoint the document root
 
@@ -214,8 +256,22 @@ curl -s https://statewidefloodinsurance.com/robots.txt
 ```
 
 Expect `Disallow: /wp-content/uploads/*.pdf` present, **no** `sitemap.rss`, and
-`Sitemap: .../sitemap_index.xml`. **Leave Rank Math's robots.txt box empty** — do not paste anything into
-it.
+`Sitemap: https://statewidefloodinsurance.com/sitemap_index.xml` on the **apex** hostname. **Leave Rank
+Math's robots.txt box empty** — do not paste anything into it.
+
+Both versions were captured 8 Aug so the diff is unambiguous. Staging currently serves:
+
+```
+Disallow: /wp-admin/
+Disallow: /wp-content/uploads/*.pdf
+Allow: /wp-admin/admin-ajax.php
+Sitemap: https://staging.statewidefloodinsurance.com/sitemap_index.xml
+```
+
+Live Divi currently serves `sitemap.xml` **and** `sitemap.rss` and no PDF rule. **Neither has
+`Disallow: /`**, which was worth confirming — a blanket disallow would have stopped Google ever seeing the
+noindex removal. The `staging.` sitemap line is the stale-cache tell: if you still see it here after the
+purge, robots.txt has not regenerated.
 
 ### 7. Re-clear the sitemap cache, verify it logged out, THEN submit to Search Console
 
