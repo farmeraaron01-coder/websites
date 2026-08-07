@@ -166,6 +166,13 @@ Note `/sitemap_index.xml` currently **302s to `/sitemap.xml`** on Divi; after th
 ## 7. Still true from before
 
 - **Statewide staging must stay `noindex` until launch.** Verified today: `nofollow, noindex` present.
+- **Purge and then VERIFY `robots.txt` after the flip.** On California it served the Divi site's crawl
+  directives from the page cache for four hours, because nobody thinks of robots.txt as a cached page.
+  Check for the claim-PDF `Disallow` line and the absence of `sitemap.rss`.
+- **Do not trust any button in the hosting WordPress manager during the duplicate-URL window.** On
+  California, `Login` on the dead install's row opens the **live** site's dashboard, because the manager
+  routes by stored URL and both installs report the same one. Identify installs by Website Path or by
+  `DB_NAME` read from `wp-config.php`, never by URL, thumbnail, or which row you clicked.
 - Run `preflight.py --live https://statewidefloodinsurance.com --new https://staging.statewidefloodinsurance.com`
   before the flip for URL parity and asset checks.
 - The `x-proxy-cache` behaviour applies here too: **verify without a cache-buster**, and remember nginx

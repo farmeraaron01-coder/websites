@@ -212,6 +212,50 @@ production, which limits it, but delete the subdomain or add the hostname redire
 `htaccess-backup-before-redirects.txt` left alongside it. The WordPress block, the cPanel PHP
 handler block and the CFI static-asset cache block were all left untouched.
 
+## Two things found the day after, both worth carrying to statewide
+
+### robots.txt was served from the page cache for four hours after cutover
+
+`https://californiafloodinsurance.com/robots.txt` kept returning the **Divi site's** crawl directives
+well after the flip — a `farmerflood` theme path, a `/commercial/` rule, and a `Sitemap:` line pointing
+at `/sitemap.rss`, which 404s under Rank Math. The theme's claim-PDF `Disallow` was missing entirely.
+
+**Cause: a stale nginx page-cache entry.** No physical `robots.txt` existed in the docroot — verified in
+File Manager with hidden files shown, in the correct folder (`wp-config.php` `DB_NAME` =
+`mrtaco5_wp441`). Purging the cache fixed it immediately and the correct dynamic output appeared.
+
+**The diagnostic lesson is mine to own.** The wire evidence said "dynamic response" from the start — no
+`Last-Modified`, no `ETag`, no `Accept-Ranges`, and `x-proxy-cache: HIT`, exactly matching a WordPress
+page and not matching a static file on the same host. I had that measurement and then talked myself out
+of it because Rank Math's settings screen carries a generic notice about physical `robots.txt` files.
+**A generic warning in a plugin UI is weaker evidence than a header you measured yourself.**
+
+**For statewide:** `robots.txt` is a cached page. Purge it explicitly at cutover and then *verify the
+content*, because nobody thinks of robots.txt as a page. Add it to the post-flip checks alongside the
+sitemap.
+
+### The hosting manager's Login button routes by URL, so it opens the LIVE site from the dead row
+
+Confirmed by test. Clicking **Login** on the install whose Website Path is
+`/home/mrtaco5/californiafloodinsurance.com` — the dead Divi folder — lands in the **live** site's
+dashboard: Kadence child theme active, `mrtaco5_wp441` in Site Health.
+
+This is worse than the naming confusion it comes from. The earlier worry was that the Divi install had
+become unreachable. The reality is that the row for the dead install is **a door into production**, so
+someone tidying up what they believe is an old copy is editing the live website.
+
+Assume the same of every other button on that row, including **View Database**. The only trustworthy
+identifiers are the Website Path and `DB_NAME` read from `wp-config.php` on disk.
+
+Two consequences:
+
+1. **Divi's Integration code and Custom CSS have to come out of the database**, not the admin, because
+   the admin cannot be reached. They live inside one serialised `et_divi` option, under
+   `divi_custom_css` and `divi_integration_head` / `_body` / `_single_top` / `_single_bottom`. Do this
+   **before** the September deletion — it is the only copy.
+2. **For statewide, this is another argument for doing the folder renames in the same session as the
+   flip** rather than deferring them. The duplicate-URL window is when this hazard exists.
+
 ## Left behind: the directory names now lie, and that needs a scheduled fix
 
 The cutover works by pointing the domain at a differently-named folder, which leaves the account in
