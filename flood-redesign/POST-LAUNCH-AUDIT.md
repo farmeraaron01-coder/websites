@@ -167,6 +167,30 @@ are `googletagmanager.com` and the site's own domain.
 **So nothing was lost at cutover from the Integration boxes.** That was the question the rescue existed
 to answer, and it could not have been answered without doing it.
 
+### Where the Divi custom code lives, if it is ever wanted again
+
+An extracted text file was built by an agent and "downloaded", but it never reached Aaron's machine —
+almost certainly into the agent's own sandbox. **It was not worth recovering**, because the source is
+still on disk and the content turned out to be non-portable. Retrieval details, so September is not a
+hunt:
+
+| | |
+|---|---|
+| Install | `/home/mrtaco5/californiafloodinsurance.com/` (the **dead Divi** folder) |
+| Database | `mrtaco5_wp_2b1xy` |
+| Table prefix | **`F01Hh8gh_`** — not `wp_` |
+| Custom CSS | `F01Hh8gh_options`, `option_name = 'et_divi'`, key `divi_custom_css` (8,661 bytes, MD5 `b848daf7922aba626faa9d9173e1c2f2`) |
+| Same CSS, mirrored | `F01Hh8gh_posts`, **post ID 6**, `post_type = 'custom_css'` — byte-identical |
+| Integration code | same `et_divi` option, keys `divi_integration_head` / `_body` |
+
+Reaching it needs phpMyAdmin, **not** the WordPress admin — the hosting manager's Login button on that
+install opens the *live* site instead. Read `option_value` as binary (`CONVERT(... USING binary)`);
+character-offset extraction is silently 2 bytes short because the CSS contains multi-byte characters,
+and it is stored with CRLF line endings.
+
+**Extract it before the install is deleted, or accept losing it.** Given none of it is portable, losing
+it is a defensible choice — but it should be a choice, not an accident.
+
 ## The rest of it is obsolete by construction
 
 The other ~3,200 bytes are patches, two of them tagged as AI-authored (`claude-a11y-fixes v10`, and an
