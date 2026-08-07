@@ -11,12 +11,37 @@ files and some had been open since June. Every entry cites where it came from.
 
 | # | Item | Source |
 |---|---|---|
-| 1 | **`google-ads-project/Google Ads/.env` sits in a synced Dropbox folder** and holds the Google Ads **developer token, client secret, and refresh token**. A refresh token is durable access to the entire Ads account — the one spending ~$24,771/mo across six brands. **Move it out of Dropbox and rotate it.** Flagged twice and still open. | `LAUNCH.md:441`, `CLEANUP-WORKLIST.md:893` |
-| 2 | **`call-intelligence/.env`** — second secrets file in Dropbox, same treatment. | standing constraint |
-| 3 | **Three application passwords still live**: statewide staging `AJFarmer`, CFI staging `AJFarmer`, and **`jumpins Admin`**. Jumpins is live production with no staging in front of it, so revoke that one first. California production's was verified revoked (401). | this session |
+| 1 | **Two `.env` files in synced Dropbox folders hold many live API keys** — `google-ads-project/Google Ads/.env` (Google Ads developer token, client secret, refresh token, on the account spending ~$24,771/mo) and `call-intelligence/.env`. **This is deliberate**, not carelessness: Aaron uses Dropbox as his cross-device secrets store so the keys are reachable from any computer. So the fix is not "delete it" — see below. Flagged twice. | `LAUNCH.md:441`, `CLEANUP-WORKLIST.md:893` |
+| 2 | **Three application passwords still live**: statewide staging `AJFarmer`, CFI staging `AJFarmer`, and **`jumpins Admin`**. Jumpins is live production with no staging in front of it, so revoke that one first. California production's was verified revoked (401). | this session |
 
 **Why this is Tier 1:** a leaked refresh token is not a degradation, it is somebody else operating the
-ad account. Everything else here is recoverable.
+ad account. Everything else on this list is recoverable.
+
+### The requirement is real, so the fix has to preserve it
+
+The need is legitimate — reach the keys from any machine. Dropbox meets that but stores them as
+plaintext in a folder that syncs. **1Password already covers the same requirement** and is already paid
+for:
+
+- **Simple:** the file's contents as a Secure Note, or the `.env` attached as a Document.
+- **Better, if scripts consume these keys:** 1Password CLI injects at runtime, so the plaintext never
+  lands on disk. The `.env` becomes a template of `op://Vault/Item/field` references — safe to sync, safe
+  to commit — and `op run --env-file=.env -- <command>` supplies the real values in memory only.
+
+**What the actual exposure is**, since it is not "Dropbox gets breached":
+
+- every machine that ever synced the folder holds the plaintext on disk;
+- Dropbox version history and Deleted Files retain earlier copies after any edit;
+- anyone added to the folder, or handed a link, receives all of it at once;
+- **a refresh token does not expire**, so an old synced copy on a retired laptop stays valid indefinitely.
+
+**Rotation is a separate action from storage and still applies.** Moving the file protects the future; it
+cannot undo exposure that already happened. Since neither of us can establish whether it was ever
+exposed, the Ads refresh token is worth re-minting regardless — it is the one credential here that grants
+standing control of ad spend.
+
+**Never hand this item to an agent.** Any prompt about these files risks the values landing in a chat
+transcript, which is the exact failure being closed.
 
 ---
 
