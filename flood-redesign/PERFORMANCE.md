@@ -415,6 +415,52 @@ were lost tonight to variations of this.
 rendered page carries all four icon tags. The rendered output is authoritative and correct. I did not
 chase the discrepancy and do not have a confirmed explanation for it.
 
+## 1.5.6 — the hidden video poster, and a baseline I contaminated myself
+
+**The fix is real and verified.** The hero `<video>` carried `poster="hero-poster.jpg"` — 50,002 bytes
+fetched on every load, on every form factor, for an image nobody ever saw: `preload="none"` does not
+cover a poster, the element is `display:none` below 721px, and the `<picture>` resolves to the WebP
+everywhere that matters. Found by Aaron from a live trace; it had been sitting unexamined in my own
+network log as "49.1 KiB Image" for hours.
+
+Verified three ways after deploy, on the anonymous non-cache-busted path:
+
+| Scenario | WebP | MP4 | JPEG |
+|---|---|---|---|
+| Mobile | 34 KB | none | **none** |
+| Desktop, normal motion | 34 KB | 152 KB (206) | **none** |
+| Desktop, reduced motion | 34 KB | none | **none** |
+
+**But the score comparison is worthless, and the reason is my own 1.5.4 bug.** The only five-run apex
+baseline I had was taken *inside the font-404 window*:
+
+| | before (n=5) | after (n=5) |
+|---|---|---|
+| `sourceserif4` | **404** | 200 — 81.1 KiB |
+| `inter` | **404** | 200 — 35.4 KiB |
+| `hero-poster.jpg` | 49.1 KiB | **absent** |
+| `/favicon.ico` | 404 | absent (icon set) |
+| transfer | 687 KiB | 757 KiB |
+| **perf median** | **71** | **70** |
+
+The baseline page was rendering in Georgia and Arial with 116 KiB of webfonts never downloaded.
++116.5 fonts − 49.1 JPEG + 2.6 icon = **+70 KiB**, matching the observed delta exactly. Three
+variables moved between the two measurements; only one of them was 1.5.6.
+
+**So 1.5.6's effect on score is unmeasured and will stay that way.** A clean baseline would mean
+re-breaking the fonts. The bytes are gone and that is sufficient justification; no score claim is
+made.
+
+### The accident did produce one useful number
+
+The page absorbed **+70 KiB net for roughly 1 point** (71 → 70, inside an 8–9 point spread). If that
+ratio held, the ~43–63 KiB still available from container cleanup would be worth **under a point**.
+
+It also shows the byte theory is incomplete. Blocking the whole tag stack removed 531 KiB and gained
+**24 points** (71 → 95) — far more than 531/70 ≈ 7.6 points would predict. So the tags cost more than
+their bytes: connection setup to four extra origins, and main-thread execution. Byte-count alone is
+not the model, and anyone reasoning from KiB → points on this page will be wrong in both directions.
+
 ## Things deliberately not done
 
 **No click-to-load facade on the Cognito form.** It is 379 KiB and 863 ms, and it is the largest
