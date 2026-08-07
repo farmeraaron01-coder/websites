@@ -146,11 +146,36 @@ POST /wp/v2/pages/<id>  {"content": <same raw>}        → no-op save, purges th
 **Its limit:** it only reaches things that are a post or page. The homepage, archives, category
 pages and anything template-driven cannot be purged this way. Those need a working purge.
 
-**Aaron's purge is partly broken and it should be fixed before statewide.** Two symptoms point at
-one cause: there is no `Purge Cache` item in the admin toolbar, *and* Nginx Helper's own
-"Purge Entire Cache" button returns "you do not have the necessary privileges" for an
-administrator. With Nginx Helper's **Enable Purge** unchecked the toolbar item does not render at
-all, which fits both symptoms. Check Settings → Nginx Helper first.
+### Why the WordPress purge button cannot work on this stack — diagnosed 6 Aug
+
+My first guess was that Nginx Helper's **Enable Purge** was unchecked. **Wrong** — it is checked.
+Reading the settings screen and the server headers together gives the actual answer:
+
+| Nginx Helper is set to | The server actually runs |
+|---|---|
+| Caching Method: **nginx Fastcgi cache** | `x-proxy-cache` header ⇒ nginx **`proxy_cache`** |
+| Purge Method: **GET request to `PURGE/url`** | `GET /purge/` returns **403** |
+
+`x-proxy-cache` is nginx's *reverse-proxy* cache. Nginx Helper supports only FastCGI cache and
+Redis — **it has no proxy_cache mode at all.** So its purge requests are aimed at an endpoint this
+server refuses, and nothing clears. The plugin is effectively vestigial here.
+
+The "you do not have the necessary privileges" error turned out to be a separate red herring: it
+came from requesting the plugin page at the guessed slug `?page=nginx_helper`, where the real slug
+is `?page=nginx`.
+
+**So what actually purged?** Re-saving a post cleared `/claims/` in about three seconds, so
+something on the server purges on content change — most likely InMotion's own UltraStack
+integration, independent of the plugin. That is an inference, not a proven fact: `PURGE /` returns
+200, but that is ambiguous between a real purge handler and nginx simply serving the page.
+
+**Consequences for statewide:**
+
+- Do not rely on the WordPress purge button. It cannot work on this stack.
+- Content changes do purge, which is why the no-op re-save trick works.
+- The server-side purge works but is partial — hence: **always verify every URL afterwards.**
+- Add this to `INMOTION-TICKET.md`. InMotion are the only ones who can say what the supported purge
+  path is, and whether Nginx Helper should be reconfigured or removed rather than left misconfigured.
 
 ## Order that matters, confirmed by doing it
 
