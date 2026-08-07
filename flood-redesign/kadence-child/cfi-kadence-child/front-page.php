@@ -16,13 +16,36 @@ $theme_uri = get_stylesheet_directory_uri();
 				<source srcset="<?php echo esc_url( $theme_uri . '/assets/media/hero-poster.webp' ); ?>" type="image/webp">
 				<img src="<?php echo esc_url( $theme_uri . '/assets/media/hero-poster.jpg' ); ?>" alt="" width="1280" height="720" fetchpriority="high" decoding="async">
 			</picture>
-			<video muted loop playsinline preload="none" poster="<?php echo esc_url( $theme_uri . '/assets/media/hero-poster.jpg' ); ?>" data-src="<?php echo esc_url( $theme_uri . '/assets/media/raindrops-hero.mp4' ); ?>"></video>
+			<video muted loop playsinline preload="none" data-poster="<?php echo esc_url( $theme_uri . '/assets/media/hero-poster.webp' ); ?>" data-src="<?php echo esc_url( $theme_uri . '/assets/media/raindrops-hero.mp4' ); ?>"></video>
 			<script>
 			/* Load the hero video only on desktop, and never for reduced-motion visitors —
-			   keeps the 1.8 MB file entirely off mobile connections. */
+			   keeps the 1.8 MB file entirely off mobile connections.
+
+			   WHY `poster` IS SET HERE AND NOT AS AN ATTRIBUTE (1.5.6)
+			   It used to be poster="hero-poster.jpg" in the markup, and that cost
+			   **50,002 bytes on every load, on every form factor, for an image nobody
+			   ever saw.** Two things combine to make it pure waste:
+
+			     - `preload="none"` does NOT cover the poster. The poster is an ordinary
+			       image fetch, so the browser downloads it regardless — and it does so
+			       even though this element is `display:none` below 721px.
+			     - The `<picture>` above resolves to hero-poster.webp in every browser
+			       that matters, so the JPEG was never the displayed pixels anywhere.
+
+			   So on mobile it was 50 KB competing directly with the real LCP resource,
+			   and on desktop it was a second copy of an image already in hand.
+
+			   Now the poster is assigned only inside this desktop branch, and it points
+			   at the **WebP** — the same file the <picture> has already fetched, so it
+			   resolves from cache and costs zero additional bytes. Set before load()
+			   so the first painted frame still has something behind it.
+
+			   hero-poster.jpg stays on disk: it is still the <picture> fallback for a
+			   browser without WebP support. It is simply no longer requested by default. */
 			(function () {
 				var v = document.currentScript.previousElementSibling;
 				if ( window.matchMedia('(min-width: 721px)').matches && ! window.matchMedia('(prefers-reduced-motion: reduce)').matches ) {
+					v.poster = v.dataset.poster;
 					v.src = v.dataset.src;
 					v.autoplay = true;
 					v.load();
