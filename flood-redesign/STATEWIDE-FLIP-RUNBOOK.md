@@ -332,9 +332,21 @@ cPanel's terminal and it also catches `http://` and protocol-relative `//` forms
 file-integrity baseline at a nonexistent directory and made it report all ~6,400 files as changed or
 missing. Wordfence rebuilds both tables on its next scan regardless, so there was nothing to gain either.
 
-**`users` is excluded on purpose.** One account's **email address** contains the staging hostname. A
-hostname search-replace is the wrong instrument for an email address — check it with
+**`users` is excluded from the table list on purpose** — one account's **email address** contains the
+staging hostname, and a hostname search-replace is the wrong instrument for an email address. Check it with
 `wp user list --fields=ID,user_login,user_email` and set it deliberately in the UI.
+
+**But `user_url` in that same table must be fixed**, and excluding the whole table missed it. It is the
+author profile's Website field, and it renders as the byline link (`<a class="url fn n" href="…">`, once
+per post — so `/insights/` showed 7) and as `Person.sameAs` in the schema. Scope by **column**, so the
+email address stays structurally unreachable:
+
+```
+wp search-replace 'staging.statewidefloodinsurance.com' 'statewidefloodinsurance.com' 8DjxVi_users --include-columns=user_url --report-changed-only
+```
+
+Result after the 43-replacement run: homepage **0** staging references, nav and schema `Organization.url`
+and logo `contentUrl` all correct, and exactly **1 residual per page** — this row.
 
 **The lesson, and it is the general one:** a search-replace scoped by *table set* replaces a string
 everywhere it appears, but the same string can mean different things in different columns — a URL in
@@ -468,6 +480,19 @@ production. Have both cPanel tabs open before starting; downtime is the gap betw
 Tell me when Phase 3 is done and I will run, against the live apex:
 
 - every sitemap URL for status, canonical, noindex, schema, meta description
+- **a count of `staging.statewidefloodinsurance.com` in every page's rendered HTML — must be 0 everywhere.**
+  Checking only the homepage is what would have let the `user_url` residual through; the homepage hit 0
+  while every inner page still had 1.
+
+**⚠ The canonical tag is a hard gate.** Before the noindex came off, statewide emitted **no**
+`<link rel="canonical">` at all, while California — identical theme and Rank Math install — emitted
+`<link rel="canonical" href="https://californiafloodinsurance.com/" />`. The difference is the robots meta:
+California is `follow, index`, statewide was `nofollow, noindex`, and **Rank Math suppresses the canonical
+on noindexed pages**. `og:url` and the schema `@id` were already correct on the apex, which is consistent.
+
+So the canonical is *expected* to appear once the noindex is removed. **If it does not, that is a real
+defect and the sitemap must not be submitted until it is fixed.** Do not read its earlier absence as a
+problem, and do not read its absence *after* the noindex removal as normal.
 - all 50 redirects, checking 301 vs 410 individually
 - `www.` → apex, `http://` → apex, and the `staging.` hostname
 - stray staging hostnames in rendered HTML
