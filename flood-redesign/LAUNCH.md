@@ -44,6 +44,7 @@ The two-week watch afterwards is where the real attention goes.
 | 8 | **Full backup of each production site — files + database — downloaded off the server** | Aaron | ☐ |
 | 9 | ~~Read the Document Root column in cPanel → Domains~~ — **done 4 Aug. Method A confirmed available:** neither flood site is the primary domain (`mrtacoshop.com` holds `/public_html`), both are addon domains with editable roots, staging installs are siblings not nested. The cutover is two field edits, reversible by editing them back | — | ☑ |
 | 10 | **Do not delete the old Divi install** until the new sites have run clean for a month. It is the rollback target *and* the only remaining copy of Divi's Integration code, Custom CSS, and theme settings | Aaron | ☐ |
+| 10b | **~6 Sept: rename the directories so the names stop lying.** After cutover, production runs from a folder named `new.<domain>` while the folder named `<domain>` holds the dead Divi site — actively misleading to anyone deciding what is safe to delete. Full sequence in `FLIP-LOG-CALIFORNIA.md`. **Stopgap to do at flip time, not later:** a `READ-ME-WHICH-SITE-IS-THIS.txt` in both folders | Aaron | ☐ |
 | 9b | File `INMOTION-TICKET.md` as fire-and-forget for the two nginx changes (`/wp-json/` cache exclusion, PDF header). Neither is urgent and neither blocks launch — the PDF one is already mitigated by robots.txt. Drop request 1 from the ticket if item 9 answered it | Aaron | ☐ |
 
 Not launch-blocking, decide later: the asymmetric-lanes / cross-domain canonical question for

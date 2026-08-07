@@ -187,6 +187,55 @@ production, which limits it, but delete the subdomain or add the hostname redire
 `htaccess-backup-before-redirects.txt` left alongside it. The WordPress block, the cPanel PHP
 handler block and the CFI static-asset cache block were all left untouched.
 
+## Left behind: the directory names now lie, and that needs a scheduled fix
+
+The cutover works by pointing the domain at a differently-named folder, which leaves the account in
+a state where **the names are actively misleading**:
+
+| Folder | Actually contains |
+|---|---|
+| `/home/mrtaco5/new.californiafloodinsurance.com/` | **the live production site** |
+| `/home/mrtaco5/californiafloodinsurance.com/` | the dead Divi install |
+
+Aaron flagged this and he is right — it is not merely untidy. Someone opening File Manager in a
+year reads those names and draws the opposite conclusion, quite possibly while deciding what is
+safe to delete. The `new.` subdomain row in cPanel compounds it by looking like a staging site that
+should be cleaned up, when its directory is production.
+
+**cPanel currently refuses to delete the `new.` subdomain** — the Remove option is greyed out,
+almost certainly because its directory is in use as another domain's document root. That is cPanel
+protecting the site, and it is the correct behaviour.
+
+### The rename, to be done after the Divi retention month (~6 Sept 2026)
+
+1. Back up.
+2. Rename `californiafloodinsurance.com/` → `archive-divi-2026/`. **No impact** — the domain no
+   longer points there. This frees the correct name.
+3. Rename `new.californiafloodinsurance.com/` → `californiafloodinsurance.com/`. **Site down from
+   here.**
+4. cPanel → Domains → document root → `californiafloodinsurance.com`. **Site back up.**
+5. Delete the `new.` subdomain — no longer greyed out, because its directory is gone.
+
+Downtime is the gap between 3 and 4: under a minute with both tabs open beforehand. The rename
+itself is safe — nothing in WordPress stores its own filesystem path (`ABSPATH` is derived at
+runtime) and `WP_HOME`/`WP_SITEURL` are absolute URLs. Plugins that cache absolute paths (EWWW,
+Wordfence) regenerate them.
+
+**Do not attempt this on cutover day.** It renames the directory the live site is serving from, and
+the Divi install is still the rollback.
+
+### The stopgap, which costs nothing
+
+Drop a `READ-ME-WHICH-SITE-IS-THIS.txt` in **both** folders naming which is which, including
+`DB_NAME: mrtaco5_wp441` for the live one. This solves the "a year from now" problem even if the
+rename never happens, and it is the cheaper half of the fix by a wide margin.
+
+### For statewide
+
+The same trap is waiting: `staging.statewidefloodinsurance.com/` will become production while
+`statewidefloodinsurance.com/` holds the dead Divi site. Write the README files **at flip time**
+rather than afterwards — that is the moment the knowledge is in your head.
+
 ## Confirmed working the moment the domain moved
 
 - `cfi-kadence-child` serving, no Divi markup anywhere
