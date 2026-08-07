@@ -3,7 +3,7 @@
 Built 8 Aug 2026 by re-reading all 27 documents in this folder, because items were scattered across
 files and some had been open since June. Every entry cites where it came from.
 
-**Ordered by consequence, not by chronology.** The two most serious things here are not website work.
+**Ordered by consequence, not by chronology.** The single most serious item here is not website work at all.
 
 ---
 
@@ -42,14 +42,14 @@ they are not silently dropped; dismiss if they are done.
 
 | # | Item | Source |
 |---|---|---|
-| 6 | **The 15 July audit's headline finding is still open: ~60 conversion actions, dozens Primary, across six unrelated brands** — so flood campaigns bid partly toward non-flood conversions and every CPA is directional. **Its plan is still marked DRAFT.** | `LAUNCH.md:434` |
-| 7 | **Cross-site contamination**: California's `GTM-MZ6RZ94` runs on `jumptruckinginsurance.com` with tag 27 unscoped, so Jump Trucking's clicks count as California's quotes. **Blocked on importing `quote_form_lead` first** — scoping tag 27 before that leaves California with no conversion at all. | `POST-LAUNCH-AUDIT.md` |
-| 8 | **Statewide production carries an orphaned `GTM-MZ6RZ94` `<noscript>` iframe** with no head loader — another instance of the same cross-brand leakage, from when statewide was cloned off CFI's Divi build. | `LAUNCH.md:313` |
-| 9 | **Statewide's `G-FH3Q6GKNHH` is hardcoded on Jump Trucking's pages**, so statewide's GA4 property takes Jump Trucking traffic too. | this session |
-| 10 | 13 Primary actions with **zero** conversions in 30 days; duplicate `Earthquake Insurance - Residential` / `Earthquake - Residential` pairs (same for Commercial); **five** Jump Trucking actions, four Primary. | this session |
-| 11 | GA4 cleanup: 14 empty accounts (paste ready at `GA4-DELETE-PASTE.md`), 4 dead duplicate properties, 2 property moves. | `ACCOUNTS.md` |
+| 5 | **The 15 July audit's headline finding is still open: ~60 conversion actions, dozens Primary, across six unrelated brands** — so flood campaigns bid partly toward non-flood conversions and every CPA is directional. **Its plan is still marked DRAFT.** | `LAUNCH.md:434` |
+| 6 | **Cross-site contamination**: California's `GTM-MZ6RZ94` runs on `jumptruckinginsurance.com` with tag 27 unscoped, so Jump Trucking's clicks count as California's quotes. **Blocked on importing `quote_form_lead` first** — scoping tag 27 before that leaves California with no conversion at all. | `POST-LAUNCH-AUDIT.md` |
+| 7 | **Statewide production carries an orphaned `GTM-MZ6RZ94` `<noscript>` iframe** with no head loader — another instance of the same cross-brand leakage, from when statewide was cloned off CFI's Divi build. | `LAUNCH.md:313` |
+| 8 | **Statewide's `G-FH3Q6GKNHH` is hardcoded on Jump Trucking's pages**, so statewide's GA4 property takes Jump Trucking traffic too. | this session |
+| 9 | 13 Primary actions with **zero** conversions in 30 days; duplicate `Earthquake Insurance - Residential` / `Earthquake - Residential` pairs (same for Commercial); **five** Jump Trucking actions, four Primary. | this session |
+| 10 | GA4 cleanup: 14 empty accounts (paste ready at `GA4-DELETE-PASTE.md`), 4 dead duplicate properties, 2 property moves. | `ACCOUNTS.md` |
 
-**Item 6 is the umbrella.** Tonight's contamination finding is one instance of it. Cleaning individual
+**Item 5 is the umbrella.** Tonight's contamination finding is one instance of it. Cleaning individual
 signals on top of a feed that counts six brands together is, in the words of that doc, *"optimising
 toward cleaner garbage."*
 
@@ -59,17 +59,17 @@ toward cleaner garbage."*
 
 | # | Item | Source |
 |---|---|---|
-| 12 | **Note a baseline week of GA4 pageviews BEFORE flipping**, and check DebugView for two `page_view` events on one load. GA4 sessions will fall after cutover with no real traffic loss — that is the Site Kit duplicate going away. Without a baseline the drop is unexplainable after the fact. **This is a do-it-now item.** | `LAUNCH.md:309` |
-| 13 | **Read `GTM-PJQ72VK`'s two "Urgent" container-quality issues** in the GTM UI. Still unchecked. I audited the container's contents but never read what GTM itself is complaining about. | `LAUNCH.md:41` item 7c |
-| 14 | Pause tag 56 — duplicate Ads conversion on quote submit. **In progress.** | `STATEWIDE-PREFLIP.md:2` |
-| 15 | Install `statewide-prune-redirects.conf` (50 rules) **at** the flip, after re-running its collision check. | `STATEWIDE-PREFLIP.md:8` |
-| 16 | **Decide the 7 California geo redirects**: same-domain (active default) or cross-domain to `californiafloodinsurance.com` (my recommendation). | `statewide-prune-redirects.conf` |
-| 17 | **Decide the folder-naming approach** — Option A (flip then rename same session) or Option B (rename only, no docroot edit; test whether cPanel allows renaming an active docroot first). | `STATEWIDE-PREFLIP.md:9` |
-| 18 | Purge **and verify** robots.txt after the flip. Leave Rank Math's box empty. | `STATEWIDE-PREFLIP.md:6` |
-| 19 | Remove statewide staging's `noindex` **at** launch. | `STATEWIDE-PREFLIP.md:7` |
-| 20 | Set statewide's **site icon**, or it inherits a `/favicon.ico` 404 and a Best Practices ding. | `STATEWIDE-PREFLIP.md:7` |
-| 21 | Add `AboutPage` / `ContactPage` schema to the 4 pages that lost types. The `Article` types on `/get-a-quote/` and `/insights/` were Divi artefacts — losing those is an improvement. | `STATEWIDE-PREFLIP.md:8` |
-| 22 | Review statewide's **voice and claims**, and whether more pages deserve the 2026-edition treatment. | `STATEWIDE.md:113`, `:211` |
+| 11 | **Note a baseline week of GA4 pageviews BEFORE flipping**, and check DebugView for two `page_view` events on one load. GA4 sessions will fall after cutover with no real traffic loss — that is the Site Kit duplicate going away. Without a baseline the drop is unexplainable after the fact. **This is a do-it-now item.** | `LAUNCH.md:309` |
+| 12 | **Read `GTM-PJQ72VK`'s two "Urgent" container-quality issues** in the GTM UI. Still unchecked. I audited the container's contents but never read what GTM itself is complaining about. | `LAUNCH.md:41` item 7c |
+| 13 | Pause tag 56 — duplicate Ads conversion on quote submit. **In progress.** | `STATEWIDE-PREFLIP.md:2` |
+| 14 | Install `statewide-prune-redirects.conf` (50 rules) **at** the flip, after re-running its collision check. | `STATEWIDE-PREFLIP.md:8` |
+| 15 | **Decide the 7 California geo redirects**: same-domain (active default) or cross-domain to `californiafloodinsurance.com` (my recommendation). | `statewide-prune-redirects.conf` |
+| 16 | **Decide the folder-naming approach** — Option A (flip then rename same session) or Option B (rename only, no docroot edit; test whether cPanel allows renaming an active docroot first). | `STATEWIDE-PREFLIP.md:9` |
+| 17 | Purge **and verify** robots.txt after the flip. Leave Rank Math's box empty. | `STATEWIDE-PREFLIP.md:6` |
+| 18 | Remove statewide staging's `noindex` **at** launch. | `STATEWIDE-PREFLIP.md:7` |
+| 19 | Set statewide's **site icon**, or it inherits a `/favicon.ico` 404 and a Best Practices ding. | `STATEWIDE-PREFLIP.md:7` |
+| 20 | Add `AboutPage` / `ContactPage` schema to the 4 pages that lost types. The `Article` types on `/get-a-quote/` and `/insights/` were Divi artefacts — losing those is an improvement. | `STATEWIDE-PREFLIP.md:8` |
+| 21 | Review statewide's **voice and claims**, and whether more pages deserve the 2026-edition treatment. | `STATEWIDE.md:113`, `:211` |
 
 ---
 
@@ -77,11 +77,11 @@ toward cleaner garbage."*
 
 | # | Item | Source |
 |---|---|---|
-| 23 | **Extract Divi's Custom CSS and Integration code before the archive is deleted.** The generated file was lost to an agent sandbox; retrieval path is recorded (`mrtaco5_wp_2b1xy`, prefix `F01Hh8gh_`, `et_divi` option, mirrored at post ID 6). Losing it is defensible — it should be a choice, not an accident. | `POST-LAUNCH-AUDIT.md` |
-| 24 | Rename both California folders so the names stop lying, repoint the docroot, then delete the `new.` subdomain. | `FLIP-LOG-CALIFORNIA.md` |
-| 25 | **Cancel the Elegant Themes subscription** once Divi is gone — `et_core_version 4.27.7` on a theme running nothing. Check the renewal date first. | this session |
-| 26 | Revisit GTM deferral against **CrUX field data**, not Lighthouse. `CFI_TAGS_DEFER` is still in the theme. | `PERFORMANCE.md` |
-| 27 | Check field Core Web Vitals once the new site has its own 28-day window (~4 Sept). Divi was **failing** on both form factors. | `PERFORMANCE.md` |
+| 22 | **Extract Divi's Custom CSS and Integration code before the archive is deleted.** The generated file was lost to an agent sandbox; retrieval path is recorded (`mrtaco5_wp_2b1xy`, prefix `F01Hh8gh_`, `et_divi` option, mirrored at post ID 6). Losing it is defensible — it should be a choice, not an accident. | `POST-LAUNCH-AUDIT.md` |
+| 23 | Rename both California folders so the names stop lying, repoint the docroot, then delete the `new.` subdomain. | `FLIP-LOG-CALIFORNIA.md` |
+| 24 | **Cancel the Elegant Themes subscription** once Divi is gone — `et_core_version 4.27.7` on a theme running nothing. Check the renewal date first. | this session |
+| 25 | Revisit GTM deferral against **CrUX field data**, not Lighthouse. `CFI_TAGS_DEFER` is still in the theme. | `PERFORMANCE.md` |
+| 26 | Check field Core Web Vitals once the new site has its own 28-day window (~4 Sept). Divi was **failing** on both form factors. | `PERFORMANCE.md` |
 
 ---
 
@@ -89,16 +89,16 @@ toward cleaner garbage."*
 
 | # | Item |
 |---|---|
-| 28 | GBP posts written and never posted: El Niño, FAIR Plan. Also set the GBP website URL to `https://`. |
-| 29 | Wordfence licence key + 2FA. |
-| 30 | Add a description to the *Private Flood Insurance VS FEMA* YouTube video — the only one of four without. |
-| 31 | Statewide appears to have **no SPF record** while California and jumpins do. Affects whether quote emails reach inboxes. |
-| 32 | Delete the superseded `READ-ME-FIRST.md` in Dropbox `Flood Site Cutover/` (2.69 KB, 4:58 pm). The current one is a level up. |
-| 33 | Decide on **Microsoft Clarity** — a Microsoft Advertising setting on UET `5318858` (CFI) and `5318855` (statewide). Privacy call as much as performance. |
-| 34 | Decide **core auto-updates** on California — currently *Do not Auto Upgrade* with plugins and themes disabled. Suggest core minor/security only. |
-| 35 | Post-launch schema additions: licence `PropertyValue` (`0L75450`), `ContactPoint`, `worksFor` by `@id`. |
-| 36 | Cognito **form 5** issue, open since June. | 
-| 37 | Ask InMotion to set the static-asset cache header in **nginx** — the theme cannot, because Apache never sees those requests. |
+| 27 | GBP posts written and never posted: El Niño, FAIR Plan. Also set the GBP website URL to `https://`. |
+| 28 | Wordfence licence key + 2FA. |
+| 29 | Add a description to the *Private Flood Insurance VS FEMA* YouTube video — the only one of four without. |
+| 30 | Statewide appears to have **no SPF record** while California and jumpins do. Affects whether quote emails reach inboxes. |
+| 31 | Delete the superseded `READ-ME-FIRST.md` in Dropbox `Flood Site Cutover/` (2.69 KB, 4:58 pm). The current one is a level up. |
+| 32 | Decide on **Microsoft Clarity** — a Microsoft Advertising setting on UET `5318858` (CFI) and `5318855` (statewide). Privacy call as much as performance. |
+| 33 | Decide **core auto-updates** on California — currently *Do not Auto Upgrade* with plugins and themes disabled. Suggest core minor/security only. |
+| 34 | Post-launch schema additions: licence `PropertyValue` (`0L75450`), `ContactPoint`, `worksFor` by `@id`. |
+| 35 | Cognito **form 5** issue, open since June. | 
+| 36 | Ask InMotion to set the static-asset cache header in **nginx** — the theme cannot, because Apache never sees those requests. |
 
 ---
 
