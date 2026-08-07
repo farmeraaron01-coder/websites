@@ -33,7 +33,7 @@ later — but it is not urgent and not an SEO problem.
 
 ## One real defect: production `robots.txt` is still the Divi-era file — **RESOLVED, see correction below**
 
-> **CORRECTION, 8 Aug.** The diagnosis in this section was wrong and the fix in it should not be
+> **CORRECTION, 7 Aug.** The diagnosis in this section was wrong and the fix in it should not be
 > followed. **Rank Math was not the cause.** Its field was empty and its dynamic output was already
 > correct, including the PDF rule. The served content came from a **stale nginx page-cache entry**
 > holding the Divi site's robots.txt — verified: no physical `robots.txt` exists in the docroot, checked
@@ -145,7 +145,7 @@ not that nothing is missing from it. `preflight.py` covers URL parity and was ru
 
 ---
 
-# The Divi archive rescue, and an open conversion question — 8 Aug
+# The Divi archive rescue, and an open conversion question — 7 Aug
 
 ## The Integration boxes held nothing that needed migrating
 
@@ -209,7 +209,7 @@ More to the point, **the new theme scores Accessibility 100 and lab CLS 0 withou
 patches are a record of problems the rebuild solved outright, not work to carry forward. Read them as
 documentation, then leave them in the archive.
 
-## RESOLVED IN PART, 8 Aug — and my proposed fix would have broken something
+## RESOLVED IN PART, 7 Aug — and my proposed fix would have broken something
 
 **The "Get a Quote" action is not California's. It is Jump Trucking's.**
 
@@ -234,7 +234,7 @@ subdomain") and built a plan on it.
 `californiafloodinsurance.com - Submit_Online_Quote_Form` imports the GA4 event
 **`Submit_Online_Quote_Form_Submission`**, which is a key event.
 
-### RESOLVED 8 Aug — and it refutes my own prediction
+### RESOLVED 7 Aug — and it refutes my own prediction
 
 Daily GA4 counts across the boundary:
 
@@ -380,7 +380,7 @@ Commercial; three Jump Trucking call actions). Out of scope here, worth a separa
 
 # CROSS-SITE CONTAMINATION — California's container runs on Jump Trucking's site
 
-Found 8 Aug while chasing the conversion question. **This is the most consequential finding in the file**
+Found 7 Aug while chasing the conversion question. **This is the most consequential finding in the file**
 and it changes how every California GA4 number above should be read.
 
 ## Confirmed by fetching the pages
@@ -419,7 +419,7 @@ Both of my explanations were wrong. It was not click inflation (withdrawn above)
 under-firing. It is **contamination**: if most of the ~12.7/day legacy event is Jump Trucking, and
 California's honest lead rate is the ~1.3/day the new theme reports, the numbers reconcile exactly.
 
-**Falsifiable prediction, recorded before the data exists.** When 7–8 Aug finishes processing,
+**Falsifiable prediction, recorded before the data exists.** When 7–7 Aug finishes processing,
 `Submit_Online_Quote_Form_Submission` should **still** run 8–19/day, because Jump Trucking has not
 changed, while `quote_form_lead` runs 1–3/day. If the legacy event keeps its old rate after California's
 theme swap, contamination is proved.

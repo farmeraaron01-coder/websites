@@ -1,6 +1,6 @@
 # Statewide — what to settle before the flip
 
-Written 8 Aug 2026, after California went live. Read `FLIP-LOG-CALIFORNIA.md` for the mechanics; this
+Written 7 Aug 2026, after California went live. Read `FLIP-LOG-CALIFORNIA.md` for the mechanics; this
 covers only what is **different about statewide**, found by auditing rather than assuming.
 
 ---
@@ -187,7 +187,7 @@ Note `/sitemap_index.xml` currently **302s to `/sitemap.xml`** on Divi; after th
 
 ## 8. preflight.py run — 50 URLs would 404 at cutover
 
-Run 8 Aug against live production vs staging. **108 live URLs discovered, 50 of them 404 on the new
+Run 7 Aug against live production vs staging. **108 live URLs discovered, 50 of them 404 on the new
 site.** Every one loses its traffic and accumulated ranking the moment DNS moves.
 
 `statewide-prune-redirects.conf` handles all 50. It was validated before shipping, because
@@ -300,7 +300,7 @@ cleaner; if not, fall back to Option A.
 ### Either way, write the folder READMEs at flip time
 
 Two files, `LIVE-SITE--DO-NOT-DELETE.txt` and `ARCHIVE-DIVI--NOT-THE-LIVE-SITE.txt`, naming which
-install is which and quoting its `DB_NAME`. California's versions were written 8 Aug and can be copied
+install is which and quoting its `DB_NAME`. California's versions were written 7 Aug and can be copied
 with the names changed. Write them **during** the flip, while the knowledge is in your head — this is
 the cheaper half of the whole fix by a wide margin.
 

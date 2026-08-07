@@ -295,7 +295,7 @@ host stack, same plugin load. Run alongside California on the same night:
 
 Divi is four times the weight, 55% more blocking time, and fails CLS outright.
 
-> ### CORRECTION, 8 Aug — my explanation for this table was wrong
+> ### CORRECTION, 7 Aug — my explanation for this table was wrong
 >
 > This section originally said statewide wins on LCP because **`GTM-PJQ72VK` holds no Google tag**, so
 > it never loads the 176 KiB GA4 or 155 KiB Ads scripts. **That is false.** I read the published
@@ -427,7 +427,7 @@ It also shows the byte theory is incomplete. Blocking the whole tag stack remove
 their bytes: connection setup to four extra origins, and main-thread execution. Byte-count alone is
 not the model, and anyone reasoning from KiB → points on this page will be wrong in both directions.
 
-## The decisive experiment — 8 Aug, and it names the cause
+## The decisive experiment — 7 Aug, and it names the cause
 
 A local harness at `--throttling.cpuSlowdownMultiplier=8` reproduces PSI almost exactly (60 against
 PSI's 61), which finally makes lab work here comparable to what Google reports. Three runs each, apex,
@@ -480,7 +480,7 @@ lever that reaches 90 is not loading the tags during initial page load — which
 declined, deliberately and for good reasons about data completeness. **Recording that as a decision
 taken, not an oversight.** Everything else measured tonight moves single digits at best.
 
-## The settled answer — interleaved, n=5 each, 8 Aug
+## The settled answer — interleaved, n=5 each, 7 Aug
 
 This supersedes every partial conclusion above it. Five interleaved pairs (live, blocked, live,
 blocked...) on the apex URL, identical CSS, fonts, images, cache state, viewport and Lighthouse

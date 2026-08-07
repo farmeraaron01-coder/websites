@@ -1,6 +1,6 @@
 # Open items — one index, ordered by risk
 
-Built 8 Aug 2026 by re-reading all 27 documents in this folder, because items were scattered across
+Built 7 Aug 2026 by re-reading all 27 documents in this folder, because items were scattered across
 files and some had been open since June. Every entry cites where it came from.
 
 **Ordered by consequence, not by chronology.** The single most serious item here is not website work at all.
@@ -51,7 +51,7 @@ transcript, which is the exact failure being closed.
 |---|---|---|
 | 4 | **Terms of Service arbitration decision.** Production compelled binding arbitration with a class-action waiver; the new §24 explicitly does not. That is a deliberate change to customers' legal rights and it is a lawyer's call, not ours. | earlier session |
 
-### CLOSED 8 Aug — the 40,000+ / 900+ / 4.9 figures
+### CLOSED 7 Aug — the 40,000+ / 900+ / 4.9 figures
 
 **Verified by Aaron directly, as the owner who set up the underlying systems.** He confirmed the
 numbers are real. `REVIEW.md:57` had carried this as an open pre-launch verification item; it is closed
@@ -85,16 +85,16 @@ toward cleaner garbage."*
 
 **Work this tier from `STATEWIDE-FLIP-RUNBOOK.md`, not from this table.** The runbook puts these in
 execution order with the commands; this table is only the index. Items 11, 15 and 16 are settled as of
-8 Aug — 12, 13 and 19 are the remaining Phase 0 blockers.
+7 Aug — 12, 13 and 19 are the remaining Phase 0 blockers.
 
 | # | Item | Source |
 |---|---|---|
-| 11 | ~~Note a baseline week of GA4 pageviews before flipping~~ **DONE 8 Aug.** 31 Jul–6 Aug: 6,887 pageviews / 2,731 sessions / 2,352 users, and 2 `page_view` per load confirmed in Realtime. Recorded in `STATEWIDE-FLIP-RUNBOOK.md`. **The cause was not Site Kit** — Site Kit is not connected; statewide production carries a hardcoded `gtag/js` for `G-FH3Q6GKNHH` in the Divi header alongside the container's Google tag. `LAUNCH.md:309` was wrong and the duplicate dies with Divi. Expect ~6,887/wk → ~3,400 with no real traffic loss. | `LAUNCH.md:309`, this session |
-| 12 | ~~Read `GTM-PJQ72VK`'s two "Urgent" container-quality issues~~ **DONE 8 Aug, neither applied.** "Missing Google tags → AW-1012143191" is real but systemic across both containers → moved to item 10b. "Additional domains detected → Conversion Linker" is the `staging.` hostname, which ceases to exist after the flip; recheck in a week. Reasoning in `STATEWIDE-FLIP-RUNBOOK.md` §0a-bis. | `LAUNCH.md:41` item 7c |
-| 13 | ~~Pause tag 56~~ **DONE 8 Aug, published as version 15 and verified in the published `gtm.js`**: `I0VbCLiCgoQYENeo0OID` went from 2 occurrences to 1, `__awct` from 4 to 3, tags 45/46/57 untouched. Its `BLOCK - staging hostnames` exception was conditioned on `e eq gtm.js` and could never have blocked a `cfi_form_submit` tag. Rollback: version 14. | `STATEWIDE-PREFLIP.md:2` |
-| 14 | Install `statewide-prune-redirects.conf` **at** the flip. Collision check re-run 8 Aug: 50 rules, all 50 sources 404 on the new site, 0 duplicates, 0 uncovered, 0 extras, all 18 targets 200, 0 prefix collisions. | `STATEWIDE-PREFLIP.md:8` |
-| 15 | ~~Decide the 7 California geo redirects~~ **DECIDED 8 Aug: cross-domain** to `californiafloodinsurance.com/get-a-quote/`. The `.conf` is swapped; the same-domain lines are retained commented and marked SUPERSEDED. | `statewide-prune-redirects.conf` |
-| 16 | ~~Decide the folder-naming approach~~ **DECIDED 8 Aug: Option A** — flip the docroot, verify, then rename both folders in the same session. Phase 3 of the runbook. | `STATEWIDE-PREFLIP.md:9` |
+| 11 | ~~Note a baseline week of GA4 pageviews before flipping~~ **DONE 7 Aug.** 31 Jul–6 Aug: 6,887 pageviews / 2,731 sessions / 2,352 users, and 2 `page_view` per load confirmed in Realtime. Recorded in `STATEWIDE-FLIP-RUNBOOK.md`. **The cause was not Site Kit** — Site Kit is not connected; statewide production carries a hardcoded `gtag/js` for `G-FH3Q6GKNHH` in the Divi header alongside the container's Google tag. `LAUNCH.md:309` was wrong and the duplicate dies with Divi. Expect ~6,887/wk → ~3,400 with no real traffic loss. | `LAUNCH.md:309`, this session |
+| 12 | ~~Read `GTM-PJQ72VK`'s two "Urgent" container-quality issues~~ **DONE 7 Aug, neither applied.** "Missing Google tags → AW-1012143191" is real but systemic across both containers → moved to item 10b. "Additional domains detected → Conversion Linker" is the `staging.` hostname, which ceases to exist after the flip; recheck in a week. Reasoning in `STATEWIDE-FLIP-RUNBOOK.md` §0a-bis. | `LAUNCH.md:41` item 7c |
+| 13 | ~~Pause tag 56~~ **DONE 7 Aug, published as version 15 and verified in the published `gtm.js`**: `I0VbCLiCgoQYENeo0OID` went from 2 occurrences to 1, `__awct` from 4 to 3, tags 45/46/57 untouched. Its `BLOCK - staging hostnames` exception was conditioned on `e eq gtm.js` and could never have blocked a `cfi_form_submit` tag. Rollback: version 14. | `STATEWIDE-PREFLIP.md:2` |
+| 14 | Install `statewide-prune-redirects.conf` **at** the flip. Collision check re-run 7 Aug: 50 rules, all 50 sources 404 on the new site, 0 duplicates, 0 uncovered, 0 extras, all 18 targets 200, 0 prefix collisions. | `STATEWIDE-PREFLIP.md:8` |
+| 15 | ~~Decide the 7 California geo redirects~~ **DECIDED 7 Aug: cross-domain** to `californiafloodinsurance.com/get-a-quote/`. The `.conf` is swapped; the same-domain lines are retained commented and marked SUPERSEDED. | `statewide-prune-redirects.conf` |
+| 16 | ~~Decide the folder-naming approach~~ **DECIDED 7 Aug: Option A** — flip the docroot, verify, then rename both folders in the same session. Phase 3 of the runbook. | `STATEWIDE-PREFLIP.md:9` |
 | 17 | Purge **and verify** robots.txt after the flip. Leave Rank Math's box empty. | `STATEWIDE-PREFLIP.md:6` |
 | 18 | Remove statewide staging's `noindex` **at** launch. | `STATEWIDE-PREFLIP.md:7` |
 | 19 | Set statewide's **site icon**, or it inherits a `/favicon.ico` 404 and a Best Practices ding. | `STATEWIDE-PREFLIP.md:7` |
@@ -122,7 +122,7 @@ execution order with the commands; this table is only the index. Items 11, 15 an
 | 27 | GBP posts written and never posted: El Niño, FAIR Plan. Also set the GBP website URL to `https://`. |
 | 28 | Wordfence licence key + 2FA. |
 | 29 | Add a description to the *Private Flood Insurance VS FEMA* YouTube video — the only one of four without. |
-| 30 | **Statewide has no SPF and no DMARC — confirmed at DNS 8 Aug, not just suspected.** TXT holds only `google-site-verification=JXdoRp-…`; `_dmarc` returns nothing; MX is `0 statewidefloodinsurance.com.`, so the hosting server sends its own mail unauthenticated. This already bit us: the WordPress password-reset email could not be relied on during the flip, and it affects **quote notification emails reaching inboxes** — a lead-loss path, not just a nuisance. Promote out of housekeeping when the flip is done. |
+| 30 | **Statewide has no SPF and no DMARC — confirmed at DNS 7 Aug, not just suspected.** TXT holds only `google-site-verification=JXdoRp-…`; `_dmarc` returns nothing; MX is `0 statewidefloodinsurance.com.`, so the hosting server sends its own mail unauthenticated. This already bit us: the WordPress password-reset email could not be relied on during the flip, and it affects **quote notification emails reaching inboxes** — a lead-loss path, not just a nuisance. Promote out of housekeeping when the flip is done. |
 | 31 | Delete the superseded `READ-ME-FIRST.md` in Dropbox `Flood Site Cutover/` (2.69 KB, 4:58 pm). The current one is a level up. |
 | 32 | Decide on **Microsoft Clarity** — a Microsoft Advertising setting on UET `5318858` (CFI) and `5318855` (statewide). Privacy call as much as performance. |
 | 33 | Decide **core auto-updates** on California — currently *Do not Auto Upgrade* with plugins and themes disabled. Suggest core minor/security only. |

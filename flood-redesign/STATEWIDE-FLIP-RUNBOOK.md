@@ -1,6 +1,6 @@
 # Statewide flip — the runbook for today
 
-8 Aug 2026. Decisions taken: **cross-domain geo redirects**, **Option A folder handling** (flip, verify,
+7 Aug 2026. Decisions taken: **cross-domain geo redirects**, **Option A folder handling** (flip, verify,
 then rename in the same session). Read `FLIP-LOG-CALIFORNIA.md` for the mechanics that are identical;
 this is the ordered list to work through.
 
@@ -37,7 +37,7 @@ across the cutover line.**
 
 ## PHASE 0 — before touching the docroot
 
-### 0a. Tag 56 paused — ✅ DONE 8 Aug, verified at the wire
+### 0a. Tag 56 paused — ✅ DONE 7 Aug, verified at the wire
 
 Version 14 (`Remove wrong California Google tag from Statewide`) had it unpaused. **Version 15**,
 `Pause tag 56 - duplicate Ads conversion on quote submit`, contains exactly one change.
@@ -95,7 +95,7 @@ Rank Math → Titles & Meta → Categories → turn on **Category Archives Robot
 The six: `hurricanes-storm-surge`, `excess-flood`, `lenders-closings`, `flood-basics`, `nfip-pricing`,
 `claims`.
 
-**DONE 8 Aug — but it needed a second step, and this is the part that generalises.** After the setting
+**DONE 7 Aug — but it needed a second step, and this is the part that generalises.** After the setting
 saved, the setting was live in PHP while the *public* URLs still served the old XML:
 
 | URL | bare | with `?cb=` |
@@ -160,11 +160,11 @@ this file's folder contains `wp-content/themes/cfi-kadence-child/` and **no `Div
 `DB_NAME` and keep it somewhere; you will need it for the READMEs in Phase 3. It must **differ** from the
 Divi install's `DB_NAME`.
 
-Verified 8 Aug: themes folder holds `cfi-kadence-child`, `kadence`, and three twenty-* defaults, no Divi.
+Verified 7 Aug: themes folder holds `cfi-kadence-child`, `kadence`, and three twenty-* defaults, no Divi.
 **`DB_NAME` is `mrtaco5_wp_rbanj`**, table prefix `8DjxVi_`.
 
 From here the staging URL stops working. That is expected — but **not uniformly, and the difference will
-confuse you if you do not expect it.** Measured immediately after the edit, 8 Aug:
+confuse you if you do not expect it.** Measured immediately after the edit, 7 Aug:
 
 | Request | Result |
 |---|---|
@@ -195,6 +195,16 @@ hostname resolves to.
 not execute `.bak`, so `https://statewidefloodinsurance.com/wp-config.php.bak` would be served as
 **plaintext** — DB password and every auth salt. Scanners probe that exact path. Put backups above all
 docroots instead: `/home/mrtaco5/wp-config-statewide-preflip-2026-08-08.php`.
+
+**That filename is misdated and the file on disk carries it** — the flip was **7 Aug 2026**, not the 8th.
+I stamped "8 Aug" across every document and commit message during this session and dictated that filename
+too; an agent checking its own backup against the system clock caught it. Every date in this folder has
+been corrected to 7 Aug, but the filename above is left as-is because it is what actually exists on the
+server. The `.htaccess` backup, named by that agent from the system clock rather than from my prose, is
+correctly `.htaccess.pre-prune-2026-08-07.bak`.
+
+**Prefer the machine's clock to a date carried forward in prose.** Mine was wrong for a whole session and
+nothing internal to the documents could reveal it.
 
 ### What the wp-config edit does and does not do
 
@@ -241,7 +251,7 @@ Expect `200` and a non-zero count. **Tell me at this point and I will run the fu
 
 ### ⚠ 3b. FIRST: the database still holds staging URLs. Fix before purging, before noindex.
 
-**Found 8 Aug immediately after the docroot moved.** The flip itself was clean — cache-busted apex showed
+**Found 7 Aug immediately after the docroot moved.** The flip itself was clean — cache-busted apex showed
 12 `cfi-kadence-child` refs, **0** Divi markers, `GTM-PJQ72VK` present, `GTM-MZ6RZ94` absent, **0**
 hardcoded `gtag/js` and **0** inline `G-FH3Q6GKNHH` (confirming the duplicate `page_view` died with Divi),
 noindex still on. But:
@@ -282,7 +292,7 @@ requests with `x-proxy-cache: HIT`, so no visitor saw the broken nav. Had the ca
 would have gone public. **This is why the fix goes before the purge.**
 
 **All of it is doable from cPanel → Terminal with no WordPress login**, which matters because Aaron could
-not recall the staging password and **this domain cannot reliably deliver a reset email** — checked 8 Aug:
+not recall the staging password and **this domain cannot reliably deliver a reset email** — checked 7 Aug:
 TXT holds only the Google verification, so there is **no SPF**, there is **no DMARC**, and MX points at the
 host itself. `OPEN-ITEMS.md` item 30 confirmed as live, not theoretical.
 
@@ -392,7 +402,7 @@ curl -s https://statewidefloodinsurance.com/ | grep -i "noindex"
 
 Expect **nothing**, on the **bare** URL. This is the single most damaging thing to forget.
 
-Verified state before removal, 8 Aug: `noindex` present on **70/70** sitemap URLs, all returning 200, with
+Verified state before removal, 7 Aug: `noindex` present on **70/70** sitemap URLs, all returning 200, with
 **0** staging hostnames anywhere and `www`/`http://`/`staging.` all 301ing to the apex.
 
 **The noindex was NOT in Rank Math.** Its Global Meta screen had Index checked and No Index unchecked the
@@ -442,7 +452,7 @@ returns 200.
 
 ### ⚠ There are TWO purges on this host, and only one of them works for a site-wide change
 
-**This cost an hour on 8 Aug.** After removing the noindex, three separate purges left the *same 24* pages
+**This cost an hour on 7 Aug.** After removing the noindex, three separate purges left the *same 24* pages
 serving `noindex` on bare URLs while cache-busted requests were correct. Headers showed why:
 
 ```
@@ -482,7 +492,7 @@ Expect `Disallow: /wp-content/uploads/*.pdf` present, **no** `sitemap.rss`, and
 `Sitemap: https://statewidefloodinsurance.com/sitemap_index.xml` on the **apex** hostname. **Leave Rank
 Math's robots.txt box empty** — do not paste anything into it.
 
-Both versions were captured 8 Aug so the diff is unambiguous. Staging currently serves:
+Both versions were captured 7 Aug so the diff is unambiguous. Staging currently serves:
 
 ```
 Disallow: /wp-admin/
@@ -496,7 +506,7 @@ Live Divi currently serves `sitemap.xml` **and** `sitemap.rss` and no PDF rule. 
 noindex removal. The `staging.` sitemap line is the stale-cache tell: if you still see it here after the
 purge, robots.txt has not regenerated.
 
-**What actually happened, 8 Aug.** After the host cache purge, every page came good — bare homepage on the
+**What actually happened, 7 Aug.** After the host cache purge, every page came good — bare homepage on the
 Kadence child, 0 Divi markers, 0 staging refs — but **robots.txt kept serving Divi's version and flapped**:
 
 | Request | Content |
