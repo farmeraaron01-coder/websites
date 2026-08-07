@@ -263,8 +263,10 @@ Do CFI first; statewide gets the benefit of anything learned.
 - Google Business Profile: website URL → `https://californiafloodinsurance.com` (it is currently
   `http`).
 - Wordfence: paid key, and 2FA set to Required.
-- **Revoke the three application passwords pasted into chat**: staging `AJFarmer`, production
-  `farmeraaron`, statewide staging `AJFarmer`.
+- **Revoke the FOUR application passwords pasted into chat**: staging `AJFarmer`, production
+  `farmeraaron`, statewide staging `AJFarmer`, and **jumpins.com `Admin`** (added 6 Aug to publish
+  the FAIR Plan article). The jumpins one is on a live production site with no staging in front of
+  it, so revoke that one first.
 - Ask InMotion for two nginx changes in one ticket:
   1. Exclude `/wp-json/` from the nginx cache (authenticated REST responses are currently cached,
      which is why purges needed a REST write to trigger — and why a theme-version check read stale).

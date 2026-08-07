@@ -1,8 +1,10 @@
 # jumpins.com content
 
 Jump Insurance Services — the general P&C agency site (auto, home, business, life). Separate
-from the flood redesign in `../flood-redesign/`; this folder holds article source only, since
-I have no credentials for jumpins.com and cannot publish there.
+from the flood redesign in `../flood-redesign/`; this folder holds article source. Aaron supplied a
+jumpins.com application password on 6 Aug, so publishing is possible — **that credential is on the
+revocation list in `../flood-redesign/LAUNCH.md` and should go first**, since jumpins is a live
+production site with no staging in front of it.
 
 **Site as found, 6 Aug 2026:** WordPress, Yoast SEO, Google Site Kit. 57 pages, 10 posts.
 `/insights/` correctly renders the post archive (unlike California's, which had
@@ -22,7 +24,8 @@ location specifically that stays out.
 
 ## fair-plan-rate-increase-october-2026.html
 
-**Not yet published.** 1,882 words, 8 H2s, 6 FAQ pairs, 8 internal links (all verified 200
+**PUBLISHED 6 Aug 2026** at https://jumpins.com/fair-plan-rate-increase-october-2026/ (post 4553,
+author Aaron Farmer, category Insights). 1,882 words, 8 H2s, 6 FAQ pairs, 8 internal links (all verified 200
 with no redirect hop), 1 cross-domain link to californiafloodinsurance.com.
 
 ### Suggested metadata
