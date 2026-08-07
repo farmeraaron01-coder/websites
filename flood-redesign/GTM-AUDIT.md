@@ -12,6 +12,86 @@ performance is. This document is about doing that safely.
 
 ---
 
+## The container in six categories
+
+The detail is in the numbered sections below. This is the classification, because the single most
+common mistake in this kind of cleanup is treating all six as one list.
+
+### A. Direct GTM tags — configured in this container, visible in the UI
+
+39 of them. Only these can be edited or deleted in GTM.
+
+| | Count | Tag IDs |
+|---|---|---|
+| GA4 event | 13 | 21, 23, 25, 27, 31, 32, 34, 36, 38, 40, 42, 56, 57 |
+| Event listeners (click / link / form / timer / scroll) | 18 | 58–75 |
+| Custom HTML | 4 | 14 (UET base), 43 (UET event), 45 (Cognito prefill), 49 (internal cookie) |
+| Google tag | 1 | 13 |
+| Ads remarketing | 1 | 10 |
+| Conversion Linker | 2 | 11, 19 |
+
+### B. Scripts loaded automatically by vendor tags — **not configurable in GTM at all**
+
+This is the category that had been missed entirely, and it is why "delete the Clarity tag" was never
+going to work.
+
+| Script | Size | Loaded by | Where it is actually controlled |
+|---|---|---|---|
+| `gtag/js?id=G-3YMN51H7LE` | 176.4 KiB | tag 13 (Google tag) | GTM tag 13 |
+| `gtag/destination?id=AW-1012143191` | 155.3 KiB | tag 10 (Ads remarketing) | GTM tag 10 |
+| `bat.bing.com/p/action/5318858.js` | 1.8 KiB | `bat.js` | Microsoft Advertising |
+| `clarity.ms/tag/uet/5318858?insights=1` | 1.3 KiB | `action/5318858.js` | **Microsoft Advertising — UET/Clarity setting** |
+| `scripts.clarity.ms/0.8.69/clarity.js` | **25.2 KiB** | the UET Clarity tag | **Microsoft Advertising** |
+| `c.clarity.ms/c.gif`, `b.clarity.ms/collect`, `c.bing.com/c.gif` | ~2.0 KiB | clarity.js | **Microsoft Advertising** |
+| `www.google.com/ccm/collect` ×2 | ~0.3 KiB | gtag | consent/conversion measurement |
+
+**Nothing in GTM or WordPress can remove the Clarity subtree.** Confirmed absent from the container
+JSON, the served HTML, and the WordPress side. Only the Microsoft Advertising UET/Clarity setting
+switches it off — and only after confirming nobody is relying on the session recordings.
+
+### C. Required for bidding or conversion attribution — do not touch
+
+| Tag | Role |
+|---|---|
+| **13** Google tag `G-3YMN51H7LE` | Every GA4 hit. If conversions are GA4-imported (see §1), Smart Bidding's entire signal runs through this. |
+| **11** Conversion Linker | Reads `gclid`/`wbraid` into `_gcl_*`. Without it Ads cannot join click to conversion. |
+| **56** `quote_form_lead` | The lead conversion itself. |
+| **57** `form_submit_any` | Denominator for completion rate. |
+| **45** Cognito prefill | Writes UTM / `gclid` / `msclkid` into the form. Removing it breaks lead-source attribution in the CRM — not in Ads, but in the place the office actually reads. |
+| **14 / 43** Bing UET base + `request_quote` | $12,607/mo of Microsoft spend depends on these. |
+
+### D. Diagnostic and remarketing — real function, no bidding dependency
+
+| Item | Size | Function |
+|---|---|---|
+| **10** Ads remarketing | 155.3 KiB | Builds RLSA / audience lists. **Not conversion measurement.** |
+| Clarity *(category B)* | ~28 KiB | Session recording and heatmaps. Diagnostic only. |
+| **36** + listener **72** | — | Scroll depth |
+| **38, 40, 42** + listeners **73–75** | — | Time on page at 1 / 2 / 5 min |
+
+### E. Duplicates
+
+| What | Detail | Cost |
+|---|---|---|
+| **Conversion Linker ×2** | Tag 11 (All Pages, correct) and tag 19 (clicks + form submits, pointless) | No bytes; redundant work per click |
+| **Triple form event** | Tags 27 *(click-based, Divi-era)*, 56 and 57 *(dataLayer-based, new theme)* can all fire on one quote submission | **No bytes — but duplicate conversion signal if more than one is a key event imported to Ads** |
+| **GA4 page_view** | **No duplicate.** One `__googtag`, and the theme's `CFI_GA4_ID` is deliberately empty for California. Verified: exactly one `gtag/js` request in the served page. | — |
+| **Bing UET base** | **No duplicate.** One base (14), one event (43). | — |
+| Scroll / engagement events | Duplicate GA4 **native** Enhanced Measurement, not each other | — |
+
+### F. Potential savings, each with its measurement risk
+
+| Action | Saving | Confidence | Measurement risk |
+|---|---|---|---|
+| Disable Clarity *(Microsoft Ads UI)* | **~28 KiB** + 3 origins | Measured | **None.** Not a bidding or conversion source. Loses session recordings. |
+| Remove tag 10 (Ads remarketing) | **155.3 KiB** | Measured | **None to conversions** *if* §1 verified. **Real to audiences** — RLSA and audience targeting degrade until GA4-shared audiences replace them. |
+| Delete tag 19 (duplicate linker) | ~0 | Measured | None. |
+| Prune 8 engagement + 3 orphaned tags | 15–35 KiB | **Estimated** — needs a publish to measure | None. Verify the 3 orphans in Preview first. |
+| Fonts (**shipped, theme 1.5.4**) | **50.7 KiB** | Measured | None. |
+| Fix the triple form event | 0 KiB | — | **This one reduces risk.** But reported conversions will *drop*. Not a regression — note the date. |
+
+Sum: **~250–270 KiB of 854.** Extrapolated to the mid 80s on mobile. **Not 90, and not promised.**
+
 ## 1. The single most important finding
 
 **There are no Google Ads conversion tags in this container.** Not one `__awct`. I checked all 39
