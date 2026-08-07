@@ -293,68 +293,34 @@ host stack, same plugin load. Run alongside California on the same night:
 | CLS | **0.231** — fails | **0** |
 | Transfer | **3,338 KiB** | **854 KiB** |
 
-Divi is four times the weight, 55% more blocking time, and fails CLS outright — and still wins on
-LCP. The reason is the container, not the theme: **`GTM-PJQ72VK` holds no Google tag** (it reports
-GTM's "Missing Google tags" warning — the whole reason `CFI_GA4_ID` had to be set for statewide).
-So statewide never loads the 176 KiB GA4 script or the 155 KiB Ads script. It is 3.3 MB of theme
-bloat with a light tag load, against 312 KiB of clean theme with a heavy one.
+Divi is four times the weight, 55% more blocking time, and fails CLS outright.
 
-Which is the same finding as the table above, arrived at from the other direction: **the variable is
-the container, both times.** It is also a warning for statewide's own cutover — the moment it gets a
-Google tag, it inherits this exact problem.
-
-## 1.5.4 — the font instancing, and its honest size
-
-Both webfonts are variable and both shipped with their **full factory weight axes**. The design uses
-Source Serif at 600/640/700/800 and Inter at 400/500/600/620/650/700; everything outside those ranges
-was outline data nothing renders.
-
-| | Before | After |
-|---|---|---|
-| `sourceserif4.woff2` | 119.3 KiB | **80.8 KiB** |
-| `inter.woff2` | 47.3 KiB | **35.1 KiB** |
-| Total, both preloaded at high priority | 166.6 KiB | **115.9 KiB** |
-
-**51 KiB off the critical path with no rendering change.** All 231/230 codepoints are retained and
-Source Serif's `opsz` axis is deliberately **kept**, so the browser's default
-`font-optical-sizing: auto` still adjusts stroke contrast by size.
-
-Pinning `opsz` as well would have taken Source Serif to **32.7 KiB** — another 48 KiB — and was
-declined: it would flatten the optical adaptation on the 84 px `.cfi-bignum` and the clamp(56,7vw,84)
-display headings, which is exactly where a serif shows it. Available if the trade is ever wanted.
-
-**Versioned filenames — `sourceserif4-v2.woff2`, `inter-v2.woff2`.** The first cut of 1.5.4
-overwrote the files in place, which was wrong: a changed file at an unchanged URL never reaches a
-browser that already holds the old one. New visitors and Lighthouse would have got the fix while
-existing visitors kept the old bytes — and the narrowed `font-weight` range in the CSS would then
-have described a file they did not have. New bytes now always mean a new filename, and the reasoning
-is written into `tokens.css` and `functions.php` so it does not get undone.
-
-**While fixing that, the cache header we had documented turned out not to be real.** Measured on the
-live site:
-
-| Asset | Served `Cache-Control` |
-|---|---|
-| `hero-poster.webp` | `public, max-age=31536000, immutable` — as designed |
-| `inter-v2.woff2` | `max-age=604800` **and** `public, must-revalidate` |
-| `tokens.css` | `max-age=604800` **and** `public, must-revalidate` |
-
-`x-proxy-cache: STATIC/TYPE` is the explanation: **nginx serves fonts and CSS itself and never hands
-them to Apache**, so the `mod_headers` rule in `inc/htaccess.php` only ever applied to the image
-types. Two consequences:
-
-1. `CACHE-HEADERS.md` records a 1-year immutable header on `woff2`. That is true for webp and **false
-   for woff2 and css**. Corrected there.
-2. The stranding window for an in-place font overwrite was therefore **7 days with revalidation**,
-   not a year. Smaller than feared — but the versioned filename is still the right fix, because it
-   makes deployment deterministic instead of dependent on host behaviour we had mis-recorded.
-
-Two conflicting `Cache-Control` headers on one response is also a defect in its own right. Worth an
-InMotion ticket: the theme cannot fix it from `.htaccess` because Apache is not in the path.
-
-**Do not oversell this.** 51 KiB against a 542 KiB tag stack is worth a point or two, not ten. It is
-in this file because it is real, measured, and the last thing in the theme worth doing — not because
-it closes the gap.
+> ### CORRECTION, 8 Aug — my explanation for this table was wrong
+>
+> This section originally said statewide wins on LCP because **`GTM-PJQ72VK` holds no Google tag**, so
+> it never loads the 176 KiB GA4 or 155 KiB Ads scripts. **That is false.** I read the published
+> container: it holds `__googtag` for **`G-FH3Q6GKNHH`**, and statewide production demonstrably loads
+> the whole stack —
+>
+> ```
+> gtag/js?id=G-FH3Q6GKNHH            176.6 KiB
+> gtm.js?id=GTM-PJQ72VK              158.9 KiB
+> gtag/destination?id=AW-1012143191  155.4 KiB
+> bat.bing.com/bat.js                 15.5 KiB
+> scripts.clarity.ms/clarity.js       25.2 KiB   (via UET tag 5318855)
+> ```
+>
+> ~535 KiB, within 4 KiB of California's 531 KiB. **Both sites carry an identical tag burden.**
+>
+> Worse, the correction was **already in the repo before I said it**. `functions.php` lines 33–58
+> record it as a 1.4.7 mistake reverted in 1.4.9, name the cause ("inferred from its Urgent warning
+> *Missing Google tags*"), explain that the warning was about **Ads**, not GA4, and give the exact
+> command to check. It ends: *"Read the container, do not infer it."* I inferred it anyway, repeatedly,
+> and wrote it into this file.
+>
+> **The comparison is better than I described, not worse.** With an identical ~535 KiB tag load on both
+> sites, the theme is the only variable — and it is worth the **40 → 69** gap measured in the
+> all-category run, not a smaller number explained away by tagging differences.
 
 ## What is actually left, in order of value
 
