@@ -139,7 +139,39 @@ define( 'CFI_AREA_SERVED', 'United States' );
  *
  * Set to false to load in the head immediately, as before 1.5.1.
  */
-define( 'CFI_TAGS_DEFER', true );
+/*
+ * DEFAULT OFF — the deferral was tried twice on 7 Aug and made things worse.
+ *
+ * 1.5.1 deferred to browser idle with a 2500 ms ceiling: mobile 54 → 66, because
+ * Lighthouse waits for network quiet and the ceiling fired inside its window.
+ *
+ * 1.5.2 went interaction-only. That was worse still: **desktop PSI fell 82 → 72
+ * and local mobile TBT rose from 760 ms to 2,550 ms.** The cause is that
+ * Lighthouse scrolls the page itself during gathering, to capture full-page
+ * screenshots and trigger lazy content. That trips the scroll listener, so the
+ * container loads regardless — but now it executes in the middle of the trace
+ * rather than before first paint, and mid-trace execution costs more TBT than
+ * early execution does.
+ *
+ * The only trigger set Lighthouse would not trip is pointerdown/keydown/
+ * touchstart alone, with no scroll. That is rejected on purpose: a visitor who
+ * reads an article and scrolls but never taps would record no pageview at all,
+ * which is most readers, and it is plainly gaming the metric rather than making
+ * the page faster.
+ *
+ * So the container loads in the head as it always did, and the honest number is
+ * desktop 82 / mobile 60. The code is kept because deferral may still be the
+ * right call for CrUX *field* metrics — real visitors are not Lighthouse and do
+ * benefit from tags not competing with the hero image. That is worth revisiting
+ * once the new site has 28 days of field data, which it will not have until
+ * early September.
+ *
+ * THE ACTUAL FIX IS THE CONTAINER, NOT THE LOADER. GTM-MZ6RZ94 ships 490 KiB of
+ * which PSI reports ~198 KiB unused. A lean container is nearer 100 KiB.
+ * Trimming it improves lab and field together, loses no data, and needs no
+ * cleverness here. ACCOUNTS.md already lists the dead tags.
+ */
+define( 'CFI_TAGS_DEFER', false );
 
 /**
  * The idle-load ceiling, in milliseconds. **0 means interaction-only.**
