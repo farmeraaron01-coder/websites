@@ -903,3 +903,42 @@ privacy decision. It now also carries a measurable Best Practices cost on both b
 **Never compare a PSI score to a local Lighthouse score.** Different Lighthouse versions have different
 audit sets, so a "drop" can be a tooling change. When a score looks worse than a documented baseline, run
 the baseline site through the same binary before reporting a regression.
+
+### RESOLVED 7 Aug — WP Toolkit. Softaculous still open.
+
+**WP Toolkit fixed itself with the per-row Refresh.** After restricting the auto-update, one Refresh
+(~30 s) brought the entry into agreement with disk:
+
+| Field | Before | After |
+|---|---|---|
+| WordPress version | 6.4.3 | **7.0.3** |
+| Database | `mrtaco5_wp_zpezw` | **`mrtaco5_wp_rbanj`** |
+| Prefix | `eCcGUgvc_` | **`8DjxVi_`** |
+| DB user | `mrtaco5_wp_dbokl` | **`mrtaco5_wp_ce97c`** |
+| Security badge | 1.2 SECURITY RISK + UPDATES | **0.0, no UPDATES flag** |
+| Thumbnail / PHP | old Divi design, 8.4.17 | current Kadence page, 8.4.23 |
+
+The global **Scan** was not needed and was not pressed.
+
+Auto-update is now **"Yes, but only minor (security) updates"**; plugins and themes remain
+"Defined individually" with the default-on boxes unchecked, and Smart Update off.
+
+**The hourly `WordPress < 7.0.3` vulnerability findings were artefacts of the stale record and stopped.**
+Worth separating the two claims: the *hazard* was real — core auto-update authorised for major versions
+against a record resolving to the live docroot — while the *specific trigger* was phantom. The auto-update
+restriction stands on its own merits regardless, since unattended major core updates on a production site
+running a custom child theme is the wrong default whatever a scanner believes.
+
+The two tools now agree on the live install's identity, including the DB user, which is a useful
+cross-check: Softaculous row 26_90808 records `mrtaco5_wp_ce97c` for `mrtaco5_wp_rbanj`, and that is what
+WP Toolkit and `wp-config.php` both report.
+
+**Still open — the two Softaculous rows, and Softaculous has no Refresh equivalent**, so this needs the back
+end rather than the panel:
+
+- `26_36003` — live path, still listing archive DB `mrtaco5_wp_zpezw`
+- `26_90808` — dead staging path, still holding the **live** DB `mrtaco5_wp_rbanj`
+
+A support ticket is drafted for this. Its core requirement is negative rather than positive: **the
+destructive options are the obvious ones from the panel**, so the ticket has to say explicitly that
+Uninstall on `26_90808` would drop the live database even though its files are already gone.
