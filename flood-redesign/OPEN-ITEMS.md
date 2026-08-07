@@ -82,14 +82,18 @@ toward cleaner garbage."*
 
 ## TIER 4 — Before the statewide flip
 
+**Work this tier from `STATEWIDE-FLIP-RUNBOOK.md`, not from this table.** The runbook puts these in
+execution order with the commands; this table is only the index. Items 11, 15 and 16 are settled as of
+8 Aug — 12, 13 and 19 are the remaining Phase 0 blockers.
+
 | # | Item | Source |
 |---|---|---|
-| 11 | **Note a baseline week of GA4 pageviews BEFORE flipping**, and check DebugView for two `page_view` events on one load. GA4 sessions will fall after cutover with no real traffic loss — that is the Site Kit duplicate going away. Without a baseline the drop is unexplainable after the fact. **This is a do-it-now item.** | `LAUNCH.md:309` |
+| 11 | ~~Note a baseline week of GA4 pageviews before flipping~~ **DONE 8 Aug.** 31 Jul–6 Aug: 6,887 pageviews / 2,731 sessions / 2,352 users, and 2 `page_view` per load confirmed in Realtime. Recorded in `STATEWIDE-FLIP-RUNBOOK.md`. **The cause was not Site Kit** — Site Kit is not connected; statewide production carries a hardcoded `gtag/js` for `G-FH3Q6GKNHH` in the Divi header alongside the container's Google tag. `LAUNCH.md:309` was wrong and the duplicate dies with Divi. Expect ~6,887/wk → ~3,400 with no real traffic loss. | `LAUNCH.md:309`, this session |
 | 12 | **Read `GTM-PJQ72VK`'s two "Urgent" container-quality issues** in the GTM UI. Still unchecked. I audited the container's contents but never read what GTM itself is complaining about. | `LAUNCH.md:41` item 7c |
 | 13 | Pause tag 56 — duplicate Ads conversion on quote submit. **In progress.** | `STATEWIDE-PREFLIP.md:2` |
-| 14 | Install `statewide-prune-redirects.conf` (50 rules) **at** the flip, after re-running its collision check. | `STATEWIDE-PREFLIP.md:8` |
-| 15 | **Decide the 7 California geo redirects**: same-domain (active default) or cross-domain to `californiafloodinsurance.com` (my recommendation). | `statewide-prune-redirects.conf` |
-| 16 | **Decide the folder-naming approach** — Option A (flip then rename same session) or Option B (rename only, no docroot edit; test whether cPanel allows renaming an active docroot first). | `STATEWIDE-PREFLIP.md:9` |
+| 14 | Install `statewide-prune-redirects.conf` **at** the flip. Collision check re-run 8 Aug: 50 rules, all 50 sources 404 on the new site, 0 duplicates, 0 uncovered, 0 extras, all 18 targets 200, 0 prefix collisions. | `STATEWIDE-PREFLIP.md:8` |
+| 15 | ~~Decide the 7 California geo redirects~~ **DECIDED 8 Aug: cross-domain** to `californiafloodinsurance.com/get-a-quote/`. The `.conf` is swapped; the same-domain lines are retained commented and marked SUPERSEDED. | `statewide-prune-redirects.conf` |
+| 16 | ~~Decide the folder-naming approach~~ **DECIDED 8 Aug: Option A** — flip the docroot, verify, then rename both folders in the same session. Phase 3 of the runbook. | `STATEWIDE-PREFLIP.md:9` |
 | 17 | Purge **and verify** robots.txt after the flip. Leave Rank Math's box empty. | `STATEWIDE-PREFLIP.md:6` |
 | 18 | Remove statewide staging's `noindex` **at** launch. | `STATEWIDE-PREFLIP.md:7` |
 | 19 | Set statewide's **site icon**, or it inherits a `/favicon.ico` 404 and a Best Practices ding. | `STATEWIDE-PREFLIP.md:7` |
