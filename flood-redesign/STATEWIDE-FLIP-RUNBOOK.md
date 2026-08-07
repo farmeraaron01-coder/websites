@@ -440,6 +440,27 @@ Both deliberate noindexes verified intact afterwards: the 6 category archives at
 
 ### 5. Install the redirects
 
+### ⚠⚠ THE LIVE DOCROOT IS THE `staging.`-NAMED FOLDER. Write there, nowhere else.
+
+```
+/home/mrtaco5/staging.statewidefloodinsurance.com/.htaccess      ← LIVE. Write here.
+/home/mrtaco5/statewidefloodinsurance.com/.htaccess              ← DORMANT old Divi copy.
+```
+
+Phase 1 step 2 pointed the apex **at the staging directory**; it did not move files into the directory
+named after the domain. Until Phase 3 renames them, the folder named for the domain serves nothing and the
+folder named `staging.` serves everything. **Confirm with cPanel → Domains → Document Root before writing,
+not after.**
+
+**This bit on 7 Aug.** An agent staged the block perfectly, wrote 15,441 bytes to the
+`statewidefloodinsurance.com/` directory, verified the write byte-for-byte — and the live site was
+unaffected, because that file is not served. It only surfaced because the agent spot-checked four
+*redirects* afterwards rather than trusting that a successful write meant a working change. **I approved
+that path having written this very step saying otherwise.**
+
+Two tells that identify the right file without checking cPanel: the live one contains the theme's
+`# BEGIN CFI static asset cache` block, and the dormant one contains Divi-era `# BEGIN WpFastestCache`.
+
 `statewide-prune-redirects.conf` → paste into `.htaccess` in the docroot, **above** `# BEGIN WordPress`.
 50 rules: **38 × 301** (31 same-domain, of which one is a topic page pointed at `/get-a-quote/`, plus
 **7 cross-domain to californiafloodinsurance.com**) and **12 × 410**.
@@ -553,9 +574,31 @@ Only then submit. Domain property, **full URL** — `sc-domain:` properties reje
 Deferring is what left California with two installs reporting one URL and a Login button that opens
 production. Have both cPanel tabs open before starting; downtime is the gap between 8 and 9.
 
-8. Rename `statewidefloodinsurance.com/` → **`archive-divi-statewide-2026/`**  *(site down)*
-9. Rename `staging.statewidefloodinsurance.com/` → **`statewidefloodinsurance.com/`**
+### ⚠⚠ THE `staging.`-NAMED FOLDER IS THE LIVE SITE. Order is not optional.
+
+`/home/mrtaco5/staging.statewidefloodinsurance.com/` currently holds **the live production site**. Until
+step 9 renames it:
+
+- **Do NOT delete the `staging.` subdomain** — step 13 comes after step 9 for exactly this reason. cPanel
+  normally leaves files when removing a domain, but any prompt offering to remove the document root, or
+  any cleanup that treats a folder named "staging" as disposable, **takes statewide down and destroys the
+  install.** The database survives; the files do not.
+- **Do NOT let anything else "clean up staging."**
+
+Between steps 9 and 10 the apex's document root points at a folder that no longer exists, so the site is
+down. That is the expected gap, and step 10 closes it.
+
+8. Rename `statewidefloodinsurance.com/` → **`archive-divi-statewide-2026/`**  *(site stays up — this
+   folder serves nothing)*
+9. Rename `staging.statewidefloodinsurance.com/` → **`statewidefloodinsurance.com/`**  *(site down)*
 10. Document Root → `statewidefloodinsurance.com`  *(site back up, correct name)*
+
+**8a. Empty the archive's `.htaccess` of prune rules before or right after renaming it.** On 7 Aug the
+50 rules were written into that dormant file by mistake. Leaving them there is not harmless: **the
+documented rollback for this whole flip is to point the Document Root at
+`archive-divi-statewide-2026`**, and on the old Divi site all 50 source URLs are live — so a rollback
+would 301 away 38 real pages and 410 twelve more. The rollback would look like it worked and be quietly
+broken. Restore that file from its `.htaccess.pre-prune-2026-08-07.bak`.
 11. Verify again with the Phase 1 step 3 commands.
 12. **Write the two READMEs** while the knowledge is in your head — one in each folder, naming which
     install it is and quoting its `DB_NAME`. Copy California's and change the names. Add the line that
