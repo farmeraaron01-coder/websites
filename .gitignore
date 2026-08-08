@@ -13,3 +13,10 @@ Thumbs.db
 leads-master.csv
 policies-master.csv
 *-leads-*.csv
+
+# Scratch files from ad-hoc curl/verification runs. These get written to the
+# repo root whenever a shell lands here instead of the scratchpad directory,
+# which happened during the 7 Aug statewide flip. They are never project content.
+*.tmp
+*.html.bak
+urls*.txt
