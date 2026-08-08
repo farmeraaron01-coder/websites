@@ -67,7 +67,7 @@ Most homes then say so out loud, and honestly:
 
 That second one is worth sitting with. *Twenty years of helping people stay sober* is a claim of expertise
 with a track record attached. It is probably true. It is also close to the clearest statement of
-professional standing a person can make without holding a licence.
+professional standing a person can make without holding a license.
 
 ### And if you had no website at all, the question would still stand
 
@@ -76,13 +76,13 @@ right now and ask: **why are they here, and not at the house four blocks away?**
 
 Nobody finds a sober living home by accident. They arrive because:
 
-- A **treatment centre or discharge planner** sent them
-- A **counsellor, case manager or probation officer** recommended you
+- A **treatment center or discharge planner** sent them
+- A **counselor, case manager or probation officer** recommended you
 - A **parent or spouse** researched homes and chose yours
 - **Someone in the fellowship** said you were good at this
 - They **read your website** and believed it
 
-Every one of those is a path built on somebody's confidence in your judgement — a referrer's, a family's, or
+Every one of those is a path built on somebody's confidence in your judgment — a referrer's, a family's, or
 the resident's own. People were routed to your door on the strength of a reputation. That is reliance,
 whether or not a single word of it was ever written down.
 
@@ -113,7 +113,7 @@ any specific matter:
 - An operator gives advice about medication, tapering, work, custody or legal matters — sincerely, and
   outside their training.
 
-None of those are premises claims. Every one of them turns on judgement, advice or oversight.
+None of those are premises claims. Every one of them turns on judgment, advice or oversight.
 
 **And the cost is rarely the settlement.** It is the defense. An allegation that goes nowhere still needs a
 lawyer, and professional liability is often the only policy in the stack that will pay for one on a claim
@@ -126,7 +126,7 @@ of this shape.
 This is the mechanical part, and it is worth understanding once.
 
 A general liability policy is written to cover **bodily injury and property damage** arising from your
-premises and operations. It is not written to cover **economic loss caused by professional judgement**, and
+premises and operations. It is not written to cover **economic loss caused by professional judgment**, and
 most forms exclude professional services expressly.
 
 So when a claim alleges that the harm came from what you said, decided, supervised or failed to notice —
@@ -275,7 +275,7 @@ operating uncovered. Earlier is generally better than later.
 
 - **No premium figures anywhere in this draft.** §4 argues the *direction* of price without numbers, which
   keeps it accurate until the ranges land.
-- **The claim examples in §2 are explicitly illustrative.** If you have a sanitised real pattern — no names,
+- **The claim examples in §2 are explicitly illustrative.** If you have a sanitized real pattern — no names,
   no identifying detail — one real shape is worth more than five hypotheticals. Your call whether that is
   appropriate to publish.
 - **§5 rewritten 7 Aug on Aaron's instruction** to stay vague on claims-made, retroactive dates and whether
@@ -286,11 +286,11 @@ operating uncovered. Earlier is generally better than later.
 - **Tone check on §2.** Relapse and overdose are handled plainly and without detail, because the audience
   lives this. Tell me if it needs softening or if it is already too soft to land.
 - **§1 now runs three arguments in escalating order of inescapability**, per Aaron: (1) the daily
-  programme — morning ritual, meeting attendance, step work; (2) the marketing, including the very common
+  program — morning ritual, meeting attendance, step work; (2) the marketing, including the very common
   *"helping people stay sober for over twenty years"*, which is a claim of expertise with a track record;
   and (3) **the referral question, which needs no evidence at all** — why is this resident here rather than
   at the house four blocks away? Nobody finds a sober living home by accident, so every arrival path runs
-  through somebody's confidence in the operator's judgement. That third one closes the exits the first two
+  through somebody's confidence in the operator's judgment. That third one closes the exits the first two
   leave open, which is why it goes last.
 - **§1 was rewritten 7 Aug** on Aaron's point that operators run morning rituals, 12-step help, meeting
   attendance and step work — all of it aimed at helping someone re-enter normal life, all of it implicitly

@@ -3,7 +3,7 @@
    REVISED 7 Aug 2026 for WCAG AA. --sli-clay was #C56643, which measures 3.76 on
    the paper background and 3.45 on bone — both below the 4.5 needed for the 13px
    eyebrow and for links, and white on it was 3.92 for button labels. #A84E31 was
-   already the specified hover colour and passes everything (5.30 / 4.86 / 5.53),
+   already the specified hover color and passes everything (5.30 / 4.86 / 5.53),
    so it is promoted to the base and the hover darkens to #8E4026 (6.91).
    #C56643 survives as --sli-clay-display for the Georgia numerals only, where the
    large-text threshold of 3.0 applies and it passes. Do not use it for text. */

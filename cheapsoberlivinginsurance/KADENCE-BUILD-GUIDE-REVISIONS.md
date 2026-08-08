@@ -15,7 +15,7 @@ for an exact-match "cheap" domain is the omission that matters most.
 
 ---
 
-## A. REPLACES §3 — Kadence global colour palette
+## A. REPLACES §3 — Kadence global color palette
 
 The original palette fails AA on three tokens. Measured ratios, not estimates:
 
@@ -29,7 +29,7 @@ The original palette fails AA on three tokens. Measured ratios, not estimates:
 12px is not "large text" under WCAG (that is 18.66px bold or 24px normal), so the eyebrow fails. The button
 label fails at any size below 18.66px bold, and at weight 800 in a 54px button it will be 16–17px.
 
-**The fix keeps the clay identity.** Codex's own hover colour already passes everything, so promote it to
+**The fix keeps the clay identity.** Codex's own hover color already passes everything, so promote it to
 the base and pick a darker hover. Reserve the original `#C56643` for large display type only, where 3.0 is
 the threshold and it passes.
 
@@ -45,7 +45,7 @@ paste a hex** — that rule from the original guide is important and worth repea
 | Contrast 1 | `#0D263C` | 14.80 | Dark hero, headings |
 | Contrast 2 | `#152532` | 14.99 | Body text |
 | Contrast 3 | `#607079` | 4.92 | Secondary copy, captions |
-| **Contrast 4** | **`#66757E`** | **4.56** | Muted text. `#9AA6AC` may remain as a **border** colour only |
+| **Contrast 4** | **`#66757E`** | **4.56** | Muted text. `#9AA6AC` may remain as a **border** color only |
 | Base 1 | `#FBFAF7` | — | Page background |
 | Base 2 | `#F4F0E8` | — | Alternating section background |
 | Base 3 | `#FFFFFF` | — | Cards, form surface |
@@ -189,7 +189,7 @@ Approximate copy:
 
 **§4 — Where operators genuinely save.** Deductible selection, bundling property with liability, risk
 controls and documentation, accurate payroll classification, and being well-prepared for underwriting.
-That last one is real: a complete, well-organised submission gets better pricing than a vague one, which
+That last one is real: a complete, well-organized submission gets better pricing than a vague one, which
 also justifies the Resources content.
 
 **FAQs** — these are cost-intent queries and belong on this page:
@@ -252,7 +252,7 @@ its own distinct H1. Either is defensible; having both is not.
 **3. FAQPage schema on every page that renders FAQs**, not conditionally. The original hedges with "only
 when the SEO plugin is not already outputting the same FAQ schema" — correct instinct, wrong instruction.
 Decide once: **the SEO plugin owns all schema, Kadence's block-level FAQ schema stays off.** One owner, no
-duplication, no case-by-case judgement during a build.
+duplication, no case-by-case judgment during a build.
 
 **4. Definitional passages, 40–60 words, near the top of every coverage page.** House practice from the
 landlord plan, and it is what AI Overviews and ChatGPT actually quote. Format: a direct answer to the
@@ -271,11 +271,11 @@ areaServed  United States
 ```
 
 Still to confirm before launch: phone (see punch list), physical/mailing address, states licensed,
-licence numbers. **Do not put the Escondido mailing address in schema** — that constraint carries over
+license numbers. **Do not put the Escondido mailing address in schema** — that constraint carries over
 from the flood sites.
 
 **7. SEO plugin: Rank Math, not Yoast.** The landlord plan named Yoast; both live flood sites run Rank Math
-and every piece of documentation we have — sitemap behaviour, robots.txt generation, the category-noindex
+and every piece of documentation we have — sitemap behavior, robots.txt generation, the category-noindex
 control, the sitemap cache and where it hides — is written against Rank Math. Standardise on it. The cost
 of one team knowing two plugins' quirks is paid on every future site.
 
@@ -384,4 +384,4 @@ cut the grid to the three that will actually ship. Do not launch with placeholde
 - **Email.** `aaron.farmer@jumpins.com` on a `cheapsoberlivinginsurance.com` site is an NAP inconsistency
   and a small trust wobble. A brand-domain address would be better
 - **Cost ranges** for §D §2 — the one thing in this document that cannot be written without real data
-- **Address, states licensed, licence numbers** for schema
+- **Address, states licensed, license numbers** for schema

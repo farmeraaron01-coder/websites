@@ -22,9 +22,9 @@ Three tokens failed WCAG AA on text that appears on every page. Measured, not es
 | white on `#C56643` | 3.92 | 4.5 | primary button label |
 | `#9AA6AC` on `#FBFAF7` | 2.39 | 4.5 | "muted interface text" |
 
-The fix promotes Codex's own hover colour `#A84E31` to the base (5.30 / 4.86 / 5.53 — all pass), darkens
+The fix promotes Codex's own hover color `#A84E31` to the base (5.30 / 4.86 / 5.53 — all pass), darkens
 the hover to `#8E4026`, keeps `#C56643` for large display numerals only where 3.0 applies, and replaces
-`#9AA6AC` with `#66757E` for text while allowing the original as a border colour.
+`#9AA6AC` with `#66757E` for text while allowing the original as a border color.
 
 All 11 corrected pairs verified passing at their intended sizes.
 
