@@ -20,8 +20,9 @@ the coverage exists, what a claim looks like, and why general liability won't re
 Almost every operator we talk to says a version of the same thing: *"I'm not doing anything other than
 giving them a place to stay."*
 
-It is an honest answer. It is also, in most cases, not accurate — and the evidence is usually on the
-operator's own website.
+It is an honest answer, and it is meant sincerely. It is also, in most cases, not accurate — and you do not
+need a policy or a lawyer to see why. You only need to describe what happens in the house before nine in the
+morning.
 
 ---
 
