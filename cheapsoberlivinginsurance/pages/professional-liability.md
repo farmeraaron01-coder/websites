@@ -34,9 +34,29 @@ operator's own website.
 
 ---
 
-## §1 — Read your own website back to yourself
+## §1 — Start with what happens in the house every morning
 
-Most sober living homes market themselves honestly and effectively. The page says something close to:
+Before looking at any policy, look at an ordinary week in your home. Most sober living homes run some
+version of this:
+
+- A **morning ritual** — meditation, a reading, a reflection, a check-in round
+- **House meetings**, and a chore or accountability structure
+- **Required meeting attendance**, and often driving residents there
+- **Step work** — guidance through it, or connecting someone with a sponsor
+- **Curfews, testing, and consequences** when a rule is broken
+- Expectations around **work, school or job searching**
+- Conversations at the kitchen table about what to do next
+
+Now ask why those things are in place. Not one of them is about housing. Every one of them exists because
+somebody decided it helps a person re-enter normal life — and that somebody was you, usually because you
+know from experience what works.
+
+**A schedule designed to change how someone lives is a program, whatever you call it.** You may not call it
+treatment, and it is not treatment. But it is not "just a place to stay" either.
+
+### The website usually confirms it
+
+Most homes then say so out loud, and honestly:
 
 - *"I've been where you are."*
 - *"I know what it takes to get back on your feet."*
@@ -44,12 +64,14 @@ Most sober living homes market themselves honestly and effectively. The page say
 - *"Our house rules are what make recovery stick."*
 
 Every one of those sentences is a reason someone chose your home over the one down the street. They are
-also, in insurance terms, statements that you hold particular knowledge and that residents may rely on it.
+also, in insurance terms, statements that you hold particular knowledge and that residents and families may
+rely on it.
 
 That reliance is the exposure. Not the stairs, not the water heater — the reliance.
 
-**This is not a reason to change your marketing.** Your experience is genuinely why families trust you with
-someone they love. It is a reason to insure the thing your marketing is promising.
+**None of this is a reason to run fewer morning meetings or to soften your marketing.** The structure is why
+the home works, and your experience is genuinely why families trust you with someone they love. It is a
+reason to insure the thing you are actually doing.
 
 ---
 
@@ -123,9 +145,9 @@ is that something was left out.
 **The better you are at the mission, the more of this exposure you create.**
 
 A landlord who collects rent and stays out of the way has very little professional liability exposure. They
-also run a worse home. Every practice that makes a sober living home effective — house rules, accountability,
-a manager who notices when someone is struggling, honest conversations, referrals to people who can help —
-is engagement. And engagement is where this exposure comes from.
+also run a worse home. Every practice from §1 — the morning ritual, the house meeting, the meeting
+attendance, the step work, the conversation at the kitchen table — is engagement. And engagement is where
+this exposure comes from.
 
 That is an uncomfortable thing to say to someone whose whole reason for opening the home was to be involved.
 It is also why the coverage exists. It is not a penalty for doing the job badly. It is the cost of doing the
@@ -184,10 +206,17 @@ None of this replaces coverage. All of it makes the coverage cheaper to buy and 
 ## FAQs
 
 **Do I need professional liability if I just rent rooms?**
-If the home only provided rooms, with no rules, structure, guidance or recovery support, the exposure would
-be much smaller. In practice almost no sober living home operates that way — and most advertise the
-structure as the reason to choose them. If your marketing describes experience, guidance or accountability,
+If the home genuinely only provided rooms — no rules, no morning meeting, no required meeting attendance, no
+step work, no curfew, no conversations about what to do next — the exposure would be much smaller. In
+practice almost no sober living home operates that way, and the ones that do are usually not the ones people
+choose. If you run any kind of daily structure, or your marketing describes experience and accountability,
 assume the exposure exists.
+
+**We don't provide treatment, so how can this apply to us?**
+Professional liability is not limited to treatment or to licensed clinicians. It applies wherever someone
+may rely on your knowledge or oversight. A morning ritual, a step-work conversation and a curfew are not
+treatment — but they are practices chosen because you believe they help someone recover, which is exactly
+the kind of reliance this coverage addresses.
 
 **Isn't this covered by my general liability policy?**
 Generally no. General liability covers bodily injury and property damage from your premises and operations;
@@ -235,5 +264,13 @@ operating uncovered. Earlier is generally better than later.
   The FAQ answer about adding coverage later was softened the same way.
 - **Tone check on §2.** Relapse and overdose are handled plainly and without detail, because the audience
   lives this. Tell me if it needs softening or if it is already too soft to land.
-- The self-recognition move in §1 is the page's engine. If it reads as accusatory rather than as *"your
-  marketing is good, insure what it promises"*, that is the thing to fix first.
+- **§1 was rewritten 7 Aug** on Aaron's point that operators run morning rituals, 12-step help, meeting
+  attendance and step work — all of it aimed at helping someone re-enter normal life, all of it implicitly
+  resting on the owner's own experience. That is stronger than the original version, which asked the
+  operator to go re-read their own marketing. This asks them to look at what they already know they did this
+  morning. The load-bearing line is *"a schedule designed to change how someone lives is a program, whatever
+  you call it"* — it concedes it is not treatment while refusing "just a place to stay".
+- The self-recognition move in §1 is the page's engine. If it reads as accusatory rather than as *"the
+  structure is why the home works — insure what you are actually doing"*, that is the thing to fix first.
+- **§5 now refers back to §1's list explicitly**, so the two arguments reinforce rather than repeat: §1
+  establishes what the operator does, §5 explains why doing it well increases the exposure.
