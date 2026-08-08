@@ -37,6 +37,15 @@ they want.
 That is the honest version of a "cheap" domain, and it is defensible: the reason to care about exclusions
 is not upsell, it is that an uncovered claim ends the mission.
 
+### The site's thesis, in one sentence
+
+> Operators believe they are providing housing. They are providing housing **and guidance**. Insurance
+> priced for housing does not cover guidance.
+
+Every page is an instance of that gap. It is why a homeowners policy fails, why general liability is not
+enough, why professional liability costs more, and why abuse and misconduct is written separately. State it
+once on the start-here page and let the other pages inherit it rather than repeating it.
+
 ---
 
 ## 2. Voice rules
@@ -113,44 +122,53 @@ endorsement. Currently one buried FAQ mention. An operator who does not know thi
 for their largest possible loss. Handle with care and precision — no lurid framing, and make clear this is
 about protecting residents and the home's ability to keep operating.
 
-**5. `/certificates-and-what-your-landlord-requires/`**
+**5. `/professional-liability/`** — **DRAFTED**, see `pages/professional-liability.md`
+Aaron: *"as important as any."* Operators say "I'm not doing anything other than giving them a place to
+stay", and the refutation is on their own website — they market lived experience and knowledge of what it
+takes to recover, which is precisely holding yourself out as having expertise. The claim that arrives is not
+a slip and fall; it is a relapse, a discharge dispute, a referral or advice given sincerely and outside
+their training. General liability covers bodily injury and property damage and excludes professional
+services, so it does not respond. It costs more than general liability, correctly, and this is the page that
+has to earn that. Replaces the three-section stub in Codex's blueprints.
+
+**6. `/certificates-and-what-your-landlord-requires/`**
 Translation page. Certificate of insurance, additional insured, waiver of subrogation, loss payee,
 minimum limits — each defined in plain language with a note on why the other party wants it. Solves the
 vocabulary problem that stalls deals, and no competitor writes this for this audience.
 
 ### Tier 2 — coverage gaps worth their own pages
 
-**6. `/commercial-auto-and-transporting-residents/`** — driving residents to meetings, appointments and
+**7. `/commercial-auto-and-transporting-residents/`** — driving residents to meetings, appointments and
 work is a core operation at most homes, and personal auto excludes business use. Hired and non-owned auto
 matters when staff use their own cars, which is the common arrangement.
 
-**7. `/fair-housing-and-zoning-liability/`** — recovery residences fight occupancy caps, zoning objections
+**8. `/fair-housing-and-zoning-liability/`** — recovery residences fight occupancy caps, zoning objections
 and reasonable-accommodation claims constantly. Real, frequent, under-served by every competitor, and
 highly searched by operators in the middle of a dispute.
 
-**8. `/employment-practices-liability/`** — house managers, staff, terminations. Referenced once on the
+**9. `/employment-practices-liability/`** — house managers, staff, terminations. Referenced once on the
 workers' comp page as an exposure with no coverage attached.
 
-**9. `/directors-and-officers/`** — many homes are nonprofits with boards. Absent entirely today.
+**10. `/directors-and-officers/`** — many homes are nonprofits with boards. Absent entirely today.
 
 Cyber, umbrella and building-ordinance coverage do not need standalone pages yet. Cover them inside the
 start-here page and the cost page's factor table.
 
 ### Tier 3 — reference and reach
 
-**10. `/sober-living-insurance-terms-explained/`** — plain-English glossary. Definitional, quotable,
+**11. `/sober-living-insurance-terms-explained/`** — plain-English glossary. Definitional, quotable,
 genuinely useful to the reader, and the kind of passage-level content AI engines cite.
 
-**11. `/recovery-residence-terminology/`** — sober living home vs halfway house vs recovery residence vs
+**12. `/recovery-residence-terminology/`** — sober living home vs halfway house vs recovery residence vs
 transitional housing. High-volume definitional queries, and it clears up the confusion that makes these
 submissions hard to underwrite.
 
-**12. `/running-a-sober-living-home-like-a-business/`** — the single NARR page. Framed as Aaron framed it:
+**13. `/running-a-sober-living-home-like-a-business/`** — the single NARR page. Framed as Aaron framed it:
 a guide to operating well, useful whether or not the reader ever joins. Covers governance, house rules,
 documentation, incident response, staffing clarity — and notes that certification signals engagement to
 underwriters without claiming it guarantees anything.
 
-**13. `/states/[state]-sober-living-insurance/`** — phase 2 only, and only with genuinely distinct content
+**14. `/states/[state]-sober-living-insurance/`** — phase 2 only, and only with genuinely distinct content
 per state: whether the state licenses or certifies recovery residences, local occupancy and zoning
 posture, and market availability. The distinct-content rule from the landlord plan applies. **Do not ship
 a template with the state name swapped.** A network of thin near-duplicates is a ranking liability, not an
@@ -193,13 +211,31 @@ this is what they mean in practice, and it is why two homes of the same size pri
 
 ---
 
-## 7. Still needed from Aaron
+## 7. Market scarcity is a selling point, not a caveat
 
-1. **Cost ranges** for the cost page — the one thing that cannot be written without real data.
+Aaron: *"Carrier appetite is a tricky one because there are not many carriers that write this type of
+insurance… That is why people use us, because it's hard to find this coverage."*
+
+So write scarcity as the reason a specialist matters, without naming carriers and without implying
+guaranteed placement:
+
+> There are not many markets for this class. That is the reason a specialist matters — not because we have a
+> secret list, but because knowing which carriers actually understand a sober living risk saves you from
+> collecting declinations.
+
+**Answered:** abuse and molestation **is available as standalone coverage**, so the abuse page is written as
+"here is a coverage to buy" *and* "check whether your general liability excludes it" — both, not one.
+
+---
+
+## 8. Still needed from Aaron
+
+1. **Cost ranges** for the cost page — coming Monday, per Aaron.
 2. **Carrier appetite, even by category** — which levels, which states, what disqualifies a submission. The
   copy stays honest only if it knows the boundaries.
-3. **Whether abuse and molestation is available as a standalone or only endorsed**, and typical limits.
-  It changes how page 4 is written.
+3. ~~Whether abuse and molestation is standalone~~ **Answered: standalone is available.**
+4. **Claims-made vs occurrence** on the professional liability forms these markets write, and whether
+  defense sits inside or outside the limit. §5 of the drafted page currently hedges; it should be specific.
 4. **Phone number and email decision** — `858-295-7242` and `aaron.farmer@jumpins.com` are currently
   specified; the email in particular reads oddly on this domain.
 5. **The other resources** Aaron mentioned having.
