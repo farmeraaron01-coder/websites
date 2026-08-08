@@ -83,7 +83,7 @@ a framework.
 
 **NARR keeps one page**, framed as what it actually is: a credible reference for running the home like a
 business. The levels remain useful *internally* — as an underwriting shorthand and a quote-form question —
-without becoming the site's public organising idea.
+without becoming the site's public organizing idea.
 
 ### Book of business, confirmed
 
@@ -148,44 +148,54 @@ their training. General liability covers bodily injury and property damage and e
 services, so it does not respond. It costs more than general liability, correctly, and this is the page that
 has to earn that. Replaces the three-section stub in Codex's blueprints.
 
-**6. `/certificates-and-what-your-landlord-requires/`**
+**6. `/how-to-get-approved-for-sober-living-insurance/`** — **DRAFTED**, see `pages/how-to-get-approved.md`
+The submission page. Aaron's brief: one carrier specifically asks for a résumé or CV, association membership
+helps, and a written business plan is the document operators skip and the one that most often changes the
+outcome. Framed so it cannot read as gatekeeping — the underwriter never meets you and only reads the file,
+so the job is getting what is already true about you onto paper. Recovery experience is treated as
+experience rather than as biography, because a lot of these operators have a decade in this world and a
+blank employment page. The business-plan outline in §2 is the artifact readers will actually use and is a
+candidate for a gated download later. Step 5 — "send it to us before it goes to market" — is the conversion
+mechanism, and it is a real offer rather than a form fill.
+
+**7. `/certificates-and-what-your-landlord-requires/`**
 Translation page. Certificate of insurance, additional insured, waiver of subrogation, loss payee,
 minimum limits — each defined in plain language with a note on why the other party wants it. Solves the
 vocabulary problem that stalls deals, and no competitor writes this for this audience.
 
 ### Tier 2 — coverage gaps worth their own pages
 
-**7. `/commercial-auto-and-transporting-residents/`** — driving residents to meetings, appointments and
+**8. `/commercial-auto-and-transporting-residents/`** — driving residents to meetings, appointments and
 work is a core operation at most homes, and personal auto excludes business use. Hired and non-owned auto
 matters when staff use their own cars, which is the common arrangement.
 
-**8. `/fair-housing-and-zoning-liability/`** — recovery residences fight occupancy caps, zoning objections
+**9. `/fair-housing-and-zoning-liability/`** — recovery residences fight occupancy caps, zoning objections
 and reasonable-accommodation claims constantly. Real, frequent, under-served by every competitor, and
 highly searched by operators in the middle of a dispute.
 
-**9. `/employment-practices-liability/`** — house managers, staff, terminations. Referenced once on the
+**10. `/employment-practices-liability/`** — house managers, staff, terminations. Referenced once on the
 workers' comp page as an exposure with no coverage attached.
 
-**10. `/directors-and-officers/`** — many homes are nonprofits with boards. Absent entirely today.
+**11. `/directors-and-officers/`** — many homes are nonprofits with boards. Absent entirely today.
 
 Cyber, umbrella and building-ordinance coverage do not need standalone pages yet. Cover them inside the
 start-here page and the cost page's factor table.
 
 ### Tier 3 — reference and reach
 
-**11. `/sober-living-insurance-terms-explained/`** — plain-English glossary. Definitional, quotable,
+**12. `/sober-living-insurance-terms-explained/`** — plain-English glossary. Definitional, quotable,
 genuinely useful to the reader, and the kind of passage-level content AI engines cite.
 
-**12. `/recovery-residence-terminology/`** — sober living home vs halfway house vs recovery residence vs
+**13. `/recovery-residence-terminology/`** — sober living home vs halfway house vs recovery residence vs
 transitional housing. High-volume definitional queries, and it clears up the confusion that makes these
 submissions hard to underwrite.
 
-**13. `/running-a-sober-living-home-like-a-business/`** — the single NARR page. Framed as Aaron framed it:
+**14. `/running-a-sober-living-home-like-a-business/`** — the single NARR page. Framed as Aaron framed it:
 a guide to operating well, useful whether or not the reader ever joins. Covers governance, house rules,
 documentation, incident response, staffing clarity — and notes that certification signals engagement to
 underwriters without claiming it guarantees anything.
 
-**14. `/states/[state]-sober-living-insurance/`** — phase 2 only, and only with genuinely distinct content
+**15. `/states/[state]-sober-living-insurance/`** — phase 2 only, and only with genuinely distinct content
 per state: whether the state licenses or certifies recovery residences, local occupancy and zoning
 posture, and market availability. The distinct-content rule from the landlord plan applies. **Do not ship
 a template with the state name swapped.** A network of thin near-duplicates is a ranking liability, not an
@@ -253,6 +263,10 @@ guaranteed placement:
 3. ~~Whether abuse and molestation is standalone~~ **Answered: standalone is available.**
 4. **Claims-made vs occurrence** on the professional liability forms these markets write, and whether
   defense sits inside or outside the limit. §5 of the drafted page currently hedges; it should be specific.
-4. **Phone number and email decision** — `858-295-7242` and `aaron.farmer@jumpins.com` are currently
+5. **How your markets actually treat an operator with a record.** `pages/how-to-get-approved.md` deliberately
+  says nothing about this. It is real, it is common, and it is frequently *why* the operator is good at this.
+  Getting it wrong on a public page would be worse than staying silent — so if Aaron tells us what is true,
+  §4 of that page gets a paragraph.
+6. **Phone number and email decision** — `858-295-7242` and `aaron.farmer@jumpins.com` are currently
   specified; the email in particular reads oddly on this domain.
-5. **The other resources** Aaron mentioned having.
+7. **The other resources** Aaron mentioned having.

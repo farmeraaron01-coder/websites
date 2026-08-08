@@ -111,7 +111,7 @@ and the flood sites already ship a self-hosted subset that can be reused.
 Primary button:
 
 - Background **Accent 1 `#A84E31`**; white label
-- **Label ≥17px at weight 800** — at 16px the contrast maths only works because of the new darker accent;
+- **Label ≥17px at weight 800** — at 16px the contrast math only works because of the new darker accent;
   don't go smaller
 - 54px minimum height; 24px horizontal padding; radius 0–2px
 - Hover **Accent 2 `#8E4026`** with `translateY(-2px)`
