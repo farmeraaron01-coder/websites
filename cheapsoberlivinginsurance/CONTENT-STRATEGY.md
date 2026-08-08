@@ -158,44 +158,67 @@ blank employment page. The business-plan outline in §2 is the artifact readers 
 candidate for a gated download later. Step 5 — "send it to us before it goes to market" — is the conversion
 mechanism, and it is a real offer rather than a form fill.
 
-**7. `/certificates-and-what-your-landlord-requires/`**
+**7. `/sober-living-insurance-specialist/`** — **DRAFTED**, see `pages/why-a-specialist.md`
+The trust page, and the only page on the site a competitor cannot copy. Aaron's brief: most agents and brokers
+treat a recovery residence as a normal rental, do not spend the time to understand the risk, and are not
+specialists in this class.
+
+**The origin story is the whole page.** One of the agency's first customers brought in an apartment building;
+it was written as a standard habitational risk; only later did they learn it was a sober living home. That is
+what set the agency on the path to becoming niche experts. Told as a self-incriminating story it does what no
+claim of expertise can — it makes the argument without looking down on the reader or on the reader's current
+agent, and it cannot be echoed by another agency.
+
+Two hard rules on this page. **Nothing may be added to the story that Aaron did not supply** — no year, no
+state, no claim, no customer name, no suggestion anything went wrong on that policy. And **§4 is framed as
+structural rather than as competitors being lazy**: most agents see a handful of these in a career and fewer
+have the appointments to place one, which is both truer and more credible than criticism.
+
+§3 is the sharpest argument the site makes — a policy describing an apartment building can be contested if the
+property turns out to be a recovery residence. Written as *can*, dependent on facts and state law, with no
+promise either way. Needs Aaron's sign-off.
+
+This page is the link target for every other page's "my agent would have told me" moment. Link to it rather
+than repeating the argument.
+
+**8. `/certificates-and-what-your-landlord-requires/`**
 Translation page. Certificate of insurance, additional insured, waiver of subrogation, loss payee,
 minimum limits — each defined in plain language with a note on why the other party wants it. Solves the
 vocabulary problem that stalls deals, and no competitor writes this for this audience.
 
 ### Tier 2 — coverage gaps worth their own pages
 
-**8. `/commercial-auto-and-transporting-residents/`** — driving residents to meetings, appointments and
+**9. `/commercial-auto-and-transporting-residents/`** — driving residents to meetings, appointments and
 work is a core operation at most homes, and personal auto excludes business use. Hired and non-owned auto
 matters when staff use their own cars, which is the common arrangement.
 
-**9. `/fair-housing-and-zoning-liability/`** — recovery residences fight occupancy caps, zoning objections
+**10. `/fair-housing-and-zoning-liability/`** — recovery residences fight occupancy caps, zoning objections
 and reasonable-accommodation claims constantly. Real, frequent, under-served by every competitor, and
 highly searched by operators in the middle of a dispute.
 
-**10. `/employment-practices-liability/`** — house managers, staff, terminations. Referenced once on the
+**11. `/employment-practices-liability/`** — house managers, staff, terminations. Referenced once on the
 workers' comp page as an exposure with no coverage attached.
 
-**11. `/directors-and-officers/`** — many homes are nonprofits with boards. Absent entirely today.
+**12. `/directors-and-officers/`** — many homes are nonprofits with boards. Absent entirely today.
 
 Cyber, umbrella and building-ordinance coverage do not need standalone pages yet. Cover them inside the
 start-here page and the cost page's factor table.
 
 ### Tier 3 — reference and reach
 
-**12. `/sober-living-insurance-terms-explained/`** — plain-English glossary. Definitional, quotable,
+**13. `/sober-living-insurance-terms-explained/`** — plain-English glossary. Definitional, quotable,
 genuinely useful to the reader, and the kind of passage-level content AI engines cite.
 
-**13. `/recovery-residence-terminology/`** — sober living home vs halfway house vs recovery residence vs
+**14. `/recovery-residence-terminology/`** — sober living home vs halfway house vs recovery residence vs
 transitional housing. High-volume definitional queries, and it clears up the confusion that makes these
 submissions hard to underwrite.
 
-**14. `/running-a-sober-living-home-like-a-business/`** — the single NARR page. Framed as Aaron framed it:
+**15. `/running-a-sober-living-home-like-a-business/`** — the single NARR page. Framed as Aaron framed it:
 a guide to operating well, useful whether or not the reader ever joins. Covers governance, house rules,
 documentation, incident response, staffing clarity — and notes that certification signals engagement to
 underwriters without claiming it guarantees anything.
 
-**15. `/states/[state]-sober-living-insurance/`** — phase 2 only, and only with genuinely distinct content
+**16. `/states/[state]-sober-living-insurance/`** — phase 2 only, and only with genuinely distinct content
 per state: whether the state licenses or certifies recovery residences, local occupancy and zoning
 posture, and market availability. The distinct-content rule from the landlord plan applies. **Do not ship
 a template with the state name swapped.** A network of thin near-duplicates is a ranking liability, not an
@@ -263,10 +286,15 @@ guaranteed placement:
 3. ~~Whether abuse and molestation is standalone~~ **Answered: standalone is available.**
 4. **Claims-made vs occurrence** on the professional liability forms these markets write, and whether
   defense sits inside or outside the limit. §5 of the drafted page currently hedges; it should be specific.
-5. **How your markets actually treat an operator with a record.** `pages/how-to-get-approved.md` deliberately
-  says nothing about this. It is real, it is common, and it is frequently *why* the operator is good at this.
-  Getting it wrong on a public page would be worse than staying silent — so if Aaron tells us what is true,
-  §4 of that page gets a paragraph.
+5. ~~How your markets treat an operator with a record~~ **Answered: go lightly.** Aaron: *"I don't want to get
+  too deep into someone's records. We can go lightly over this. The idea is just to put in their head that
+  they're going to need to submit something to us versus nothing."* Handled in three sentences in §4 of
+  `pages/how-to-get-approved.md`. **This is now a standing rule for the site** — no page discusses specific
+  offenses or how carriers weigh them. The reader is routed to a person, not to a rule.
 6. **Phone number and email decision** — `858-295-7242` and `aaron.farmer@jumpins.com` are currently
   specified; the email in particular reads oddly on this domain.
-7. **The other resources** Aaron mentioned having.
+7. **Sign-off on the origin story**, and permission to tell it publicly — the apartment building that turned
+  out to be a sober living home. It carries `pages/why-a-specialist.md` and nothing in it may be embellished.
+8. **How many years**, specifically. "Many years" appears twice on the specialist page and a real number is
+  stronger everywhere, including with AI answer engines, which quote concrete claims and skip vague ones.
+9. **The other resources** Aaron mentioned having.

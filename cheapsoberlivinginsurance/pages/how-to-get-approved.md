@@ -135,6 +135,10 @@ worst arrangement consistent with that sentence.
 **Gaps with no explanation.** An underwriter who finds a gap will fill it with an assumption. It is always
 better to state a fact plainly and briefly than to leave a hole.
 
+That includes anything in your own history you would rather not lead with. One plain sentence handles most of
+it, and it is not the obstacle people assume — **the thing that actually stops a submission is sending
+nothing.** If you are unsure how to put something, ask us before you write it.
+
 **Inconsistency between documents.** If the application says six residents and the business plan says ten,
 the whole file loses credibility. Read everything through once before it goes out.
 
@@ -182,7 +186,7 @@ inexpensive and useful beyond insurance.
 Two pages is enough. The purpose is to show the home is being run as a business, not to win a competition.
 
 **We've had a claim. Should we mention it?**
-Yes. Disclose it, and say what changed afterwards. A disclosed claim with a documented response is far less
+Yes. Disclose it, and say what changed afterward. A disclosed claim with a documented response is far less
 damaging than one an underwriter finds later.
 
 **How long does approval take?**
@@ -207,11 +211,10 @@ one can take weeks of back-and-forth, and sometimes never gets an offer at all.
   Check that it lands that way.
 - **§2's CV section treats recovery experience as experience**, not biography. That felt like the honest and
   the useful call — a lot of these operators have a decade in this world and a blank employment page.
-- **One thing I left out and want your view on.** Many operators have a record, a gap, or a history that
-  looks poor on paper and is often the reason they are good at this. I have written §4 to say disclose facts
-  plainly and never leave a hole for an underwriter to fill, without addressing records specifically —
-  because how your markets actually treat that is your knowledge, not mine, and getting it wrong on a public
-  page would be worse than saying nothing. If you want it addressed, tell me what is true and I will write it.
+- **Records are handled in three sentences and no more**, per your instruction. §4 says anything in your own
+  history is usually one plain sentence, that it is not the obstacle people assume, and that the thing which
+  actually stops a submission is sending nothing. No mention of specific offenses, no discussion of how
+  carriers weigh them, and it routes the reader to you rather than to a rule.
 - **§5 step 5 is the conversion mechanism** — "send it to us before it goes to market" is a genuine offer, it
   is free, and it puts you in the file before a competitor. If you would rather not invite unfinished
   submissions, say so and I will soften it.
