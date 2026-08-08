@@ -116,11 +116,28 @@ exclusions, multiple unrelated occupants, professional services, loss of income.
 the reader can run against their own declarations page. This page converts, because it creates urgency
 from a fact rather than a scare.
 
-**4. `/abuse-and-molestation-coverage/`**
-The catastrophic exposure in residential recovery, and routinely excluded from general liability by
-endorsement. Currently one buried FAQ mention. An operator who does not know this is excluded is uninsured
-for their largest possible loss. Handle with care and precision — no lurid framing, and make clear this is
-about protecting residents and the home's ability to keep operating.
+**4. `/abuse-and-molestation-coverage/`** — **DRAFTED**, see `pages/abuse-and-molestation-coverage.md`
+The catastrophic exposure in residential recovery, commonly excluded from general liability and available
+standalone. Aaron supplied carrier-side source copy written for brokers; rewritten for the operator and made
+specific to this class.
+
+**The framing trap on this page:** written as "protect yourself from accusations" it would repel a
+mission-driven reader, and deserve to. It is written protecting residents first and the home second — the
+coverage exists because a real incident is catastrophic for the people living there, and because a home doing
+everything right can still face an allegation. Nowhere does it imply residents are likely to make false
+claims.
+
+Two additions not in the source material, both worth keeping:
+
+- **Resident-to-resident is the claim shape operators least expect.** If one resident harms another, the
+  claim against the home alleges failure in supervision, room assignment, house rules or response — not
+  direct wrongdoing. The home can face a claim with no member of staff having done anything wrong. This is
+  specific to communal living and generic copy misses it entirely.
+- **The standard "screen your employees" advice is wrong for this industry.** Many of the best house managers
+  are people in recovery and some have records; hiring them is often *why* the home works. So the advice is
+  consistency and documentation rather than exclusion — a written process applied identically every time, a
+  reasoned standard for what disqualifies, boundaries training that is documented, and employment-law
+  questions pushed to an attorney rather than answered by a broker or a website.
 
 **5. `/professional-liability/`** — **DRAFTED**, see `pages/professional-liability.md`
 Aaron: *"as important as any."* Operators say "I'm not doing anything other than giving them a place to
