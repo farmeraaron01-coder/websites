@@ -1,0 +1,109 @@
+/* Optional finishing CSS for the Kadence build. Global colors and typography
+   should be configured in Kadence first.
+   REVISED 7 Aug 2026 for WCAG AA. --sli-clay was #C56643, which measures 3.76 on
+   the paper background and 3.45 on bone — both below the 4.5 needed for the 13px
+   eyebrow and for links, and white on it was 3.92 for button labels. #A84E31 was
+   already the specified hover colour and passes everything (5.30 / 4.86 / 5.53),
+   so it is promoted to the base and the hover darkens to #8E4026 (6.91).
+   #C56643 survives as --sli-clay-display for the Georgia numerals only, where the
+   large-text threshold of 3.0 applies and it passes. Do not use it for text. */
+:root {
+  --sli-navy: #0d263c;
+  --sli-paper: #fbfaf7;
+  --sli-bone: #f4f0e8;
+  --sli-green: #2e5a51;
+  --sli-clay: #a84e31;
+  --sli-clay-display: #c56643;
+  --sli-clay-hover: #8e4026;
+  --sli-ink: #152532;
+  --sli-muted: #66757e;
+  --sli-line: #d8d4cb;
+}
+
+.sli-eyebrow {
+  color: var(--sli-clay);
+  font-size: .8125rem;   /* 13px, up from 12px */
+  font-weight: 850;
+  letter-spacing: .17em;
+  text-transform: uppercase;
+}
+
+.sli-page-hero .kt-row-column-wrap { min-height: 610px; }
+.sli-page-hero figure { position: relative; height: 100%; margin: 0; }
+.sli-page-hero img { width: 100%; height: 100%; object-fit: cover; }
+.sli-photo-caption {
+  position: absolute;
+  left: 24px;
+  bottom: 24px;
+  padding: 10px 14px;
+  background: rgb(13 38 60 / 88%);
+  color: #fff;
+  font-size: .72rem;
+  font-weight: 800;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+
+.sli-section-number {
+  display: block;
+  margin-bottom: 12px;
+  color: var(--sli-clay-display);  /* large display only — see header note */
+  font-family: Georgia, serif;
+  font-size: 1.8rem;
+}
+
+.sli-editorial-rule { border-bottom: 1px solid var(--sli-line); }
+.sli-pullquote {
+  margin-block: 36px;
+  padding: 42px;
+  background: var(--sli-green);
+  color: #fff;
+}
+.sli-pullquote blockquote {
+  margin: 20px 0 0;
+  font-size: clamp(1.35rem, 2.4vw, 1.7rem);
+  line-height: 1.35;
+  letter-spacing: -.02em;
+}
+
+.sli-coverage-index .kt-row-layout-inner { border-top: 1px solid #a9aaa5; }
+.sli-coverage-index .sli-coverage-row { border-bottom: 1px solid #a9aaa5; }
+.sli-resource-grid .wp-block-kadence-column { height: 100%; }
+
+.sli-cognito-wrap {
+  background: #fff;
+  border-top: 4px solid var(--sli-clay);
+  box-shadow: 0 18px 60px rgb(13 38 60 / 8%);
+}
+
+.wp-block-kadence-advancedbtn .kb-button:hover { transform: translateY(-2px); }
+
+@media (max-width: 1024px) {
+  .sli-page-hero .kt-row-column-wrap { min-height: 0; }
+  .sli-page-hero figure { min-height: 430px; }
+}
+
+@media (max-width: 767px) {
+  .sli-page-hero figure { min-height: 320px; }
+  .sli-pullquote { padding: 28px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { transition-duration: .01ms !important; animation-duration: .01ms !important; }
+}
+
+/* Visible focus, specified here because the original guide asks for it in its
+   accessibility section but never defines it. */
+a:focus-visible,
+button:focus-visible,
+.kb-button:focus-visible,
+summary:focus-visible {
+  outline: 2px solid var(--sli-navy);
+  outline-offset: 2px;
+}
+
+/* Hero images need intrinsic dimensions in the markup as well; this only stops
+   the cover crop from being the sole layout authority. */
+.sli-page-hero img,
+.sli-home-hero img { display: block; }
