@@ -75,6 +75,26 @@ they are not silently dropped; dismiss if they are done.
 | 10 | GA4 cleanup: 14 empty accounts (paste ready at `GA4-DELETE-PASTE.md`), 4 dead duplicate properties, 2 property moves. | `ACCOUNTS.md` |
 | 10b | **No Google tag configured for `AW-1012143191` in either container.** GTM flags it Urgent in both. Verified from the published `gtm.js` of each: `AW-1012143191` appears only inside `productSettings` as a `preAutoPii` flag, never as a Google tag destination — the sole destination is the GA4 ID (`G-FH3Q6GKNHH` statewide, `G-3YMN51H7LE` California). Conversions still record via the legacy `__awct` path. **Both brands share Ads conversion ID 1012143191**, so this is one change affecting both. **Do it after item 6, never alongside it** — two simultaneous measurement changes on a ~$24,771/mo account make any volume change unattributable. | this session |
 
+### Container audit, 7 Aug — `GTM-PRRWDV4` (cheapsoberlivinginsurance.com) is CLEAN
+
+Read from the published `gtm.js`. Its only GA4 destination is its own `G-B5M0MYQ0QQ`, and **none** of the
+other brands' IDs appear — no `GTM-MZ6RZ94`, `GTM-PJQ72VK`, `GTM-PBH839BH`, `GTM-KHPR4LW`,
+`G-FH3Q6GKNHH`, `G-3YMN51H7LE` or `G-KSYS0430MS`. It uses the shared Ads account `1012143191` with three
+of its own conversion labels, which is expected — one Ads account spans all brands.
+
+**So the contamination is not universal**, and that matters for planning: it is specific to Jump Trucking,
+where the served HTML carries `GTM-MZ6RZ94` (California's container), `GTM-PBH839BH` (its own) **and**
+`G-FH3Q6GKNHH` (statewide's GA4 property) — items 6, 7 and 8 confirmed at the wire rather than inferred.
+
+**Sequencing constraint that follows:** rebuilding Jump Trucking is the natural moment to strip those, but
+California's Ads conversions currently depend on tag 27 firing from Jump Trucking's clicks. Removing the
+container before California has a working `quote_form_lead` conversion would leave California with no
+conversion feed. **Item 6 must land before any Jump Trucking rebuild**, or a website project silently
+becomes an Ads outage.
+
+Note it also carries **5 `__html` custom-HTML tags**, which are worth reading before that flip — custom HTML
+is where hardcoded IDs and hostnames hide.
+
 **Item 5 is the umbrella.** Tonight's contamination finding is one instance of it. Cleaning individual
 signals on top of a feed that counts six brands together is, in the words of that doc, *"optimising
 toward cleaner garbage."*
