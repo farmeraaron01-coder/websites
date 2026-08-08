@@ -295,6 +295,10 @@ guaranteed placement:
   specified; the email in particular reads oddly on this domain.
 7. **Sign-off on the origin story**, and permission to tell it publicly — the apartment building that turned
   out to be a sober living home. It carries `pages/why-a-specialist.md` and nothing in it may be embellished.
-8. **How many years**, specifically. "Many years" appears twice on the specialist page and a real number is
-  stronger everywhere, including with AI answer engines, which quote concrete claims and skip vague ones.
+8. ~~How many years, specifically~~ **Answered: sober living "at least since 2008."** Public copy says
+  **"since 2008"** — the conservative reading of Aaron's own words. **Always a year, never a count of years:**
+  "since 2008" stays true forever, "eighteen years" is wrong next January and wrong in every AI answer that
+  cached it. This is a site-wide fact — footer, About page, Organization schema. Still open: whether 2008 is
+  also the agency's `foundingDate` or only the start of the specialty. Do not put it in schema as
+  `foundingDate` until that is confirmed.
 9. **The other resources** Aaron mentioned having.

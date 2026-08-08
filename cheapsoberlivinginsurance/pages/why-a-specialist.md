@@ -7,8 +7,8 @@ normal rental, and the agency's own origin was making exactly that mistake on on
 **Hero alt:** Multi-unit residential building of the kind commonly written as a standard apartment risk
 
 **SEO title:** Sober Living Insurance Specialist — Why Most Agents Get It Wrong
-**Meta description:** Most agents write a sober living home as a rental. What that misses, why it happens,
-and the apartment building that turned this agency into specialists.
+**Meta description:** Most agents write a sober living home as a rental. What that misses, why it happens, and
+the apartment building that turned this agency into sober living specialists in 2008.
 
 **Eyebrow:** Why a specialist
 **H1:** Why most agents write a sober living home as a rental
@@ -51,8 +51,8 @@ building full of tenants could also be a program.
 
 That is the moment this agency changed direction. We went and learned this class properly — the coverages that
 get excluded, the claims that actually arrive, the handful of carriers that genuinely understand a recovery
-residence and the many that say yes and mean something narrower. We have been writing this class for many
-years now, and it is a specialty rather than a line item.
+residence and the many that say yes and mean something narrower. **We have been writing sober living homes
+since 2008**, and it is a specialty rather than a line item.
 
 **We tell that story because it is the honest version of the argument.** The agent who wrote your home as a
 rental is where we were. The difference is what happens when a claim tests it.
@@ -167,7 +167,7 @@ Then you are ahead of most, and the next question is whether the coverages match
 liability, abuse and molestation, staff, and auto. Send the declarations page and we will tell you.
 
 **How long have you specialized in this?**
-Many years, and it started by getting one wrong. See §1.
+We have been writing sober living homes since 2008. It started by getting one wrong — see §1.
 
 ---
 
@@ -190,8 +190,15 @@ Many years, and it started by getting one wrong. See §1.
 - **I added no detail you did not give me.** No year, no state, no claim, no customer name, no number of
   units, and no suggestion that anything went wrong on that policy. If you want a year or any color added,
   tell me and I will add only what is true.
-- **"Many years" is deliberately unquantified.** Give me the number and I will use it — a specific figure is
-  stronger, and it is also a trust signal for AI answer engines, which quote concrete claims.
+- **"Since 2008" now appears in §1, in the FAQ and in the meta description.** You said "at least since 2008",
+  so 2008 is the conservative version of your own claim and I used it as-is. **A year rather than a count of
+  years is deliberate** — "since 2008" never goes stale, where "eighteen years" is wrong next January and
+  wrong in every AI answer that cached it.
+- **The story stays undated.** It happened at or before the point the specialty began, but you did not give me
+  a date for it and I did not infer one from 2008.
+- **"Since 2008" should be a site-wide fact, not just this page's** — the footer, the About page, and the
+  Organization schema. One caution: it belongs in schema as the *specialty* start, not as `foundingDate`,
+  unless 2008 is also when the agency itself was founded. Tell me which it is.
 - **§3 is the sharpest thing on the page** and needs your eye. The point is that a policy describing an
   apartment building can be contested if the property turns out to be a recovery residence. I have written it
   as *can* rather than *will*, said it depends on facts and state law, and made no promise either way. Tell me
