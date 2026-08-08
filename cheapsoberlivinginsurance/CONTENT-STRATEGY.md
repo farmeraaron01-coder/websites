@@ -1,0 +1,205 @@
+# Content strategy — cheapsoberlivinginsurance.com
+
+Drafted 7 Aug 2026. Supersedes the NARR-heavy content map proposed earlier the same day, which was wrong
+and is explained below.
+
+---
+
+## 1. The reader
+
+Not a commercial insurance buyer. In Aaron's words:
+
+> Many sober living operators were themselves in treatment, and there was such a profound change in their
+> life that they want to give back, so they open sober living homes. In many cases, that doesn't make them
+> business owners.
+
+Everything on this site follows from that sentence. The reader is:
+
+- **Mission-driven, not commercially trained.** They opened a home because recovery worked for them. They
+  did not open it because they wanted to run a small business, and nobody handed them a manual.
+- **Probably wrongly insured right now**, not uninsured on purpose. A homeowners or landlord policy that
+  excludes business activity, multiple unrelated occupants and professional services is the common
+  starting point — and they do not know it until a claim.
+- **Genuinely price-sensitive.** Margins are thin and often personal. The "cheap" domain is not a cynical
+  hook for this audience; it is accurate targeting.
+- **Facing a vocabulary problem before a price problem.** A landlord or lender asks for a certificate of
+  insurance naming them as additional insured with a waiver of subrogation, and the operator has no idea
+  what was just requested. That confusion, not premium, is often what stalls the deal.
+
+**So the content's job is to teach, then quote.** Not to sell coverage to someone who already knows what
+they want.
+
+### The positioning this produces
+
+> Competitive on price because we know the margins are thin. Serious about coverage because an operator
+> has more at stake than a landlord does — the home, the business, and the people living in it.
+
+That is the honest version of a "cheap" domain, and it is defensible: the reason to care about exclusions
+is not upsell, it is that an uncovered claim ends the mission.
+
+---
+
+## 2. Voice rules
+
+Binding on every page. The landlord plan's jargon rule, extended for this audience.
+
+- **Never assume commercial insurance literacy.** No page may open with a term the reader has to already
+  know.
+- **Define terms in the sentence, not in a parenthesis.** "A certificate of insurance — the one-page proof
+  your landlord is asking for —" reads better than "a certificate of insurance (COI)".
+- **Plain English first, the industry term second**, and only where the industry term earns SEO value.
+- **Never imply the operator is naive.** They are not; they are new to one specific domain. The tone is a
+  specialist explaining their own field, not an expert correcting an amateur.
+- **Acknowledge the mission without sentimentality.** One clear sentence beats a paragraph of warmth. The
+  reason coverage matters is that the mission is fragile, and that point lands better stated plainly.
+- **Banned:** leverage, solutions, robust, best-in-class, peace of mind, "we've got you covered."
+- **Claims stay factual.** No implication that every coverage or carrier is available in every state —
+  carried over from the flood sites, and doubly important where markets are genuinely limited.
+
+---
+
+## 3. What changed from the earlier proposal, and why
+
+I proposed `/narr-levels-and-insurance/` as the spine, plus `/narr-certification-and-insurance/`, plus
+NARR-derived state pages. That was over-built. Aaron's correction:
+
+> some of our customers belong to NARR as it gives some credibility and shows the owner is engaged in the
+> business. however, not all are members or will be. its just to be used as a guide for how some of these
+> operations could and should be run like a business… we don't want to overdo it on NARR.
+
+I rotated toward the taxonomy because it was intellectually tidy — four levels mapping cleanly onto four
+exposure profiles. But NARR is **a guide, not a gatekeeper**, and most readers are not members. Building
+the site's architecture on a standard the reader may never have heard of would fail the reader to satisfy
+a framework.
+
+**NARR keeps one page**, framed as what it actually is: a credible reference for running the home like a
+business. The levels remain useful *internally* — as an underwriting shorthand and a quote-form question —
+without becoming the site's public organising idea.
+
+### Book of business, confirmed
+
+- **Core: the levels that are not treatment centers.** Peer-run, monitored and supervised homes.
+- **Clinical/treatment settings can be placed**, but need a higher-level program. Worth one honest
+  paragraph rather than silence: it captures the search traffic and it is true.
+- Codex's line *"More than a rental. Not a treatment center."* stays — it describes the core book
+  accurately. Add the clinical note nearby rather than softening the line.
+
+---
+
+## 4. Page map, in build order
+
+Priority is by reader intent, not by coverage taxonomy.
+
+### Tier 1 — build these first
+
+**1. `/what-insurance-does-a-sober-living-home-need/`**
+The start-here page, and the highest-intent page on the site for a new operator. Plain-English walkthrough
+of what a home actually needs and why, in the order a person would ask. Links to every coverage page.
+This is also the strongest AI-citation candidate on the site — it answers a question asked in exactly
+those words.
+
+**2. `/sober-living-insurance-cost/`** — already specified in `KADENCE-BUILD-GUIDE-REVISIONS.md` §D.
+Ranges still need real figures from Aaron or underwriting.
+
+**3. `/is-my-current-policy-enough/`**
+The "you may be uninsured and not know it" page. The homeowners and landlord policy gap: business activity
+exclusions, multiple unrelated occupants, professional services, loss of income. Written as a checklist
+the reader can run against their own declarations page. This page converts, because it creates urgency
+from a fact rather than a scare.
+
+**4. `/abuse-and-molestation-coverage/`**
+The catastrophic exposure in residential recovery, and routinely excluded from general liability by
+endorsement. Currently one buried FAQ mention. An operator who does not know this is excluded is uninsured
+for their largest possible loss. Handle with care and precision — no lurid framing, and make clear this is
+about protecting residents and the home's ability to keep operating.
+
+**5. `/certificates-and-what-your-landlord-requires/`**
+Translation page. Certificate of insurance, additional insured, waiver of subrogation, loss payee,
+minimum limits — each defined in plain language with a note on why the other party wants it. Solves the
+vocabulary problem that stalls deals, and no competitor writes this for this audience.
+
+### Tier 2 — coverage gaps worth their own pages
+
+**6. `/commercial-auto-and-transporting-residents/`** — driving residents to meetings, appointments and
+work is a core operation at most homes, and personal auto excludes business use. Hired and non-owned auto
+matters when staff use their own cars, which is the common arrangement.
+
+**7. `/fair-housing-and-zoning-liability/`** — recovery residences fight occupancy caps, zoning objections
+and reasonable-accommodation claims constantly. Real, frequent, under-served by every competitor, and
+highly searched by operators in the middle of a dispute.
+
+**8. `/employment-practices-liability/`** — house managers, staff, terminations. Referenced once on the
+workers' comp page as an exposure with no coverage attached.
+
+**9. `/directors-and-officers/`** — many homes are nonprofits with boards. Absent entirely today.
+
+Cyber, umbrella and building-ordinance coverage do not need standalone pages yet. Cover them inside the
+start-here page and the cost page's factor table.
+
+### Tier 3 — reference and reach
+
+**10. `/sober-living-insurance-terms-explained/`** — plain-English glossary. Definitional, quotable,
+genuinely useful to the reader, and the kind of passage-level content AI engines cite.
+
+**11. `/recovery-residence-terminology/`** — sober living home vs halfway house vs recovery residence vs
+transitional housing. High-volume definitional queries, and it clears up the confusion that makes these
+submissions hard to underwrite.
+
+**12. `/running-a-sober-living-home-like-a-business/`** — the single NARR page. Framed as Aaron framed it:
+a guide to operating well, useful whether or not the reader ever joins. Covers governance, house rules,
+documentation, incident response, staffing clarity — and notes that certification signals engagement to
+underwriters without claiming it guarantees anything.
+
+**13. `/states/[state]-sober-living-insurance/`** — phase 2 only, and only with genuinely distinct content
+per state: whether the state licenses or certifies recovery residences, local occupancy and zoning
+posture, and market availability. The distinct-content rule from the landlord plan applies. **Do not ship
+a template with the state name swapped.** A network of thin near-duplicates is a ranking liability, not an
+asset.
+
+---
+
+## 5. Where NARR is genuinely useful — internally
+
+Not as public architecture, but as working tools:
+
+**On the quote form.** A question about staffing and services — effectively "which level is this?" without
+using the jargon — determines the coverage set before anything else is asked. Suggested phrasing:
+
+> Which best describes the home?
+> - Residents govern the house themselves; no paid staff
+> - A house manager oversees the home
+> - Trained or credentialed staff provide structured programming
+> - Clinical treatment is provided on site
+
+That is the NARR taxonomy in the reader's language, and it routes the submission correctly.
+
+**In the cost factor table** (`REVISIONS.md` §D §1) — "services provided" and "staffing" are already rows;
+this is what they mean in practice, and it is why two homes of the same size price differently.
+
+---
+
+## 6. AI/answer-engine specifics
+
+- **A 40–60 word self-contained definitional passage near the top of every page**, phrased so it makes
+  sense lifted out of context. House practice from the landlord plan, and the mechanism by which these
+  pages get cited.
+- **FAQPage schema on every page that renders FAQs.** Rank Math owns all schema; Kadence's block-level FAQ
+  schema stays off. One owner, no duplication.
+- **`llms.txt`** at the root listing canonical URLs with a one-line description each.
+- **Question-shaped H2s** where the query is a question. "Does my homeowners policy cover a sober living
+  home?" outperforms "Homeowners policy considerations."
+- **Answer in the first sentence under the heading**, then explain. Answer engines and impatient readers
+  want the same thing.
+
+---
+
+## 7. Still needed from Aaron
+
+1. **Cost ranges** for the cost page — the one thing that cannot be written without real data.
+2. **Carrier appetite, even by category** — which levels, which states, what disqualifies a submission. The
+  copy stays honest only if it knows the boundaries.
+3. **Whether abuse and molestation is available as a standalone or only endorsed**, and typical limits.
+  It changes how page 4 is written.
+4. **Phone number and email decision** — `858-295-7242` and `aaron.farmer@jumpins.com` are currently
+  specified; the email in particular reads oddly on this domain.
+5. **The other resources** Aaron mentioned having.
