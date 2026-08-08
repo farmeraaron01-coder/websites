@@ -22,7 +22,7 @@ giving them a place to stay."*
 
 It is an honest answer, and it is meant sincerely. It is also, in most cases, not accurate — and you do not
 need a policy or a lawyer to see why. You only need to describe what happens in the house before nine in the
-morning.
+morning, and then ask why anyone came to your door instead of somebody else's.
 
 ---
 
@@ -60,19 +60,38 @@ treatment, and it is not treatment. But it is not "just a place to stay" either.
 Most homes then say so out loud, and honestly:
 
 - *"I've been where you are."*
+- *"We've been helping people stay sober for over twenty years."*
 - *"I know what it takes to get back on your feet."*
 - *"We provide structure and accountability."*
 - *"Our house rules are what make recovery stick."*
 
-Every one of those sentences is a reason someone chose your home over the one down the street. They are
-also, in insurance terms, statements that you hold particular knowledge and that residents and families may
-rely on it.
+That second one is worth sitting with. *Twenty years of helping people stay sober* is a claim of expertise
+with a track record attached. It is probably true. It is also close to the clearest statement of
+professional standing a person can make without holding a licence.
+
+### And if you had no website at all, the question would still stand
+
+Here is the one that does not depend on your marketing or your schedule. Pick any resident in your home
+right now and ask: **why are they here, and not at the house four blocks away?**
+
+Nobody finds a sober living home by accident. They arrive because:
+
+- A **treatment centre or discharge planner** sent them
+- A **counsellor, case manager or probation officer** recommended you
+- A **parent or spouse** researched homes and chose yours
+- **Someone in the fellowship** said you were good at this
+- They **read your website** and believed it
+
+Every one of those is a path built on somebody's confidence in your judgement — a referrer's, a family's, or
+the resident's own. People were routed to your door on the strength of a reputation. That is reliance,
+whether or not a single word of it was ever written down.
 
 That reliance is the exposure. Not the stairs, not the water heater — the reliance.
 
-**None of this is a reason to run fewer morning meetings or to soften your marketing.** The structure is why
-the home works, and your experience is genuinely why families trust you with someone they love. It is a
-reason to insure the thing you are actually doing.
+**None of this is a reason to run fewer morning meetings, soften your marketing, or stop taking referrals.**
+The structure is why the home works, twenty years of experience is genuinely why families trust you with
+someone they love, and referrals are how a good home fills. It is a reason to insure the thing you are
+actually doing.
 
 ---
 
@@ -214,10 +233,11 @@ choose. If you run any kind of daily structure, or your marketing describes expe
 assume the exposure exists.
 
 **We don't provide treatment, so how can this apply to us?**
-Professional liability is not limited to treatment or to licensed clinicians. It applies wherever someone
-may rely on your knowledge or oversight. A morning ritual, a step-work conversation and a curfew are not
-treatment — but they are practices chosen because you believe they help someone recover, which is exactly
-the kind of reliance this coverage addresses.
+Professional liability is not limited to treatment or to licensed clinicians. It applies wherever someone may
+rely on your knowledge or oversight. A morning ritual, a step-work conversation and a curfew are not
+treatment — but they are practices chosen because you believe they help someone recover, which is exactly the
+kind of reliance this coverage addresses. And every resident in the house was sent there by someone, or chose
+it over another home, on the strength of your reputation. That is reliance too.
 
 **Isn't this covered by my general liability policy?**
 Generally no. General liability covers bodily injury and property damage from your premises and operations;
@@ -265,6 +285,13 @@ operating uncovered. Earlier is generally better than later.
   The FAQ answer about adding coverage later was softened the same way.
 - **Tone check on §2.** Relapse and overdose are handled plainly and without detail, because the audience
   lives this. Tell me if it needs softening or if it is already too soft to land.
+- **§1 now runs three arguments in escalating order of inescapability**, per Aaron: (1) the daily
+  programme — morning ritual, meeting attendance, step work; (2) the marketing, including the very common
+  *"helping people stay sober for over twenty years"*, which is a claim of expertise with a track record;
+  and (3) **the referral question, which needs no evidence at all** — why is this resident here rather than
+  at the house four blocks away? Nobody finds a sober living home by accident, so every arrival path runs
+  through somebody's confidence in the operator's judgement. That third one closes the exits the first two
+  leave open, which is why it goes last.
 - **§1 was rewritten 7 Aug** on Aaron's point that operators run morning rituals, 12-step help, meeting
   attendance and step work — all of it aimed at helping someone re-enter normal life, all of it implicitly
   resting on the owner's own experience. That is stronger than the original version, which asked the
