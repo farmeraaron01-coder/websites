@@ -62,6 +62,14 @@ Binding on every page. The landlord plan's jargon rule, extended for this audien
 - **Acknowledge the mission without sentimentality.** One clear sentence beats a paragraph of warmth. The
   reason coverage matters is that the mission is fragile, and that point lands better stated plainly.
 - **Banned:** leverage, solutions, robust, best-in-class, peace of mind, "we've got you covered."
+- **The price rule, wherever a page argues against buying cheap.** The domain sells on price, so any page that
+  cautions against shopping on price has to reconcile the two rather than ignore it. The house formulation:
+  *paying less for coverage that answers is the goal; paying less for coverage that does not answer is an
+  uninsured loss with a receipt.* Never "you get what you pay for," which sells against our own domain.
+- **Never assert what a state requires without verifying it.** Licensing, E&O and certification rules differ by
+  state and by license type. `pages/why-a-specialist.md` §6 says agents are "not required everywhere" to carry
+  coverage for their own errors, which is true and checkable; a claim about California specifically would need
+  verifying first. Applies equally to recovery-residence licensing on the state pages.
 - **Claims stay factual.** No implication that every coverage or carrier is available in every state —
   carried over from the flood sites, and doubly important where markets are genuinely limited.
 
@@ -301,4 +309,10 @@ guaranteed placement:
   cached it. This is a site-wide fact — footer, About page, Organization schema. Still open: whether 2008 is
   also the agency's `foundingDate` or only the start of the specialty. Do not put it in schema as
   `foundingDate` until that is confirmed.
-9. **The other resources** Aaron mentioned having.
+9. **Our own professional liability limit, and whether to publish it.** `why-a-specialist.md` §6 tells operators
+  to ask any agent what their limit is. If ours is strong, publishing the number converts that question into a
+  closing argument no generalist can match. Not guessed at anywhere.
+10. **A demand range Aaron has actually seen** on a serious claim in this class. §6 currently says such claims
+  are "not five-figure events" rather than naming a figure, because an invented number reads as a fabricated
+  example. A real range, standable-behind, would be the most persuasive sentence on the site.
+11. **The other resources** Aaron mentioned having.

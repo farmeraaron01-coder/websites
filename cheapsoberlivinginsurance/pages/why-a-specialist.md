@@ -146,6 +146,41 @@ not in tension — the fastest way to overpay is to be a risk nobody in the file
 
 ---
 
+## §6 — Why "my agent says he can do it" is not enough
+
+Any agent can tell you they write sober living homes. Saying it costs nothing, and most of the people who say
+it believe it.
+
+Here is the part that rarely gets said out loud: **if it is written wrong, you are the one holding the claim.**
+
+Not the agent. A demand arrives naming the home, and the home has to answer it now — with a lawyer, on a
+deadline. If the policy turns out not to respond, going after the agent afterward is a second, separate
+lawsuit: slow, expensive, uncertain, and it does nothing about the claim already in front of you. You would
+be funding two fights at once, one of them while uninsured.
+
+And that second fight is not a guaranteed recovery. **Agents are not required everywhere to carry coverage for
+their own mistakes**, the limits vary enormously among those who do, and a limit chosen for routine errors may
+sit well below what a serious claim in this class produces. You would find out which after the fact.
+
+**Weigh that against what is actually at stake.** The heaviest exposures in a recovery residence involve a
+resident being seriously harmed or dying. Claims of that shape are not five-figure events, and no operating
+budget absorbs one. Set against that, the premium difference between a policy that answers and a policy that
+does not is small — and it is the only part of this you get to decide in advance.
+
+None of that is a reason to distrust your agent. It is a reason not to rely on **"I can handle that"** as your
+only diligence. Ask instead:
+
+1. **Which carriers do you place recovery residences with, and roughly how many have you written?** A
+   specialist answers immediately. There is no wrong answer, only a vague one.
+2. **On what you are quoting me, is abuse and molestation included or excluded — and is defense inside the
+   limit or outside it?** Anyone who works in this class knows this without looking.
+3. **What is your professional liability limit?** A fair question, and any professional should be able to
+   answer it about their own business.
+
+Ask us the same three. We will answer all of them.
+
+---
+
 ## FAQs
 
 **My current agent has handled my insurance for years. Are you saying they did something wrong?**
@@ -165,6 +200,17 @@ whole subject.
 **What if my policy already says it's a sober living home?**
 Then you are ahead of most, and the next question is whether the coverages match the operation — professional
 liability, abuse and molestation, staff, and auto. Send the declarations page and we will tell you.
+
+**If my agent gets it wrong, can't I just hold them responsible?**
+Sometimes, but it is a second lawsuit rather than a remedy. The claim against your home still has to be
+defended now, on its own deadline, and pursuing your agent runs separately and slowly afterward. Agents are
+also not required everywhere to carry coverage for their own errors, and limits vary widely. It is not a plan
+you would choose in advance.
+
+**Isn't this just an argument for paying more?**
+No — this site exists partly because operators are overcharged, and we compete on price. The argument is
+narrower: never buy the *wrong* policy because it is cheaper. Paying less for coverage that answers is the
+goal. Paying less for coverage that does not answer is not a saving, it is an uninsured loss with a receipt.
 
 **How long have you specialized in this?**
 We have been writing sober living homes since 2008. It started by getting one wrong — see §1.
@@ -208,6 +254,29 @@ We have been writing sober living homes since 2008. It started by getting one wr
   agent, who may be their brother-in-law.
 - **No premium claims.** §5 says we compete on price and explains why that does not conflict with accuracy,
   without naming a number or promising a saving.
+- **§6 is your "you can't fall back on the agent" point, and it is the strongest close on the page.** The
+  version I wrote leads with the part that is true regardless of anyone's coverage: **a suit against your agent
+  is not a defense against the claim you are facing.** The demand names the home, the home answers it now, and
+  chasing the agent is a second fight funded while uninsured. That lands harder than the coverage argument and
+  it cannot be disputed.
+- **On agents' own coverage I stayed general on purpose** — "not required everywhere," limits vary, a limit set
+  for routine errors may sit below a serious claim in this class. I did not state what any particular state
+  requires, because those rules differ by state and by license type and I am not going to assert one on a
+  public page without checking it. If you want the California position stated specifically, say so and I will
+  verify it first.
+- **On severity I wrote "not five-figure events" rather than a dollar figure.** Your point was the
+  million-dollar death claim, and that is the right instinct, but a specific number on a public page reads as
+  a fabricated example unless it comes from something real. If you have a figure you can stand behind — a
+  demand range you have actually seen in this class — give it to me and it becomes the most persuasive
+  sentence on the site.
+- **The three questions in §6 are the practical payload.** They are the part an operator screenshots. Question
+  3 asks what the agent's own professional liability limit is — **if yours is strong, publishing the number
+  turns that question into a closing argument.** Tell me the limit and whether you want it public. I have not
+  guessed at it.
+- **§6 had to resolve a tension rather than dodge it.** This domain sells on price and §6 says do not shop on
+  price. The reconciliation is stated in the FAQ and it is now a site-wide rule: *paying less for coverage that
+  answers is the goal; paying less for coverage that does not answer is an uninsured loss with a receipt.*
+  That keeps "cheap" honest instead of contradicted.
 - **This page is a natural link target from every other page** — one line and a link wherever a reader might
   think "my agent would have told me." Better than repeating the argument on each page.
 - The story would also work as a short video or an About-page section. Same material, and worth doing once the
