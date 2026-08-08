@@ -111,30 +111,56 @@ This site is called Cheap Sober Living Insurance because we know your margins ar
 hard on price. Professional liability is the one line where we will argue with you about cutting it. A lower
 premium that removes the coverage most likely to face a claim is not a saving; it is a deferred bill.
 
+If another quote comes in noticeably cheaper, the useful question is not *how much* cheaper — it is *what is
+different*. Ask whether professional liability is in there at all, and whether abuse and misconduct is
+included or excluded. Sometimes the answer is that the other broker found a better market. Often the answer
+is that something was left out.
+
 ---
 
-## §5 — What to check on the policy
+## §5 — The part most operators do not expect
 
-Plain-English notes on the terms that actually matter. These are the questions to ask about any quote,
-including ours.
+**The better you are at the mission, the more of this exposure you create.**
 
-- **Claims-made or occurrence?** Most professional liability is *claims-made*, meaning the policy that
-  responds is the one in force when the claim is **made**, not when the incident happened. That makes
-  continuity important — a gap in coverage can leave old years unprotected.
-- **What is the retroactive date?** On a claims-made policy this is how far back the coverage reaches. A
-  brand-new retro date means prior years are not covered.
-- **Is defense inside or outside the limit?** If defense costs come out of the limit, a long dispute can
-  consume the coverage before any settlement is paid.
-- **Does it cover the entity and the individuals?** Operators, house managers and staff are often named
-  separately in a claim.
-- **Is abuse and misconduct included, excluded, or written separately?** It is frequently excluded from both
-  general and professional liability and available as its own coverage. See
+A landlord who collects rent and stays out of the way has very little professional liability exposure. They
+also run a worse home. Every practice that makes a sober living home effective — house rules, accountability,
+a manager who notices when someone is struggling, honest conversations, referrals to people who can help —
+is engagement. And engagement is where this exposure comes from.
+
+That is an uncomfortable thing to say to someone whose whole reason for opening the home was to be involved.
+It is also why the coverage exists. It is not a penalty for doing the job badly. It is the cost of doing the
+job at all.
+
+Three more reasons this sits differently for a sober living operator than for most small businesses:
+
+**The claim often comes from the family, not the resident.** A parent who paid for the placement, drove
+their child to the door and was told the home would provide structure is frequently the person who calls a
+lawyer. They are not evaluating your premises. They are evaluating whether the home did what it said it
+would do.
+
+**The exposure may reach you personally.** Many operators run the home as a sole proprietorship or a
+single-member entity, and in plenty of cases the house itself is the business. Whether a claim can reach
+personal assets depends on how the operation is structured and on facts we cannot assess from a website —
+which is exactly why it is worth asking someone before a claim rather than after.
+
+**Other people are starting to require it.** Property owners, referral partners and treatment providers
+increasingly want proof of professional liability before they will lease to a home or send residents to it.
+Not carrying it can quietly cost business before it ever costs a claim.
+
+### Questions worth asking about any quote, including ours
+
+Coverage varies by carrier, policy form and state, so these are questions rather than answers:
+
+- Does this policy respond to allegations about guidance, supervision or decisions — or only to injuries on
+  the property?
+- Are defense costs paid in addition to the limit, or do they come out of it?
+- Who is covered? The business, and also the operator, house managers, staff, contractors and volunteers?
+- Is abuse and misconduct included here, excluded, or written as separate coverage? See
   [abuse and molestation coverage](/abuse-and-molestation-coverage/).
-- **Who counts as an insured?** Contractors, volunteers and live-in managers are not always automatically
-  covered.
+- If I have had coverage before, does this policy pick up incidents from those earlier years?
 
-Coverage varies by carrier, policy form and state. These are the right questions, not a description of any
-particular policy.
+Ask us these. If a competing quote is cheaper, ask them the same five and compare the answers rather than
+the premiums.
 
 ---
 
@@ -181,8 +207,9 @@ It depends on residents, staffing, services and limits — and it is typically m
 See [what sober living insurance costs](/sober-living-insurance-cost/).
 
 **Can I add it later?**
-You can, but on a claims-made policy the retroactive date usually starts when the coverage starts, so the
-years before it are not covered. Earlier is materially better than later.
+You can. Ask, though, whether the policy would respond to something that happened before it started — many
+professional liability policies do not reach backwards, so waiting can leave the time you have already been
+operating uncovered. Earlier is generally better than later.
 
 ---
 
@@ -201,8 +228,11 @@ years before it are not covered. Earlier is materially better than later.
 - **The claim examples in §2 are explicitly illustrative.** If you have a sanitised real pattern — no names,
   no identifying detail — one real shape is worth more than five hypotheticals. Your call whether that is
   appropriate to publish.
-- **§5 assumes claims-made is typical for this class.** Confirm, and confirm whether your markets write
-  defense inside or outside the limit, because that line should be specific rather than a general caution.
+- **§5 rewritten 7 Aug on Aaron's instruction** to stay vague on claims-made, retroactive dates and whether
+  defense sits inside the limit. Those are now framed as *questions to ask any broker* rather than as
+  statements about how these policies work — which keeps the page accurate across carriers and forms, and
+  keeps it aimed at why the coverage matters rather than at policy mechanics the reader did not come for.
+  The FAQ answer about adding coverage later was softened the same way.
 - **Tone check on §2.** Relapse and overdose are handled plainly and without detail, because the audience
   lives this. Tell me if it needs softening or if it is already too soft to land.
 - The self-recognition move in §1 is the page's engine. If it reads as accusatory rather than as *"your
