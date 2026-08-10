@@ -149,7 +149,7 @@ execution order with the commands; this table is only the index. Items 11, 15 an
 | 34 | Post-launch schema additions: licence `PropertyValue` (`0L75450`), `ContactPoint`, `worksFor` by `@id`. |
 | 35 | Cognito **form 5** issue, open since June. | 
 | 36 | Ask InMotion to set the static-asset cache header in **nginx** — the theme cannot, because Apache never sees those requests. |
-| 37 | **Upload theme 1.5.7 to both installs** — carries the front-page pagination 404 below. Nothing else changed. |
+| 37 | ~~Upload theme 1.5.7~~ **Upload theme 1.5.8 to both installs.** 1.5.7 was installed on both 10 Aug and its guard did not fire — see below. 1.5.8 is the working version. |
 | 38 | **Export the Search Console "Soft 404" URL list for California** (440 rows) and send it over, so the 440 can be attributed instead of guessed at. Same for "Duplicate without user-selected canonical" (89) and "Excluded by noindex" (29). |
 
 ### Search Console page-indexing report, 10 Aug — one live bug, the rest is history
@@ -177,8 +177,33 @@ including verdicts formed years before the Kadence build existed.
 
 **The one real defect: the static front page had unbounded pagination.** Every `/page/<N>/` returned 200,
 served the homepage and said `index` — an infinite set of distinct indexable URLs with identical content, which
-is exactly what earns a Soft 404 verdict. Fixed in **1.5.7**, scoped to the front page only because archive
+is exactly what earns a Soft 404 verdict. Fixed in **1.5.8**, scoped to the front page only because archive
 pagination was verified working first and a broader `max_num_pages` guard would have broken `/insights/`.
+
+#### 1.5.7 shipped broken, and both wrong turns are worth keeping
+
+**The guard checked the wrong query var.** On an archive, `/page/2/` sets `paged`. On a **static front page** it
+sets **`page`** — the var normally associated with `<!--nextpage-->` — and leaves `paged` at 0. 1.5.7 tested only
+`paged`, so it never fired. Its own docblock had described `page` as the thing being deliberately left alone.
+1.5.8 takes `max()` of both, which is safe because `front-page.php` never calls `the_content()`, so no
+post-internal pagination exists on that page for either var to legitimately describe.
+
+**Then the failure was misdiagnosed as cache.** The live URL returned 200 with `x-proxy-cache: HIT`, which is
+exactly the stale-cache trap this project has hit repeatedly — and this time it was not that. The check that
+settled it, worth reusing:
+
+```
+curl -sD - -o /dev/null -H "Cookie: wordpress_logged_in_test=bypass" https://<host>/page/2/
+```
+
+A `wordpress_logged_in_*` cookie makes nginx report `x-proxy-cache: BYPASS`. It still returned 200, which proved
+PHP rather than nginx. **Force a BYPASS before blaming the cache — and before trusting a pass.** A cache-busting
+query string is not equivalent; the cookie is what changes nginx's decision.
+
+Deployment itself was fine and was confirmed independently, by fetching the theme's own stylesheet and reading
+its version header — `/wp-content/themes/cfi-kadence-child/style.css` returned `Version: 1.5.7` on both hosts.
+That check separates "not installed" from "installed and not working" in one request, and should be step one
+next time.
 
 **Triage of the ten rows.** Three deserve attention, seven do not:
 

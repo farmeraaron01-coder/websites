@@ -487,11 +487,34 @@ add_action( 'init', function () {
  * breaking the archives above — the main query on a static page reports
  * max_num_pages of 1 even when a loop inside the template has more.
  *
- * `paged` is the archive-pagination var. Post-internal pagination from
- * <!--nextpage--> uses `page`, which this leaves untouched.
+ * BOTH `page` AND `paged` ARE CHECKED, AND 1.5.7 SHIPPED BROKEN FOR CHECKING ONLY
+ * `paged`. On an archive, `/page/2/` sets `paged`. On a **static front page** it
+ * sets `page` — the var normally associated with <!--nextpage--> — and leaves
+ * `paged` at 0. So the 1.5.7 guard never fired, and the docblock had even flagged
+ * `page` as the thing being deliberately left alone. Verified after deploy: the
+ * body class came back `home … page-id-7 paged-2 page-paged-2`, and core builds
+ * all of those from `get_query_var( 'page' )` first, falling back to `paged` only
+ * when `page` is empty. `?page=2` and `?paged=2` both 301 to `/page/2/`, so the
+ * pretty URL is the only form that reaches here.
+ *
+ * Checking both is safe here because front-page.php never calls `the_content()` —
+ * it is a fully coded template, so there is no post-internal pagination on this
+ * page for either var to legitimately describe.
+ *
+ * WHY THE FIRST DIAGNOSIS OF THE FAILURE WAS ALSO WRONG: the live URL still
+ * returned 200 with `x-proxy-cache: HIT`, which looks exactly like the stale-cache
+ * trap this project has hit repeatedly. It was not. Re-requesting with a
+ * `wordpress_logged_in_*` cookie forced `x-proxy-cache: BYPASS` and the response
+ * was still 200 — proving PHP, not nginx. **Force a BYPASS before blaming the
+ * cache, and force one before trusting a pass, too.**
  */
 add_action( 'template_redirect', function () {
-	if ( ! is_front_page() || is_feed() || (int) get_query_var( 'paged' ) < 2 ) {
+	if ( ! is_front_page() || is_feed() ) {
+		return;
+	}
+
+	$page = max( (int) get_query_var( 'page' ), (int) get_query_var( 'paged' ) );
+	if ( $page < 2 ) {
 		return;
 	}
 
