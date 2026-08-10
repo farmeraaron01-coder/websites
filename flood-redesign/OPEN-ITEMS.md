@@ -149,6 +149,56 @@ execution order with the commands; this table is only the index. Items 11, 15 an
 | 34 | Post-launch schema additions: licence `PropertyValue` (`0L75450`), `ContactPoint`, `worksFor` by `@id`. |
 | 35 | Cognito **form 5** issue, open since June. | 
 | 36 | Ask InMotion to set the static-asset cache header in **nginx** — the theme cannot, because Apache never sees those requests. |
+| 37 | **Upload theme 1.5.7 to both installs** — carries the front-page pagination 404 below. Nothing else changed. |
+| 38 | **Export the Search Console "Soft 404" URL list for California** (440 rows) and send it over, so the 440 can be attributed instead of guessed at. Same for "Duplicate without user-selected canonical" (89) and "Excluded by noindex" (29). |
+
+### Search Console page-indexing report, 10 Aug — one live bug, the rest is history
+
+Aaron surfaced California's Page indexing report: **1,455 URLs not indexed** across ten reasons. Read cold that
+is alarming. Measured, it mostly is not.
+
+**The arithmetic that frames it.** California has **62 URLs** in its sitemap. Its Divi predecessor had **86** in
+`cfi-production-seo-audit.csv`, and the prune added **38** rules. No combination of real pages reaches four
+figures, so the overwhelming majority of that 1,455 is URL space Google accumulated over the old site's life —
+and the report is **cumulative and lagging**, holding the last verdict on every URL Google has ever seen,
+including verdicts formed years before the Kadence build existed.
+
+**Everything probed on the live site is configured correctly** (all cache-busted, 10 Aug):
+
+| Shape | Result | Verdict |
+|---|---|---|
+| Nonexistent slug, `?p=`, `?page_id=`, `?attachment_id=`, `?m=`, `?author=` | 404 + noindex | correct |
+| Date, author, and non-existent tag/category archives | 404 + noindex | correct |
+| Categories that do exist | 200 + noindex | correct, by design |
+| Search results, `?replytocom=` | 200 + noindex | correct |
+| `/insights/page/2/`, `/category/…/page/2/` | 200 | correct |
+| `/insights/page/9/` — over range | 404 | correct, WP handles it |
+| **`/page/2/`, `/page/99/`, `/page/500/`** | **200 + `index`** | **BUG** |
+
+**The one real defect: the static front page had unbounded pagination.** Every `/page/<N>/` returned 200,
+served the homepage and said `index` — an infinite set of distinct indexable URLs with identical content, which
+is exactly what earns a Soft 404 verdict. Fixed in **1.5.7**, scoped to the front page only because archive
+pagination was verified working first and a broader `max_num_pages` guard would have broken `/insights/`.
+
+**Triage of the ten rows.** Three deserve attention, seven do not:
+
+- **Soft 404 — 440.** Needs the export (item 38). The front-page hole fed it; whether it accounts for all 440 is
+  unknown and should not be asserted. Note that `california-prune-redirects.conf` already documents the other
+  mechanism: *a 301 to a page that is not a close equivalent is treated as a soft 404* — but California has only
+  20 such 301s, so that is not the bulk either.
+- **Crawled, currently not indexed — 823.** Google's quality judgment, **not a configuration error**, and not
+  fixable from the server. Against 62 real pages this is old thin content Google has declined to keep. No action
+  beyond continuing to publish pages worth indexing.
+- **Excluded by noindex — 29.** Consistent with categories, search and `staff-form` being deliberately noindex.
+  **Verify from the export, do not assume** — a false alarm was raised on exactly this bucket on 6 Aug, where 24
+  URLs looked deindexed and were stale cache entries, and the proposed fix would have stripped legitimate
+  protection.
+- Not found 404 (58) is the prune working. Duplicate without canonical (89) is almost certainly legacy parameter
+  URLs. Redirect (4), robots.txt (2), other 4xx (1) and Discovered-not-indexed (9) are noise.
+
+**Do not click "Validate Fix" on all ten rows.** Validation on a bucket whose URLs are stale starts a process
+that fails and re-queues, and it tells you nothing you did not already know. Validate Soft 404 after 1.5.7 is
+uploaded, and leave the rest until the export has been read.
 
 ---
 

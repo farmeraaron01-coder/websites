@@ -453,3 +453,50 @@ add_action( 'init', function () {
 	remove_action( 'wp_head', 'print_emoji_detection_script', 7 );
 	remove_action( 'wp_print_styles', 'print_emoji_styles' );
 } );
+
+/**
+ * 404 out-of-range pagination on the static front page.
+ *
+ * FOUND 10 Aug in Search Console's Page indexing report on California: 440 URLs
+ * under "Soft 404". The site has 62 URLs in its sitemap and its Divi predecessor
+ * had 86, so a four-figure count of non-indexed URLs cannot come from real pages.
+ * Probing the live site found an unbounded URL space:
+ *
+ *   /page/2/  /page/99/  /page/500/  → all HTTP 200, all serving the homepage,
+ *                                      all emitting robots "index"
+ *
+ * A static front page has no pagination, so every one of those is a distinct
+ * indexable URL returning identical content. Googlebot can enumerate them
+ * forever, and "200 with content that isn't the requested resource" is precisely
+ * what earns a Soft 404 verdict. The canonical does point at `/`, which is why
+ * this leaked as Soft 404 rather than as duplicate content, but a canonical is a
+ * hint — it does not stop the crawl, and crawl spent here is crawl not spent on
+ * the 62 pages that matter.
+ *
+ * SCOPED TO THE FRONT PAGE DELIBERATELY, AND VERIFIED BEFORE WRITING. Real
+ * pagination elsewhere already behaves correctly and must not be touched:
+ *
+ *   /insights/page/2/                         → 200, correct     (leave alone)
+ *   /insights/page/9/                         → 404, correct     (WP handles it)
+ *   /category/flood-insurance-guides/page/2/  → 200, correct     (leave alone)
+ *
+ * WordPress 404s an over-range *archive* on its own because the main query comes
+ * back empty. It does not do so on a static front page, because that query asks
+ * for one page by ID and finds it whatever `paged` says. So the narrow condition
+ * is the whole bug, and a broader guard keyed on max_num_pages would risk
+ * breaking the archives above — the main query on a static page reports
+ * max_num_pages of 1 even when a loop inside the template has more.
+ *
+ * `paged` is the archive-pagination var. Post-internal pagination from
+ * <!--nextpage--> uses `page`, which this leaves untouched.
+ */
+add_action( 'template_redirect', function () {
+	if ( ! is_front_page() || is_feed() || (int) get_query_var( 'paged' ) < 2 ) {
+		return;
+	}
+
+	global $wp_query;
+	$wp_query->set_404();
+	status_header( 404 );
+	nocache_headers();
+} );
