@@ -34,8 +34,21 @@
  * renames them on change; CSS/JS get a month and carry ?ver= query strings.
  */
 
+/*
+ * One constant for the gate and the stamp, because keeping them in step by hand
+ * already failed. Up to 1.5.8 the guard tested for 'v3' while the success path
+ * wrote 'v4', so the option could never satisfy the guard: every single wp-admin
+ * page load re-ran the installer and rewrote .htaccess. Harmless in output —
+ * insert_with_markers() is idempotent — but it was an unnecessary write to the
+ * file that controls whether the site serves at all, on every admin request.
+ *
+ * Bump this when the rules below change; both sides move together by
+ * construction.
+ */
+define( 'CFI_HTACCESS_RULES_VERSION', 'v4' );
+
 add_action( 'admin_init', function () {
-	if ( get_option( 'cfi_htaccess_cache_rules' ) === 'v3' ) {
+	if ( get_option( 'cfi_htaccess_cache_rules' ) === CFI_HTACCESS_RULES_VERSION ) {
 		return;
 	}
 	if ( ! current_user_can( 'manage_options' ) ) {
@@ -89,7 +102,7 @@ add_action( 'admin_init', function () {
 	);
 
 	if ( insert_with_markers( $path, 'CFI static asset cache', $rules ) ) {
-		update_option( 'cfi_htaccess_cache_rules', 'v4', false );
+		update_option( 'cfi_htaccess_cache_rules', CFI_HTACCESS_RULES_VERSION, false );
 	}
 } );
 

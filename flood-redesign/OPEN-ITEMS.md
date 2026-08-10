@@ -150,7 +150,9 @@ execution order with the commands; this table is only the index. Items 11, 15 an
 | 35 | Cognito **form 5** issue, open since June. | 
 | 36 | Ask InMotion to set the static-asset cache header in **nginx** — the theme cannot, because Apache never sees those requests. |
 | 37 | ~~Upload theme 1.5.8 to both installs~~ **CLOSED 10 Aug — 1.5.8 live and verified on both, with a forced cache bypass.** |
-| 38 | **Export the Search Console "Soft 404" URL list for California** (440 rows) and send it over, so the 440 can be attributed instead of guessed at. Same for "Duplicate without user-selected canonical" (89) and "Excluded by noindex" (29). |
+| 38 | ~~Export the Search Console URL lists~~ **DONE 10 Aug, all three read and every URL tested live. Root cause found — see below.** |
+| 39 | **CALIFORNIA SERVES DIRECTORY LISTINGS AND STATEWIDE DOES NOT.** cPanel -> Advanced -> Indexes -> californiafloodinsurance.com -> No Indexing. This is the whole fix for 69 live URLs, stops Google finding more, and closes a version-disclosure hole. Full detail and the two optional follow-ups in `california-hardening.conf`. |
+| 40 | Theme **1.5.9** in the repo, not yet uploaded — fixes an `inc/htaccess.php` version-gate bug that rewrote `.htaccess` on every wp-admin page load. **Not urgent**; bundle with the next real change. |
 
 ### Search Console page-indexing report, 10 Aug — one live bug, the rest is history
 
@@ -207,10 +209,8 @@ next time.
 
 **Triage of the ten rows.** Three deserve attention, seven do not:
 
-- **Soft 404 — 440.** Needs the export (item 38). The front-page hole fed it; whether it accounts for all 440 is
-  unknown and should not be asserted. Note that `california-prune-redirects.conf` already documents the other
-  mechanism: *a 301 to a page that is not a close equivalent is treated as a soft 404* — but California has only
-  20 such 301s, so that is not the bulk either.
+- **Soft 404 — 440. ANSWERED 10 Aug by the export: none of it is content, and the pagination hole was not the
+  cause.** See the section below.
 - **Crawled, currently not indexed — 823.** Google's quality judgment, **not a configuration error**, and not
   fixable from the server. Against 62 real pages this is old thin content Google has declined to keep. No action
   beyond continuing to publish pages worth indexing.
@@ -239,6 +239,50 @@ Eight fit on one page, so page 2 has never existed there and `/insights/` render
 The guard could not have caused it either way — it is scoped to `is_front_page()`. The test expectation was
 wrong, not the site: **one site's correct value is not the other's**, even on a shared theme. Confirm the
 underlying data before recording a cross-site difference as a fault.
+
+### The exports, read — 10 Aug. Root cause: directory listings on California only
+
+All three URL lists exported and **every one of the 529 URLs tested live**. The finding is unambiguous:
+**not a single content page appears in either error bucket.** Every URL is under `/wp-includes/` or
+`/wp-content/themes/`.
+
+**The cause is a difference between the two sister sites, on the same cPanel account:**
+
+```
+californiafloodinsurance.com/wp-includes/   200, 54,507 bytes, "Index of"
+statewidefloodinsurance.com/wp-includes/    403
+```
+
+California serves directory listings. Googlebot walked the tree and enumerated hundreds of core source files.
+
+| Bucket | Live status | What it is | Action |
+|---|---|---|---|
+| Soft 404 | 206 -> **404** | `/wp-content/themes/Divi/**.php` — theme deleted | **none, already resolved** |
+| Soft 404 | 214 -> **500** | nested `/wp-includes/**.php`, fatal outside WP | step 2 |
+| Soft 404 | 20 -> **200** | top-level `/wp-includes/*.php` returning empty — the literal soft 404s | step 2 |
+| Duplicate | 40 -> **404** | Divi again | **none, already resolved** |
+| Duplicate | 49 -> **200** | directory listings + `readme.txt` / `license.txt` | step 1 |
+| Noindex | 29 | categories, author, date archives, tag feeds | **none, all deliberate** |
+
+**246 of 529 need nothing** — they are already correct and only waiting on Google to re-crawl.
+
+**The front-page pagination hole was NOT the cause of the 440.** It was a real bug and worth fixing on its own
+merit, but no `/page/N/` URL appears anywhere in the export. Fixing it was correct; attributing the 440 to it
+would have been wrong, and this is exactly why the export was worth waiting for rather than acting on a theory.
+
+**It is also a disclosure problem, not only an SEO one.** With listings on, any directory lacking its own
+`index.php` is browsable. Verified on California and not on statewide:
+`/wp-content/themes/cfi-kadence-child/` and `/wp-content/plugins/seo-by-rank-math/` are both browsable, and
+Rank Math's `readme.txt` returns `Stable tag: 1.0.275` — an exact plugin version, which is the first step of a
+targeted-exploit search. One change fixes both.
+
+**Fix, verification and the two optional follow-ups are in `california-hardening.conf`.** Use the cPanel Indexes
+toggle rather than hand-editing `Options -Indexes`: a bare `Options` line returns HTTP 500 for the whole site if
+AllowOverride does not permit it, and a supported toggle does the same job with no such risk.
+
+**DO NOT add `Disallow: /wp-includes/` to robots.txt.** WordPress serves block-library CSS and JS from that
+path, so blocking it stops Google rendering the pages, and Disallow would not remove anything already indexed
+anyway. The fix belongs at the HTTP layer, where the response itself changes.
 
 **Do not click "Validate Fix" on all ten rows.** Validation on a bucket whose URLs are stale starts a process
 that fails and re-queues, and it tells you nothing you did not already know. Validate Soft 404 after 1.5.7 is
