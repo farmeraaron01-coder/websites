@@ -149,7 +149,7 @@ execution order with the commands; this table is only the index. Items 11, 15 an
 | 34 | Post-launch schema additions: licence `PropertyValue` (`0L75450`), `ContactPoint`, `worksFor` by `@id`. |
 | 35 | Cognito **form 5** issue, open since June. | 
 | 36 | Ask InMotion to set the static-asset cache header in **nginx** — the theme cannot, because Apache never sees those requests. |
-| 37 | ~~Upload theme 1.5.7~~ **Upload theme 1.5.8 to both installs.** 1.5.7 was installed on both 10 Aug and its guard did not fire — see below. 1.5.8 is the working version. |
+| 37 | ~~Upload theme 1.5.8 to both installs~~ **CLOSED 10 Aug — 1.5.8 live and verified on both, with a forced cache bypass.** |
 | 38 | **Export the Search Console "Soft 404" URL list for California** (440 rows) and send it over, so the 440 can be attributed instead of guessed at. Same for "Duplicate without user-selected canonical" (89) and "Excluded by noindex" (29). |
 
 ### Search Console page-indexing report, 10 Aug — one live bug, the rest is history
@@ -220,6 +220,25 @@ next time.
   protection.
 - Not found 404 (58) is the prune working. Duplicate without canonical (89) is almost certainly legacy parameter
   URLs. Redirect (4), robots.txt (2), other 4xx (1) and Discovered-not-indexed (9) are noise.
+
+**VERIFIED 10 Aug, 1.5.8 on both hosts.** Every check run twice — once with a `wordpress_logged_in_*` cookie to
+force `x-proxy-cache: BYPASS` (is PHP right?) and once bare (is that what the public gets?). Both agreed
+everywhere, which is the only condition under which a pass means anything here.
+
+| URL | California | Statewide |
+|---|---|---|
+| `/` | 200 | 200 |
+| `/page/2/`, `/page/3/`, `/page/99/`, `/page/500/` | **404** | **404** |
+| `/insights/` | 200 | 200 |
+| `/insights/page/2/` | 200 | 404 — correct, see below |
+| `/insights/page/9/` | 404 | 404 |
+| `/get-a-quote/` | 200 | 200 |
+
+**Statewide's `/insights/page/2/` 404 is not a regression.** Statewide has **8 posts**; California has **20**.
+Eight fit on one page, so page 2 has never existed there and `/insights/` renders no pagination links at all.
+The guard could not have caused it either way — it is scoped to `is_front_page()`. The test expectation was
+wrong, not the site: **one site's correct value is not the other's**, even on a shared theme. Confirm the
+underlying data before recording a cross-site difference as a fault.
 
 **Do not click "Validate Fix" on all ten rows.** Validation on a bucket whose URLs are stale starts a process
 that fails and re-queues, and it tells you nothing you did not already know. Validate Soft 404 after 1.5.7 is
