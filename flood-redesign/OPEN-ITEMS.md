@@ -152,7 +152,21 @@ execution order with the commands; this table is only the index. Items 11, 15 an
 | 37 | ~~Upload theme 1.5.8 to both installs~~ **CLOSED 10 Aug — 1.5.8 live and verified on both, with a forced cache bypass.** |
 | 38 | ~~Export the Search Console URL lists~~ **DONE 10 Aug, all three read and every URL tested live. Root cause found — see below.** |
 | 39 | ~~CALIFORNIA SERVES DIRECTORY LISTINGS~~ **CLOSED 10 Aug — listings off on the live docroot, purged and verified. 290 of 529 URLs now correct.** Original note kept for the folder trap: **CALIFORNIA SERVED DIRECTORY LISTINGS AND STATEWIDE DID NOT.** cPanel -> Advanced -> Indexes -> **`new.californiafloodinsurance.com`** -> No Indexing. **The live docroot is the `new.`-named folder; the domain-named folder is the dead Divi install.** The first attempt on 10 Aug hit the dead folder, reported success, and changed nothing. This is the whole fix for 69 live URLs, stops Google finding more, and closes a version-disclosure hole. Full detail and the two optional follow-ups in `california-hardening.conf`. |
-| 40 | Theme **1.5.9** in the repo, not yet uploaded — fixes an `inc/htaccess.php` version-gate bug that rewrote `.htaccess` on every wp-admin page load. **Not urgent**; bundle with the next real change. |
+| 40 | Theme **1.5.9** — fixes the `inc/htaccess.php` version-gate bug AND auto-installs the readme/license deny (step 3 of `california-hardening.conf`), so that step needs no manual .htaccess edit on either site. |
+| 41 | **Step 2** of `california-hardening.conf` — the only remaining manual server change. Deliberately not automated: it rewrites `/wp-includes/**.php` to 404, which interacts with WordPress's own rewrite block and needs the `wp-tinymce.php` exception. **Todoist, due 18 Aug.** |
+
+### Reminders set in Todoist, 10 Aug — "Things to Do Soon", label `websites`
+
+Set because three items here are date-bound and easy to lose, and each carries the trap that already caught us:
+
+| Due | Task | The trap it names |
+|---|---|---|
+| 18 Aug | Finish the wp-includes hardening (step 2) | live docroot is the `new.` folder; keep the `wp-tinymce.php` exception |
+| 1 Sept | Check the Search Console soft-404 count dropped | barely-moved numbers at 3 weeks are normal, not a reason to act |
+| 8 Sept | California folder rename + delete the Divi archive | **extract Divi's `et_divi` CSS and Integration code from the DB first — it is the only copy** |
+
+The 8 Sept item is the one that matters most, and not for tidiness: until the rename happens, every server-side
+change on California has a wrong answer that looks right and reports success. It has already happened twice.
 
 ### Search Console page-indexing report, 10 Aug — one live bug, the rest is history
 

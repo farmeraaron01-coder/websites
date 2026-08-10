@@ -45,7 +45,7 @@
  * Bump this when the rules below change; both sides move together by
  * construction.
  */
-define( 'CFI_HTACCESS_RULES_VERSION', 'v4' );
+define( 'CFI_HTACCESS_RULES_VERSION', 'v5' );
 
 add_action( 'admin_init', function () {
 	if ( get_option( 'cfi_htaccess_cache_rules' ) === CFI_HTACCESS_RULES_VERSION ) {
@@ -97,6 +97,40 @@ add_action( 'admin_init', function () {
 		'  <FilesMatch "\.pdf$">',
 		'    Header set X-Robots-Tag "noindex, noarchive"',
 		'    Header set Cache-Control "public, max-age=2592000"',
+		'  </FilesMatch>',
+		'</IfModule>',
+		/*
+		 * Deny readme / license / changelog files. Added 1.5.9, from the Search
+		 * Console investigation on 10 Aug.
+		 *
+		 * WordPress and almost every plugin ship these, and they state exact
+		 * versions. Measured on California that day: Rank Math's readme.txt
+		 * returned `Stable tag: 1.0.275`. An exact plugin version is the first
+		 * step of a targeted-exploit search — look up the version, look up its
+		 * known issues, skip the reconnaissance entirely.
+		 *
+		 * Turning off directory listings (cPanel -> Indexes, done the same day)
+		 * stopped anyone *browsing* to these files. It does nothing about a direct
+		 * request for a known filename, and `readme.txt` is the first filename
+		 * anyone tries. This is the half of that fix that actually closes it.
+		 *
+		 * Safe to automate, unlike the rest of `california-hardening.conf`:
+		 *  - `Require` is guarded by <IfModule mod_authz_core.c>, so a server
+		 *    without it ignores the block rather than erroring.
+		 *  - It contains no `Options` directive. A bare `Options` line returns 500
+		 *    for the entire site where AllowOverride forbids it, which is why the
+		 *    listings fix went through cPanel by hand and this does not.
+		 *  - Nothing on a live site reads these files over HTTP. WordPress gets
+		 *    plugin version data from the .org API, not by fetching readme.txt.
+		 *
+		 * STEP 2 of that file is deliberately NOT here. It rewrites requests under
+		 * /wp-includes/ to 404, which interacts with WordPress's own rewrite block
+		 * and needs one exception (wp-tinymce.php) to avoid breaking the editor.
+		 * That belongs in a change someone watches, on its own day.
+		 */
+		'<IfModule mod_authz_core.c>',
+		'  <FilesMatch "^(readme|README|license|LICENSE|changelog|CHANGELOG)\.(txt|html|md)$">',
+		'    Require all denied',
 		'  </FilesMatch>',
 		'</IfModule>',
 	);
