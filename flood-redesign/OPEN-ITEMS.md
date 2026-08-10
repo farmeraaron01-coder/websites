@@ -151,7 +151,7 @@ execution order with the commands; this table is only the index. Items 11, 15 an
 | 36 | Ask InMotion to set the static-asset cache header in **nginx** — the theme cannot, because Apache never sees those requests. |
 | 37 | ~~Upload theme 1.5.8 to both installs~~ **CLOSED 10 Aug — 1.5.8 live and verified on both, with a forced cache bypass.** |
 | 38 | ~~Export the Search Console URL lists~~ **DONE 10 Aug, all three read and every URL tested live. Root cause found — see below.** |
-| 39 | **CALIFORNIA SERVES DIRECTORY LISTINGS AND STATEWIDE DOES NOT.** cPanel -> Advanced -> Indexes -> **`new.californiafloodinsurance.com`** -> No Indexing. **The live docroot is the `new.`-named folder; the domain-named folder is the dead Divi install.** The first attempt on 10 Aug hit the dead folder, reported success, and changed nothing. This is the whole fix for 69 live URLs, stops Google finding more, and closes a version-disclosure hole. Full detail and the two optional follow-ups in `california-hardening.conf`. |
+| 39 | ~~CALIFORNIA SERVES DIRECTORY LISTINGS~~ **CLOSED 10 Aug — listings off on the live docroot, purged and verified. 290 of 529 URLs now correct.** Original note kept for the folder trap: **CALIFORNIA SERVED DIRECTORY LISTINGS AND STATEWIDE DID NOT.** cPanel -> Advanced -> Indexes -> **`new.californiafloodinsurance.com`** -> No Indexing. **The live docroot is the `new.`-named folder; the domain-named folder is the dead Divi install.** The first attempt on 10 Aug hit the dead folder, reported success, and changed nothing. This is the whole fix for 69 live URLs, stops Google finding more, and closes a version-disclosure hole. Full detail and the two optional follow-ups in `california-hardening.conf`. |
 | 40 | Theme **1.5.9** in the repo, not yet uploaded — fixes an `inc/htaccess.php` version-gate bug that rewrote `.htaccess` on every wp-admin page load. **Not urgent**; bundle with the next real change. |
 
 ### Search Console page-indexing report, 10 Aug — one live bug, the rest is history
@@ -283,6 +283,34 @@ AllowOverride does not permit it, and a supported toggle does the same job with 
 **DO NOT add `Disallow: /wp-includes/` to robots.txt.** WordPress serves block-library CSS and JS from that
 path, so blocking it stops Google rendering the pages, and Disallow would not remove anything already indexed
 anyway. The fix belongs at the HTTP layer, where the response itself changes.
+
+#### CLOSED 10 Aug — final state after the fix
+
+Directory indexing disabled on `/home/mrtaco5/new.californiafloodinsurance.com` (the live docroot, second
+attempt — the first hit the dead Divi folder), followed by a full nginx purge. All 529 URLs retested:
+
+| Bucket | Count | Status | Meaning |
+|---|---|---|---|
+| Divi theme files | **246** | 404 | already resolved before any change |
+| Directory listings | **44** | 403 | **fixed by this change** |
+| `wp-includes` PHP files | 214 | 500 | step 2, optional |
+| Empty-200 PHP files + `/wp-includes/blocks/` | 20 | 200 | step 2, optional |
+| `license.txt` / `readme.txt` | 5 | 200 | step 3, optional |
+
+**290 of 529 are now correct**, and no content page was ever affected. Nothing broke: homepage,
+`/get-a-quote/`, `/insights/`, `/insights/page/2/` all 200; `/page/2/` still 404 from 1.5.8; and every asset
+verified loading — block-library CSS and JS from `/wp-includes/`, both self-hosted fonts, hero poster, site
+icon, Kadence header CSS, an upload, and `wp-tinymce.php`.
+
+**Two cache lessons, both already in this file's history and both re-earned today.** The purge did not appear
+to work at first: two URLs (`/wp-includes/` and the Rank Math plugin directory) kept returning cached 200
+listings while fresh query-string requests returned 403. Re-requesting a few seconds later returned 403 on
+every attempt — they were the last stale entries clearing. **Do not diagnose a purge from a single request per
+URL.** And the reverse of the same coin: fresh-URL 403s were correct for twenty minutes while the public was
+still being served the listings, so **a config that is right is not the same as a site that is fixed.**
+
+**One residue step 2 will not catch:** `/wp-includes/blocks/` returns an empty 200 because it contains its own
+`index.php`, so it is not a listing and the `.php` rewrite does not match it. One URL, not worth a rule.
 
 **Do not click "Validate Fix" on all ten rows.** Validation on a bucket whose URLs are stale starts a process
 that fails and re-queues, and it tells you nothing you did not already know. Validate Soft 404 after 1.5.7 is
