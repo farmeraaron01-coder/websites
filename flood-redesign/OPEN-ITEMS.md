@@ -151,7 +151,7 @@ execution order with the commands; this table is only the index. Items 11, 15 an
 | 36 | Ask InMotion to set the static-asset cache header in **nginx** — the theme cannot, because Apache never sees those requests. |
 | 37 | ~~Upload theme 1.5.8 to both installs~~ **CLOSED 10 Aug — 1.5.8 live and verified on both, with a forced cache bypass.** |
 | 38 | ~~Export the Search Console URL lists~~ **DONE 10 Aug, all three read and every URL tested live. Root cause found — see below.** |
-| 39 | **CALIFORNIA SERVES DIRECTORY LISTINGS AND STATEWIDE DOES NOT.** cPanel -> Advanced -> Indexes -> californiafloodinsurance.com -> No Indexing. This is the whole fix for 69 live URLs, stops Google finding more, and closes a version-disclosure hole. Full detail and the two optional follow-ups in `california-hardening.conf`. |
+| 39 | **CALIFORNIA SERVES DIRECTORY LISTINGS AND STATEWIDE DOES NOT.** cPanel -> Advanced -> Indexes -> **`new.californiafloodinsurance.com`** -> No Indexing. **The live docroot is the `new.`-named folder; the domain-named folder is the dead Divi install.** The first attempt on 10 Aug hit the dead folder, reported success, and changed nothing. This is the whole fix for 69 live URLs, stops Google finding more, and closes a version-disclosure hole. Full detail and the two optional follow-ups in `california-hardening.conf`. |
 | 40 | Theme **1.5.9** in the repo, not yet uploaded — fixes an `inc/htaccess.php` version-gate bug that rewrote `.htaccess` on every wp-admin page load. **Not urgent**; bundle with the next real change. |
 
 ### Search Console page-indexing report, 10 Aug — one live bug, the rest is history
