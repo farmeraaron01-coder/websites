@@ -144,6 +144,52 @@ saving, not an estimate of it. Stated that way it is still the most useful
 number a buyer can get — and a reader who works it out unaided will distrust
 everything else on the page.
 
+## The page is not a price comparison — positioning, per Aaron 13 Aug
+
+Price is the hook, not the argument. Aaron's framing, which the page has to
+carry:
+
+> We are pushing private because the claims process is generally much better.
+> The NFIP is effectively the government. Private offers many more options, has
+> more bells and whistles than the government policy, and many times is a much
+> better option for the customer. We want to paint a picture that private is not
+> only less expensive but offers more — **and that there are times when the NFIP
+> is the right call and we can use them too.**
+
+Three consequences for how the numbers get used.
+
+**1. Lead with "more for less", not "less".** A page that only argues price
+invites the reader to assume they are buying a stripped-down policy — which is
+the exact objection the data cannot answer. The county table is evidence for the
+price half; the coverage comparison carries the other half and is what stops
+"cheap" from reading as "worse". This is the price rule from CONTENT-STRATEGY
+applied in the other direction: paying less for coverage that answers is the
+goal, and here we can show the coverage is broader, not narrower.
+
+**2. Recommending the NFIP when it wins is the credibility play.** Saying
+plainly that we quote both and sometimes place the NFIP is what makes the savings
+claim believable — and it is simply true of how the agency operates. It also
+pre-empts the obvious challenge, because Risk Rating 2.0 does sometimes come back
+implausibly low, and the NFIP cannot decline anyone. Concretely, the NFIP is
+sometimes the right answer when a private carrier declines or non-renews the
+risk, and its guaranteed availability has no private equivalent. Named honestly,
+that is a reason to trust the rest of the page.
+
+**3. Every coverage-feature claim needs verifying against the policy forms
+before it ships.** This is the same discipline as the existing rule about never
+asserting what a state requires without checking. Candidate differentiators that
+are checkable in the forms rather than matters of opinion — building limits above
+the NFIP's $250,000 cap, replacement cost on contents, additional living expenses
+/ loss of use, and waiting-period length — must each be confirmed against the
+actual QBE, Brit and Hiscox wordings before appearing, because they differ by
+carrier and by program (Hiscox alone runs Custom, Full Value, Excess and NFIP
+Maximum). "The claims process is generally better" is the agency's experience of
+twelve years, and should be written as experience, not dressed up as a statistic
+we cannot source.
+
+Do not name carriers on the page; describe the private market generically. The
+per-carrier medians in this run are a parse check, not publishable content.
+
 ## Next
 
 1. **FEMA comparator at benchmark terms** — `policyCost` for $250,000/$5,000 by
@@ -153,5 +199,12 @@ everything else on the page.
 3. **Verify FEMA's owner/rental field** before publishing that cut — the earlier
    `tenantIndicator` probe returned n=15 against 7,398, so it flags contents-only
    tenants, not landlords.
-4. Rebuild `/how-much-does-flood-insurance-cost/` around the county table. It
-   holds 19,311 impressions at position 17.4 because it answers generically.
+4. **Build the private-vs-NFIP coverage comparison** from the actual QBE, Brit
+   and Hiscox wordings — the "more, not just cheaper" half of the argument. Each
+   row has to be sourced to a form, per carrier and program.
+5. Rebuild `/how-much-does-flood-insurance-cost/` around the county table *and*
+   that comparison. It holds 19,311 impressions at position 17.4 because it
+   answers generically.
+6. Write the "when the NFIP is the right call" section — guaranteed availability,
+   no declinations, and Risk Rating 2.0 occasionally coming back very low. This
+   is what makes the savings claim credible rather than a sales line.
