@@ -1,0 +1,5 @@
+# site=sc-domain:californiafloodinsurance.com start=2026-05-13 end=2026-08-11 rows=3
+device,clicks,impressions,ctr,position
+DESKTOP,116,18018,0.64,15.44
+MOBILE,86,5813,1.48,10.35
+TABLET,4,194,2.06,4.44
