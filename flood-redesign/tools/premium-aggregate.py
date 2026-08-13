@@ -13,7 +13,7 @@ anything that slips through.
 Needs: pip install pandas openpyxl xlrd
 
 WHY THE OUTPUT IS SHAPED THIS WAY
-`/how-much-does-flood-insurance-cost/` draws 19,311 impressions at position 17.4
+`/how-much-does-flood-insurance-cost/` draws 2,866 impressions at position 18.15
 — the largest pool on the site, stuck on page two — because it answers the
 question generically. The fix is a real number for the reader's own county and
 coverage level. Everything here exists to produce those numbers defensibly.

@@ -5,7 +5,7 @@ into a real analysis of what flood insurance actually costs. Then the same for t
 
 **This is the highest-value content project on either site**, for reasons the Search Console pull made concrete:
 
-- `/how-much-does-flood-insurance-cost/` already draws **19,311 impressions at position 17.4** — the largest
+- `/how-much-does-flood-insurance-cost/` already draws **2,866 impressions at position 18.15** — the largest
   impression pool on the site, stuck on page two. Cost intent is where the demand is.
 - **LendingTree ranks on the head term with generic county averages.** First-party placement data from a real
   book is strictly better information, and it is the one asset an aggregator cannot copy or scrape.
@@ -110,7 +110,7 @@ section, an explicit sample size, a stated date range, and an annual refresh. Na
 - **`Dataset` schema** on the report page. It is the correct type, it is uncommon in this vertical, and it tells
   answer engines the page contains original data.
 - The existing `/how-much-does-flood-insurance-cost/` becomes the **plain-English explainer** that links up to the
-  report — so the 19,311 impressions get a better destination without losing the page that earns them.
+  report — so the 2,866 impressions get a better destination without losing the page that earns them.
 - **A short methodology page**, linked from every table. This is what a journalist checks before citing.
 - **Charts as static images with data tables beneath.** The table is what gets scraped and quoted; the chart is
   what gets screenshotted. Both matter, and a JavaScript-only chart delivers neither.

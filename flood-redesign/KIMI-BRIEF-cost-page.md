@@ -10,7 +10,7 @@ verifiable. Nothing here needs access to our systems or our policy data.
 I run californiafloodinsurance.com and statewidefloodinsurance.com — a California
 flood insurance agency placing private (surplus lines) flood policies and NFIP
 policies. We are rebuilding our "how much does flood insurance cost" page. It
-currently sits at position 17.4 with 19,311 impressions over 90 days — the biggest
+currently sits at position 18.15 with 2,866 impressions over 90 days — the biggest
 traffic pool on the site, stuck on page two because it answers the question
 generically instead of giving real numbers.
 

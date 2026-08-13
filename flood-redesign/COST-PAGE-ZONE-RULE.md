@@ -92,7 +92,7 @@ $250 HFIAA surcharge cut. `tenantIndicator` is **not** — it returned n=15 agai
 4. **Consider splitting the content.** "What does it cost in an X zone, and is it
    worth it" and "it is mandatory in an A zone, here is what it costs and how not
    to overpay" are different questions from different searchers with different
-   intent. One page trying to serve both is how we ended up at position 17.4.
+   intent. One page trying to serve both is how we ended up at position 18.15.
 
 5. **Every published figure carries its terms**: the zone, the coverage amount,
    the deductible, and n. A number without its terms is what made the old page

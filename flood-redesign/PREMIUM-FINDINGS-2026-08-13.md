@@ -275,7 +275,7 @@ per-carrier medians in this run are a parse check, not publishable content.
    and Hiscox wordings — the "more, not just cheaper" half of the argument. Each
    row has to be sourced to a form, per carrier and program.
 5. Rebuild `/how-much-does-flood-insurance-cost/` around the county table *and*
-   that comparison. It holds 19,311 impressions at position 17.4 because it
+   that comparison. It holds 2,866 impressions at position 18.15 because it
    answers generically.
 6. Write the "when the NFIP is the right call" section — guaranteed availability,
    no declinations, and Risk Rating 2.0 occasionally coming back very low. This

@@ -210,7 +210,7 @@ just not the answer to a CTR problem that turns out not to be one.
 
 | Impressions | Clicks | Position | CTR | Page |
 |---|---|---|---|---|
-| **19,311** | 70 | **17.4** | 0.36% | `/how-much-does-flood-insurance-cost/` |
+| **2,866** | 20 | **18.15** | 0.70% | `/how-much-does-flood-insurance-cost/` |
 | 16,290 | 244 | 12.3 | 1.50% | `/` |
 | 14,882 | 58 | 11.3 | 0.39% | `/navigating-flood-zone-x/` |
 | 11,739 | 96 | 12.3 | 0.82% | `/which-flood-zone-requires-flood-insurance/` |
@@ -318,7 +318,7 @@ has 5.7× the impressions and a far better position profile.
 1. **301 `/mobile/contact.php` → `/contact-us/`.** Position 1.4 pointing at a 404.
 2. **Fix `/contact-us/` for the head term** — strip the flood content, retitle plainly. 1,158 impressions at
    position 6 earning one click.
-3. **Push `/how-much-does-flood-insurance-cost/` from 17.4 toward page one.** 19,311 impressions is the largest
+3. **Push `/how-much-does-flood-insurance-cost/` from 18.15 toward page one.** 2,866 impressions is the largest
    pool on the site. This is now the top content priority, above the head terms themselves.
 4. **Internal links to `/california-flood-insurance-quotes/`** and differentiate it toward quote intent. Do NOT
    redirect it.
