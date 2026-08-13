@@ -203,7 +203,7 @@ execution order with the commands; this table is only the index. Items 11, 15 an
 
 | # | Item |
 |---|---|
-| 27 | GBP posts written and never posted: El Niño, FAIR Plan. Also set the GBP website URL to `https://`. |
+| 27 | GBP posts written and never posted: El Niño, FAIR Plan. **And the GBP website field is `http://www.californiafloodinsurance.com/` — wrong twice.** Set it to `https://californiafloodinsurance.com/`. Promoted out of housekeeping: GBP is a large share of non-paid clicks and every one takes a redirect. See `WWW-AUDIT.md`. |
 | 28 | Wordfence licence key + 2FA. |
 | 29 | Add a description to the *Private Flood Insurance VS FEMA* YouTube video — the only one of four without. |
 | 30 | **Statewide has no SPF and no DMARC — confirmed at DNS 7 Aug, not just suspected.** TXT holds only `google-site-verification=JXdoRp-…`; `_dmarc` returns nothing; MX is `0 statewidefloodinsurance.com.`, so the hosting server sends its own mail unauthenticated. This already bit us: the WordPress password-reset email could not be relied on during the flip, and it affects **quote notification emails reaching inboxes** — a lead-loss path, not just a nuisance. Promote out of housekeeping when the flip is done. |
