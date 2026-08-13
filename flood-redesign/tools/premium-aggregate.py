@@ -90,6 +90,9 @@ ALIASES = {
     "new_renewal":  ["neworrenewal", "newrenewalendt", "newrenewal", "transactiontype"],
     "carrier":      ["carriername", "carrier", "programname", "contract"],
     "policy_type":  ["policytype", "typeofinsurance"],
+    # INTERNAL ONLY — used to de-duplicate revised and duplicated files, then
+    # dropped before any aggregation. Never emitted. See dedupe below.
+    "_polid":       ["certificateref", "policynumber", "policyno"],
 }
 
 # Defence in depth. By construction the frame only ever holds the canonical keys
@@ -188,7 +191,8 @@ def main():
                                        header=find_header(f, sh, pd))
                 df = df.loc[:, ~df.columns.astype(str).str.startswith("Unnamed")]
                 m = build_map(df.columns)
-                # A usable sheet needs at least a premium and a state.
+                # A usable sheet needs at least a premium and a state. Sheets
+                # without both are filing summaries, not policy listings.
                 if "premium" not in m or "state" not in m:
                     skipped += 1
                     continue
@@ -207,9 +211,33 @@ def main():
     d = pd.concat(frames, ignore_index=True)
     print(f"  parsed {len(d):,} rows from {len(frames)} sheets ({skipped} skipped)")
 
-    # Guarantee no identifying column survived the alias mapping.
+    # ── DE-DUPLICATE BEFORE ANYTHING ELSE ──────────────────────────────────
+    # The folders contain revised and duplicated files: "May 2025 QBE BDX.xlsx"
+    # alongside "May 2025 QBE BDX REV 07-09-25.xlsx", and "QBE BDX June 2025.xlsx"
+    # filed under BOTH June and July. Summing those double-counts policies and
+    # would quietly skew every published figure.
+    #
+    # Deduping on the policy identifier handles revisions and cross-folder copies
+    # in one step, and removes the need to guess which filename is authoritative
+    # — a guess that fails silently.
+    before = len(d)
+    if "_polid" in d:
+        d["_polid"] = d["_polid"].astype(str).str.strip().str.upper()
+        d = d[d["_polid"].notna() & (d["_polid"] != "") & (d["_polid"] != "NAN")]
+        # keep the last occurrence: later files are revisions of earlier ones
+        d = d.drop_duplicates(subset=["_polid"], keep="last")
+        print(f"  deduped on policy id: {before:,} -> {len(d):,} rows "
+              f"({before - len(d):,} duplicates or revisions removed)")
+    else:
+        d = d.drop_duplicates()
+        print(f"  WARNING: no policy-identifier column found, so dedupe fell back "
+              f"to whole-row matching: {before:,} -> {len(d):,}. Revised files may "
+              f"still be double-counted — check parse-log.txt.")
+
+    # Guarantee no identifying column survived the alias mapping. The internal
+    # policy id goes too, now that dedupe has used it.
     for c in list(d.columns):
-        if any(bad in squash(c) for bad in FORBIDDEN):
+        if c == "_polid" or any(bad in squash(c) for bad in FORBIDDEN):
             d = d.drop(columns=[c])
 
     n = lambda c: pd.to_numeric(d[c], errors="coerce") if c in d else np.nan
