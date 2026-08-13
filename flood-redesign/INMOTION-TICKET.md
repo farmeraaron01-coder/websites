@@ -90,3 +90,29 @@ this cache behaviour stands.
 crawling of those PDFs via robots.txt, which is effective but not the same as `noindex` — a disallowed
 URL can still appear as a bare result if something links to it. The header closes that gap properly.
 Not urgent; bundling it here just saves a second ticket.
+
+## Addition, 13 Aug 2026 — static asset cache headers on californiafloodinsurance.com
+
+Same root cause as the uploads item, so please bundle them.
+
+nginx serves several static paths directly and applies `max-age=604800,
+public, must-revalidate`, overriding the `.htaccess` rules. Confirmed by the
+response carrying two `Cache-Control` headers where nginx handles the file and one
+where Apache does.
+
+Affected, with what we intend:
+
+- `/wp-content/themes/**/*.woff2` — currently 7 days; should be
+  `public, max-age=31536000, immutable`. Fonts never change; they are the clearest
+  case for a long immutable cache.
+- `/wp-content/themes/**/*.css` and `*.js` — currently 7 days; intended 30 days.
+  Lower priority, since these carry `?ver=` query strings.
+- `/wp-content/uploads/**` images — currently 7 days; intended 1 year.
+
+Note `/wp-content/themes/**/*.webp` already returns
+`public, max-age=31536000, immutable`, so the Apache rules do reach some paths —
+we are asking for the nginx layer to stop overriding the rest, not for a new policy.
+
+Also please drop `must-revalidate` on these static types: it forces a conditional
+request on every use after expiry, which is exactly the round trip a long cache is
+meant to avoid.

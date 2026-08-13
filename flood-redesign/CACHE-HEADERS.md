@@ -214,3 +214,41 @@ Local-Lighthouse footnote: this same page measured 62 perf / 8.7s LCP through th
 environment's double proxy, with the trace showing everything loaded by 2.3s. External-
 origin pages cannot be measured from here; PSI is the arbiter (third instance of the
 instrument failing before the site did: font CLS, min-height harness, this).
+
+---
+
+## CORRECTION, 13 Aug 2026 — the earlier "themes go through Apache" test proved the wrong thing
+
+Measured live on California (theme 1.6.0), cache-busted so these are not cached
+artefacts:
+
+| asset | Cache-Control returned | whose rule won |
+|---|---|---|
+| `assets/media/hero-poster.webp` | `public, max-age=31536000, immutable` | **the theme's** |
+| `assets/fonts/inter-v2.woff2` | `max-age=604800` + `public, must-revalidate` | nginx |
+| `style.css` | `max-age=604800` + `public, must-revalidate` | nginx |
+| an uploads `.webp` | `max-age=604800` + `public, must-revalidate` | nginx |
+
+All four are covered by the same `FilesMatch "\.(webp|jpe?g|png|svg|mp4|woff2)$"`
+block, and only one of them obeys it.
+
+**Why the earlier conclusion was wrong.** On 4 Aug we established that
+`/wp-content/themes/` goes through Apache — the evidence being that a *missing*
+file under that path returns WordPress's own 404 page. That test is invalid for
+this question. A missing file falls through to Apache and WordPress precisely
+*because* it is missing; an existing file can still be served by nginx straight off
+disk. Those are different code paths, and the 404 test only exercised the first.
+
+Where nginx handles the file you get **two** Cache-Control headers (its own pair);
+where Apache handles it you get **one** (the theme's). That header count is the
+reliable tell for which layer served a given asset — better than any 404 probe.
+
+**What it costs.** Fonts are the worst case: `woff2` is the most immutable asset on
+the site and is being re-fetched weekly instead of yearly, with `must-revalidate`
+forcing a conditional round trip after expiry. CSS at 7 days instead of 30 matters
+less because it carries `?ver=`. The theme `.webp` is genuinely correct at a year,
+so the original PageSpeed complaint about the hero poster re-downloading is fixed.
+
+**Fix belongs with the host**, in the same nginx change as the uploads header — see
+`INMOTION-TICKET.md`. No `.htaccess` edit can reach an asset nginx serves itself,
+which is the same lesson as the uploads PDFs.
