@@ -7,6 +7,55 @@ files and some had been open since June. Every entry cites where it came from.
 
 ---
 
+## ⚠ TIER 0 — BROKEN NOW. California's sitemap returns 404 (found 13 Aug)
+
+**All three sitemap URLs 404 on `californiafloodinsurance.com`**: `/sitemap_index.xml`,
+`/page-sitemap.xml`, `/post-sitemap.xml`. Statewide's are all 200. Confirmed real rather than cached — a
+`wordpress_logged_in_*` cookie forces `x-proxy-cache: BYPASS` and it still 404s.
+
+**It is a rewrite-rule problem, not a Rank Math problem, and that is why the fix is trivial:**
+
+| URL | Result |
+|---|---|
+| `/?sitemap=1` | **200, valid XML, 2 `<loc>` entries** — Rank Math is generating it fine |
+| `/sitemap.xml` | 301 → `/sitemap_index.xml` — Rank Math is hooked in |
+| `/sitemap_index.xml` | **404 from WordPress**, not from Apache |
+| every normal page, `robots.txt`, `/feed/` | 200 |
+
+Rank Math registers a WordPress rewrite rule mapping `sitemap_index.xml` to `index.php?sitemap=1`. The
+generator works and the query-string form works, so the rule itself is missing from the rewrite table.
+Requests therefore reach WordPress, match nothing, and get the 404 template.
+
+**THE FIX — zero risk, changes no data:** Settings → Permalinks → **Save Changes** on California. That flushes
+and re-registers the rules. If it survives that, re-save Rank Math → Sitemap Settings.
+
+**LIKELY TRIGGER, AND THE LESSON:** the theme was replaced three times on 13 Aug (1.5.7, 1.5.8, 1.5.9) and
+"Replace current with uploaded" re-activates the theme, which flushes rewrite rules. The sitemap worked earlier
+the same session and 404s after. Statewide came through intact, so it is not deterministic — which is exactly
+why it needs checking rather than assuming.
+
+**ADD TO THE POST-DEPLOY CHECK: after any theme upload, fetch `/sitemap_index.xml` and confirm 200.** It is one
+request. Without it this would have sat broken for weeks while Search Console quietly reported "Couldn't
+fetch" — on the site carrying the ad spend.
+
+### CLOSED at the same time — 1.5.9's deny IS live on California
+
+Reported as not working earlier on 13 Aug. That reading was taken before an admin page load had triggered the
+installer. Re-verified now, all 403:
+
+```
+/readme.html                                     403
+/license.txt                                     403
+/wp-content/plugins/seo-by-rank-math/readme.txt  403   <- the version leak, closed
+/wp-includes/ID3/readme.txt                      403
+```
+
+So step 3 is done on both brands and Rank Math's exact version is no longer public. **The lesson is the
+theme's own installer runs on `admin_init`** — it cannot have run during the upload request itself, so a check
+immediately after uploading will always read stale. Load an admin page first, then verify.
+
+---
+
 ## TIER 1 — Credentials. Nothing else on this list can cost as much.
 
 | # | Item | Source |
