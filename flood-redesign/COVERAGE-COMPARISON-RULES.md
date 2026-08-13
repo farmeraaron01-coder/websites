@@ -156,9 +156,20 @@ this stops being a legal argument and becomes a promise the page can make in the
 first person:
 
 > Every private flood policy we place carries the statement that lets your lender
-> accept it without reviewing the policy at all. If anyone tells you they cannot
-> take it, that sentence is on the declarations page and it is the end of the
-> conversation.
+> accept it without reviewing the policy at all.
+
+**Correction to an earlier draft of this file.** I had written that the sentence is
+"the end of the conversation." That overstates it, and the rule's own preamble says
+why. Two limits, both from 84 FR 4953:
+
+- The statement is **not mandatory** for an insurer to print, and **a lender may
+  not reject a policy solely because it is missing.**
+- A lender **may choose not to rely on it** and make its own determination anyway.
+
+So the accurate claim is narrower and still strong: the sentence means a lender
+*may accept without further review*. It removes the friction; it does not forbid a
+lender from looking. Write it that way — an overstated legal claim on a page that
+exists to be trustworthy is a bad trade.
 
 That is concrete, verifiable by the customer the moment they hold the policy, and
 it defuses the single biggest reason people default to the NFIP without ever asking
@@ -186,3 +197,107 @@ Loss of use belongs **next to the price**, not in a features table further down.
 The price section is where a reader decides whether the private option is worth
 more money, and this is the answer to that question. Burying it below the fold
 concedes the argument to whichever competitor shows a lower number.
+
+---
+
+# Verified 13 Aug 2026 — the statute, and where the loss-of-use gap actually is
+
+Kimi's Jobs 1 and 2, archived in `research-2026-08-13/`.
+
+## The statute says exactly what Aaron said
+
+42 U.S.C. § 4012a(b)(7)(B), quoted from uscode.house.gov and corroborated
+word-for-word against govinfo and Cornell LII:
+
+> "provides flood insurance coverage which is at least as broad as the coverage
+> provided under a standard flood insurance policy under the national flood
+> insurance program, including when considering deductibles, exclusions, and
+> conditions offered by the insurer"
+
+The comparator is the NFIP's Standard Flood Insurance Policy — not a homeowners
+policy, not a state minimum. So **"at least as broad as" is quotable.**
+
+**And the regulation explicitly contemplates broader.** 12 CFR 22.2(k)(2)(iv):
+
+> "Any exclusions other than those in an SFIP may pertain only to coverage that is
+> in addition to the amount and type of coverage that could be provided by an SFIP
+> or have the effect of providing broader coverage to the policyholder"
+
+That is the legal foundation for the whole argument: the law sets a floor of "at
+least as broad," and the regulation anticipates private policies going beyond it.
+"At least as broad, and often broader" is not marketing — it is the structure of
+the rule.
+
+## The loss-of-use gap: documented everywhere, monetised almost nowhere
+
+Kimi surveyed 44 unique ranking pages across five queries. **41 mention loss of
+use.** The fact is not a secret. But:
+
+- Only about **six** pages make it the headline argument — and **four of those six
+  are our own network**.
+- Only **five pages quantify it at all.** The only hard private limits anywhere are
+  **$7,500** (USI chart / Chubb base form) and **$25,000** (Flood Insurance Guru).
+- **Nobody prices a California displacement.** No page anywhere sets a Bay Area or
+  LA rent differential over a six-to-twelve month rebuild against the NFIP's $0.
+
+That last line is the opening. The exclusion is common knowledge; the *cost of it*
+is unclaimed ground.
+
+### We already own the asset
+
+`californiafloodinsurance.com/loss-of-use-coverage-in-flood-insurance/` **ranks on
+four of the five queries** (Q2 #3, Q3 #2, Q4 #6, Q5 #3) — the single
+broadest-ranking page in the entire survey, ours or anyone's. Statewide's
+equivalent takes Q5 #10.
+
+So this is not a build. It is an upgrade to a page already ranking, which is a far
+cheaper win than the cost-page rebuild. **Do this first.** What it needs:
+
+1. **California displacement maths.** Rent differential in the metro areas we
+   actually write, over a realistic six-to-twelve month rebuild, against $0. This
+   is the number nobody has published.
+2. **A dollar limit.** Ours are commonly expressed as 10–20% of dwelling cover;
+   competitors' only published figures are $7,500 and $25,000, both beatable.
+3. **The `LossOfUseLimit` measurement** from our own book — what share of policies
+   we placed carried it, at what median limit. Nobody else can produce that.
+
+### Competitors' weak spots, all quotable
+
+- **Allstate ranks #1** for "does flood insurance cover living expenses" — lists the
+  exclusion, sells no private flood, offers no alternative.
+- **Progressive ranks #8** on that query with a page that never mentions living
+  expenses at all.
+- **FEMA ranks #1** for "loss of use flood insurance" with a page that never uses
+  the phrase.
+- **Neptune**, a carrier that sells ALE, writes about hotel exclusions and never
+  says its own policy can cover it.
+- Nine pages **fudge** the exclusion with "standard", "generally" or "most" where it
+  is absolute. Two are outright wrong. Being precise is itself a differentiator.
+
+### Closest real competitor
+
+**Latent Insurance** — puts "The NFIP pays nothing for temporary housing" in a
+top-of-page takeaway, quantifies Chubb's $7,500, and frames a six-month
+displacement. No California pricing and no book of its own. That is the standard to
+beat, and the two gaps are exactly what we can fill.
+
+### Government wordings we can cite (no policy form involved)
+
+- **FEMA booklet, cleanest of all:** "The NFIP does not cover ALE."
+- **FEMA agents.floodsmart:** "Temporary housing and additional living expenses
+  incurred while the building is being repaired or is unable to be occupied."
+- **Insurance Information Institute:** "The National Flood Insurance Program (NFIP)
+  covers physical damage from flood but does not include ALE."
+- **Texas Department of Insurance:** "But NFIP policies don't pay for additional
+  living expenses."
+
+### The California contrast worth building a paragraph on
+
+California law gives homeowners policyholders **at least 24 months** to use their
+ALE coverage — the strongest such protection in the country. On a flood claim under
+an NFIP policy they get **nothing at all**, for any period.
+
+Verify the 24-month provision against the Insurance Code before publishing; it
+appeared in two secondary sources here, not a primary one. If it holds, the
+sentence writes itself: California protects you for two years on your homeowners
+policy and not one day on your federal flood policy.
