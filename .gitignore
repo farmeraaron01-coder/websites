@@ -20,3 +20,29 @@ policies-master.csv
 *.tmp
 *.html.bak
 urls*.txt
+
+# Credentials. Added 13 Aug 2026, before any key existed, because the Search
+# Console API is OAuth-only and the setup for it involves a service account JSON
+# key — and an external agent's instructions for that setup said to "drop the JSON
+# key somewhere on the machine Claude Code runs on", which here means the repo.
+#
+# A GCP service account private key committed to GitHub is a live, NON-EXPIRING
+# credential in permanent history; rotating it later does not remove it. As of
+# today there are already five plaintext credential stores in synced Dropbox
+# (OPEN-ITEMS.md Tier 1), so the failure mode is demonstrated, not theoretical.
+#
+# tools/gsc-pull.py also refuses to run against a key inside this repo. Two
+# mechanisms, because either alone depends on somebody remembering.
+*-credentials.json
+*-credential.json
+gcp-*.json
+*service-account*.json
+*service_account*.json
+gsc-sa*.json
+client_secret*.json
+*.pem
+*.p12
+*.key
+.env
+.env.*
+!.env.example
