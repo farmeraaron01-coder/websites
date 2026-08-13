@@ -86,7 +86,51 @@ cap — evidence that the cap is shaping what gets bought, not what people need.
 - The claims-handling advantage stays written as twelve years of agency
   experience, never dressed up as a statistic.
 
-## Where this goes on the page
+## The real framing: most people were never told they had a choice
+
+Aaron, 13 Aug:
+
+> "customers who chose the NFIP may have no idea they could even buy private and
+> or even buy Loss of Use. many would have had they known it was only available on
+> private policies."
+
+This is a better argument than "private is cheaper," and it is the one that should
+carry the page. The competitor here is not the NFIP. **It is the absence of a
+conversation.**
+
+Most NFIP policies are sold by agents who only sell the NFIP. A lender says "you
+need flood insurance," the agent writes the policy they have, and nobody mentions
+that another market exists — or that it can cover something the federal policy
+cannot cover at all. The customer did not weigh loss of use and decline it. They
+were never shown it.
+
+That changes the tone of every sentence on the page:
+
+- **Not** "the NFIP is worse." It is not worse; it is a federal programme with a
+  fixed form and a statutory duty to insure everyone.
+- **Instead**: here is what exists, here is what each one can and cannot do, and
+  here is the coverage you cannot buy from the federal programme at any price.
+- The call to action is not "switch." It is **"find out what your options actually
+  are"** — which is also the honest description of what the agency does, since we
+  quote both and place whichever wins.
+
+It also explains, without blaming anyone, why a reader's existing agent never
+raised this. It is not incompetence, it is appointment: an agent who is not
+appointed with private flood markets has nothing to offer but the NFIP. Same
+structural point as the sober living work — the adviser's limits quietly become
+the customer's blind spot.
+
+**This is the strongest thing on the page and it needs no data at all.** It should
+be written and shipped ahead of any premium table.
+
+### One claim to verify before it ships
+
+The obvious objection is *"my lender requires the NFIP."* My understanding is that
+federal regulators require lenders to accept a private flood policy that meets the
+regulatory definition — which would remove the objection entirely. **Do not publish
+that until the rule is checked and cited**, same standard as the claims statistic.
+If it holds, it is the natural companion to this section: you have a choice, and
+your lender has to take it.
 
 Loss of use belongs **next to the price**, not in a features table further down.
 The price section is where a reader decides whether the private option is worth
