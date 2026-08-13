@@ -3,16 +3,49 @@
 Apply in the `call-intelligence` repo. This session can't reach that repo, so this is the spec
 plus working code; paste it into desktop Claude Code or apply by hand.
 
-Airtable schema is already updated (base `appRhpJhmEFtj9dlf`):
+Airtable schema is already updated (base `appRhpJhmEFtj9dlf`). Do not create anything —
+just populate.
 
 | Table | New field | Type | ID |
 |---|---|---|---|
-| Calls | `Answering Extension` | singleLineText | `fldFKAmqIrrB8RTvD` |
+| Calls `tbl1otoB3FklSulh3` | `Answering Extension` | singleLineText | `fldFKAmqIrrB8RTvD` |
 | Calls | `Call Party` | singleSelect | `fldSRIqnKtaI5ylb8` |
-| Customer Questions | `Call Party` | singleSelect | `fld8XuCh4A39LrFtQ` |
+| Calls | `Department` | singleSelect | `fld768xS9dG4xUNE9` |
+| Calls | `Office` | singleSelect | `fldTHRd8RecilOd2l` |
+| Customer Questions `tblvBf95M0uMKbwDE` | `Call Party` | singleSelect | `fld8XuCh4A39LrFtQ` |
 | Customer Questions | `Direction` | singleSelect | `fld4BGToP3CnqLvrt` |
 
+New lookup table **`Staff Directory` = `tblzBhKUIyOmBRELl`** (28 rows, pre-populated):
+
+| Field | Type | ID |
+|---|---|---|
+| `Extension` (primary, join key) | singleLineText | `fldDNWRkki6LPqZe3` |
+| `Name` | singleLineText | `fld654my0FTBxD7xo` |
+| `Department` | singleSelect | `fld6bKsBvajgbMnxM` |
+| `Office` | singleSelect | `fldGjKiGCmX2uWkYQ` |
+| `Status` | singleSelect (Active/Former) | `fldDSgfTeBbOAWTn1` |
+| `Recording Enabled` | checkbox | `fldpZ3URjSiokqOb0` |
+| `Notes` | multilineText | `fldOU8acbxD09cgim` |
+
 `Call Party` choices: `Customer`, `Carrier`, `Lender`, `Internal`, `Vendor/Other`, `Unknown`.
+
+`Department` choices (both tables): `Jump Insurance - Personal`, `Jump Insurance - Commercial`,
+`Jump Insurance - Service`, `Jump Trucking`, `California Flood`, `Billing / Accounting`,
+`Operations / Admin`, `Management`, `Unassigned`.
+
+`Office` choices: `San Diego`, `Palm Desert`, `Remote`, `Unassigned`.
+
+### The goal this unlocks
+
+```
+Department starts with "Jump Insurance"
+  AND Call Party = Customer
+  AND Direction  = Inbound
+```
+
+That is the query that currently returns almost nothing. 84% of what looked like Jump
+lender/mortgagee questions turned out to be flood, and only 20 inbound calls in the whole
+dataset are identifiable as Home/Auto. Everything below exists to make that filter real.
 
 ---
 
@@ -102,6 +135,43 @@ if ((!fields['Agent'] || fields['Agent'] === 'Unknown') && answered) {
     || `ext ${answered.extensionNumber}`;
 }
 ```
+
+### Then join to Staff Directory for Department / Office
+
+Read the lookup table once per run so departments can be maintained in Airtable rather than
+in code:
+
+```js
+// GET Staff Directory (tblzBhKUIyOmBRELl) once at startup
+const staffDirectory = new Map();   // extension -> { name, department, office, status }
+// key on the Extension field exactly as a string; rows may include 'n/a' for former staff
+
+const answered = findAnsweringExtension(record);
+fields['Answering Extension'] = answered ? answered.extensionNumber : '';
+
+const staff = answered ? staffDirectory.get(answered.extensionNumber) : null;
+fields['Department'] = (staff && staff.department) || 'Unassigned';
+fields['Office']    = (staff && staff.office)     || 'Unassigned';
+
+if ((!fields['Agent'] || fields['Agent'] === 'Unknown')) {
+  fields['Agent'] = (staff && staff.name)
+    || (answered && answered.name)
+    || (answered ? `ext ${answered.extensionNumber}` : 'Unknown');
+}
+```
+
+Prefer the Staff Directory name over the RingCentral leg name — it survives staff leaving
+(Gabriela Flores has historical calls but no current directory entry).
+
+Two known ambiguities to be aware of, both flagged in the table's Notes:
+- **Ron Mullins (203)** and **Dania Merry (215)** are Jump Insurance people who also sit in the
+  **Jump Trucking Sales** queue. Extension-based attribution will label their queue calls with
+  whatever Department the table says, which may not match the call's actual book of business.
+- **Aaron Farmer** has two extensions (208 and 5050) — dedupe when reporting by person.
+
+If those cases matter, a later refinement is to prefer the *queue* the call arrived through
+over the answering agent's home department. Don't build that yet; get extension attribution
+working first and see whether it's actually a problem.
 
 ### Backfill
 
