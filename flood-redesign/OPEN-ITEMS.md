@@ -7,7 +7,7 @@ files and some had been open since June. Every entry cites where it came from.
 
 ---
 
-## ⚠ TIER 0 — BROKEN NOW. California's sitemap returns 404 (found 13 Aug)
+## TIER 0 — ~~BROKEN~~ FIXED 13 Aug. California's sitemap 404 (found and closed same day)
 
 **All three sitemap URLs 404 on `californiafloodinsurance.com`**: `/sitemap_index.xml`,
 `/page-sitemap.xml`, `/post-sitemap.xml`. Statewide's are all 200. Confirmed real rather than cached — a
@@ -26,8 +26,23 @@ Rank Math registers a WordPress rewrite rule mapping `sitemap_index.xml` to `ind
 generator works and the query-string form works, so the rule itself is missing from the rewrite table.
 Requests therefore reach WordPress, match nothing, and get the 404 template.
 
-**THE FIX — zero risk, changes no data:** Settings → Permalinks → **Save Changes** on California. That flushes
-and re-registers the rules. If it survives that, re-save Rank Math → Sitemap Settings.
+**THE FIX, AND IT WORKED:** Settings → Permalinks → **Save Changes** on California. Nothing else. Verified
+immediately after:
+
+| URL | Status | Entries |
+|---|---|---|
+| `/sitemap_index.xml` | 200 | 2 |
+| `/page-sitemap.xml` | 200 | **42** |
+| `/post-sitemap.xml` | 200 | **20** |
+
+42 and 20 match the counts taken before it broke, so it is fully restored rather than partially rebuilt. Then a
+full sweep: **62/62 sitemap URLs 200, 0 noindex leaks**, and every change made during the day still holding —
+`/page/2/` 404 on both brands, `/wp-includes/` 403, the Rank Math plugin directory 403, `readme.html` 403 on
+both, homepage and `/get-a-quote/` 200.
+
+**Aaron's report was "I hit save but I don't think that did anything."** He was right to doubt it — WordPress
+says only "Permalink structure updated" and gives no indication it rebuilt anything. **A flush that works looks
+identical to a flush that does nothing.** Verify from outside; never take the admin notice as confirmation.
 
 **LIKELY TRIGGER, AND THE LESSON:** the theme was replaced three times on 13 Aug (1.5.7, 1.5.8, 1.5.9) and
 "Replace current with uploaded" re-activates the theme, which flushes rewrite rules. The sitemap worked earlier
