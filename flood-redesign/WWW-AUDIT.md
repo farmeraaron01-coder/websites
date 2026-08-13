@@ -178,15 +178,32 @@ test is whether impressions on this property trend to zero over the coming weeks
 **So there is nothing further to build.** The redirect is right, the canonical is right, and the one external
 signal contradicting them is now fixed. This is a wait-and-recheck item, not a work item.
 
-### Recommended: add a Domain property and stop reading split data
+### ~~Recommended: add a Domain property~~ IT ALREADY EXISTS. Use it.
 
-Reporting for this site is currently spread across at least four URL-prefix properties (`http`/`https` ×
-`www`/apex), which is why no single view showed the whole picture and why the `www` share was invisible until
-someone exported one property on its own.
+Recommended adding one, then Aaron's property list showed it was already there. In Search Console's property
+picker, an entry shown **without** a protocol prefix is a Domain property. California already has all of:
 
-**A Domain property (`sc-domain:californiafloodinsurance.com`) covers every hostname and protocol in one view.**
-Verification is a DNS TXT record. **Do not touch the existing `google-site-verification` TXT records when adding
-it** — add, never replace.
+```
+californiafloodinsurance.com            <- Domain property, covers every hostname and protocol
+https://californiafloodinsurance.com/   <- URL-prefix
+http://www.californiafloodinsurance.com/ <- URL-prefix, the one exported above
+```
+
+`arizonafloodinsurance.net` and `cheaplandlordinsurance.com` are Domain properties too, while
+`cheapearthquakeinsurance.com` is registered only as `https://…/` URL-prefix. So the estate is mixed.
+
+**So nothing to add — just read the right one.** Default to the **`californiafloodinsurance.com`** Domain
+property for anything about the site as a whole. **And keep the `http://www…` URL-prefix property**, because
+isolating one hostname is exactly what made the `www` share measurable; a Domain property would have averaged it
+into invisibility.
+
+That is the real lesson: **the split properties were not the problem, reading the wrong one was.** A Domain
+property answers "how is the site doing"; a URL-prefix property answers "how is this hostname doing". Both are
+needed and both already exist.
+
+Worth a scroll: confirm `statewidefloodinsurance.com` also has a Domain property, and consider adding one for
+`cheapearthquakeinsurance.com`. If any is added, **do not touch the existing `google-site-verification` TXT
+records** — add, never replace.
 
 ### One opportunity spotted in passing, for the content thread rather than this one
 
