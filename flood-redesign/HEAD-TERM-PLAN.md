@@ -146,3 +146,85 @@ on California flood events, and genuinely citable first-party data from Step 3.
 - **The business case is not the clicks alone.** Google CPC is already 1,631 sessions of 3,938 (48% of traffic is
   paid). Every organic position gained on a term that is currently bought reduces dependence on paid clicks for
   the same intent.
+
+---
+
+## Review of the Kimi report, 13 Aug — one excellent idea, and a false centrepiece
+
+Aaron relayed a second external analysis. **Its headline finding does not survive checking, and its best idea is
+better than anything in this document.** Both matter, so both are recorded.
+
+### VERIFIED FALSE — the "three broken title tags"
+
+It called this "the smoking gun." All three pages were fetched live, cache-busted:
+
+| URL | Claimed title | **Actual title** |
+|---|---|---|
+| `/which-flood-zone-requires-flood-insurance/` | "Frequently Asked Questions" | **Which Flood Zone Requires Flood Insurance? (CA Guide)** |
+| `/navigating-flood-zone-x/` | "How Much Does Flood…" (wrong page) | **Flood Zone X: Do You Need Flood Insurance in California? (2026)** |
+| `/residential/` | "Residential" | **Residential Flood Insurance in California: NFIP & Private** |
+
+**Every title is correct, specific and well-formed.** The estimate built on top of this — "roughly 30–50 extra
+clicks per quarter" — has nothing under it.
+
+**The tell was in the diagnosis, not the data:** it attributed the fault to *"a Divi/Yoast template variable
+misfiring."* **This site runs Kadence and Rank Math.** Divi was removed and Yoast was never installed. An agent
+that infers the stack rather than reading it is inferring the rest too.
+
+### VERIFIED FALSE — AI crawlers being blocked, and robots.txt not responding
+
+`robots.txt` returns **200 to GPTBot, ClaudeBot, PerplexityBot and curl**, and its only rules are `/wp-admin/`
+and the claim PDFs. Nothing is blocked. `sitemap_index.xml` also returns 200 to all four.
+
+### ALREADY FIXED — the "junk in the index"
+
+`/mobile/contact.php`, `/tag/nfip/`, `/tag/flood-insurance/` and `/residential-flood-insurance/` **all return 404
+with `noindex`.** Those are Divi-era URLs; the impressions it saw are Search Console's 90-day history, not live
+pages. No action.
+
+### CORROBORATED — three things it got right
+
+- **`wp-includes/` and `wp-content/` paths indexed.** Correct, and the cause and fix are in
+  `california-hardening.conf`. Independently found the same day.
+- **`http://www` indexed separately.** Correct, and now quantified in `WWW-AUDIT.md` — though its figure of 1,245
+  impressions does not match the actual export's **15,479**, so use the export.
+- **"robots.txt and sitemap didn't respond to my crawler."** Half right, and worth the credit: **the sitemap was
+  genuinely returning 404** for part of 13 Aug after a theme replace dropped the rewrite rule. It may have crawled
+  inside that window. `robots.txt` was never affected.
+
+### THE ONE THING WORTH MORE THAN THIS WHOLE DOCUMENT — address-level queries
+
+It reports hundreds of impressions on queries like `525 b street san diego fema flood zone` (68 impressions,
+position 9.1) and `9725 scranton road san diego flood zone` (~68, ~9.9), with the **city pages** ranking for them.
+
+**If those numbers are real, this is the best opportunity on the site and neither this document nor the 11 Aug
+audit spotted it.** The intent is unbeatable: somebody typing a street address plus "flood zone" is an escrow
+officer, a lender or a buyer **mid-transaction**, needing an answer today. That is not research traffic, it is a
+deal in progress.
+
+A **flood zone lookup by address** — or address-level modules on the city pages — would own a cluster nobody
+else is serving, and it fits the business rather than just the ranking. **Verify the query data first**, then
+treat it as a product decision, not an SEO task.
+
+### Unverifiable from here — the per-page table
+
+Its page-level impressions and positions cannot be checked without the **apex** property export; the export we
+have is the `www` property, which covers the homepage only. Its numbers may well be right, and if so the table is
+genuinely useful — it names `/how-much-does-flood-insurance-cost/` (2,579 impressions, position 17.8) as the
+biggest single opportunity, and flags `/residential/` at 38.1 and striking-distance zone pages.
+
+**One export settles both its table and Step 0 of this plan**: Domain property → Performance → 3 months →
+Pages tab, plus the same filtered to `flood insurance california`.
+
+### Where the two plans agree, and what each missed
+
+**Agreed:** real cost data from the book of business is the highest-value content asset, internal links to
+striking-distance pages are cheap and effective, and the cost page deserves priority.
+
+**It missed** the cannibalization entirely — that `/contact-us/` outranks the homepage for the head term, and
+that the two keyword-named pages have 2 internal links each.
+
+**This document missed** address-level queries.
+
+**The rule this produces:** an external page-level claim is worth exactly one `curl` before anyone acts on it.
+Query-level claims cannot be checked that way, so they need the export.
