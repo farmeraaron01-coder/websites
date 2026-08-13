@@ -2,14 +2,13 @@
 """
 Aggregate the RBIA flood bordereaux into publishable cost statistics.
 
-RUN THIS ON AARON'S MACHINE, against the local Dropbox folder. The bordereaux
-contain insured names and street addresses; this script reads them locally and
-writes ONLY aggregates, so no personal data transits anywhere or lands in the
-websites repo.
+Reads the carrier bordereaux locally and writes ONLY aggregates, so no personal
+data lands in the websites repo. The source workbooks carry `Insured (Full Name)`
+and `Street Address`; those columns are never mapped, and a FORBIDDEN sweep drops
+anything that slips through.
 
-    python3 premium-aggregate.py \
-        --root "C:/Users/AaronFarmer/Farmer Agency Dropbox/Aaron Farmer/P Drive - Flood 2/RBIA Bordereaux" \
-        --out  ./premium-aggregates
+    python3 premium-aggregate.py --root ./bdx --out ./premium-aggregates
+    python3 premium-aggregate.py --root ./bdx --out ./out-all --state ALL
 
 Needs: pip install pandas openpyxl xlrd
 
@@ -17,7 +16,7 @@ WHY THE OUTPUT IS SHAPED THIS WAY
 `/how-much-does-flood-insurance-cost/` draws 19,311 impressions at position 17.4
 — the largest pool on the site, stuck on page two — because it answers the
 question generically. The fix is a real number for the reader's own county and
-zone. Everything here exists to produce those numbers defensibly.
+coverage level. Everything here exists to produce those numbers defensibly.
 
 TWO RULES, ENFORCED IN CODE RATHER THAN BY EYE
   1. MIN_N. No cell is emitted below the threshold. "Average premium in Alpine
@@ -33,6 +32,15 @@ Comparing a bare private premium against FEMA's `policyCost` overstates the
 private advantage, because only one side carries its fees. Both sides are
 totalled or neither is.
 
+BUT THE TAX COLUMNS ONLY EXIST ON THE NEWER FILES. The legacy carrier layouts
+(QBE / Brit / Hiscox monthly bordereaux, 2023 through most of 2025) carry
+`Gross Premium` and `Policy Fee` and nothing else. Only the Instanda-era files
+carry `surpluslinestax` / `stampingfee` (and 2026 adds `FireMarshalTax`). So the
+total is fully loaded for some rows and premium+fee for others. `_meta` reports
+what fraction of rows carried each component under `fee_coverage`; any published
+figure has to be labelled with that, because a partly-loaded private total
+understates private cost and therefore FLATTERS the private-vs-NFIP gap.
+
 THE SELECTION EFFECT, AND WHY IT IS A FEATURE
 Aaron: "we write the policies that generally have the lowest premium, so if NFIP
 was lowest they would have gotten the business."
@@ -47,6 +55,15 @@ quote data: "clients who shopped both and placed privately paid a median of X."
 That is the outcome of shopping, which is the thing a buyer actually wants. The
 report must say this plainly; a reader who works it out unaided will distrust
 everything else on the page.
+
+ALL CARRIERS, NOT JUST THE BIGGEST ONE
+Per Aaron: Hiscox writes very competitively in particular California areas. The
+new-system files confirm the scale — QBE 428, Hiscox 308, Brit 192 — so a
+QBE-only book would drop roughly a third of the policies and would misstate the
+low end of the market, which is exactly the part a price page is about. Every
+carrier is pooled. The per-carrier breakdown is computed only as a data-quality
+check and is written to a separate gitignored file, never to the published
+aggregates: carrier-level pricing is not ours to publish.
 """
 
 import argparse
@@ -54,7 +71,6 @@ import json
 import os
 import re
 import sys
-from collections import defaultdict
 
 MIN_N = 10          # suppression floor for any published cell
 MIN_N_CITY = 20     # stricter for city level, where cells are smaller
@@ -65,9 +81,10 @@ MIN_N_CITY = 20     # stricter for city level, where cells are smaller
 ALIASES = {
     "premium":      ["grosspremium", "grosspremiumpaidthistime", "premium",
                      "grosswrittenpremium", "annualpremium", "totalpremium"],
-    "policy_fee":   ["policyfee", "fee", "mgafee", "inspectionfee"],
-    "sl_tax":       ["surpluslinestax", "sltax", "surplustax", "tax"],
+    "policy_fee":   ["policyfee", "mgafee", "inspectionfee"],
+    "sl_tax":       ["surpluslinestax", "sltax", "surplustax"],
     "stamping_fee": ["stampingfee", "stampfee"],
+    "fire_tax":     ["firemarshaltax", "firemarshalltax"],
     "bldg_limit":   ["buildinglimit", "bdxbuilidngtiv", "bdxbuildingtiv",
                      "buildingtiv", "buildingcoverage", "coveragea"],
     "cont_limit":   ["contentslimit", "contentstiv", "contentscoverage", "coveragec"],
@@ -87,8 +104,16 @@ ALIASES = {
     "community":    ["communityname", "nfipcommunityname"],
     "eff_date":     ["policyeffectivedate", "riskinceptiondate", "saledate",
                      "effectivedate", "policyissuancedate"],
-    "new_renewal":  ["neworrenewal", "newrenewalendt", "newrenewal", "transactiontype"],
-    "carrier":      ["carriername", "carrier", "programname", "contract"],
+    # Three separate transaction signals, because no single one is present in
+    # every layout and they disagree about vocabulary. See TXN_EXCLUDE.
+    "new_renewal":  ["neworrenewal", "newrenewalendt", "newrenewal", "renewalflag"],
+    "txn_type":     ["transactiontype"],
+    "sale_stage":   ["salestage"],
+    # NOT "contract": the later legacy files carry a `Contract` column holding the
+    # Lloyd's binder reference (B1230YA000470Z), which is a binding authority
+    # reference and not a carrier at all. Mapping it produced a carrier breakdown
+    # of meaningless codes.
+    "carrier":      ["carriername", "programname", "carrier"],
     "policy_type":  ["policytype", "typeofinsurance"],
     # INTERNAL ONLY — used to de-duplicate revised and duplicated files, then
     # dropped before any aggregation. Never emitted. See dedupe below.
@@ -101,15 +126,41 @@ ALIASES = {
 #
 # Tokens are deliberately specific. A bare "name" would match the legitimate
 # `community` field (NFIP community name) and silently delete the geography that
-# makes zone analysis possible, which is a worse failure than the one it guards
-# against.
+# makes the area analysis possible, which is a worse failure than the one it
+# guards against.
 FORBIDDEN = ["insuredname", "insuredfull", "fullname", "companyname",
              "streetaddress", "certificateref", "quoteref",
              "uniquemarketreference", "policyno", "policynumber",
              "commission", "brokername", "licensenumber"]
 
-COVERAGE_BANDS = [(0, 250_000, "up to $250k"), (250_000, 500_000, "$250k–500k"),
-                  (500_000, 1_000_000, "$500k–1M"), (1_000_000, 10**12, "$1M+")]
+# Rows that are not a policy's annual cost. Endorsements are mid-term changes
+# carrying a partial (often negative) premium; cancellations carry a return
+# premium. Including either drags the median toward zero. In the 2023 files alone
+# there are 52 endorsement rows with premiums down to -$1,065.
+TXN_EXCLUDE = ("end", "endt", "endorse", "endorsement", "cancel", "cancelled",
+               "cancellation", "xln", "return", "flatcancel", "reinstate")
+
+# Full names appear alongside codes in the same column ("CA" 1369, "CALIFORNIA"
+# 19). Left unnormalised they split into two cells and both may fall below MIN_N.
+STATE_MAP = {
+    "CALIFORNIA": "CA", "WASHINGTON": "WA", "ARIZONA": "AZ", "OREGON": "OR",
+    "TEXAS": "TX", "NEVADA": "NV", "FLORIDA": "FL", "ILLINOIS": "IL",
+    "OHIO": "OH", "CONNECTICUT": "CT", "MASSACHUSETTS": "MA",
+    "PENNSYLVANIA": "PA", "NEW JERSEY": "NJ", "NEW YORK": "NY",
+    "COLORADO": "CO", "UTAH": "UT", "IDAHO": "ID", "MONTANA": "MT",
+    "GEORGIA": "GA", "VIRGINIA": "VA", "MARYLAND": "MD", "MISSOURI": "MO",
+    "MICHIGAN": "MI", "MINNESOTA": "MN", "TENNESSEE": "TN", "ALABAMA": "AL",
+    "LOUISIANA": "LA", "SOUTH CAROLINA": "SC", "NORTH CAROLINA": "NC",
+    "OKLAHOMA": "OK", "ARKANSAS": "AR", "KANSAS": "KS", "IOWA": "IA",
+    "WISCONSIN": "WI", "INDIANA": "IN", "KENTUCKY": "KY", "NEW MEXICO": "NM",
+    "HAWAII": "HI", "ALASKA": "AK", "MAINE": "ME", "VERMONT": "VT",
+    "NEW HAMPSHIRE": "NH", "RHODE ISLAND": "RI", "DELAWARE": "DE",
+    "WEST VIRGINIA": "WV", "MISSISSIPPI": "MS", "NEBRASKA": "NE",
+    "WYOMING": "WY", "SOUTH DAKOTA": "SD", "NORTH DAKOTA": "ND",
+}
+
+COVERAGE_BANDS = [(0, 250_000, "up to $250k"), (250_000, 500_000, "$250k-500k"),
+                  (500_000, 1_000_000, "$500k-1M"), (1_000_000, 10**12, "$1M+")]
 
 
 def squash(s):
@@ -162,7 +213,7 @@ def main():
         sys.exit("Install dependencies first:\n  pip install pandas openpyxl xlrd")
 
     ap = argparse.ArgumentParser()
-    ap.add_argument("--root", required=True, help="RBIA Bordereaux folder")
+    ap.add_argument("--root", required=True, help="bordereaux folder")
     ap.add_argument("--out", default="./premium-aggregates")
     ap.add_argument("--state", default="CA", help="state filter, or ALL")
     ap.add_argument("--min-n", type=int, default=MIN_N)
@@ -192,16 +243,28 @@ def main():
                 df = df.loc[:, ~df.columns.astype(str).str.startswith("Unnamed")]
                 m = build_map(df.columns)
                 # A usable sheet needs at least a premium and a state. Sheets
-                # without both are filing summaries, not policy listings.
+                # without both are filing summaries or tax registers, not policy
+                # listings (the SLIP invoice register is correctly skipped here).
                 if "premium" not in m or "state" not in m:
                     skipped += 1
+                    log.append(f"SKIP {os.path.relpath(f, a.root)} [{sh}] "
+                               f"no premium+state; cols={len(df.columns)}")
                     continue
                 keep = {canon: df[col] for canon, col in m.items()}
                 sub = pd.DataFrame(keep)
                 sub["_src"] = os.path.relpath(f, a.root)
+                # Whether the geography is the RISK location or merely the
+                # insured's MAILING address. The legacy carrier layouts carry
+                # City/County for the risk; the Instanda layout carries only
+                # "Insured Mailing Address (City)" and no county at all. For a
+                # landlord those are different places, so mailing-derived rows
+                # must never feed a city or county cell.
+                city_col = squash(m.get("city", ""))
+                sub["_geo"] = "mailing" if "mailing" in city_col else "risk"
                 frames.append(sub)
                 log.append(f"OK   {os.path.relpath(f, a.root)} [{sh}] "
-                           f"{len(sub)} rows, fields={sorted(m)}")
+                           f"{len(sub)} rows, geo={sub['_geo'].iloc[0] if len(sub) else '-'}, "
+                           f"fields={sorted(m)}")
         except Exception as e:
             skipped += 1
             log.append(f"FAIL {os.path.relpath(f, a.root)}: {str(e)[:90]}")
@@ -211,11 +274,30 @@ def main():
     d = pd.concat(frames, ignore_index=True)
     print(f"  parsed {len(d):,} rows from {len(frames)} sheets ({skipped} skipped)")
 
-    # ── DE-DUPLICATE BEFORE ANYTHING ELSE ──────────────────────────────────
+    # ── DROP NON-POLICY TRANSACTIONS FIRST ─────────────────────────────────
+    # This has to happen BEFORE the dedupe. An endorsement usually shares its
+    # Certificate Ref with the original policy, so deduping first would keep the
+    # endorsement (it sorts last) and throw the real premium away.
+    before = len(d)
+    txn_dropped = {}
+    for col in ("new_renewal", "txn_type", "sale_stage"):
+        if col not in d:
+            continue
+        v = d[col].astype(str).map(squash)
+        bad = v.isin(TXN_EXCLUDE) | v.str.contains(
+            "endorse|cancel|return|reinstate", regex=True, na=False)
+        txn_dropped[col] = int(bad.sum())
+        d = d[~bad]
+    print(f"  dropped non-policy transactions (endorsements/cancellations): "
+          f"{before:,} -> {len(d):,}  {txn_dropped}")
+
+    # ── DE-DUPLICATE ───────────────────────────────────────────────────────
     # The folders contain revised and duplicated files: "May 2025 QBE BDX.xlsx"
-    # alongside "May 2025 QBE BDX REV 07-09-25.xlsx", and "QBE BDX June 2025.xlsx"
-    # filed under BOTH June and July. Summing those double-counts policies and
-    # would quietly skew every published figure.
+    # alongside "May 2025 QBE BDX REV 07-09-25.xlsx", "Old" copies, a Dropbox
+    # "conflicted copy", and "QBE BDX June 2025.xlsx" filed under BOTH June and
+    # July. The Instanda-era monthly files also restate earlier months: 206 of
+    # 795 certificate refs there repeat, some up to four times. Concatenating
+    # them double-counts policies and would quietly skew every published figure.
     #
     # Deduping on the policy identifier handles revisions and cross-folder copies
     # in one step, and removes the need to guess which filename is authoritative
@@ -234,6 +316,20 @@ def main():
               f"to whole-row matching: {before:,} -> {len(d):,}. Revised files may "
               f"still be double-counted — check parse-log.txt.")
 
+    # Keep the carrier for an internal-only quality check. Only the Instanda-era
+    # layout has a CarrierName column, so fall back to the source filename, which
+    # names the carrier reliably across the whole book ("2024-08-QBE.xlsx"). This
+    # is what makes the check able to catch a carrier that silently failed to
+    # parse — the pooled median would otherwise hide it.
+    if "carrier" in d:
+        carrier = d["carrier"].astype(str).str.strip()
+    else:
+        carrier = pd.Series("", index=d.index)
+    from_name = d["_src"].astype(str).str.extract(
+        r"(?i)(QBE|BRIT|Hiscox|Instanda|H2Quoter|RBIA|CFIS)", expand=False)
+    blank = carrier.isin(["", "nan", "NaN", "None"]) | carrier.isna()
+    carrier = carrier.mask(blank, from_name).fillna("unknown").str.title()
+
     # Guarantee no identifying column survived the alias mapping. The internal
     # policy id goes too, now that dedupe has used it.
     for c in list(d.columns):
@@ -242,21 +338,96 @@ def main():
 
     n = lambda c: pd.to_numeric(d[c], errors="coerce") if c in d else np.nan
     d["_prem"] = n("premium")
-    for comp in ("policy_fee", "sl_tax", "stamping_fee"):
-        d["_" + comp] = n(comp).fillna(0) if comp in d else 0.0
-    # Total cost to the customer — both sides totalled, or neither.
-    d["_total"] = d["_prem"] + d["_policy_fee"] + d["_sl_tax"] + d["_stamping_fee"]
+    fee_cov = {}
+    for comp in ("policy_fee", "sl_tax", "stamping_fee", "fire_tax"):
+        if comp in d:
+            vals = n(comp)
+            fee_cov[comp] = int(vals.notna().sum())
+            d["_" + comp] = vals.fillna(0)
+        else:
+            fee_cov[comp] = 0
+            d["_" + comp] = 0.0
+    # As recorded in the files. For most rows this is premium + policy fee only,
+    # because the legacy carrier layouts have no tax columns at all.
+    d["_total_recorded"] = (d["_prem"] + d["_policy_fee"] + d["_sl_tax"]
+                            + d["_stamping_fee"] + d["_fire_tax"])
+
+    # ── LOAD THE MISSING TAXES, FROM THIS BOOK'S OWN MEASURED RATES ─────────
+    # Comparing a private total that omits surplus lines tax against FEMA's
+    # fully-loaded `policyCost` would flatter the private side — the same error
+    # as comparing a bare premium to policyCost, just smaller. Rather than assert
+    # a statutory rate from memory, measure the ratio on the rows that DO record
+    # it and apply that to the rows that do not.
+    #
+    # Measured on this book: surplus lines tax runs ~3.56% of premium (it exceeds
+    # the 3% statutory rate because the taxable base includes the policy fee) and
+    # the stamping fee ~0.21%.
+    has_tax = d["_sl_tax"] > 0
+    if has_tax.any():
+        r_tax = float((d.loc[has_tax, "_sl_tax"] / d.loc[has_tax, "_prem"]).median())
+        r_stamp = float((d.loc[has_tax, "_stamping_fee"] / d.loc[has_tax, "_prem"]).median())
+    else:
+        r_tax = r_stamp = 0.0
+    modelled = (~has_tax) * d["_prem"] * (r_tax + r_stamp)
+    d["_total"] = d["_total_recorded"] + modelled
+    tax_model = {
+        "rows_with_recorded_tax": int(has_tax.sum()),
+        "rows_with_modelled_tax": int((~has_tax).sum()),
+        "measured_sl_tax_pct_of_premium": round(100 * r_tax, 3),
+        "measured_stamping_fee_pct_of_premium": round(100 * r_stamp, 3),
+        "note": ("`total` loads surplus lines tax and stamping fee onto rows whose layout "
+                 "omitted those columns, at the median rate measured on the rows that "
+                 "recorded them. `total_recorded` is the unloaded figure. Use `total` for "
+                 "any comparison against FEMA policyCost, which is fully loaded."),
+    }
     d["_bldg"] = n("bldg_limit")
+
+    # ── NORMALISE THE CATEGORICAL KEYS ─────────────────────────────────────
+    # Deductible arrives as "5,000", "$5,000", "5000" and "5000.0" — four spellings
+    # of one value, which split into four cells and can each fall below MIN_N.
+    if "bldg_deduct" in d:
+        dd = pd.to_numeric(d["bldg_deduct"].astype(str)
+                           .str.replace(r"[^0-9.]", "", regex=True), errors="coerce")
+        # A deductible equal to the building limit, or below $250, is a data entry
+        # error rather than a real term.
+        dd = dd.where((dd >= 250) & (dd < d["_bldg"].fillna(np.inf)))
+        d["_deduct"] = dd.map(lambda v: f"${v:,.0f}" if pd.notna(v) else None)
+
+    # Occupancy uses two vocabularies: the legacy files say Owner / Tenant, the
+    # Instanda files say Primary Home / Property Rented To Others / Secondary.
+    # Aaron: "tenant vs owner means that some are landlord or rental properties vs
+    # owner occupied." Verified empirically before trusting it — 99.7% of `Tenant`
+    # rows carry a $250,000 BUILDING limit, so `Tenant` is the landlord of a rental,
+    # not a renter insuring contents only. That distinction matters because the
+    # NFIP's $250 HFIAA surcharge falls on exactly this group.
+    OCC_GROUP = {
+        "owner": "owner-occupied", "primary": "owner-occupied",
+        "primaryhome": "owner-occupied", "owneroccupied": "owner-occupied",
+        "tenant": "rental / non-owner-occupied",
+        "propertyrentedtoothers": "rental / non-owner-occupied",
+        "rental": "rental / non-owner-occupied",
+        "secondaryseasonalhome": "secondary / seasonal",
+        "secondary": "secondary / seasonal",
+    }
+    if "occupancy" in d:
+        d["_occ_group"] = d["occupancy"].astype(str).map(
+            lambda v: OCC_GROUP.get(squash(v)))
     d["_per100k"] = np.where(d["_bldg"] > 0, d["_total"] / (d["_bldg"] / 100_000), np.nan)
     d["_band"] = d["_bldg"].apply(band)
     if "eff_date" in d:
         d["_year"] = pd.to_datetime(d["eff_date"], errors="coerce").dt.year
 
     d = d[d["_prem"] > 0]
-    if a.state.upper() != "ALL" and "state" in d:
+    if "state" in d:
         st = d["state"].astype(str).str.strip().str.upper()
-        d = d[st.isin([a.state.upper(), {"CA": "CALIFORNIA"}.get(a.state.upper(), "")])]
+        d["state"] = st.map(lambda x: STATE_MAP.get(x, x))
+    if a.state.upper() != "ALL" and "state" in d:
+        d = d[d["state"] == a.state.upper()]
+    if carrier is not None:
+        carrier = carrier.reindex(d.index)
     print(f"  {len(d):,} rows after filters (state={a.state})")
+    if not len(d):
+        sys.exit("  Nothing left after filtering. Check --state.")
 
     def stats(g, min_n):
         v = g["_total"].dropna()
@@ -267,6 +438,9 @@ def main():
                "total_p25": round(float(v.quantile(.25)), 2),
                "total_median": round(float(v.median()), 2),
                "total_p75": round(float(v.quantile(.75)), 2)}
+        rec = g["_total_recorded"].dropna()
+        if len(rec):
+            out["total_recorded_median"] = round(float(rec.median()), 2)
         if len(p) >= min_n:
             out.update({"per100k_p25": round(float(p.quantile(.25)), 2),
                         "per100k_median": round(float(p.median()), 2),
@@ -276,31 +450,61 @@ def main():
             out["median_building_limit"] = round(float(bl.median()), 0)
         return out
 
+    risk_geo = int((d["_geo"] == "risk").sum()) if "_geo" in d else 0
     results = {"_meta": {
         "rows_analysed": int(len(d)),
         "state": a.state,
         "min_n": a.min_n,
         "min_n_city": max(a.min_n, MIN_N_CITY),
-        "total_cost_definition": "premium + policy fee + surplus lines tax + stamping fee",
+        "total_cost_definition": "gross premium + policy fee + surplus lines tax "
+                                 "+ stamping fee + fire marshal tax, where present",
+        "fee_coverage": fee_cov,
+        "tax_model": tax_model,
+        "fee_coverage_note": ("The legacy carrier layouts carry only Gross Premium and "
+                             "Policy Fee; surplus lines tax and stamping fee appear only "
+                             "in the Instanda-era files. Where they are absent the total "
+                             "is premium+fee, which UNDERSTATES private cost and therefore "
+                             "flatters any private-vs-NFIP comparison. Label accordingly."),
+        "rows_with_risk_location": risk_geo,
+        "rows_with_mailing_location_only": int(len(d)) - risk_geo,
+        "geo_note": ("City and county cells are built ONLY from rows whose geography is the "
+                     "risk location. The Instanda layout carries the insured's mailing "
+                     "address instead, which for a landlord is a different place."),
         "selection_note": ("This book contains policies where private coverage was placed, "
                            "which happens when it beat the NFIP alternative. It is therefore "
                            "the outcome of shopping both, not a sample of private pricing."),
-        "suppression_note": f"cells below n={a.min_n} are omitted, n={max(a.min_n, MIN_N_CITY)} for cities",
+        "suppression_note": f"cells below n={a.min_n} are omitted, "
+                            f"n={max(a.min_n, MIN_N_CITY)} for cities",
+        "outlier_note": "Commercial schedules share these files with homeowner policies "
+                        "(premiums range past $200,000 against a median near $600), so every "
+                        "figure is a median with an interquartile range, never a mean.",
     }}
     results["overall"] = stats(d, a.min_n)
 
-    for label, col, min_n in [("by_county", "county", a.min_n),
-                              ("by_city", "city", max(a.min_n, MIN_N_CITY)),
-                              ("by_zone", "zone", a.min_n),
-                              ("by_coverage_band", "_band", a.min_n),
-                              ("by_occupancy", "occupancy", a.min_n),
-                              ("by_year", "_year", a.min_n),
-                              ("by_construction", "construction", a.min_n)]:
-        if col not in d:
+    # City and county come only from risk-location rows. Everything else may use
+    # the whole frame.
+    risk_only = d[d["_geo"] == "risk"] if "_geo" in d else d
+    for label, col, min_n, src in [
+            ("by_state", "state", a.min_n, d),
+            ("by_county", "county", a.min_n, risk_only),
+            ("by_city", "city", max(a.min_n, MIN_N_CITY), risk_only),
+            ("by_zone", "zone", a.min_n, d),
+            ("by_coverage_band", "_band", a.min_n, d),
+            ("by_occupancy", "occupancy", a.min_n, d),
+            ("by_year", "_year", a.min_n, d),
+            ("by_construction", "construction", a.min_n, d),
+            ("by_deductible", "_deduct", a.min_n, d),
+            ("by_owner_vs_rental", "_occ_group", a.min_n, d),
+            ("by_intermap_score", "imap", a.min_n, d)]:
+        if col not in src or not len(src):
             continue
         bucket, suppressed = {}, 0
-        key = d[col].astype(str).str.strip().str.title()
-        for name, grp in d.groupby(key):
+        key = src[col].astype(str).str.strip()
+        # Two-letter state codes and flood zones are initialisms — title-casing
+        # turns CA into "Ca" and AE into "Ae". Everything else (county, city,
+        # occupancy) reads better title-cased.
+        key = key.str.upper() if col in ("state", "zone") else key.str.title()
+        for name, grp in src.groupby(key):
             if name in ("", "Nan", "None"):
                 continue
             s = stats(grp, min_n)
@@ -310,18 +514,90 @@ def main():
                 suppressed += 1
         results[label] = {"cells": bucket, "suppressed_cells": suppressed}
 
+    # ── THE LIKE-FOR-LIKE BENCHMARK ────────────────────────────────────────
+    # 91% of this book is a $250,000 building limit with a $5,000 deductible, so
+    # that combination is not a contrivance — it is what the agency actually
+    # writes, and holding it fixed removes coverage and deductible as
+    # explanations for any price difference. This is the only cut a
+    # private-vs-NFIP comparison should be built on: quote FEMA for the same
+    # $250,000 / $5,000 policy in the same county and the two numbers mean the
+    # same thing. Anything comparing pooled medians is comparing coverage mixes.
+    bm = d[(d["_bldg"] == 250_000)]
+    if "_deduct" in d:
+        bm = bm[bm["_deduct"] == "$5,000"]
+    benchmark = {"definition": "$250,000 building limit, $5,000 deductible",
+                 "n": int(len(bm)),
+                 "why": ("91% of the book sits at these terms, so fixing them removes "
+                         "coverage mix as an explanation for price differences and gives "
+                         "FEMA a directly quotable equivalent."),
+                 "overall": stats(bm, a.min_n)}
+    for label, col, min_n in [("by_owner_vs_rental", "_occ_group", a.min_n),
+                              ("by_county", "county", a.min_n),
+                              ("by_state", "state", a.min_n)]:
+        srcb = bm[bm["_geo"] == "risk"] if col == "county" else bm
+        if col not in srcb or not len(srcb):
+            continue
+        key = srcb[col].astype(str).str.strip()
+        key = key.str.upper() if col == "state" else key.str.title()
+        cells, supp = {}, 0
+        for name, grp in srcb.groupby(key):
+            if name in ("", "Nan", "None"):
+                continue
+            s = stats(grp, min_n)
+            if s:
+                cells[name] = s
+            else:
+                supp += 1
+        benchmark[label] = {"cells": cells, "suppressed_cells": supp}
+    results["benchmark_250k_5000ded"] = benchmark
+
+    # ── THE ZONE CUT IS NOT PUBLISHABLE, AND SAYS SO IN THE FILE ────────────
+    # `Flood Zone` exists only in the Hiscox layout and is populated on a tiny
+    # fraction of rows. Whatever clears MIN_N here is a Hiscox-only sliver, and
+    # Hiscox prices about a third below the pooled book — so these cells describe
+    # one carrier's appetite, not the market. The tell is that AE (a Special Flood
+    # Hazard Area) comes out CHEAPER than X (outside it), which inverts the actual
+    # risk ordering and can only be sampling noise.
+    #
+    # Zone-stratified pricing needs the risk addresses geocoded against FEMA's
+    # NFHL. Until that exists, this stays flagged rather than quietly available.
+    if "by_zone" in results and results["by_zone"]["cells"]:
+        results["by_zone"]["DO_NOT_PUBLISH"] = (
+            "Hiscox-only sub-sample; n is at the floor and the AE-vs-X ordering is "
+            "inverted against known risk. Derive zone by geocoding against FEMA NFHL "
+            "before publishing anything zone-stratified.")
+
     with open(os.path.join(a.out, "aggregates.json"), "w") as fh:
         json.dump(results, fh, indent=2, default=str)
     with open(os.path.join(a.out, "parse-log.txt"), "w") as fh:
         fh.write("\n".join(log))
 
+    # Per-carrier cut: a data-quality check only, so that a carrier which failed
+    # to parse cannot hide inside a pooled median. Written to its own file, which
+    # .gitignore excludes — carrier-level pricing is not ours to publish.
+    if carrier is not None:
+        cc = {}
+        for name, grp in d.groupby(carrier.str.title()):
+            if name in ("", "Nan", "None"):
+                continue
+            s = stats(grp, a.min_n)
+            cc[name] = s if s else {"n": int(len(grp)), "suppressed": True}
+        with open(os.path.join(a.out, "internal-carrier-check.json"), "w") as fh:
+            json.dump(cc, fh, indent=2, default=str)
+        print("\n  CARRIER CHECK (internal only, not for publication):")
+        for k, v in sorted(cc.items(), key=lambda kv: -(kv[1].get("n") or 0)):
+            med = v.get("total_median")
+            print(f"    {k:22s} n={v.get('n'):5d}" +
+                  (f"  median ${med:,.0f}" if med else "  (suppressed)"))
+
     print(f"\n  wrote {a.out}/aggregates.json  and  parse-log.txt")
     o = results.get("overall")
     if o:
         print(f"\n  OVERALL  n={o['n']:,}   median total ${o['total_median']:,.0f}"
-              + (f"   median per $100k ${o.get('per100k_median', float('nan')):,.2f}"
+              f"   (IQR ${o['total_p25']:,.0f}-${o['total_p75']:,.0f})"
+              + (f"   median per $100k ${o.get('per100k_median'):,.2f}"
                  if o.get("per100k_median") else ""))
-    for k in ("by_county", "by_zone", "by_year"):
+    for k in ("by_state", "by_county", "by_city", "by_zone", "by_year"):
         if k in results:
             c = results[k]
             print(f"  {k}: {len(c['cells'])} published, {c['suppressed_cells']} suppressed")

@@ -46,3 +46,13 @@ client_secret*.json
 .env
 .env.*
 !.env.example
+
+# ── BORDEREAUX AND ANYTHING PER-POLICY ────────────────────────────────────
+# The carrier bordereaux carry `Insured (Full Name)` and `Street Address` for
+# every policy the agency has written. Only aggregates may be committed. The
+# per-carrier breakdown is excluded separately: it contains no personal data,
+# but carrier-level pricing is not ours to publish.
+*BDX*.xlsx
+*bordereaux*.xlsx
+internal-carrier-check.json
+premium-aggregates/**/internal-*.json

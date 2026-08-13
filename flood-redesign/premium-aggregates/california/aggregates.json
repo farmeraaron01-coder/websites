@@ -1,0 +1,2667 @@
+{
+  "_meta": {
+    "rows_analysed": 5632,
+    "state": "CA",
+    "min_n": 10,
+    "min_n_city": 20,
+    "total_cost_definition": "gross premium + policy fee + surplus lines tax + stamping fee + fire marshal tax, where present",
+    "fee_coverage": {
+      "policy_fee": 6867,
+      "sl_tax": 600,
+      "stamping_fee": 600,
+      "fire_tax": 381
+    },
+    "tax_model": {
+      "rows_with_recorded_tax": 595,
+      "rows_with_modelled_tax": 7137,
+      "measured_sl_tax_pct_of_premium": 3.594,
+      "measured_stamping_fee_pct_of_premium": 0.213,
+      "note": "`total` loads surplus lines tax and stamping fee onto rows whose layout omitted those columns, at the median rate measured on the rows that recorded them. `total_recorded` is the unloaded figure. Use `total` for any comparison against FEMA policyCost, which is fully loaded."
+    },
+    "fee_coverage_note": "The legacy carrier layouts carry only Gross Premium and Policy Fee; surplus lines tax and stamping fee appear only in the Instanda-era files. Where they are absent the total is premium+fee, which UNDERSTATES private cost and therefore flatters any private-vs-NFIP comparison. Label accordingly.",
+    "rows_with_risk_location": 5203,
+    "rows_with_mailing_location_only": 429,
+    "geo_note": "City and county cells are built ONLY from rows whose geography is the risk location. The Instanda layout carries the insured's mailing address instead, which for a landlord is a different place.",
+    "selection_note": "This book contains policies where private coverage was placed, which happens when it beat the NFIP alternative. It is therefore the outcome of shopping both, not a sample of private pricing.",
+    "suppression_note": "cells below n=10 are omitted, n=20 for cities",
+    "outlier_note": "Commercial schedules share these files with homeowner policies (premiums range past $200,000 against a median near $600), so every figure is a median with an interquartile range, never a mean."
+  },
+  "overall": {
+    "n": 5632,
+    "total_p25": 637.39,
+    "total_median": 795.69,
+    "total_p75": 865.76,
+    "total_recorded_median": 770.0,
+    "per100k_p25": 313.09,
+    "per100k_median": 337.38,
+    "per100k_p75": 365.18,
+    "median_building_limit": 250000.0
+  },
+  "by_state": {
+    "cells": {
+      "CA": {
+        "n": 5632,
+        "total_p25": 637.39,
+        "total_median": 795.69,
+        "total_p75": 865.76,
+        "total_recorded_median": 770.0,
+        "per100k_p25": 313.09,
+        "per100k_median": 337.38,
+        "per100k_p75": 365.18,
+        "median_building_limit": 250000.0
+      }
+    },
+    "suppressed_cells": 0
+  },
+  "by_county": {
+    "cells": {
+      "Alameda County": {
+        "n": 134,
+        "total_p25": 743.79,
+        "total_median": 808.67,
+        "total_p75": 870.17,
+        "total_recorded_median": 782.5,
+        "per100k_p25": 313.86,
+        "per100k_median": 331.25,
+        "per100k_p75": 354.82,
+        "median_building_limit": 250000.0
+      },
+      "Butte County": {
+        "n": 112,
+        "total_p25": 637.39,
+        "total_median": 837.22,
+        "total_p75": 894.31,
+        "total_recorded_median": 810.0,
+        "per100k_p25": 321.33,
+        "per100k_median": 341.02,
+        "per100k_p75": 360.63,
+        "median_building_limit": 250000.0
+      },
+      "Contra Costa County": {
+        "n": 222,
+        "total_p25": 769.62,
+        "total_median": 815.16,
+        "total_p75": 894.31,
+        "total_recorded_median": 788.75,
+        "per100k_p25": 323.62,
+        "per100k_median": 339.04,
+        "per100k_p75": 363.96,
+        "median_building_limit": 250000.0
+      },
+      "El Dorado County": {
+        "n": 15,
+        "total_p25": 690.59,
+        "total_median": 870.17,
+        "total_p75": 930.38,
+        "total_recorded_median": 841.75,
+        "per100k_p25": 276.24,
+        "per100k_median": 348.07,
+        "per100k_p75": 372.15,
+        "median_building_limit": 250000.0
+      },
+      "Fresno County": {
+        "n": 16,
+        "total_p25": 544.59,
+        "total_median": 685.8,
+        "total_p75": 891.6,
+        "total_recorded_median": 664.14,
+        "per100k_p25": 331.33,
+        "per100k_median": 346.84,
+        "per100k_p75": 363.06,
+        "median_building_limit": 216000.0
+      },
+      "Glenn County": {
+        "n": 17,
+        "total_p25": 854.34,
+        "total_median": 872.04,
+        "total_p75": 945.02,
+        "total_recorded_median": 843.55,
+        "per100k_p25": 364.87,
+        "per100k_median": 377.0,
+        "per100k_p75": 401.12,
+        "median_building_limit": 250000.0
+      },
+      "Humboldt County": {
+        "n": 23,
+        "total_p25": 433.88,
+        "total_median": 725.88,
+        "total_p75": 787.75,
+        "total_recorded_median": 702.75,
+        "per100k_p25": 328.45,
+        "per100k_median": 339.04,
+        "per100k_p75": 359.48,
+        "median_building_limit": 221000.0
+      },
+      "Imperial County": {
+        "n": 16,
+        "total_p25": 348.39,
+        "total_median": 769.74,
+        "total_p75": 933.84,
+        "total_recorded_median": 745.0,
+        "per100k_p25": 331.8,
+        "per100k_median": 337.59,
+        "per100k_p75": 387.52,
+        "median_building_limit": 250000.0
+      },
+      "Kern County": {
+        "n": 85,
+        "total_p25": 442.86,
+        "total_median": 654.52,
+        "total_p75": 760.32,
+        "total_recorded_median": 634.0,
+        "per100k_p25": 302.85,
+        "per100k_median": 323.47,
+        "per100k_p75": 349.27,
+        "median_building_limit": 210000.0
+      },
+      "Lake": {
+        "n": 10,
+        "total_p25": 842.12,
+        "total_median": 885.07,
+        "total_p75": 1029.26,
+        "total_recorded_median": 855.0,
+        "median_building_limit": 248021.0
+      },
+      "Lake County": {
+        "n": 225,
+        "total_p25": 632.2,
+        "total_median": 769.74,
+        "total_p75": 847.6,
+        "total_recorded_median": 745.0,
+        "per100k_p25": 314.13,
+        "per100k_median": 341.27,
+        "per100k_p75": 366.18,
+        "median_building_limit": 250000.0
+      },
+      "Los Angeles": {
+        "n": 10,
+        "total_p25": 699.15,
+        "total_median": 907.8,
+        "total_p75": 1055.21,
+        "total_recorded_median": 878.0,
+        "per100k_p25": 326.27,
+        "per100k_median": 363.12,
+        "per100k_p75": 422.08,
+        "median_building_limit": 250000.0
+      },
+      "Los Angeles County": {
+        "n": 455,
+        "total_p25": 739.46,
+        "total_median": 787.32,
+        "total_p75": 833.74,
+        "total_recorded_median": 761.93,
+        "per100k_p25": 306.86,
+        "per100k_median": 325.05,
+        "per100k_p75": 340.14,
+        "median_building_limit": 250000.0
+      },
+      "Madera County": {
+        "n": 20,
+        "total_p25": 506.18,
+        "total_median": 628.82,
+        "total_p75": 878.73,
+        "total_recorded_median": 609.25,
+        "per100k_p25": 343.19,
+        "per100k_median": 355.04,
+        "per100k_p75": 362.57,
+        "median_building_limit": 170000.0
+      },
+      "Marin": {
+        "n": 12,
+        "total_p25": 885.68,
+        "total_median": 975.15,
+        "total_p75": 1056.9,
+        "total_recorded_median": 942.88,
+        "per100k_p25": 354.27,
+        "per100k_median": 390.06,
+        "per100k_p75": 422.76,
+        "median_building_limit": 250000.0
+      },
+      "Marin County": {
+        "n": 450,
+        "total_p25": 769.74,
+        "total_median": 823.72,
+        "total_p75": 882.77,
+        "total_recorded_median": 797.0,
+        "per100k_p25": 315.99,
+        "per100k_median": 334.89,
+        "per100k_p75": 357.1,
+        "median_building_limit": 250000.0
+      },
+      "Mendocino County": {
+        "n": 13,
+        "total_p25": 579.93,
+        "total_median": 637.39,
+        "total_p75": 834.0,
+        "total_recorded_median": 617.5,
+        "per100k_p25": 307.9,
+        "per100k_median": 337.17,
+        "per100k_p75": 370.67,
+        "median_building_limit": 250000.0
+      },
+      "Merced County": {
+        "n": 64,
+        "total_p25": 569.5,
+        "total_median": 677.98,
+        "total_p75": 843.96,
+        "total_recorded_median": 656.6,
+        "per100k_p25": 333.59,
+        "per100k_median": 346.78,
+        "per100k_p75": 377.18,
+        "median_building_limit": 215000.0
+      },
+      "Modoc County": {
+        "n": 12,
+        "total_p25": 387.63,
+        "total_median": 542.02,
+        "total_p75": 721.45,
+        "total_recorded_median": 524.52,
+        "per100k_p25": 334.33,
+        "per100k_median": 363.82,
+        "per100k_p75": 387.63,
+        "median_building_limit": 176740.0
+      },
+      "Monterey County": {
+        "n": 45,
+        "total_p25": 536.99,
+        "total_median": 865.24,
+        "total_p75": 957.89,
+        "total_recorded_median": 837.0,
+        "per100k_p25": 324.09,
+        "per100k_median": 357.1,
+        "per100k_p75": 394.32,
+        "median_building_limit": 250000.0
+      },
+      "Napa County": {
+        "n": 24,
+        "total_p25": 637.39,
+        "total_median": 787.8,
+        "total_p75": 846.61,
+        "total_recorded_median": 762.4,
+        "per100k_p25": 312.81,
+        "per100k_median": 327.37,
+        "per100k_p75": 357.1,
+        "median_building_limit": 250000.0
+      },
+      "Nevada County": {
+        "n": 13,
+        "total_p25": 779.97,
+        "total_median": 870.17,
+        "total_p75": 944.79,
+        "total_recorded_median": 841.75,
+        "per100k_p25": 320.8,
+        "per100k_median": 348.07,
+        "per100k_p75": 377.92,
+        "median_building_limit": 250000.0
+      },
+      "Orange County": {
+        "n": 520,
+        "total_p25": 767.15,
+        "total_median": 822.68,
+        "total_p75": 883.01,
+        "total_recorded_median": 796.0,
+        "per100k_p25": 323.47,
+        "per100k_median": 337.59,
+        "per100k_p75": 357.72,
+        "median_building_limit": 250000.0
+      },
+      "Placer County": {
+        "n": 22,
+        "total_p25": 420.27,
+        "total_median": 741.2,
+        "total_p75": 769.74,
+        "total_recorded_median": 717.5,
+        "per100k_p25": 296.48,
+        "per100k_median": 306.6,
+        "per100k_p75": 448.02,
+        "median_building_limit": 250000.0
+      },
+      "Riverside County": {
+        "n": 178,
+        "total_p25": 637.39,
+        "total_median": 764.06,
+        "total_p75": 837.22,
+        "total_recorded_median": 739.52,
+        "per100k_p25": 307.9,
+        "per100k_median": 331.83,
+        "per100k_p75": 366.69,
+        "median_building_limit": 250000.0
+      },
+      "Sacramento County": {
+        "n": 55,
+        "total_p25": 617.86,
+        "total_median": 769.74,
+        "total_p75": 834.36,
+        "total_recorded_median": 745.0,
+        "per100k_p25": 254.96,
+        "per100k_median": 328.66,
+        "per100k_p75": 358.62,
+        "median_building_limit": 250000.0
+      },
+      "San Bernardino": {
+        "n": 11,
+        "total_p25": 424.33,
+        "total_median": 534.46,
+        "total_p75": 732.59,
+        "total_recorded_median": 517.25,
+        "per100k_p25": 213.32,
+        "per100k_median": 307.9,
+        "per100k_p75": 311.4,
+        "median_building_limit": 250000.0
+      },
+      "San Bernardino County": {
+        "n": 246,
+        "total_p25": 547.44,
+        "total_median": 752.14,
+        "total_p75": 810.23,
+        "total_recorded_median": 728.05,
+        "per100k_p25": 313.92,
+        "per100k_median": 334.96,
+        "per100k_p75": 360.63,
+        "median_building_limit": 250000.0
+      },
+      "San Diego": {
+        "n": 24,
+        "total_p25": 438.7,
+        "total_median": 578.01,
+        "total_p75": 956.55,
+        "total_recorded_median": 559.2,
+        "per100k_p25": 211.02,
+        "per100k_median": 346.21,
+        "per100k_p75": 503.74,
+        "median_building_limit": 250000.0
+      },
+      "San Diego County": {
+        "n": 388,
+        "total_p25": 691.82,
+        "total_median": 808.07,
+        "total_p75": 872.03,
+        "total_recorded_median": 781.92,
+        "per100k_p25": 318.29,
+        "per100k_median": 338.09,
+        "per100k_p75": 366.65,
+        "median_building_limit": 250000.0
+      },
+      "San Joaquin County": {
+        "n": 28,
+        "total_p25": 655.77,
+        "total_median": 789.98,
+        "total_p75": 856.55,
+        "total_recorded_median": 764.5,
+        "per100k_p25": 315.99,
+        "per100k_median": 343.77,
+        "per100k_p75": 359.73,
+        "median_building_limit": 250000.0
+      },
+      "San Luis Obispo County": {
+        "n": 38,
+        "total_p25": 637.88,
+        "total_median": 765.2,
+        "total_p75": 890.27,
+        "total_recorded_median": 740.62,
+        "per100k_p25": 320.54,
+        "per100k_median": 374.33,
+        "per100k_p75": 433.79,
+        "median_building_limit": 250000.0
+      },
+      "San Mateo": {
+        "n": 13,
+        "total_p25": 911.13,
+        "total_median": 1133.47,
+        "total_p75": 1182.37,
+        "total_recorded_median": 1091.91,
+        "per100k_p25": 395.9,
+        "per100k_median": 471.91,
+        "per100k_p75": 472.95,
+        "median_building_limit": 250000.0
+      },
+      "San Mateo County": {
+        "n": 196,
+        "total_p25": 807.13,
+        "total_median": 837.22,
+        "total_p75": 894.31,
+        "total_recorded_median": 810.0,
+        "per100k_p25": 324.09,
+        "per100k_median": 338.31,
+        "per100k_p75": 360.63,
+        "median_building_limit": 250000.0
+      },
+      "Santa Barbara County": {
+        "n": 76,
+        "total_p25": 743.14,
+        "total_median": 825.46,
+        "total_p75": 886.26,
+        "total_recorded_median": 798.67,
+        "per100k_p25": 307.9,
+        "per100k_median": 348.15,
+        "per100k_p75": 364.67,
+        "median_building_limit": 250000.0
+      },
+      "Santa Clara": {
+        "n": 14,
+        "total_p25": 800.11,
+        "total_median": 827.98,
+        "total_p75": 950.69,
+        "total_recorded_median": 801.1,
+        "per100k_p25": 320.04,
+        "per100k_median": 320.04,
+        "per100k_p75": 389.9,
+        "median_building_limit": 250000.0
+      },
+      "Santa Clara County": {
+        "n": 394,
+        "total_p25": 763.25,
+        "total_median": 837.22,
+        "total_p75": 892.75,
+        "total_recorded_median": 810.0,
+        "per100k_p25": 315.99,
+        "per100k_median": 339.45,
+        "per100k_p75": 368.1,
+        "median_building_limit": 250000.0
+      },
+      "Santa Cruz": {
+        "n": 11,
+        "total_p25": 594.17,
+        "total_median": 955.82,
+        "total_p75": 1104.52,
+        "total_recorded_median": 924.25,
+        "per100k_p25": 293.36,
+        "per100k_median": 382.33,
+        "per100k_p75": 441.81,
+        "median_building_limit": 250000.0
+      },
+      "Santa Cruz County": {
+        "n": 304,
+        "total_p25": 539.25,
+        "total_median": 808.67,
+        "total_p75": 894.31,
+        "total_recorded_median": 782.5,
+        "per100k_p25": 322.99,
+        "per100k_median": 355.39,
+        "per100k_p75": 400.12,
+        "median_building_limit": 250000.0
+      },
+      "Shasta County": {
+        "n": 50,
+        "total_p25": 632.97,
+        "total_median": 821.65,
+        "total_p75": 905.79,
+        "total_recorded_median": 795.0,
+        "per100k_p25": 331.88,
+        "per100k_median": 350.87,
+        "per100k_p75": 383.16,
+        "median_building_limit": 250000.0
+      },
+      "Siskiyou County": {
+        "n": 28,
+        "total_p25": 649.4,
+        "total_median": 730.87,
+        "total_p75": 808.67,
+        "total_recorded_median": 707.55,
+        "per100k_p25": 323.47,
+        "per100k_median": 346.1,
+        "per100k_p75": 390.0,
+        "median_building_limit": 188500.0
+      },
+      "Solano County": {
+        "n": 108,
+        "total_p25": 769.74,
+        "total_median": 823.72,
+        "total_p75": 866.48,
+        "total_recorded_median": 797.0,
+        "per100k_p25": 316.14,
+        "per100k_median": 334.89,
+        "per100k_p75": 357.1,
+        "median_building_limit": 250000.0
+      },
+      "Sonoma County": {
+        "n": 73,
+        "total_p25": 637.39,
+        "total_median": 743.79,
+        "total_p75": 782.72,
+        "total_recorded_median": 720.0,
+        "per100k_p25": 297.52,
+        "per100k_median": 317.04,
+        "per100k_p75": 338.16,
+        "median_building_limit": 250000.0
+      },
+      "Stanislaus County": {
+        "n": 24,
+        "total_p25": 619.48,
+        "total_median": 727.52,
+        "total_p75": 893.6,
+        "total_recorded_median": 704.33,
+        "per100k_p25": 342.49,
+        "per100k_median": 358.99,
+        "per100k_p75": 417.18,
+        "median_building_limit": 203000.0
+      },
+      "Tehama County": {
+        "n": 43,
+        "total_p25": 451.55,
+        "total_median": 702.48,
+        "total_p75": 906.51,
+        "total_recorded_median": 680.2,
+        "per100k_p25": 331.78,
+        "per100k_median": 362.6,
+        "per100k_p75": 411.45,
+        "median_building_limit": 250000.0
+      },
+      "Tulare County": {
+        "n": 85,
+        "total_p25": 469.81,
+        "total_median": 637.39,
+        "total_p75": 785.31,
+        "total_recorded_median": 617.5,
+        "per100k_p25": 335.67,
+        "per100k_median": 348.54,
+        "per100k_p75": 386.85,
+        "median_building_limit": 175000.0
+      },
+      "Ventura County": {
+        "n": 133,
+        "total_p25": 717.84,
+        "total_median": 812.28,
+        "total_p75": 865.24,
+        "total_recorded_median": 785.98,
+        "per100k_p25": 307.9,
+        "per100k_median": 331.06,
+        "per100k_p75": 348.07,
+        "median_building_limit": 250000.0
+      },
+      "Yolo County": {
+        "n": 14,
+        "total_p25": 743.79,
+        "total_median": 782.72,
+        "total_p75": 885.25,
+        "total_recorded_median": 757.5,
+        "per100k_p25": 313.09,
+        "per100k_median": 320.87,
+        "per100k_p75": 365.18,
+        "median_building_limit": 250000.0
+      },
+      "Yuba County": {
+        "n": 16,
+        "total_p25": 676.32,
+        "total_median": 794.4,
+        "total_p75": 865.24,
+        "total_recorded_median": 768.75,
+        "per100k_p25": 320.96,
+        "per100k_median": 328.66,
+        "per100k_p75": 346.1,
+        "median_building_limit": 250000.0
+      }
+    },
+    "suppressed_cells": 42
+  },
+  "by_city": {
+    "cells": {
+      "Apple Valley": {
+        "n": 28,
+        "total_p25": 520.23,
+        "total_median": 765.12,
+        "total_p75": 828.13,
+        "total_recorded_median": 740.55,
+        "per100k_p25": 307.9,
+        "per100k_median": 335.08,
+        "per100k_p75": 347.59,
+        "median_building_limit": 250000.0
+      },
+      "Arvin": {
+        "n": 22,
+        "total_p25": 454.27,
+        "total_median": 645.95,
+        "total_p75": 743.79,
+        "total_recorded_median": 625.75,
+        "per100k_p25": 297.52,
+        "per100k_median": 305.08,
+        "per100k_p75": 323.86,
+        "median_building_limit": 243750.0
+      },
+      "Ben Lomond": {
+        "n": 24,
+        "total_p25": 758.39,
+        "total_median": 813.72,
+        "total_p75": 1031.85,
+        "total_recorded_median": 787.37,
+        "per100k_p25": 305.3,
+        "per100k_median": 334.71,
+        "per100k_p75": 422.6,
+        "median_building_limit": 250000.0
+      },
+      "Big Bear": {
+        "n": 24,
+        "total_p25": 400.94,
+        "total_median": 601.57,
+        "total_p75": 666.86,
+        "total_recorded_median": 582.45,
+        "per100k_p25": 335.46,
+        "per100k_median": 346.76,
+        "per100k_p75": 413.97,
+        "median_building_limit": 170000.0
+      },
+      "Borrego Springs": {
+        "n": 74,
+        "total_p25": 524.34,
+        "total_median": 743.79,
+        "total_p75": 838.83,
+        "total_recorded_median": 720.0,
+        "per100k_p25": 309.66,
+        "per100k_median": 329.55,
+        "per100k_p75": 361.97,
+        "median_building_limit": 215000.0
+      },
+      "Boulder Creek": {
+        "n": 21,
+        "total_p25": 743.79,
+        "total_median": 743.79,
+        "total_p75": 845.0,
+        "total_recorded_median": 720.0,
+        "per100k_p25": 297.52,
+        "per100k_median": 304.23,
+        "per100k_p75": 388.5,
+        "median_building_limit": 250000.0
+      },
+      "Chico": {
+        "n": 38,
+        "total_p25": 769.74,
+        "total_median": 834.36,
+        "total_p75": 894.31,
+        "total_recorded_median": 807.25,
+        "per100k_p25": 307.9,
+        "per100k_median": 333.74,
+        "per100k_p75": 357.72,
+        "median_building_limit": 250000.0
+      },
+      "Citrus Heights": {
+        "n": 20,
+        "total_p25": 410.02,
+        "total_median": 620.03,
+        "total_p75": 637.39,
+        "total_recorded_median": 600.78,
+        "per100k_p25": 254.96,
+        "per100k_median": 258.37,
+        "per100k_p75": 348.85,
+        "median_building_limit": 218500.0
+      },
+      "Clearlake": {
+        "n": 30,
+        "total_p25": 528.42,
+        "total_median": 754.66,
+        "total_p75": 769.74,
+        "total_recorded_median": 730.47,
+        "per100k_p25": 313.2,
+        "per100k_median": 341.41,
+        "per100k_p75": 346.17,
+        "median_building_limit": 218000.0
+      },
+      "Clearlake Oaks": {
+        "n": 77,
+        "total_p25": 721.16,
+        "total_median": 821.65,
+        "total_p75": 901.58,
+        "total_recorded_median": 795.0,
+        "per100k_p25": 328.66,
+        "per100k_median": 351.33,
+        "per100k_p75": 379.03,
+        "median_building_limit": 250000.0
+      },
+      "Corte Madera": {
+        "n": 76,
+        "total_p25": 779.47,
+        "total_median": 839.15,
+        "total_p75": 878.5,
+        "total_recorded_median": 811.87,
+        "per100k_p25": 322.07,
+        "per100k_median": 337.79,
+        "per100k_p75": 357.72,
+        "median_building_limit": 250000.0
+      },
+      "Durham": {
+        "n": 53,
+        "total_p25": 810.23,
+        "total_median": 879.78,
+        "total_p75": 913.18,
+        "total_recorded_median": 851.0,
+        "per100k_p25": 346.1,
+        "per100k_median": 357.72,
+        "per100k_p75": 409.63,
+        "median_building_limit": 250000.0
+      },
+      "East Palo Alto": {
+        "n": 51,
+        "total_p25": 805.04,
+        "total_median": 834.62,
+        "total_p75": 895.08,
+        "total_recorded_median": 807.5,
+        "per100k_p25": 327.78,
+        "per100k_median": 352.01,
+        "per100k_p75": 359.48,
+        "median_building_limit": 250000.0
+      },
+      "Escondido": {
+        "n": 55,
+        "total_p25": 744.21,
+        "total_median": 808.67,
+        "total_p75": 893.91,
+        "total_recorded_median": 782.5,
+        "per100k_p25": 323.47,
+        "per100k_median": 326.06,
+        "per100k_p75": 364.14,
+        "median_building_limit": 250000.0
+      },
+      "Fountain Valley": {
+        "n": 30,
+        "total_p25": 788.82,
+        "total_median": 810.49,
+        "total_p75": 886.91,
+        "total_recorded_median": 784.25,
+        "per100k_p25": 315.53,
+        "per100k_median": 324.19,
+        "per100k_p75": 354.76,
+        "median_building_limit": 250000.0
+      },
+      "Garden Grove": {
+        "n": 81,
+        "total_p25": 637.39,
+        "total_median": 805.81,
+        "total_p75": 886.78,
+        "total_recorded_median": 779.75,
+        "per100k_p25": 325.1,
+        "per100k_median": 342.71,
+        "per100k_p75": 357.72,
+        "median_building_limit": 250000.0
+      },
+      "Hemet": {
+        "n": 30,
+        "total_p25": 565.39,
+        "total_median": 767.15,
+        "total_p75": 769.74,
+        "total_recorded_median": 742.5,
+        "per100k_p25": 306.86,
+        "per100k_median": 313.6,
+        "per100k_p75": 354.19,
+        "median_building_limit": 250000.0
+      },
+      "Hidden Valley Lake": {
+        "n": 21,
+        "total_p25": 615.8,
+        "total_median": 782.72,
+        "total_p75": 821.65,
+        "total_recorded_median": 757.5,
+        "per100k_p25": 301.89,
+        "per100k_median": 328.66,
+        "per100k_p75": 355.95,
+        "median_building_limit": 250000.0
+      },
+      "Huntington Beach": {
+        "n": 189,
+        "total_p25": 810.23,
+        "total_median": 857.46,
+        "total_p75": 914.03,
+        "total_recorded_median": 829.5,
+        "per100k_p25": 331.06,
+        "per100k_median": 345.16,
+        "per100k_p75": 362.89,
+        "median_building_limit": 250000.0
+      },
+      "Lakeport": {
+        "n": 61,
+        "total_p25": 407.56,
+        "total_median": 769.74,
+        "total_p75": 870.17,
+        "total_recorded_median": 745.0,
+        "per100k_p25": 327.62,
+        "per100k_median": 349.11,
+        "per100k_p75": 370.13,
+        "median_building_limit": 250000.0
+      },
+      "Larkspur": {
+        "n": 30,
+        "total_p25": 842.1,
+        "total_median": 927.51,
+        "total_p75": 1170.95,
+        "total_recorded_median": 896.98,
+        "per100k_p25": 332.19,
+        "per100k_median": 359.7,
+        "per100k_p75": 468.38,
+        "median_building_limit": 250000.0
+      },
+      "Long Beach": {
+        "n": 155,
+        "total_p25": 760.59,
+        "total_median": 805.81,
+        "total_p75": 826.43,
+        "total_recorded_median": 779.75,
+        "per100k_p25": 313.09,
+        "per100k_median": 325.54,
+        "per100k_p75": 334.89,
+        "median_building_limit": 250000.0
+      },
+      "Los Angeles": {
+        "n": 200,
+        "total_p25": 635.44,
+        "total_median": 767.15,
+        "total_p75": 808.15,
+        "total_recorded_median": 742.5,
+        "per100k_p25": 305.83,
+        "per100k_median": 319.43,
+        "per100k_p75": 340.53,
+        "median_building_limit": 250000.0
+      },
+      "Martinez": {
+        "n": 61,
+        "total_p25": 763.25,
+        "total_median": 820.99,
+        "total_p75": 894.31,
+        "total_recorded_median": 794.37,
+        "per100k_p25": 322.33,
+        "per100k_median": 357.1,
+        "per100k_p75": 375.67,
+        "median_building_limit": 250000.0
+      },
+      "Menlo Park": {
+        "n": 53,
+        "total_p25": 769.74,
+        "total_median": 810.23,
+        "total_p75": 837.22,
+        "total_recorded_median": 784.0,
+        "per100k_p25": 307.9,
+        "per100k_median": 324.09,
+        "per100k_p75": 332.19,
+        "median_building_limit": 250000.0
+      },
+      "Merced": {
+        "n": 57,
+        "total_p25": 477.63,
+        "total_median": 674.4,
+        "total_p75": 857.46,
+        "total_recorded_median": 653.16,
+        "per100k_p25": 342.98,
+        "per100k_median": 354.82,
+        "per100k_p75": 380.69,
+        "median_building_limit": 200000.0
+      },
+      "Mill Valley": {
+        "n": 40,
+        "total_p25": 783.3,
+        "total_median": 837.22,
+        "total_p75": 891.46,
+        "total_recorded_median": 810.0,
+        "per100k_p25": 333.52,
+        "per100k_median": 339.04,
+        "per100k_p75": 359.6,
+        "median_building_limit": 250000.0
+      },
+      "Milpitas": {
+        "n": 80,
+        "total_p25": 762.14,
+        "total_median": 855.19,
+        "total_p75": 879.78,
+        "total_recorded_median": 827.32,
+        "per100k_p25": 318.56,
+        "per100k_median": 346.1,
+        "per100k_p75": 356.58,
+        "median_building_limit": 250000.0
+      },
+      "Newport Beach": {
+        "n": 80,
+        "total_p25": 779.97,
+        "total_median": 807.48,
+        "total_p75": 886.32,
+        "total_recorded_median": 781.35,
+        "per100k_p25": 311.99,
+        "per100k_median": 325.49,
+        "per100k_p75": 354.53,
+        "median_building_limit": 250000.0
+      },
+      "Novato": {
+        "n": 39,
+        "total_p25": 759.14,
+        "total_median": 843.44,
+        "total_p75": 964.17,
+        "total_recorded_median": 816.0,
+        "per100k_p25": 304.23,
+        "per100k_median": 337.59,
+        "per100k_p75": 388.0,
+        "median_building_limit": 250000.0
+      },
+      "Oceanside": {
+        "n": 43,
+        "total_p25": 727.03,
+        "total_median": 821.65,
+        "total_p75": 858.41,
+        "total_recorded_median": 795.0,
+        "per100k_p25": 324.77,
+        "per100k_median": 337.38,
+        "per100k_p75": 354.65,
+        "median_building_limit": 250000.0
+      },
+      "Oroville": {
+        "n": 25,
+        "total_p25": 324.52,
+        "total_median": 324.52,
+        "total_p75": 527.32,
+        "total_recorded_median": 315.0,
+        "per100k_p25": 305.57,
+        "per100k_median": 305.57,
+        "per100k_p75": 339.04,
+        "median_building_limit": 106200.0
+      },
+      "Palo Alto": {
+        "n": 112,
+        "total_p25": 747.23,
+        "total_median": 837.22,
+        "total_p75": 903.02,
+        "total_recorded_median": 810.0,
+        "per100k_p25": 315.06,
+        "per100k_median": 337.59,
+        "per100k_p75": 372.76,
+        "median_building_limit": 250000.0
+      },
+      "Pleasant Hill": {
+        "n": 36,
+        "total_p25": 786.82,
+        "total_median": 810.23,
+        "total_p75": 838.9,
+        "total_recorded_median": 784.0,
+        "per100k_p25": 314.73,
+        "per100k_median": 324.09,
+        "per100k_p75": 335.56,
+        "median_building_limit": 250000.0
+      },
+      "Poway": {
+        "n": 23,
+        "total_p25": 882.29,
+        "total_median": 922.86,
+        "total_p75": 937.13,
+        "total_recorded_median": 892.5,
+        "per100k_p25": 365.81,
+        "per100k_median": 369.14,
+        "per100k_p75": 380.6,
+        "median_building_limit": 250000.0
+      },
+      "Red Bluff": {
+        "n": 37,
+        "total_p25": 426.25,
+        "total_median": 637.39,
+        "total_p75": 820.48,
+        "total_recorded_median": 617.5,
+        "per100k_p25": 335.41,
+        "per100k_median": 358.9,
+        "per100k_p75": 384.49,
+        "median_building_limit": 200000.0
+      },
+      "Redding": {
+        "n": 32,
+        "total_p25": 670.37,
+        "total_median": 821.65,
+        "total_p75": 862.49,
+        "total_recorded_median": 795.0,
+        "per100k_p25": 328.66,
+        "per100k_median": 345.0,
+        "per100k_p75": 386.84,
+        "median_building_limit": 250000.0
+      },
+      "San Anselmo": {
+        "n": 43,
+        "total_p25": 654.52,
+        "total_median": 834.36,
+        "total_p75": 885.41,
+        "total_recorded_median": 807.25,
+        "per100k_p25": 298.35,
+        "per100k_median": 336.85,
+        "per100k_p75": 354.82,
+        "median_building_limit": 250000.0
+      },
+      "San Diego": {
+        "n": 117,
+        "total_p25": 657.82,
+        "total_median": 779.97,
+        "total_p75": 830.47,
+        "total_recorded_median": 754.85,
+        "per100k_p25": 313.09,
+        "per100k_median": 334.94,
+        "per100k_p75": 366.43,
+        "median_building_limit": 250000.0
+      },
+      "San Jose": {
+        "n": 152,
+        "total_p25": 769.74,
+        "total_median": 821.65,
+        "total_p75": 868.55,
+        "total_recorded_median": 795.0,
+        "per100k_p25": 314.13,
+        "per100k_median": 337.38,
+        "per100k_p75": 372.15,
+        "median_building_limit": 250000.0
+      },
+      "San Juan Capistrano": {
+        "n": 28,
+        "total_p25": 514.38,
+        "total_median": 729.47,
+        "total_p75": 854.34,
+        "total_recorded_median": 706.2,
+        "per100k_p25": 338.4,
+        "per100k_median": 349.42,
+        "per100k_p75": 552.11,
+        "median_building_limit": 222000.0
+      },
+      "San Leandro": {
+        "n": 66,
+        "total_p25": 788.71,
+        "total_median": 820.92,
+        "total_p75": 876.94,
+        "total_recorded_median": 794.3,
+        "per100k_p25": 317.16,
+        "per100k_median": 331.25,
+        "per100k_p75": 351.96,
+        "median_building_limit": 250000.0
+      },
+      "San Mateo": {
+        "n": 46,
+        "total_p25": 830.47,
+        "total_median": 845.25,
+        "total_p75": 891.7,
+        "total_recorded_median": 817.74,
+        "per100k_p25": 333.74,
+        "per100k_median": 346.1,
+        "per100k_p75": 378.91,
+        "median_building_limit": 250000.0
+      },
+      "San Rafael": {
+        "n": 196,
+        "total_p25": 769.74,
+        "total_median": 810.23,
+        "total_p75": 841.09,
+        "total_recorded_median": 784.0,
+        "per100k_p25": 315.99,
+        "per100k_median": 329.49,
+        "per100k_p75": 349.03,
+        "median_building_limit": 250000.0
+      },
+      "Santa Ana": {
+        "n": 58,
+        "total_p25": 659.08,
+        "total_median": 795.69,
+        "total_p75": 836.5,
+        "total_recorded_median": 770.0,
+        "per100k_p25": 322.84,
+        "per100k_median": 333.74,
+        "per100k_p75": 342.98,
+        "median_building_limit": 250000.0
+      },
+      "Santa Barbara": {
+        "n": 37,
+        "total_p25": 743.79,
+        "total_median": 857.46,
+        "total_p75": 930.38,
+        "total_recorded_median": 829.5,
+        "per100k_p25": 305.3,
+        "per100k_median": 340.97,
+        "per100k_p75": 357.1,
+        "median_building_limit": 250000.0
+      },
+      "Santa Cruz": {
+        "n": 99,
+        "total_p25": 340.09,
+        "total_median": 573.36,
+        "total_p75": 907.8,
+        "total_recorded_median": 554.72,
+        "per100k_p25": 363.12,
+        "per100k_median": 412.65,
+        "per100k_p75": 575.53,
+        "median_building_limit": 160000.0
+      },
+      "Simi Valley": {
+        "n": 31,
+        "total_p25": 726.79,
+        "total_median": 854.34,
+        "total_p75": 867.71,
+        "total_recorded_median": 826.5,
+        "per100k_p25": 311.77,
+        "per100k_median": 341.74,
+        "per100k_p75": 348.07,
+        "median_building_limit": 250000.0
+      },
+      "Suisun City": {
+        "n": 38,
+        "total_p25": 779.95,
+        "total_median": 810.23,
+        "total_p75": 847.6,
+        "total_recorded_median": 784.0,
+        "per100k_p25": 313.09,
+        "per100k_median": 324.09,
+        "per100k_p75": 344.33,
+        "median_building_limit": 250000.0
+      },
+      "Thousand Oaks": {
+        "n": 41,
+        "total_p25": 782.72,
+        "total_median": 812.28,
+        "total_p75": 845.0,
+        "total_recorded_median": 785.98,
+        "per100k_p25": 313.09,
+        "per100k_median": 326.06,
+        "per100k_p75": 345.0,
+        "median_building_limit": 250000.0
+      },
+      "Thousand Palms": {
+        "n": 32,
+        "total_p25": 610.09,
+        "total_median": 645.95,
+        "total_p75": 750.28,
+        "total_recorded_median": 625.75,
+        "per100k_p25": 294.85,
+        "per100k_median": 327.69,
+        "per100k_p75": 404.06,
+        "median_building_limit": 225000.0
+      },
+      "Twentynine Palms": {
+        "n": 35,
+        "total_p25": 557.41,
+        "total_median": 743.79,
+        "total_p75": 771.63,
+        "total_recorded_median": 720.0,
+        "per100k_p25": 306.07,
+        "per100k_median": 335.49,
+        "per100k_p75": 367.27,
+        "median_building_limit": 250000.0
+      },
+      "Vacaville": {
+        "n": 33,
+        "total_p25": 760.59,
+        "total_median": 792.89,
+        "total_p75": 810.23,
+        "total_recorded_median": 767.3,
+        "per100k_p25": 307.9,
+        "per100k_median": 317.16,
+        "per100k_p75": 337.38,
+        "median_building_limit": 250000.0
+      },
+      "Venice": {
+        "n": 31,
+        "total_p25": 645.59,
+        "total_median": 789.98,
+        "total_p75": 840.78,
+        "total_recorded_median": 764.5,
+        "per100k_p25": 320.04,
+        "per100k_median": 336.31,
+        "per100k_p75": 365.61,
+        "median_building_limit": 250000.0
+      },
+      "Visalia": {
+        "n": 60,
+        "total_p25": 439.22,
+        "total_median": 566.09,
+        "total_p75": 773.09,
+        "total_recorded_median": 547.71,
+        "per100k_p25": 337.38,
+        "per100k_median": 351.38,
+        "per100k_p75": 386.85,
+        "median_building_limit": 148500.0
+      },
+      "Watsonville": {
+        "n": 134,
+        "total_p25": 630.85,
+        "total_median": 843.44,
+        "total_p75": 894.31,
+        "total_recorded_median": 816.0,
+        "per100k_p25": 328.66,
+        "per100k_median": 350.79,
+        "per100k_p75": 373.31,
+        "median_building_limit": 250000.0
+      },
+      "Wrightwood": {
+        "n": 32,
+        "total_p25": 503.76,
+        "total_median": 675.33,
+        "total_p75": 785.96,
+        "total_recorded_median": 653.5,
+        "per100k_p25": 313.09,
+        "per100k_median": 328.37,
+        "per100k_p75": 348.43,
+        "median_building_limit": 250000.0
+      }
+    },
+    "suppressed_cells": 322
+  },
+  "by_zone": {
+    "cells": {
+      "AE": {
+        "n": 10,
+        "total_p25": 428.32,
+        "total_median": 491.16,
+        "total_p75": 594.65,
+        "total_recorded_median": 475.53,
+        "median_building_limit": 250000.0
+      },
+      "X": {
+        "n": 11,
+        "total_p25": 527.12,
+        "total_median": 565.32,
+        "total_p75": 846.99,
+        "total_recorded_median": 546.97,
+        "median_building_limit": 250000.0
+      }
+    },
+    "suppressed_cells": 3,
+    "DO_NOT_PUBLISH": "Hiscox-only sub-sample; n is at the floor and the AE-vs-X ordering is inverted against known risk. Derive zone by geocoding against FEMA NFHL before publishing anything zone-stratified."
+  },
+  "by_coverage_band": {
+    "cells": {
+      "$250K-500K": {
+        "n": 99,
+        "total_p25": 938.37,
+        "total_median": 1130.31,
+        "total_p75": 1435.35,
+        "total_recorded_median": 1092.35,
+        "per100k_p25": 282.92,
+        "per100k_median": 332.5,
+        "per100k_p75": 376.77,
+        "median_building_limit": 350000.0
+      },
+      "$500K-1M": {
+        "n": 18,
+        "total_p25": 890.94,
+        "total_median": 1435.67,
+        "total_p75": 2112.2,
+        "total_recorded_median": 1413.97,
+        "per100k_p25": 158.51,
+        "per100k_median": 220.65,
+        "per100k_p75": 322.75,
+        "median_building_limit": 600000.0
+      },
+      "Up To $250K": {
+        "n": 5355,
+        "total_p25": 650.13,
+        "total_median": 795.69,
+        "total_p75": 865.24,
+        "total_recorded_median": 770.0,
+        "per100k_p25": 314.13,
+        "per100k_median": 337.38,
+        "per100k_p75": 365.18,
+        "median_building_limit": 250000.0
+      }
+    },
+    "suppressed_cells": 0
+  },
+  "by_occupancy": {
+    "cells": {
+      "Other": {
+        "n": 48,
+        "total_p25": 444.67,
+        "total_median": 649.71,
+        "total_p75": 823.49,
+        "total_recorded_median": 629.37,
+        "per100k_p25": 328.65,
+        "per100k_median": 346.4,
+        "per100k_p75": 374.52,
+        "median_building_limit": 180000.0
+      },
+      "Owner": {
+        "n": 3442,
+        "total_p25": 691.63,
+        "total_median": 810.23,
+        "total_p75": 878.04,
+        "total_recorded_median": 784.0,
+        "per100k_p25": 315.99,
+        "per100k_median": 337.59,
+        "per100k_p75": 366.13,
+        "median_building_limit": 250000.0
+      },
+      "Primary": {
+        "n": 37,
+        "total_p25": 428.32,
+        "total_median": 517.01,
+        "total_p75": 731.79,
+        "total_recorded_median": 500.44,
+        "per100k_p25": 171.33,
+        "per100k_median": 213.79,
+        "per100k_p75": 293.36,
+        "median_building_limit": 250000.0
+      },
+      "Primary Home": {
+        "n": 132,
+        "total_p25": 558.56,
+        "total_median": 665.11,
+        "total_p75": 803.02,
+        "total_recorded_median": 665.11,
+        "per100k_p25": 233.77,
+        "per100k_median": 279.27,
+        "per100k_p75": 325.58,
+        "median_building_limit": 250000.0
+      },
+      "Property Rented To Others": {
+        "n": 105,
+        "total_p25": 580.34,
+        "total_median": 694.77,
+        "total_p75": 787.48,
+        "total_recorded_median": 694.77,
+        "per100k_p25": 260.97,
+        "per100k_median": 286.39,
+        "per100k_p75": 314.99,
+        "median_building_limit": 250000.0
+      },
+      "Secondary / Seasonal Home": {
+        "n": 10,
+        "total_p25": 270.77,
+        "total_median": 278.51,
+        "total_p75": 365.52,
+        "total_recorded_median": 278.51,
+        "per100k_p25": 363.52,
+        "per100k_median": 535.6,
+        "per100k_p75": 536.38,
+        "median_building_limit": 52000.0
+      },
+      "Tenant": {
+        "n": 1668,
+        "total_p25": 649.44,
+        "total_median": 789.98,
+        "total_p75": 867.18,
+        "total_recorded_median": 764.5,
+        "per100k_p25": 315.99,
+        "per100k_median": 336.99,
+        "per100k_p75": 366.13,
+        "median_building_limit": 250000.0
+      }
+    },
+    "suppressed_cells": 38
+  },
+  "by_year": {
+    "cells": {
+      "2023.0": {
+        "n": 1321,
+        "total_p25": 702.48,
+        "total_median": 810.23,
+        "total_p75": 870.17,
+        "total_recorded_median": 784.0,
+        "per100k_p25": 322.33,
+        "per100k_median": 337.59,
+        "per100k_p75": 364.61,
+        "median_building_limit": 250000.0
+      },
+      "2024.0": {
+        "n": 1901,
+        "total_p25": 662.02,
+        "total_median": 805.81,
+        "total_p75": 872.77,
+        "total_recorded_median": 779.75,
+        "per100k_p25": 315.03,
+        "per100k_median": 337.59,
+        "per100k_p75": 366.44,
+        "median_building_limit": 250000.0
+      },
+      "2025.0": {
+        "n": 2071,
+        "total_p25": 637.39,
+        "total_median": 785.31,
+        "total_p75": 865.24,
+        "total_recorded_median": 760.0,
+        "per100k_p25": 313.09,
+        "per100k_median": 337.08,
+        "per100k_p75": 365.9,
+        "median_building_limit": 250000.0
+      },
+      "2026.0": {
+        "n": 337,
+        "total_p25": 571.47,
+        "total_median": 705.99,
+        "total_p75": 824.48,
+        "total_recorded_median": 700.44,
+        "per100k_p25": 258.13,
+        "per100k_median": 297.52,
+        "per100k_p75": 352.9,
+        "median_building_limit": 250000.0
+      }
+    },
+    "suppressed_cells": 1
+  },
+  "by_construction": {
+    "cells": {
+      "Frame": {
+        "n": 31,
+        "total_p25": 428.32,
+        "total_median": 485.42,
+        "total_p75": 783.9,
+        "total_recorded_median": 470.0,
+        "per100k_p25": 163.72,
+        "per100k_median": 211.02,
+        "per100k_p75": 306.46,
+        "median_building_limit": 250000.0
+      },
+      "Masonry": {
+        "n": 15,
+        "total_p25": 462.62,
+        "total_median": 597.26,
+        "total_p75": 747.21,
+        "total_recorded_median": 597.26,
+        "per100k_p25": 185.05,
+        "per100k_median": 238.9,
+        "per100k_p75": 298.88,
+        "median_building_limit": 250000.0
+      },
+      "Masonry Veneer": {
+        "n": 22,
+        "total_p25": 641.76,
+        "total_median": 783.64,
+        "total_p75": 840.78,
+        "total_recorded_median": 758.39,
+        "per100k_p25": 317.06,
+        "per100k_median": 336.31,
+        "per100k_p75": 342.98,
+        "median_building_limit": 250000.0
+      },
+      "Mobile Home With Tie Downs": {
+        "n": 150,
+        "total_p25": 508.23,
+        "total_median": 736.76,
+        "total_p75": 873.55,
+        "total_recorded_median": 713.22,
+        "per100k_p25": 317.14,
+        "per100k_median": 373.5,
+        "per100k_p75": 550.38,
+        "median_building_limit": 186500.0
+      },
+      "Reinforced Masonry": {
+        "n": 128,
+        "total_p25": 740.33,
+        "total_median": 779.97,
+        "total_p75": 830.94,
+        "total_recorded_median": 754.85,
+        "per100k_p25": 305.3,
+        "per100k_median": 326.73,
+        "per100k_p75": 354.4,
+        "median_building_limit": 250000.0
+      },
+      "Steel Frame": {
+        "n": 18,
+        "total_p25": 743.79,
+        "total_median": 779.97,
+        "total_p75": 810.23,
+        "total_recorded_median": 754.85,
+        "per100k_p25": 298.35,
+        "per100k_median": 311.99,
+        "per100k_p75": 324.09,
+        "median_building_limit": 250000.0
+      },
+      "Unreinforced Masonry": {
+        "n": 16,
+        "total_p25": 758.32,
+        "total_median": 830.47,
+        "total_p75": 918.19,
+        "total_recorded_median": 803.5,
+        "per100k_p25": 304.23,
+        "per100k_median": 365.0,
+        "per100k_p75": 383.47,
+        "median_building_limit": 250000.0
+      },
+      "Wood": {
+        "n": 31,
+        "total_p25": 457.15,
+        "total_median": 565.24,
+        "total_p75": 724.59,
+        "total_recorded_median": 547.08,
+        "per100k_p25": 213.32,
+        "per100k_median": 248.43,
+        "per100k_p75": 314.06,
+        "median_building_limit": 250000.0
+      },
+      "Wood Frame": {
+        "n": 4773,
+        "total_p25": 683.58,
+        "total_median": 808.67,
+        "total_p75": 876.97,
+        "total_recorded_median": 782.5,
+        "per100k_p25": 318.28,
+        "per100k_median": 337.59,
+        "per100k_p75": 365.45,
+        "median_building_limit": 250000.0
+      },
+      "Wood Frame With Siding": {
+        "n": 240,
+        "total_p25": 561.15,
+        "total_median": 674.65,
+        "total_p75": 791.48,
+        "total_recorded_median": 674.65,
+        "per100k_p25": 242.82,
+        "per100k_median": 286.17,
+        "per100k_p75": 326.93,
+        "median_building_limit": 250000.0
+      },
+      "Wood Frame With Stucco": {
+        "n": 35,
+        "total_p25": 468.5,
+        "total_median": 597.26,
+        "total_p75": 714.85,
+        "total_recorded_median": 582.5,
+        "per100k_p25": 212.85,
+        "per100k_median": 258.13,
+        "per100k_p75": 323.62,
+        "median_building_limit": 250000.0
+      }
+    },
+    "suppressed_cells": 7
+  },
+  "by_deductible": {
+    "cells": {
+      "$1,000": {
+        "n": 151,
+        "total_p25": 569.77,
+        "total_median": 780.12,
+        "total_p75": 934.28,
+        "total_recorded_median": 755.0,
+        "per100k_p25": 350.48,
+        "per100k_median": 370.61,
+        "per100k_p75": 386.85,
+        "median_building_limit": 250000.0
+      },
+      "$10,000": {
+        "n": 17,
+        "total_p25": 632.2,
+        "total_median": 767.15,
+        "total_p75": 1175.24,
+        "total_recorded_median": 742.5,
+        "per100k_p25": 306.86,
+        "per100k_median": 333.86,
+        "per100k_p75": 450.84,
+        "median_building_limit": 250000.0
+      },
+      "$2,000": {
+        "n": 193,
+        "total_p25": 595.72,
+        "total_median": 771.63,
+        "total_p75": 878.32,
+        "total_recorded_median": 746.82,
+        "per100k_p25": 334.89,
+        "per100k_median": 351.33,
+        "per100k_p75": 380.56,
+        "median_building_limit": 250000.0
+      },
+      "$5,000": {
+        "n": 5119,
+        "total_p25": 663.81,
+        "total_median": 800.88,
+        "total_p75": 865.24,
+        "total_recorded_median": 776.25,
+        "per100k_p25": 313.09,
+        "per100k_median": 334.99,
+        "per100k_p75": 363.12,
+        "median_building_limit": 250000.0
+      }
+    },
+    "suppressed_cells": 1
+  },
+  "by_owner_vs_rental": {
+    "cells": {
+      "Owner-Occupied": {
+        "n": 3611,
+        "total_p25": 667.18,
+        "total_median": 808.67,
+        "total_p75": 873.16,
+        "total_recorded_median": 782.5,
+        "per100k_p25": 314.13,
+        "per100k_median": 337.59,
+        "per100k_p75": 365.18,
+        "median_building_limit": 250000.0
+      },
+      "Rental / Non-Owner-Occupied": {
+        "n": 1773,
+        "total_p25": 637.39,
+        "total_median": 787.32,
+        "total_p75": 865.24,
+        "total_recorded_median": 761.93,
+        "per100k_p25": 313.5,
+        "per100k_median": 334.89,
+        "per100k_p75": 365.18,
+        "median_building_limit": 250000.0
+      },
+      "Secondary / Seasonal": {
+        "n": 12,
+        "total_p25": 275.93,
+        "total_median": 321.41,
+        "total_p75": 560.12,
+        "total_recorded_median": 321.41,
+        "per100k_p25": 283.43,
+        "per100k_median": 535.6,
+        "per100k_p75": 536.38,
+        "median_building_limit": 78500.0
+      }
+    },
+    "suppressed_cells": 0
+  },
+  "by_intermap_score": {
+    "cells": {
+      "10": {
+        "n": 12,
+        "total_p25": 531.22,
+        "total_median": 690.59,
+        "total_p75": 835.44,
+        "total_recorded_median": 668.75,
+        "per100k_p25": 275.23,
+        "per100k_median": 319.0,
+        "per100k_p75": 362.21,
+        "median_building_limit": 250000.0
+      },
+      "10.0": {
+        "n": 186,
+        "total_p25": 533.06,
+        "total_median": 743.79,
+        "total_p75": 782.72,
+        "total_recorded_median": 720.0,
+        "per100k_p25": 296.48,
+        "per100k_median": 313.09,
+        "per100k_p75": 336.86,
+        "median_building_limit": 250000.0
+      },
+      "14.0": {
+        "n": 72,
+        "total_p25": 662.16,
+        "total_median": 782.72,
+        "total_p75": 808.67,
+        "total_recorded_median": 757.5,
+        "per100k_p25": 305.3,
+        "per100k_median": 323.47,
+        "per100k_p75": 335.49,
+        "median_building_limit": 250000.0
+      },
+      "19": {
+        "n": 14,
+        "total_p25": 597.24,
+        "total_median": 742.49,
+        "total_p75": 793.1,
+        "total_recorded_median": 718.75,
+        "per100k_p25": 301.41,
+        "per100k_median": 316.34,
+        "per100k_p75": 326.09,
+        "median_building_limit": 250000.0
+      },
+      "19.0": {
+        "n": 145,
+        "total_p25": 521.75,
+        "total_median": 741.2,
+        "total_p75": 802.18,
+        "total_recorded_median": 717.5,
+        "per100k_p25": 298.96,
+        "per100k_median": 320.8,
+        "per100k_p75": 328.54,
+        "median_building_limit": 250000.0
+      },
+      "20.0": {
+        "n": 15,
+        "total_p25": 504.76,
+        "total_median": 741.2,
+        "total_p75": 815.16,
+        "total_recorded_median": 717.5,
+        "per100k_p25": 320.87,
+        "per100k_median": 326.06,
+        "per100k_p75": 384.72,
+        "median_building_limit": 250000.0
+      },
+      "23": {
+        "n": 36,
+        "total_p25": 417.18,
+        "total_median": 668.15,
+        "total_p75": 793.59,
+        "total_recorded_median": 647.13,
+        "per100k_p25": 300.74,
+        "per100k_median": 318.28,
+        "per100k_p75": 341.99,
+        "median_building_limit": 250000.0
+      },
+      "23.0": {
+        "n": 378,
+        "total_p25": 637.39,
+        "total_median": 760.59,
+        "total_p75": 815.16,
+        "total_recorded_median": 736.18,
+        "per100k_p25": 304.23,
+        "per100k_median": 321.6,
+        "per100k_p75": 352.87,
+        "median_building_limit": 250000.0
+      },
+      "24.0": {
+        "n": 12,
+        "total_p25": 663.65,
+        "total_median": 683.58,
+        "total_p75": 836.67,
+        "total_recorded_median": 662.0,
+        "per100k_p25": 325.52,
+        "per100k_median": 331.83,
+        "per100k_p75": 425.96,
+        "median_building_limit": 210000.0
+      },
+      "27": {
+        "n": 11,
+        "total_p25": 452.2,
+        "total_median": 743.79,
+        "total_p75": 781.34,
+        "total_recorded_median": 720.0,
+        "per100k_p25": 304.75,
+        "per100k_median": 323.47,
+        "per100k_p75": 344.75,
+        "median_building_limit": 250000.0
+      },
+      "27.0": {
+        "n": 80,
+        "total_p25": 677.75,
+        "total_median": 782.72,
+        "total_p75": 812.28,
+        "total_recorded_median": 757.5,
+        "per100k_p25": 313.09,
+        "per100k_median": 323.61,
+        "per100k_p75": 352.25,
+        "median_building_limit": 250000.0
+      },
+      "28": {
+        "n": 49,
+        "total_p25": 671.13,
+        "total_median": 743.79,
+        "total_p75": 782.72,
+        "total_recorded_median": 720.0,
+        "per100k_p25": 297.52,
+        "per100k_median": 311.99,
+        "per100k_p75": 324.52,
+        "median_building_limit": 250000.0
+      },
+      "28.0": {
+        "n": 601,
+        "total_p25": 721.08,
+        "total_median": 779.97,
+        "total_p75": 812.28,
+        "total_recorded_median": 754.85,
+        "per100k_p25": 305.3,
+        "per100k_median": 320.87,
+        "per100k_p75": 335.56,
+        "median_building_limit": 250000.0
+      },
+      "32": {
+        "n": 58,
+        "total_p25": 677.27,
+        "total_median": 779.86,
+        "total_p75": 837.22,
+        "total_recorded_median": 754.75,
+        "per100k_p25": 315.1,
+        "per100k_median": 334.89,
+        "per100k_p75": 341.25,
+        "median_building_limit": 250000.0
+      },
+      "32.0": {
+        "n": 680,
+        "total_p25": 677.82,
+        "total_median": 789.98,
+        "total_p75": 837.22,
+        "total_recorded_median": 764.5,
+        "per100k_p25": 314.93,
+        "per100k_median": 332.51,
+        "per100k_p75": 348.43,
+        "median_building_limit": 250000.0
+      },
+      "36": {
+        "n": 19,
+        "total_p25": 769.74,
+        "total_median": 834.36,
+        "total_p75": 854.86,
+        "total_recorded_median": 807.25,
+        "per100k_p25": 311.95,
+        "per100k_median": 333.74,
+        "per100k_p75": 340.25,
+        "median_building_limit": 250000.0
+      },
+      "36.0": {
+        "n": 250,
+        "total_p25": 628.87,
+        "total_median": 810.23,
+        "total_p75": 841.09,
+        "total_recorded_median": 784.0,
+        "per100k_p25": 322.99,
+        "per100k_median": 334.89,
+        "per100k_p75": 347.0,
+        "median_building_limit": 250000.0
+      },
+      "37": {
+        "n": 16,
+        "total_p25": 598.2,
+        "total_median": 765.96,
+        "total_p75": 810.23,
+        "total_recorded_median": 741.36,
+        "per100k_p25": 307.9,
+        "per100k_median": 324.09,
+        "per100k_p75": 341.29,
+        "median_building_limit": 250000.0
+      },
+      "37.0": {
+        "n": 226,
+        "total_p25": 637.39,
+        "total_median": 789.98,
+        "total_p75": 837.22,
+        "total_recorded_median": 764.5,
+        "per100k_p25": 324.09,
+        "per100k_median": 334.89,
+        "per100k_p75": 352.86,
+        "median_building_limit": 250000.0
+      },
+      "40": {
+        "n": 44,
+        "total_p25": 492.73,
+        "total_median": 769.74,
+        "total_p75": 828.35,
+        "total_recorded_median": 745.0,
+        "per100k_p25": 307.9,
+        "per100k_median": 332.19,
+        "per100k_p75": 384.37,
+        "median_building_limit": 250000.0
+      },
+      "40.0": {
+        "n": 364,
+        "total_p25": 674.4,
+        "total_median": 810.23,
+        "total_p75": 843.96,
+        "total_recorded_median": 784.0,
+        "per100k_p25": 321.94,
+        "per100k_median": 334.89,
+        "per100k_p75": 347.21,
+        "median_building_limit": 250000.0
+      },
+      "43": {
+        "n": 25,
+        "total_p25": 637.39,
+        "total_median": 765.59,
+        "total_p75": 865.24,
+        "total_recorded_median": 741.0,
+        "per100k_p25": 314.13,
+        "per100k_median": 350.79,
+        "per100k_p75": 362.06,
+        "median_building_limit": 250000.0
+      },
+      "43.0": {
+        "n": 281,
+        "total_p25": 713.85,
+        "total_median": 840.78,
+        "total_p75": 889.78,
+        "total_recorded_median": 813.43,
+        "per100k_p25": 336.31,
+        "per100k_median": 350.79,
+        "per100k_p75": 361.12,
+        "median_building_limit": 250000.0
+      },
+      "44.0": {
+        "n": 108,
+        "total_p25": 664.69,
+        "total_median": 865.24,
+        "total_p75": 916.11,
+        "total_recorded_median": 837.0,
+        "per100k_p25": 338.64,
+        "per100k_median": 357.72,
+        "per100k_p75": 384.41,
+        "median_building_limit": 250000.0
+      },
+      "47": {
+        "n": 18,
+        "total_p25": 650.95,
+        "total_median": 820.35,
+        "total_p75": 890.68,
+        "total_recorded_median": 793.75,
+        "per100k_p25": 313.23,
+        "per100k_median": 349.0,
+        "per100k_p75": 358.62,
+        "median_building_limit": 250000.0
+      },
+      "47.0": {
+        "n": 191,
+        "total_p25": 730.66,
+        "total_median": 865.24,
+        "total_p75": 901.58,
+        "total_recorded_median": 837.0,
+        "per100k_p25": 342.66,
+        "per100k_median": 356.25,
+        "per100k_p75": 385.67,
+        "median_building_limit": 250000.0
+      },
+      "48": {
+        "n": 13,
+        "total_p25": 637.39,
+        "total_median": 821.65,
+        "total_p75": 887.04,
+        "total_recorded_median": 795.0,
+        "per100k_p25": 328.66,
+        "per100k_median": 354.82,
+        "per100k_p75": 363.06,
+        "median_building_limit": 250000.0
+      },
+      "48.0": {
+        "n": 137,
+        "total_p25": 700.44,
+        "total_median": 843.44,
+        "total_p75": 901.58,
+        "total_recorded_median": 816.0,
+        "per100k_p25": 337.38,
+        "per100k_median": 360.63,
+        "per100k_p75": 377.92,
+        "median_building_limit": 250000.0
+      },
+      "49.0": {
+        "n": 20,
+        "total_p25": 703.09,
+        "total_median": 821.65,
+        "total_p75": 894.31,
+        "total_recorded_median": 795.0,
+        "per100k_p25": 348.1,
+        "per100k_median": 355.6,
+        "per100k_p75": 359.73,
+        "median_building_limit": 250000.0
+      },
+      "51": {
+        "n": 14,
+        "total_p25": 653.66,
+        "total_median": 879.05,
+        "total_p75": 893.6,
+        "total_recorded_median": 850.3,
+        "per100k_p25": 290.75,
+        "per100k_median": 352.67,
+        "per100k_p75": 357.72,
+        "median_building_limit": 250000.0
+      },
+      "51.0": {
+        "n": 186,
+        "total_p25": 660.7,
+        "total_median": 865.24,
+        "total_p75": 898.7,
+        "total_recorded_median": 837.0,
+        "per100k_p25": 337.38,
+        "per100k_median": 354.82,
+        "per100k_p75": 376.31,
+        "median_building_limit": 250000.0
+      },
+      "52": {
+        "n": 11,
+        "total_p25": 581.3,
+        "total_median": 862.49,
+        "total_p75": 872.51,
+        "total_recorded_median": 834.35,
+        "per100k_p25": 345.55,
+        "per100k_median": 351.91,
+        "per100k_p75": 402.52,
+        "median_building_limit": 250000.0
+      },
+      "52.0": {
+        "n": 57,
+        "total_p25": 531.8,
+        "total_median": 865.24,
+        "total_p75": 901.58,
+        "total_recorded_median": 837.0,
+        "per100k_p25": 346.1,
+        "per100k_median": 359.48,
+        "per100k_p75": 379.03,
+        "median_building_limit": 250000.0
+      },
+      "54": {
+        "n": 13,
+        "total_p25": 637.39,
+        "total_median": 865.24,
+        "total_p75": 894.31,
+        "total_recorded_median": 837.0,
+        "per100k_p25": 328.66,
+        "per100k_median": 353.69,
+        "per100k_p75": 374.85,
+        "median_building_limit": 250000.0
+      },
+      "54.0": {
+        "n": 121,
+        "total_p25": 637.39,
+        "total_median": 865.24,
+        "total_p75": 898.7,
+        "total_recorded_median": 837.0,
+        "per100k_p25": 337.38,
+        "per100k_median": 357.72,
+        "per100k_p75": 375.68,
+        "median_building_limit": 250000.0
+      },
+      "55": {
+        "n": 34,
+        "total_p25": 671.84,
+        "total_median": 854.22,
+        "total_p75": 947.5,
+        "total_recorded_median": 826.38,
+        "per100k_p25": 339.04,
+        "per100k_median": 364.37,
+        "per100k_p75": 385.27,
+        "median_building_limit": 250000.0
+      },
+      "55.0": {
+        "n": 473,
+        "total_p25": 682.32,
+        "total_median": 870.17,
+        "total_p75": 930.38,
+        "total_recorded_median": 841.75,
+        "per100k_p25": 348.07,
+        "per100k_median": 364.87,
+        "per100k_p75": 389.9,
+        "median_building_limit": 250000.0
+      },
+      "56.0": {
+        "n": 12,
+        "total_p25": 491.9,
+        "total_median": 799.82,
+        "total_p75": 1025.42,
+        "total_recorded_median": 786.01,
+        "per100k_p25": 300.82,
+        "per100k_median": 361.09,
+        "per100k_p75": 514.89,
+        "median_building_limit": 250000.0
+      },
+      "57.0": {
+        "n": 14,
+        "total_p25": 682.19,
+        "total_median": 847.6,
+        "total_p75": 892.75,
+        "total_recorded_median": 820.0,
+        "per100k_p25": 339.04,
+        "per100k_median": 348.54,
+        "per100k_p75": 393.38,
+        "median_building_limit": 250000.0
+      },
+      "58": {
+        "n": 10,
+        "total_p25": 674.06,
+        "total_median": 847.6,
+        "total_p75": 928.5,
+        "total_recorded_median": 820.0,
+        "per100k_p25": 343.27,
+        "per100k_median": 364.37,
+        "per100k_p75": 373.07,
+        "median_building_limit": 250000.0
+      },
+      "58.0": {
+        "n": 118,
+        "total_p25": 680.03,
+        "total_median": 847.6,
+        "total_p75": 930.58,
+        "total_recorded_median": 820.0,
+        "per100k_p25": 339.04,
+        "per100k_median": 359.6,
+        "per100k_p75": 394.3,
+        "median_building_limit": 250000.0
+      },
+      "59.0": {
+        "n": 27,
+        "total_p25": 677.15,
+        "total_median": 827.23,
+        "total_p75": 885.23,
+        "total_recorded_median": 800.38,
+        "per100k_p25": 347.12,
+        "per100k_median": 448.9,
+        "per100k_p75": 527.21,
+        "median_building_limit": 175000.0
+      },
+      "60.0": {
+        "n": 23,
+        "total_p25": 498.91,
+        "total_median": 697.08,
+        "total_p75": 785.31,
+        "total_recorded_median": 675.0,
+        "per100k_p25": 315.34,
+        "per100k_median": 342.97,
+        "per100k_p75": 398.73,
+        "median_building_limit": 200000.0
+      },
+      "61.0": {
+        "n": 22,
+        "total_p25": 558.97,
+        "total_median": 637.39,
+        "total_p75": 786.17,
+        "total_recorded_median": 617.5,
+        "per100k_p25": 254.96,
+        "per100k_median": 262.25,
+        "per100k_p75": 359.7,
+        "median_building_limit": 250000.0
+      },
+      "62.0": {
+        "n": 30,
+        "total_p25": 664.51,
+        "total_median": 1066.91,
+        "total_p75": 1204.43,
+        "total_recorded_median": 1031.27,
+        "per100k_p25": 265.8,
+        "per100k_median": 452.19,
+        "per100k_p75": 517.14,
+        "median_building_limit": 250000.0
+      },
+      "64.0": {
+        "n": 13,
+        "total_p25": 582.73,
+        "total_median": 845.0,
+        "total_p75": 957.89,
+        "total_recorded_median": 817.5,
+        "per100k_p25": 260.29,
+        "per100k_median": 383.16,
+        "per100k_p75": 388.49,
+        "median_building_limit": 250000.0
+      },
+      "65.0": {
+        "n": 26,
+        "total_p25": 793.28,
+        "total_median": 953.11,
+        "total_p75": 1204.43,
+        "total_recorded_median": 921.19,
+        "per100k_p25": 308.0,
+        "per100k_median": 383.16,
+        "per100k_p75": 570.01,
+        "median_building_limit": 250000.0
+      },
+      "66.0": {
+        "n": 14,
+        "total_p25": 510.48,
+        "total_median": 800.11,
+        "total_p75": 1224.67,
+        "total_recorded_median": 774.25,
+        "per100k_p25": 322.28,
+        "per100k_median": 349.91,
+        "per100k_p75": 380.34,
+        "median_building_limit": 250000.0
+      },
+      "68.0": {
+        "n": 15,
+        "total_p25": 587.19,
+        "total_median": 646.07,
+        "total_p75": 998.31,
+        "total_recorded_median": 625.86,
+        "per100k_p25": 254.96,
+        "per100k_median": 303.29,
+        "per100k_p75": 484.26,
+        "median_building_limit": 250000.0
+      },
+      "70.0": {
+        "n": 26,
+        "total_p25": 637.39,
+        "total_median": 637.39,
+        "total_p75": 816.16,
+        "total_recorded_median": 617.5,
+        "per100k_p25": 254.96,
+        "per100k_median": 351.24,
+        "per100k_p75": 496.45,
+        "median_building_limit": 250000.0
+      },
+      "73.0": {
+        "n": 20,
+        "total_p25": 785.31,
+        "total_median": 802.94,
+        "total_p75": 948.81,
+        "total_recorded_median": 802.94,
+        "per100k_p25": 314.13,
+        "per100k_median": 342.34,
+        "per100k_p75": 500.67,
+        "median_building_limit": 250000.0
+      },
+      "8.0": {
+        "n": 24,
+        "total_p25": 725.88,
+        "total_median": 763.25,
+        "total_p75": 790.11,
+        "total_recorded_median": 738.75,
+        "per100k_p25": 305.3,
+        "per100k_median": 313.09,
+        "per100k_p75": 324.91,
+        "median_building_limit": 250000.0
+      },
+      "88.0": {
+        "n": 10,
+        "total_p25": 270.77,
+        "total_median": 278.51,
+        "total_p75": 573.87,
+        "total_recorded_median": 278.51,
+        "median_building_limit": 52000.0
+      },
+      "9.0": {
+        "n": 62,
+        "total_p25": 556.5,
+        "total_median": 763.77,
+        "total_p75": 815.16,
+        "total_recorded_median": 739.25,
+        "per100k_p25": 307.48,
+        "per100k_median": 323.47,
+        "per100k_p75": 337.59,
+        "median_building_limit": 250000.0
+      }
+    },
+    "suppressed_cells": 36
+  },
+  "benchmark_250k_5000ded": {
+    "definition": "$250,000 building limit, $5,000 deductible",
+    "n": 3645,
+    "why": "91% of the book sits at these terms, so fixing them removes coverage mix as an explanation for price differences and gives FEMA a directly quotable equivalent.",
+    "overall": {
+      "n": 3645,
+      "total_p25": 769.74,
+      "total_median": 823.72,
+      "total_p75": 891.46,
+      "total_recorded_median": 798.43,
+      "per100k_p25": 307.9,
+      "per100k_median": 329.49,
+      "per100k_p75": 356.58,
+      "median_building_limit": 250000.0
+    },
+    "by_owner_vs_rental": {
+      "cells": {
+        "Owner-Occupied": {
+          "n": 2467,
+          "total_p25": 769.74,
+          "total_median": 827.65,
+          "total_p75": 889.12,
+          "total_recorded_median": 801.25,
+          "per100k_p25": 307.9,
+          "per100k_median": 331.06,
+          "per100k_p75": 355.65,
+          "median_building_limit": 250000.0
+        },
+        "Rental / Non-Owner-Occupied": {
+          "n": 1139,
+          "total_p25": 779.97,
+          "total_median": 821.65,
+          "total_p75": 894.31,
+          "total_recorded_median": 795.0,
+          "per100k_p25": 311.99,
+          "per100k_median": 328.66,
+          "per100k_p75": 357.72,
+          "median_building_limit": 250000.0
+        }
+      },
+      "suppressed_cells": 1
+    },
+    "by_county": {
+      "cells": {
+        "Alameda County": {
+          "n": 111,
+          "total_p25": 782.72,
+          "total_median": 812.28,
+          "total_p75": 879.9,
+          "total_recorded_median": 785.98,
+          "per100k_p25": 313.09,
+          "per100k_median": 324.91,
+          "per100k_p75": 351.96,
+          "median_building_limit": 250000.0
+        },
+        "Butte County": {
+          "n": 75,
+          "total_p25": 834.36,
+          "total_median": 879.78,
+          "total_p75": 901.58,
+          "total_recorded_median": 851.0,
+          "per100k_p25": 333.74,
+          "per100k_median": 351.91,
+          "per100k_p75": 360.63,
+          "median_building_limit": 250000.0
+        },
+        "Contra Costa County": {
+          "n": 167,
+          "total_p25": 805.81,
+          "total_median": 837.22,
+          "total_p75": 894.31,
+          "total_recorded_median": 810.0,
+          "per100k_p25": 322.33,
+          "per100k_median": 334.89,
+          "per100k_p75": 357.72,
+          "median_building_limit": 250000.0
+        },
+        "El Dorado County": {
+          "n": 15,
+          "total_p25": 690.59,
+          "total_median": 870.17,
+          "total_p75": 930.38,
+          "total_recorded_median": 841.75,
+          "per100k_p25": 276.24,
+          "per100k_median": 348.07,
+          "per100k_p75": 372.15,
+          "median_building_limit": 250000.0
+        },
+        "Kern County": {
+          "n": 26,
+          "total_p25": 743.79,
+          "total_median": 786.35,
+          "total_p75": 808.37,
+          "total_recorded_median": 761.0,
+          "per100k_p25": 297.52,
+          "per100k_median": 314.54,
+          "per100k_p75": 323.35,
+          "median_building_limit": 250000.0
+        },
+        "Lake County": {
+          "n": 119,
+          "total_p25": 769.74,
+          "total_median": 821.65,
+          "total_p75": 873.38,
+          "total_recorded_median": 795.0,
+          "per100k_p25": 307.9,
+          "per100k_median": 328.66,
+          "per100k_p75": 349.35,
+          "median_building_limit": 250000.0
+        },
+        "Los Angeles County": {
+          "n": 342,
+          "total_p25": 760.59,
+          "total_median": 802.18,
+          "total_p75": 837.22,
+          "total_recorded_median": 776.25,
+          "per100k_p25": 304.23,
+          "per100k_median": 320.87,
+          "per100k_p75": 334.89,
+          "median_building_limit": 250000.0
+        },
+        "Marin": {
+          "n": 12,
+          "total_p25": 885.68,
+          "total_median": 975.15,
+          "total_p75": 1056.9,
+          "total_recorded_median": 942.88,
+          "per100k_p25": 354.27,
+          "per100k_median": 390.06,
+          "per100k_p75": 422.76,
+          "median_building_limit": 250000.0
+        },
+        "Marin County": {
+          "n": 370,
+          "total_p25": 786.48,
+          "total_median": 834.36,
+          "total_p75": 884.22,
+          "total_recorded_median": 807.25,
+          "per100k_p25": 314.59,
+          "per100k_median": 333.74,
+          "per100k_p75": 353.69,
+          "median_building_limit": 250000.0
+        },
+        "Merced County": {
+          "n": 23,
+          "total_p25": 745.87,
+          "total_median": 843.96,
+          "total_p75": 887.04,
+          "total_recorded_median": 816.5,
+          "per100k_p25": 298.35,
+          "per100k_median": 337.59,
+          "per100k_p75": 354.82,
+          "median_building_limit": 250000.0
+        },
+        "Monterey County": {
+          "n": 28,
+          "total_p25": 839.62,
+          "total_median": 893.53,
+          "total_p75": 971.84,
+          "total_recorded_median": 864.25,
+          "per100k_p25": 335.85,
+          "per100k_median": 357.41,
+          "per100k_p75": 388.74,
+          "median_building_limit": 250000.0
+        },
+        "Napa County": {
+          "n": 21,
+          "total_p25": 779.97,
+          "total_median": 792.89,
+          "total_p75": 854.53,
+          "total_recorded_median": 767.3,
+          "per100k_p25": 311.99,
+          "per100k_median": 317.16,
+          "per100k_p75": 341.81,
+          "median_building_limit": 250000.0
+        },
+        "Orange County": {
+          "n": 366,
+          "total_p25": 803.09,
+          "total_median": 834.36,
+          "total_p75": 886.86,
+          "total_recorded_median": 807.25,
+          "per100k_p25": 321.24,
+          "per100k_median": 333.74,
+          "per100k_p75": 354.74,
+          "median_building_limit": 250000.0
+        },
+        "Placer County": {
+          "n": 15,
+          "total_p25": 741.2,
+          "total_median": 763.25,
+          "total_p75": 847.6,
+          "total_recorded_median": 738.75,
+          "per100k_p25": 296.48,
+          "per100k_median": 305.3,
+          "per100k_p75": 339.04,
+          "median_building_limit": 250000.0
+        },
+        "Riverside County": {
+          "n": 103,
+          "total_p25": 760.59,
+          "total_median": 789.98,
+          "total_p75": 865.24,
+          "total_recorded_median": 764.5,
+          "per100k_p25": 304.23,
+          "per100k_median": 315.99,
+          "per100k_p75": 346.1,
+          "median_building_limit": 250000.0
+        },
+        "Sacramento County": {
+          "n": 32,
+          "total_p25": 637.39,
+          "total_median": 810.23,
+          "total_p75": 847.34,
+          "total_recorded_median": 784.0,
+          "per100k_p25": 254.96,
+          "per100k_median": 324.09,
+          "per100k_p75": 338.94,
+          "median_building_limit": 250000.0
+        },
+        "San Bernardino County": {
+          "n": 118,
+          "total_p25": 764.88,
+          "total_median": 810.23,
+          "total_p75": 840.78,
+          "total_recorded_median": 784.0,
+          "per100k_p25": 305.95,
+          "per100k_median": 324.09,
+          "per100k_p75": 336.31,
+          "median_building_limit": 250000.0
+        },
+        "San Diego County": {
+          "n": 248,
+          "total_p25": 786.17,
+          "total_median": 830.47,
+          "total_p75": 901.58,
+          "total_recorded_median": 803.5,
+          "per100k_p25": 314.47,
+          "per100k_median": 332.19,
+          "per100k_p75": 360.63,
+          "median_building_limit": 250000.0
+        },
+        "San Joaquin County": {
+          "n": 19,
+          "total_p25": 713.69,
+          "total_median": 823.72,
+          "total_p75": 894.31,
+          "total_recorded_median": 797.0,
+          "per100k_p25": 285.47,
+          "per100k_median": 329.49,
+          "per100k_p75": 357.72,
+          "median_building_limit": 250000.0
+        },
+        "San Luis Obispo County": {
+          "n": 21,
+          "total_p25": 769.74,
+          "total_median": 821.65,
+          "total_p75": 902.22,
+          "total_recorded_median": 795.0,
+          "per100k_p25": 307.9,
+          "per100k_median": 328.66,
+          "per100k_p75": 360.89,
+          "median_building_limit": 250000.0
+        },
+        "San Mateo County": {
+          "n": 161,
+          "total_p25": 810.23,
+          "total_median": 837.22,
+          "total_p75": 894.31,
+          "total_recorded_median": 810.0,
+          "per100k_p25": 324.09,
+          "per100k_median": 334.89,
+          "per100k_p75": 357.72,
+          "median_building_limit": 250000.0
+        },
+        "Santa Barbara County": {
+          "n": 50,
+          "total_p25": 763.25,
+          "total_median": 857.46,
+          "total_p75": 886.01,
+          "total_recorded_median": 829.5,
+          "per100k_p25": 305.3,
+          "per100k_median": 342.98,
+          "per100k_p75": 354.4,
+          "median_building_limit": 250000.0
+        },
+        "Santa Clara": {
+          "n": 12,
+          "total_p25": 800.11,
+          "total_median": 827.98,
+          "total_p75": 974.76,
+          "total_recorded_median": 801.1,
+          "per100k_p25": 320.04,
+          "per100k_median": 331.19,
+          "per100k_p75": 389.9,
+          "median_building_limit": 250000.0
+        },
+        "Santa Clara County": {
+          "n": 314,
+          "total_p25": 779.97,
+          "total_median": 837.22,
+          "total_p75": 890.35,
+          "total_recorded_median": 810.0,
+          "per100k_p25": 311.99,
+          "per100k_median": 334.89,
+          "per100k_p75": 356.14,
+          "median_building_limit": 250000.0
+        },
+        "Santa Cruz": {
+          "n": 10,
+          "total_p25": 733.41,
+          "total_median": 955.82,
+          "total_p75": 1104.52,
+          "total_recorded_median": 924.25,
+          "per100k_p25": 293.36,
+          "per100k_median": 382.33,
+          "per100k_p75": 441.81,
+          "median_building_limit": 250000.0
+        },
+        "Santa Cruz County": {
+          "n": 174,
+          "total_p25": 799.18,
+          "total_median": 845.0,
+          "total_p75": 921.17,
+          "total_recorded_median": 817.5,
+          "per100k_p25": 319.67,
+          "per100k_median": 338.0,
+          "per100k_p75": 368.47,
+          "median_building_limit": 250000.0
+        },
+        "Shasta County": {
+          "n": 22,
+          "total_p25": 847.6,
+          "total_median": 915.72,
+          "total_p75": 984.79,
+          "total_recorded_median": 885.62,
+          "per100k_p25": 339.04,
+          "per100k_median": 366.29,
+          "per100k_p75": 393.92,
+          "median_building_limit": 250000.0
+        },
+        "Solano County": {
+          "n": 96,
+          "total_p25": 792.89,
+          "total_median": 833.84,
+          "total_p75": 883.8,
+          "total_recorded_median": 806.75,
+          "per100k_p25": 317.16,
+          "per100k_median": 333.54,
+          "per100k_p75": 353.52,
+          "median_building_limit": 250000.0
+        },
+        "Sonoma County": {
+          "n": 43,
+          "total_p25": 665.94,
+          "total_median": 763.25,
+          "total_p75": 828.0,
+          "total_recorded_median": 738.75,
+          "per100k_p25": 266.37,
+          "per100k_median": 305.3,
+          "per100k_p75": 331.2,
+          "median_building_limit": 250000.0
+        },
+        "Tehama County": {
+          "n": 21,
+          "total_p25": 769.74,
+          "total_median": 850.71,
+          "total_p75": 1204.43,
+          "total_recorded_median": 823.0,
+          "per100k_p25": 307.9,
+          "per100k_median": 340.28,
+          "per100k_p75": 481.77,
+          "median_building_limit": 250000.0
+        },
+        "Tulare County": {
+          "n": 29,
+          "total_p25": 702.48,
+          "total_median": 834.36,
+          "total_p75": 885.23,
+          "total_recorded_median": 807.25,
+          "per100k_p25": 280.99,
+          "per100k_median": 333.74,
+          "per100k_p75": 354.09,
+          "median_building_limit": 250000.0
+        },
+        "Ventura County": {
+          "n": 103,
+          "total_p25": 745.87,
+          "total_median": 815.16,
+          "total_p75": 865.24,
+          "total_recorded_median": 788.75,
+          "per100k_p25": 298.35,
+          "per100k_median": 326.06,
+          "per100k_p75": 346.1,
+          "median_building_limit": 250000.0
+        },
+        "Yolo County": {
+          "n": 12,
+          "total_p25": 772.99,
+          "total_median": 792.45,
+          "total_p75": 912.94,
+          "total_recorded_median": 766.88,
+          "per100k_p25": 309.19,
+          "per100k_median": 316.98,
+          "per100k_p75": 365.18,
+          "median_building_limit": 250000.0
+        },
+        "Yuba County": {
+          "n": 11,
+          "total_p25": 794.4,
+          "total_median": 821.65,
+          "total_p75": 865.24,
+          "total_recorded_median": 795.0,
+          "per100k_p25": 317.76,
+          "per100k_median": 328.66,
+          "per100k_p75": 346.1,
+          "median_building_limit": 250000.0
+        }
+      },
+      "suppressed_cells": 37
+    },
+    "by_state": {
+      "cells": {
+        "CA": {
+          "n": 3645,
+          "total_p25": 769.74,
+          "total_median": 823.72,
+          "total_p75": 891.46,
+          "total_recorded_median": 798.43,
+          "per100k_p25": 307.9,
+          "per100k_median": 329.49,
+          "per100k_p75": 356.58,
+          "median_building_limit": 250000.0
+        }
+      },
+      "suppressed_cells": 0
+    }
+  }
+}
