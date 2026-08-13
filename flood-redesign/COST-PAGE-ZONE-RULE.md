@@ -48,18 +48,30 @@ percentage until it is verified against a primary FEMA source.** Aaron's figure 
 shaded by whoever is selling. This is Task 3 of `KIMI-BRIEF-cost-page.md`. Until it
 comes back with a FEMA URL attached, phrase the point qualitatively.
 
-The same standard applies to the **$475** X-zone figure. It is Aaron's experienced
-estimate and it is almost certainly directionally right, but it is not yet a
-number this book has produced. It must not appear on the page as a data-derived
-figure until the private zone split exists.
+**UPDATE 13 Aug — the $475 is now corroborated by the book itself.** Measured on
+1,240 California policies: the policy fee is flat at $95, every carrier has a hard
+$250 minimum premium, and the all-in bottom decile is **$441** with 10.5% of the
+book at $475 or less. Aaron's figure is essentially the 11th percentile of our own
+book. See `COST-PAGE-PLAN.md`.
+
+What remains unpublishable is *calling that cohort "Zone X."* A minimum premium is
+a pricing floor, not a zone; whether the properties sitting on it are in X zones is
+what the NFHL geocoding has to confirm. So the number can be published as "about
+one in ten policies we place costs under $450 a year" — but not yet as an X-zone
+price.
 
 ## What we can and cannot compute today
 
 **Cannot: private premiums by zone.** `Flood Zone` exists only in the Hiscox layout
 and is populated on about 11 of 1,894 rows. The one zone cut that clears the n
-floor is Hiscox-only and comes out AE $476 / X $547 — a high-risk zone cheaper than
-a low-risk one, which inverts reality and is plainly sampling noise. It is flagged
-`DO_NOT_PUBLISH` in the aggregates and must stay that way.
+floor is Hiscox-only and comes out AE $476 / X $547. It is flagged
+`DO_NOT_PUBLISH` in the aggregates and must stay that way — but NOT because the
+inversion is noise, which is what I first assumed. FludZone's measured OpenFEMA
+figures show the same inversion at scale (CA Zone X $812 across 69,510 policies
+against Zone A $759 across 55,133), because **Risk Rating 2.0 does not rate by
+flood zone at all.** Zone sets the mandate; risk characteristics set the price. The
+cut stays unpublished because it is one carrier's sliver, not because the ordering
+is wrong.
 
 **Can: NFIP premiums by zone, immediately.** FEMA's public `FimaNfipPolicies`
 dataset carries `floodZoneCurrent` and `ratedFloodZone` alongside `policyCost`,

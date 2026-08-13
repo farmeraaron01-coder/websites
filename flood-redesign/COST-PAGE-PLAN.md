@@ -113,6 +113,89 @@ $250,000 of building coverage"** is close to my measured benchmark of **$822** a
 $250,000 / $5,000 deductible (n=3,645). The editorial estimate was sound; it just
 had no data behind it. Now it does.
 
+## SOLVED: where the $475 comes from, and why I could not see it
+
+Aaron, 13 Aug: *"private cherry picks the best properties and rates them
+accordingly where the NFIP must take all properties… when we say 475, the premium
+may be 350 and then with the policy fee and tax its around 475. BRIT QBE and
+HISCOX all have low minimum premiums and X zones often all in that minimum
+premium threshold."*
+
+Both halves check out against the book, measured on 1,240 California policies.
+
+**The policy fee is flat, not proportional.** $95 on 80.4% of rows and $65 on
+18.8% — seven distinct values in total. At the median premium that is 13.6%, but on
+a $350 premium it is 27%, which is why a small premium grosses up so much. So
+$350 + $95 = $445, plus 3.18% California tax = **$459**. Aaron's $475 is the same
+calculation with a slightly larger fee or premium. The arithmetic is right.
+
+**There is a hard minimum premium of $250, and it is common to every carrier.**
+QBE, Brit, RBIA and CFIS all show `min = $250.00` exactly. Who actually lands on it
+differs sharply: **12.5% of Brit's rows sit at exactly $250** and its median is
+$522, against QBE's $689 with no floor spike at all (its most common premium is
+$715 at 4.2% — a smooth risk-rated distribution). So the floor is universal; the
+low-risk business that reaches it is concentrated in Brit and Hiscox. That is
+precisely what Aaron said.
+
+**The California distribution is bimodal, and the low cohort is real:**
+
+| percentile | premium | all-in |
+|---|---|---|
+| p1 | $250 | **$325** |
+| p5 | $275 | **$351** |
+| **p10** | **$362** | **$441** |
+| p25 | $620 | $735 |
+| p50 | $689 | $809 |
+| p75 | $747 | $869 |
+
+Note the shape. p5 → p10 climbs $90; p10 → p25 jumps **$294**. That gap is the
+break between a minimum-premium cohort and the risk-rated mass. **10.5% of the
+California book has a premium of $375 or less**, which is $475 or less all-in.
+
+**Aaron's $475 is almost exactly the 11th percentile of our own book.** It is not a
+guess and it is not an outlier — it is a real, sizeable tier we write constantly.
+
+### The error this exposes in my earlier reading
+
+I argued the book could not contain a $475 cohort because the benchmark IQR was a
+tight $769–$888. That was wrong for an embarrassing reason: **the interquartile
+range excludes the bottom quartile by construction.** I was looking at the middle
+half of the distribution and concluding the whole thing was uniform. The low cohort
+was sitting below p25 the entire time, exactly where an IQR cannot see it.
+
+Lesson for anything published from this data: **report the low percentiles
+explicitly, not just the median and IQR.** For a price page the bottom decile is
+arguably the most commercially important number on the page, and it is the one an
+IQR hides.
+
+### The mechanism, which is the real argument
+
+Aaron's first sentence is the strongest thing on this page and it is not about
+price at all: **private carriers select which properties to write; the NFIP must
+take every applicant.** Everything else follows from that.
+
+- Private can decline a bad risk, so its book is better than average and it can
+  price a preferred risk at a floor.
+- The NFIP cannot decline anyone, so its rates must carry the risks private
+  declined. That is not inefficiency, it is the statutory job.
+- Which is why the honest version of the savings claim is *"we shop both and place
+  whichever wins"* rather than *"private is cheaper"*. For a property private
+  declines, the NFIP is not merely the better deal — it is the only deal.
+
+This is publishable as-is, needs no data, and explains the gap without
+disparaging the NFIP. It also sets up the "sometimes the NFIP is the right call"
+section rather than contradicting it.
+
+### What is now publishable without geocoding
+
+- The bottom-decile all-in figure (**~$441**, p10) as *"about one in ten policies
+  we place costs under $450 a year"* — a measured statement of fact.
+- The **$250 minimum premium** as the structural floor, and the flat **$95 policy
+  fee**, both of which explain why the cheapest policies cluster.
+- What is still NOT publishable: calling that cohort *"Zone X"*. The floor is a
+  pricing artefact, and whether the properties sitting on it are in X zones is
+  exactly what the NFHL geocoding must confirm. Strong hypothesis, not a finding.
+
 ## An open question the data raises
 
 My California benchmark is $822 with a **tight** IQR of $769–$888. A book genuinely

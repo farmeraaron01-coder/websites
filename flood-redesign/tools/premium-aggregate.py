@@ -639,6 +639,62 @@ def main():
             out["median_building_limit"] = round(float(bl.median()), 0)
         return out
 
+    # ── MINIMUM-PREMIUM STRUCTURE ──────────────────────────────────────────
+    # Aaron, 13 Aug: "BRIT QBE and HISCOX all have low minimum premiums and X
+    # zones often all fall in that minimum premium threshold."
+    #
+    # If that holds it explains the one thing the benchmark could not: why the CA
+    # median sits at $822 with a tight IQR while an X-zone policy is said to run
+    # nearer $475. A minimum-premium regime is not risk pricing at all — it is a
+    # floor — so the low-risk business piles up on a single value instead of
+    # spreading out. That shows up as a spike in the premium distribution, which
+    # means the low-risk cohort can be identified WITHOUT geocoding: it is the
+    # policies sitting at the floor.
+    #
+    # This block only measures and reports. It publishes no cell, because whether
+    # "at the floor" is a fair proxy for "X zone" is exactly what the NFHL
+    # geocoding has to confirm.
+    prem_struct = {}
+    if carrier is not None:
+        for name, grp in d.groupby(carrier):
+            p = grp["_prem"].dropna()
+            if len(p) < 20:
+                continue
+            counts = p.round(0).value_counts().head(6)
+            prem_struct[name] = {
+                "n": int(len(p)),
+                "min": round(float(p.min()), 2),
+                "p1": round(float(p.quantile(.01)), 2),
+                "p5": round(float(p.quantile(.05)), 2),
+                "median": round(float(p.median()), 2),
+                "most_common_premiums": [
+                    {"premium": float(v), "rows": int(c),
+                     "share_pct": round(100 * c / len(p), 1)}
+                    for v, c in counts.items()
+                ],
+            }
+    # Is the policy fee flat or proportional? Aaron's $475 arithmetic implies flat:
+    # $350 premium + ~$110 fee = $460, times 1.0318 CA tax = ~$475. It matters,
+    # because a flat fee is a much larger share of a small premium, which is why
+    # the observed tax/premium ratio came to ~1.20x statutory at the median.
+    fee_struct = {}
+    if "_policy_fee" in d:
+        fv = d.loc[d["_policy_fee"] > 0, "_policy_fee"]
+        if len(fv):
+            vc = fv.round(2).value_counts().head(8)
+            fee_struct = {
+                "rows_with_a_fee": int(len(fv)),
+                "distinct_values": int(fv.round(2).nunique()),
+                "most_common": [{"fee": float(v), "rows": int(c),
+                                 "share_pct": round(100 * c / len(fv), 1)}
+                                for v, c in vc.items()],
+                "median": round(float(fv.median()), 2),
+                "as_pct_of_premium_median": round(
+                    100 * float((fv / d.loc[fv.index, "_prem"]).median()), 2),
+                "verdict": ("flat" if fv.round(2).nunique() <= 5 else
+                            "varies — check whether it scales with premium"),
+            }
+
     risk_geo = int((d["_geo"] == "risk").sum()) if "_geo" in d else 0
     results = {"_meta": {
         "rows_analysed": int(len(d)),
@@ -649,6 +705,13 @@ def main():
                                  "+ stamping fee + fire marshal tax, where present",
         "fee_coverage": fee_cov,
         "tax_model": tax_model,
+        "premium_floor_by_carrier": prem_struct,
+        "policy_fee_structure": fee_struct,
+        "premium_floor_note": ("Measurement only, publishes nothing. If the low-risk book "
+                              "sits at a carrier minimum premium, it appears as a spike on one "
+                              "premium value rather than a spread -- which would identify the "
+                              "low-risk cohort without geocoding. Whether 'at the floor' is a "
+                              "fair proxy for 'X zone' is what the NFHL work has to confirm."),
         "fee_coverage_note": ("The legacy carrier layouts carry only Gross Premium and "
                              "Policy Fee; surplus lines tax and stamping fee appear only "
                              "in the Instanda-era files. Where they are absent the total "
