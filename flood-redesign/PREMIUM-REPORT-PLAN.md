@@ -400,3 +400,102 @@ quote pair on the same property.
 That needs Aaron's **quote** records — both prices for the same risk on the same day, which is what Instanda or
 NowCerts may hold. **Worth asking for, because it is the difference between a good report and a unique one.**
 Absent it, a zone-and-coverage-matched comparison is the closest honest proxy.
+
+---
+
+# THE SELECTION EFFECT, RESOLVED — Aaron's insight, 13 Aug
+
+> *"The bottom line is we write the policies that generally have the lowest premium, so if NFIP was lowest they
+> would have gotten the business."*
+
+**This resolves the methodology problem without needing quote data, and the resolution is better than quote data
+would have been.**
+
+The book contains policies where private coverage was *placed*. Private gets placed when it wins. So **the
+selection is the finding**: the book is not a sample of private pricing, it is the recorded outcome of shopping
+both markets.
+
+Two consequences, and both matter:
+
+1. **The private median is biased LOW as an estimate of private pricing generally**, because the cases where
+   private lost are absent by construction.
+2. **The gap against the full NFIP population is therefore an upper bound on any individual's saving, not an
+   estimate of it.** Publishing it as "private is 31% cheaper" would have been wrong in a way a competent reader
+   could dismantle.
+
+**The correct claim needs no new data:**
+
+> *"Clients who shopped both markets and placed privately paid a median of $X per $100,000 of building coverage.
+> The NFIP population in California paid $Y."*
+
+That is the **outcome of shopping**, which is exactly what a buyer wants to know, and it is unfalsifiable in the
+good sense: it is simply what happened. **The report must state the selection effect plainly.** A reader who
+works it out unaided will distrust everything else on the page; a reader who is told it up front will trust the
+rest more.
+
+**Quote data is unavailable** — Aaron confirms the quotes exist operationally but are not stored — so the
+win-rate framing is dropped. The above replaces it and is stronger.
+
+## Total cost, settled on both sides
+
+| Side | Components |
+|---|---|
+| **Private** | gross premium + policy fee + surplus lines tax + stamping fee |
+| **NFIP** | premium + HFIAA surcharge + federal policy fee + ICC + reserve fund assessment — FEMA's own `policyCost` |
+
+**My earlier 31% compared a bare private premium against FEMA's fully loaded `policyCost`**, so only one side
+carried its fees. Both sides are totalled or neither is. The corrected gap will be narrower overall — and *wider*
+for rentals, per the next point.
+
+## The $250 surcharge — Aaron's point, verified in FEMA's data
+
+| HFIAA surcharge | Policies (CA, Jan 2025) | Maps to |
+|---|---|---|
+| **$25** | 672 (67%) | `primaryResidenceIndicator = True` |
+| **$250** | 328 (33%) | `primaryResidenceIndicator = False` |
+
+A clean 1:1 with the primary-residence flag, plus a **$47 federal policy fee** on 97% of policies. Confirmed that
+`policyCost` includes these: one sampled record shows premium **$1,574** against policyCost **$2,154**.
+
+**One third of California NFIP policies carry the $250, and private carriers do not charge it.** On a $500
+premium that is a 50% difference in total cost before comparing a single rate — and **137 of 200 policies in the
+QBE sample are landlord/rental**, so it applies to most of what the agency writes. This is a mechanical,
+verifiable, publishable fact that stands on its own regardless of how the rate comparison lands.
+
+## On the "30–50%" homepage claim
+
+Aaron's position, in his words: it is a hook, twelve years without a complaint, and *"if you said 10% savings,
+no one's going to move their policy."* That is his call as the licensed principal, and the data so far supports
+the bottom of the range.
+
+**The single thing that changes is the claim's status.** Once a report with real numbers sits on the same domain,
+the headline and the report get read together, and our own data becomes the most credible source anyone could
+cite against our own headline. That is a self-inflicted risk rather than a regulatory one.
+
+**So the recommendation is not to weaken the hook — it is to make it survivable**, which also converts better
+with the sceptical buyers this book depends on (escrow officers, lenders):
+
+> **"Clients typically save 30–50%"** — with a footnote linking to the report.
+
+Same hook, plus proof. What to avoid is wording that promises a specific outcome to a specific reader, since
+insurance advertising is held to its own standard on misleading statements. One question for the counsel already
+reviewing the Terms of Service.
+
+## `tools/premium-aggregate.py` — written, ready to run on Aaron's machine
+
+Reads the bordereaux locally and emits **only aggregates**, so names and addresses never transit anywhere.
+
+- **Header detection** — scores the first 12 rows and picks the real header, because the QBE file's headers are on
+  row 2 and a naive read finds nothing.
+- **Alias mapping across carrier layouts** — squashes punctuation and case, so `Bdx Builidng TIV` (a real typo in
+  the source) still maps to building limit. **Self-tested against the real QBE headers: 18 of 18 fields matched.**
+- **Suppression in code** — n≥10, n≥20 for cities, and it reports how many cells were suppressed so the rule is
+  visible rather than invisible.
+- **Total cost** assembled from premium plus all four private fee components.
+- **A forbidden-token sweep** as defence in depth. Tokens are deliberately specific: a bare `name` would have
+  matched the legitimate `community` field and silently deleted the geography that makes zone analysis possible —
+  a worse failure than the one it guards against.
+- **`parse-log.txt`** listing every sheet parsed or failed. **A carrier layout that silently fails to parse is the
+  most likely way this produces a confidently wrong number**, so the log is the first thing to read.
+
+Aggregates by county, city, zone, coverage band, occupancy, year and construction type.
