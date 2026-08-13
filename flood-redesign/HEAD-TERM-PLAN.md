@@ -228,3 +228,85 @@ that the two keyword-named pages have 2 internal links each.
 
 **The rule this produces:** an external page-level claim is worth exactly one `curl` before anyone acts on it.
 Query-level claims cannot be checked that way, so they need the export.
+
+---
+
+## Round two of the Kimi exchange, 13 Aug — what I got wrong, and one thing not to do
+
+### Conceded: my "contact page outranks the homepage" claim was overstated
+
+It rested on **one live SERP snapshot**, where `/contact-us/` appeared above `/`. A single search result order is
+personalised, geo-weighted and volatile — it is weak evidence for a ranking claim, and a 90-day average is
+stronger. Its figures: homepage **1.1** for "california flood insurance" and **3.8** for "flood insurance
+california"; contact at 4.5 and 9.1.
+
+**Its reframing is better than mine and is adopted here:** the homepage is already on page 1 for both head terms,
+so **"getting to page 1" was the wrong goal.** The real question is *which* URLs occupy the page-1 slots and
+whether they convert. On that, the substance survives intact — and its own data sharpens it: `/contact-us/` at
+**position 4.5, 109 impressions, zero clicks.** A page-1 slot producing nothing is a better statement of the
+problem than mine was.
+
+Also conceded: a **301 on `/mobile/contact.php` is marginally better than the current 404** while it still draws
+impressions, and its staging caution — do not ship the contact retitle alongside a canonical change — matches the
+one-change-at-a-time discipline used all day.
+
+### Corrected: the `www` split was found first, and is already actioned
+
+Its claim that this was *"invisible to Claude Code's crawl"* and *"missed even though it's visible in exactly the
+report it recommended"* is wrong. Earlier the same day, before that report existed:
+
+- measured the redirect cost (`www` TTFB 1.88 s vs apex 0.52 s, five runs each);
+- exported and read the `www` property — **185 clicks, 15,479 impressions, 90 days, homepage only**;
+- traced the likely cause to the **GBP website field** reading `http://www.californiafloodinsurance.com/`;
+- **Aaron changed it that afternoon.**
+
+All of it is in `WWW-AUDIT.md`.
+
+### ⚠ DO NOT ACCEPT ITS OFFER TO DRAFT THE `www`/`http` REDIRECT RULES
+
+**The 301s and canonical tags are already correct**, verified on both brands:
+
+```
+https://www.californiafloodinsurance.com/  -> 301 -> https://californiafloodinsurance.com/
+canonical + og:url                          -> apex
+same for statewide, ipv6.*, and mail.ipv6.*
+```
+
+So "consolidate with proper 301s and canonical tags" describes work that is finished. **Adding more rules for a
+redirect that already fires risks a loop or a conflicting rule for zero gain** — and this account has already had
+one `.htaccess` change land on the wrong folder today.
+
+**The insight it is missing:** when the 301 and canonical are already right, Google still holding `www` is not a
+configuration fault. It is a *consolidation lag*, and it is driven by external signals — which is exactly why the
+GBP field mattered and why the remaining fix is time, not code.
+
+### Settled with a real browser: the titles are not broken
+
+It re-asserted the three broken titles and said *"Claude Code's crawler apparently didn't check rendered
+titles."* Fair challenge, so it was tested properly — headless Chromium, `networkidle`, `page.title()` after JS:
+
+| URL | Rendered `<title>` |
+|---|---|
+| `/which-flood-zone-requires-flood-insurance/` | Which Flood Zone Requires Flood Insurance? (CA Guide) |
+| `/navigating-flood-zone-x/` | Flood Zone X: Do You Need Flood Insurance in California? (2026) |
+| `/residential/` | Residential Flood Insurance in California: NFIP & Private |
+| `/how-much-does-flood-insurance-cost/` | Flood Insurance Cost in California (2026 Price Guide) |
+| `/contact-us/` | Contact California Flood Insurance \| 855-225-3566 |
+
+**Source and rendered are identical, and all five are correct.** `/mobile/contact.php` also still returns 404, so
+it is not "holding a #1 slot"; those are historical impressions.
+
+### THE ACTUAL UNRESOLVED QUESTION — the two exports disagree by roughly 6×
+
+| Source | "flood insurance california", `www` | |
+|---|---|---|
+| The CSV Aaron exported, 90 days to 12 Aug | **4,076 impressions, position 10.6** | `Queries.csv` |
+| Kimi's report | **255 impressions, position 9.0** | summary only |
+
+Both cannot be right. One is a literal file; the other is a described figure. **Get the actual apex/Domain
+property export** — Performance → 3 months → Pages tab, and the same filtered to each head term. Until then the
+per-page table stays unverified, including the claim that the `www` duplicate holds ~40% of head-term
+impressions.
+
+**The standing rule:** page-level claims cost one `curl` to check, so check them. Query-level claims cannot be
+checked that way — those need the file, not a summary of the file.
