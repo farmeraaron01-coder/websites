@@ -70,6 +70,22 @@ function cfi_legacy_redirect_map() {
 	);
 }
 
+/*
+ * Priority 1, so this answers before WordPress's own redirect_canonical (which
+ * runs on this hook at the default 10).
+ *
+ * Measured on 1.6.0: /mobile/index.php came back as 301 -> /mobile/ -> / — two
+ * hops, because redirect_canonical strips index.php on a 404 before this rule got
+ * a look in. It resolved to a 200 either way, which is already far better than the
+ * dead end it used to be (/mobile/ was itself a 404), but a single hop is cleaner
+ * and costs nothing.
+ *
+ * is_404() is still reliable at priority 1: template_redirect fires after the main
+ * query has run, so the 404 flag is already set. The front-page pagination guard
+ * in functions.php calls set_404() on this same hook at priority 10, i.e. after
+ * this — which is harmless, because a paginated front page matches nothing in the
+ * map and would be skipped anyway.
+ */
 add_action( 'template_redirect', function () {
 	// Only ever act on something WordPress has already resolved to a 404. This is
 	// what makes the rule safe to leave in place permanently.
@@ -100,4 +116,4 @@ add_action( 'template_redirect', function () {
 
 	wp_safe_redirect( home_url( $target ), 301 );
 	exit;
-} );
+}, 1 );
