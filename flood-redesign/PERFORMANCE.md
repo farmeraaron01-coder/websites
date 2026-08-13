@@ -539,6 +539,67 @@ simulator scaling across the four phases will make load delay look like the whal
 clock a number came from, or the diagnosis will point at the wrong subsystem — as it did here, at a
 preload that is working perfectly.
 
+## The `www` redirect, finally measured — 13 Aug
+
+Item 3 of "what is actually left" said *"Test the apex URL, not `www`. Worth ~20 lab points and it costs
+nothing... That is a prediction, not a measurement, and it is the cheapest remaining test."* Aaron ran PSI on
+`https://www.statewidefloodinsurance.com/` on 12 Aug and scored **mobile 65, lab LCP 8.0 s, field TTFB 3 s,
+CWV assessment Failed**. So the test finally happened by accident, on the wrong hostname, and the prediction
+can now be replaced with numbers.
+
+**curl, five runs each, same moment:**
+
+| | redirects | TTFB median | TTFB range |
+|---|---|---|---|
+| `www.statewidefloodinsurance.com` | 1 | **1.88 s** | 1.24 – 2.97 s |
+| `statewidefloodinsurance.com` | 0 | **0.52 s** | 0.47 – 0.57 s |
+
+**The `www` hostname costs about 1.35 s before a byte of the real page arrives — roughly 3.6× the apex TTFB.**
+It pays for a second DNS lookup, a second TLS handshake and the 301, and only then starts the request that
+matters. On Slow 4G throttling that penalty is multiplied, which is most of the distance between lab LCP 8.0 s
+here and the apex numbers.
+
+**So the score is not the finding. The finding is that field data exists for `www` at all.** CrUX only reports a
+URL when real Chrome users load it, so **real visitors are landing on `www` and paying that 1.35 s every
+time.** That makes it a genuine user-experience defect rather than a measurement artefact, and the fix is not
+in the theme:
+
+- Google Ads final URLs and any ad extensions
+- the Google Business Profile website URL (already item 27 in `OPEN-ITEMS.md` for the `https://` half — extend
+  it to check for `www`)
+- Microsoft Ads final URLs
+- directory and association listings, email signatures, anything printed
+
+Worth doing before any further optimisation, because it is larger than everything left on the list combined and
+it costs nothing but editing links.
+
+### What the 12 Aug run confirms about the mechanism
+
+Mobile TBT was **130 ms** in that run. Consistent with everything since 7 Aug: **blocking time is solved and
+the entire gap is LCP**, which at this TTFB is bandwidth rather than main-thread execution. That remains the
+reason 1.5.1 and 1.5.2 both failed — they deferred execution, not download.
+
+Two smaller items the same report surfaced, both real and both modest:
+
+- **Render-blocking CSS: five Kadence stylesheets, 20.1 KiB, est. 300 ms** (`global`, `rankmath`, `content`,
+  `header`, `footer`). This is Kadence's own chain, not the child theme's — `tokens.css` is already inlined.
+- **"Use efficient cache lifetimes, est. 10 KiB."** Small, but it lines up with a separate finding on 12 Aug:
+  theme assets on **both** sites now return the host's `cache-control: max-age=604800` rather than the
+  `public, max-age=31536000, immutable` that `inc/htaccess.php` writes. That suggests the theme's marker block
+  is not in effect — which is the *same open question* as California's readme/license deny not landing after
+  1.5.9. One investigation answers both: is `# BEGIN CFI static asset cache` actually present in the live
+  docroot's `.htaccess`, and does Apache even see these requests.
+
+### One claim from the 11 Aug external audit, checked and rejected
+
+That audit's `findings/performance.md` reports *"The visible hero poster is `hero-poster.jpg` (1280×720)"*,
+which would mean the WebP preload never matches the rendered element — a real LCP bug if true. **It is not
+true.** The served HTML preloads `hero-poster.webp` with `type="image/webp" fetchpriority="high"`, the
+`<picture>` resolves to WebP, and both files serve correctly: **WebP 34,602 bytes, JPEG 50,002 bytes.** The
+audit was reading the `<img src>` fallback attribute rather than the source the browser selects. Its own
+performance section is otherwise honest that it could measure nothing — PSI rate-limited, no `npx`, no CrUX API
+key — and it explicitly warns against treating its 2.344 s Playwright render as LCP.
+
 ## Things deliberately not done
 
 **No click-to-load facade on the Cognito form.** It is 379 KiB and 863 ms, and it is the largest
