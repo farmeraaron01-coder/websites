@@ -152,3 +152,103 @@ validate, then extend with whatever states have the volume.
 
 **The pipeline is the deliverable, not the page.** Written properly it reruns next year in a minute, and an
 annually updated dataset compounds in a way a one-off post never does.
+
+---
+
+# DATA SURVEY — 13 Aug 2026, after Aaron pointed at `RBIA Bordereaux`
+
+**There is far more here than "two years."** Monthly bordereaux from **2017 through 2026** — nine years.
+Structure is `<year> BDX Files / <NN Month> BDX <year> /` with per-state subfolders plus master and
+carrier-specific workbooks.
+
+**Aaron's clarification: these are all private policies** — surplus lines, not NFIP. That makes the report *more*
+differentiated, because FEMA publishes NFIP rates while private flood pricing is opaque. It also means an
+NFIP-versus-private table cannot come from this data alone; the NFIP half would have to come from FEMA's published
+figures, normalised the same way.
+
+## The surplus-lines master file is the wrong source. The carrier bordereaux are the right one.
+
+`Aug 1st-31st 2025.xlsx` (246 transactions across 5 weekly sheets) is a **regulatory filing** — built for surplus
+lines tax, not analysis. It carries premium, city, state, ZIP, carrier and an Intermap risk score, but:
+
+- **no coverage limits, no deductible** — which breaks the normalisation rule outright;
+- geography is the **insured's mailing address**, not the risk location, so a Los Angeles landlord insuring a
+  Stockton duplex lands in Los Angeles and corrupts any county table;
+- every row is `New or Renewal = New`, so renewals are not in it.
+
+**The carrier bordereaux have everything.** `QBE BDX Aug 2025.xlsx` (headers on row 2, not row 1) carries:
+
+```
+Certificate Ref · New Renewal Endt · Location No · No of Buildings
+Street Address · City · State · Zip code · COUNTY · Community Name
+Construction Type · Year Built · Occupancy · No of Stories · Sq ft
+Bdx Building TIV · Contents TIV · BUILDING LIMIT · CONTENTS LIMIT
+Property deductible · Content Deductible · Intermap score
+Gross Premium · Policy Fee · Risk Inception / Expiry · Policy Type
+```
+
+That is the risk location with a county, full property characteristics, and **both limits and deductibles** — every
+field the plan asked for except a literal FEMA zone, and `Community Name` plus a street address makes zone
+derivable.
+
+## Proof of concept — QBE, August 2025 alone, 200 policies
+
+| Measure | p25 | **median** | p75 |
+|---|---|---|---|
+| Gross premium | $566 | **$674** | $740 |
+| Building limit | $180,000 | **$250,000** | $250,000 |
+| **Premium per $100k of building cover** | $267.80 | **$286.00** | $312.45 |
+| Year built | 1953 | 1965 | 1979 |
+| Intermap score | 28 | 36 | 47 |
+
+**`$286 per $100,000 of building coverage` is the number this whole report should be built on.** It is normalised,
+it is defensible, it survives the "for how much coverage?" question, and nobody else can publish it.
+
+### County tables are viable, and that was the open question
+
+California, one month, one carrier — **six counties already clear n≥10**:
+
+| County | n | Median premium | Per $100k |
+|---|---|---|---|
+| Santa Cruz | 17 | $438 | $308.00 |
+| San Diego | 16 | $665 | $274.77 |
+| Marin | 15 | $712 | $295.74 |
+| Orange | 12 | $715 | $288.26 |
+| Santa Clara | 12 | $728 | $291.40 |
+| Lake | 10 | $596 | $298.70 |
+
+Los Angeles at n=9 was suppressed, which is the rule working as designed. **Across three carriers and nine years,
+essentially every California county will clear the threshold, and the large cities will too.** The suppression
+rule stops being a constraint and becomes a footnote.
+
+## The commercial finding, stated carefully
+
+The homepage claims **"Save 30–50% on Flood Quotes."** A median of $674 for $250,000 of building coverage sits
+against the roughly **$942/year** NFIP California average that LendingTree ranks with — about a 28% gap, and
+wider at the lower quartile.
+
+**That comparison is not yet rigorous**, because the published NFIP average carries no stated coverage limit. The
+honest version normalises both sides to premium per $100k using FEMA's own published data. Done properly, **this
+turns an unsubstantiated marketing claim into an evidenced one** — which is worth more than the ranking.
+
+## What I need from Aaron
+
+1. **Confirm the carrier bordereaux are the source of truth**, not the SL master. Three carriers appear —
+   **Hiscox (110), QBE (97), Brit (39)** in Aug 2025 — and each likely has its own column layout, so all three
+   need profiling before the pipeline is written.
+2. **What do `Occupancy = Tenant` and `Owner` mean?** 137 tenant against 61 owner is a striking split and it
+   changes how the report is framed.
+3. **`Property deductible` was populated on only 4 of 200 rows** in the QBE file. Is deductible captured
+   elsewhere, or genuinely sparse?
+4. **Confirm `Street Address` is the risk location** in the carrier files. The presence of `Location No`,
+   `No of Buildings` and `County` says yes, but it is worth stating.
+
+## Handling — what was done with the files just read
+
+Four workbooks were downloaded to the container's scratchpad via temporary Dropbox links, profiled, and
+**shredded**. They contain `Insured (Full Name)` and `Street Address`, so nothing was printed but column names and
+aggregates, and nothing entered this repo. Only the derived figures above did.
+
+**The pipeline will read the source on Aaron's machine and emit aggregates**, which keeps insured names and
+addresses off this repo permanently. The engineering cost is real — nine years of inconsistent folder naming and
+three carrier layouts to normalise — and it is worth paying once for a dataset that reruns annually in a minute.
