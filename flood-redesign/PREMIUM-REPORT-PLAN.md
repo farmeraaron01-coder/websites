@@ -252,3 +252,87 @@ aggregates, and nothing entered this repo. Only the derived figures above did.
 **The pipeline will read the source on Aaron's machine and emit aggregates**, which keeps insured names and
 addresses off this repo permanently. The engineering cost is real — nine years of inconsistent folder naming and
 three carrier layouts to normalise — and it is worth paying once for a dataset that reruns annually in a minute.
+
+---
+
+# THE NFIP COMPARATOR — and Aaron's correction that changes the report's thesis
+
+## Do not crawl the Selective portal. FEMA publishes the whole thing, free.
+
+Aaron suggested having a browser agent crawl Selective (his NFIP writer) for comparable rate data. **There is a
+far better source and it needs no portal.**
+
+`NfipPolicies` v3 on OpenFEMA — **74,349,525 policy records**, public API, no key, verified 13 Aug. 87 fields per
+record, including every dimension the bordereaux carry:
+
+| What we need | NFIP field |
+|---|---|
+| **Flood zone** — the field I called make-or-break | `ratedFloodZone`, `floodZoneCurrent` |
+| Building / contents coverage | `totalBuildingInsuranceCoverage`, `totalContentsInsuranceCoverage` |
+| Premium | `policyCost`, `totalInsurancePremiumOfThePolicy`, `fullRiskPremium` |
+| Deductibles | `buildingDeductibleCode`, `contentsDeductibleCode` |
+| **Owner vs rental** — matches Aaron's Tenant/Owner split | `tenantIndicator`, `rentalPropertyIndicator`, `primaryResidenceIndicator`, `occupancyType` |
+| Geography | `reportedCity`, `reportedZipCode`, `censusGeoid`, `latitude`, `longitude` |
+| Property characteristics | `construction`, `originalConstructionDate`, `foundationType`, `numberOfFloorsInInsuredBuilding` |
+| Elevation | `baseFloodElevation`, `lowestFloorElevation`, `elevationDifference` |
+| Community | `nfipCommunityName`, `crsClassCode` |
+| Pre/post-FIRM | `preFIRMConstructionIndicator`, `postFIRMConstructionIndicator` |
+
+**Three reasons this beats crawling**, beyond it being free:
+
+1. **It is policy-level**, so it normalises identically to the bordereaux — premium per $100k, same coverage
+   bands, same zones, same counties. Averages could never support that.
+2. **It covers every NFIP policy in California**, not just the ones Aaron wrote. The comparison becomes
+   authoritative rather than anecdotal.
+3. **Carrier portals prohibit automated access** in their terms, and lock accounts when they detect it. Risking
+   an appointment the agency depends on, to obtain worse data than a public API already gives, is a bad trade.
+   If NFIP figures from his own book are wanted later, the portal's own **book-of-business export** is the
+   sanctioned route.
+
+## ⚠ AARON'S CORRECTION — WHY A MEDIAN-VS-MEDIAN COMPARISON WOULD BE DISHONEST
+
+His words, and they are the most consequential input to this project so far:
+
+> *"The NFIP must quote every person where private does not. They get to underwrite each risk individually, and
+> many times they may decline the risk. The NFIP does not decline the risk. They have to take everyone, and so
+> their rates must reflect that."*
+
+> *"They include such factors as equity and inclusiveness for areas that have lower-income people, which is not
+> an underwriting technique for most standard carriers. There are times that the NFIP rates are ridiculously
+> low, and that's why we always quote them both."*
+
+**This is selection bias, and it would have invalidated the headline.** Private carriers decline risks they do
+not want, so the private book is a *selected* population — better risks by construction. Publishing "private is
+28% cheaper than NFIP" would have been comparing a filtered pool against an unfiltered one and calling the
+difference a price. A competent analyst or journalist would take that apart, and they would be right to.
+
+### So the thesis changes, and the honest version is commercially stronger
+
+**Not:** "Private flood insurance is X% cheaper than the NFIP."
+
+**Instead:** *"We quote both on every policy. Here is how often each one wins, and for which properties."*
+
+That reframing is better on every axis:
+
+- **It is true**, and it survives scrutiny including the equity-factor anomalies Aaron describes.
+- **It is unique.** Nobody else holds both halves of this comparison, and nobody publishes "how often does NFIP
+  win" because nobody knows.
+- **It argues for the business model.** "Neither wins every time, so you need someone who quotes both" is exactly
+  the case for using a broker over going direct — which is the real commercial objective, and it beats a discount
+  claim that invites disbelief.
+- **It explains Risk Rating 2.0 to an audience nobody serves.** That NFIP pricing now embeds affordability
+  factors most carriers do not use, and therefore undercuts private insurance in some lower-income areas, is a
+  genuinely interesting, publishable, uncovered fact.
+
+### What this means methodologically
+
+1. **Stratify every comparison.** Same flood zone, same coverage band, same occupancy type, same construction
+   era, same county. Comparing unstratified medians is the error to avoid.
+2. **Report the win rate, not just the gap** — "NFIP was the cheaper option in N% of comparable cases" is the
+   statistic that gets quoted.
+3. **Show the distribution.** Aaron's "sometimes ridiculously low" is a real tail, and a median hides it. Publish
+   the spread and say plainly that the tails are where the surprises live.
+4. **Disclose the selection effect in the methodology, prominently.** State that private carriers underwrite and
+   decline while the NFIP cannot, that this makes the two books different populations, and that stratification
+   reduces but does not eliminate the difference. **Saying this is what makes the rest credible** — and no
+   competitor's marketing page will ever say it.
