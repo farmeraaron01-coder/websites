@@ -44,6 +44,9 @@ website URL to `https://`"); the `www` half was missed.
 **Fix:** GBP → Edit profile → Contact → Website → `https://californiafloodinsurance.com/`. Also check the
 appointment/booking link if one is set.
 
+**DONE 13 Aug.** Worth re-checking the profile in a day or two — GBP edits can go to review, and Google
+sometimes re-populates fields from other sources.
+
 ### 2. Email signatures — 41 files in `signatures/`
 
 | Count | URL |
@@ -97,27 +100,57 @@ learning.** So do not bulk-edit final URLs to fix `www` — first establish whet
 may already be apex, in which case the entire `www` problem is GBP plus email signatures and there is nothing to
 risk.
 
-### The report that answers it in one look
+### ⚠ GA4 CANNOT MEASURE THIS. The first version of this document said it could, and that was wrong.
 
-GA4 → Explore → blank exploration:
+**GA4's Hostname dimension records where the tag fired, which is always *after* the redirect completes.** A
+visitor arriving on `www` lands on the apex, GA4 fires there, and the session is recorded as apex. **`www` can
+therefore never appear in that report** — the zero it returns is what it would show whether the problem were
+enormous or nonexistent.
 
-- Dimension: **Hostname**
-- Second dimension: **Session source / medium**
-- Metric: **Sessions**
-- Range: last 28 days, to match CrUX
+Run on California, 15 Jul – 11 Aug, it returned exactly that: 3,938 sessions, every one attributed to
+`californiafloodinsurance.com`, zero on `www`. **That number is evidence of nothing about `www`.**
 
-That gives the share of sessions landing on `www` **and where they came from**, so the fix targets the sources
-that actually carry traffic rather than every place a URL was ever typed. Search Console's `www` property
-Performance report is the cross-check.
+**What does measure it:**
+
+1. **CrUX / PSI field data.** This is where the original evidence came from and it remains the strongest:
+   `www.statewidefloodinsurance.com` has a 28-day CrUX sample, and **CrUX only publishes a URL once it has
+   enough real Chrome visits.** So meaningful `www` traffic exists, whatever GA4 shows.
+2. **The Search Console `www` property.** `http://www.californiafloodinsurance.com/` already exists as a
+   URL-prefix property (`LAUNCH.md:468`). Its Performance report shows real clicks and impressions on `www`.
+3. **cPanel raw access logs**, for a definitive count.
+
+**The general lesson, worth more than this one item: client-side analytics cannot see anything that happens
+before its own JavaScript runs.** Redirects, server errors, blocked requests and bot traffic are all invisible
+to GA4 by construction. Reach for CrUX, Search Console or server logs for those, and do not accept a zero from
+a tool that could not have reported anything else.
 
 ---
 
 ## Order of work
 
-1. **GA4 hostname report** — 10 minutes, tells you whether this is a big problem or a small one, and which
-   sources matter. Everything else depends on it.
-2. **GBP website field** — one edit, likely the largest single share.
-3. **Signatures** — repo fix is trivial; decide how to redeploy.
-4. **Ads**, only if the GA4 report shows paid traffic on `www`, and knowing the stats-reset cost.
-5. **Re-run PSI on `https://statewidefloodinsurance.com/`** for a real baseline, and note in
-   `PERFORMANCE.md` that any score compared against the 12 Aug `www` run is not comparable.
+1. ~~GA4 hostname report~~ **Dropped — GA4 cannot see pre-redirect hostnames. See above.**
+2. **GBP website field** — **DONE 13 Aug.** One edit, and the largest single share on this list.
+3. **Search Console `www` property → Performance.** The only cheap read that can actually quantify what is
+   left. If clicks on `www` are negligible, stop here and close the item.
+4. **Signatures** — 41 files. Repo fix is one command; redeploying across ~40 mail clients is the real cost, so
+   fold it into the next signature refresh rather than doing it for this alone.
+5. **Ads** — only if Search Console shows meaningful `www` traffic that GBP does not explain, and only knowing
+   that editing an ad's final URL resets that ad's stats and learning.
+6. **Re-run PSI on `https://statewidefloodinsurance.com/`** for a real baseline. Note in `PERFORMANCE.md` that
+   no score is comparable to the 12 Aug `www` run.
+
+## Other findings from the GA4 run, which was useful for everything except `www`
+
+- **48% of sessions are paid** — 1,631 `google / cpc` plus 260 `bing / cpc` of 3,938. Worth holding in mind
+  before any change that touches `/get-a-quote/`.
+- **AI assistants now send traffic**: ChatGPT 5, Gemini 2, Copilot 1. Tiny, but non-zero and directional.
+- **983 sessions (25%) are `(direct) / (none)`**, which almost certainly includes the GBP clicks. Tagging the
+  GBP website URL with `utm_source=google&utm_medium=organic&utm_campaign=gbp` would make them attributable.
+  Offered to Aaron, not yet decided.
+- **`secure234.inmotionhosting.com:2083` sent 5 sessions** — cPanel. Internal clicks sitting in the numbers.
+- **`statewidefloodinsurance.com` appears as a hostname inside California's GA4 property** (2 sessions,
+  `google / cpc`). Consistent with the cross-brand tag contamination in `OPEN-ITEMS.md` items 6–8.
+- **`ipv6.` and `mail.ipv6.` hostnames recorded 1 session each** — historical. All four host-provided hostnames
+  (`www`, `ipv6.`, `mail.ipv6.`, and statewide's `ipv6.`) were re-tested 13 Aug and every one 301s to apex.
+- **The `chatgpt.site` Kadence preview returns 401.** Checked because a publicly reachable copy of the site
+  would be a duplicate-content problem. It is password-protected, so there is nothing to do.
