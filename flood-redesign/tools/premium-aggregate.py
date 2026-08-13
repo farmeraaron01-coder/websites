@@ -41,6 +41,15 @@ what fraction of rows carried each component under `fee_coverage`; any published
 figure has to be labelled with that, because a partly-loaded private total
 understates private cost and therefore FLATTERS the private-vs-NFIP gap.
 
+The missing tax is therefore added back — but PER STATE, never blended. Surplus
+lines tax and stamping fees are set state by state; some states levy both, some
+one, some neither. A single book-wide average silently inflates the low-tax states
+and deflates the high-tax ones, and since the recorded rows are not spread evenly
+it amounts to imposing the dominant state's rate on everybody else. Each state's
+rate is measured from its own recorded rows, and a state with too few is left as
+recorded and flagged rather than filled from a borrowed rate. Every cell carries
+`loaded_pct`; only a cell at 100 is comparable to FEMA's `policyCost`.
+
 THE SELECTION EFFECT, AND WHY IT IS A FEATURE
 Aaron: "we write the policies that generally have the lowest premium, so if NFIP
 was lowest they would have gotten the business."
@@ -352,33 +361,107 @@ def main():
     d["_total_recorded"] = (d["_prem"] + d["_policy_fee"] + d["_sl_tax"]
                             + d["_stamping_fee"] + d["_fire_tax"])
 
-    # ── LOAD THE MISSING TAXES, FROM THIS BOOK'S OWN MEASURED RATES ─────────
+    # State has to be normalised BEFORE the tax model, because the tax model is
+    # per-state. "CALIFORNIA" and "CA" are the same jurisdiction and must share a
+    # measured rate.
+    if "state" in d:
+        st = d["state"].astype(str).str.strip().str.upper()
+        d["state"] = st.map(lambda x: STATE_MAP.get(x, x))
+
+    # ── LOAD THE MISSING TAXES, PER STATE ───────────────────────────────────
     # Comparing a private total that omits surplus lines tax against FEMA's
-    # fully-loaded `policyCost` would flatter the private side — the same error
-    # as comparing a bare premium to policyCost, just smaller. Rather than assert
-    # a statutory rate from memory, measure the ratio on the rows that DO record
-    # it and apply that to the rows that do not.
+    # fully-loaded `policyCost` would flatter the private side — the same error as
+    # comparing a bare premium to policyCost, just smaller. So the missing tax has
+    # to be added back. But it CANNOT be added back at one blended rate.
     #
-    # Measured on this book: surplus lines tax runs ~3.56% of premium (it exceeds
-    # the 3% statutory rate because the taxable base includes the policy fee) and
-    # the stamping fee ~0.21%.
+    # Per Aaron: surplus lines tax is state-specific, and so is the stamping fee.
+    # Every state sets its own; some levy both, some only one, some neither. A
+    # single book-wide average therefore inflates the low-tax states and deflates
+    # the high-tax ones — and because the recorded-tax rows are not evenly spread
+    # across states, that blended rate is really whichever state dominates them.
+    # An earlier version of this script did exactly that and pushed a
+    # California-weighted rate onto Washington, Arizona, Oregon and Texas rows.
+    #
+    # So: measure a rate SEPARATELY FOR EACH STATE, from that state's own recorded
+    # rows, and only where there are enough of them. Where a state has too few, do
+    # not model at all — leave the total as recorded and mark the row unloaded, so
+    # a partly-loaded cell can never be silently compared against policyCost.
+    # Refusing to fill a gap is the correct behaviour here; inventing a rate for a
+    # state we have not measured is how a wrong number gets published.
+    # ONLY states with an authoritative rate are modelled, and the rate is never
+    # borrowed across state lines. California's rates come from Aaron: 3% surplus
+    # lines tax and 0.18% stamping fee.
+    #
+    # The base is the TAXABLE AMOUNT — premium plus the other charges billed to the
+    # insured — not premium alone. That is verified, not assumed: on the 250 CA rows
+    # carrying a `TaxableAmount` column, tax/TaxableAmount is 3.0000% and
+    # stamping/TaxableAmount is 0.1800%, exactly the statutory pair, and
+    # TaxableAmount runs 117.86% of premium. Against premium alone the same rows
+    # read 3.56% and 0.213% — inflated by precisely that ~17.9% of extra charges,
+    # which the legacy layouts record as `Policy Fee`. So (premium + policy fee) is
+    # the right base and the modelled figure is a real calculation.
+    #
+    # Everywhere else is left alone. The observed ratios in other states span 2.4%
+    # (WA) to 7.4% (SC) on as few as one row, no authoritative rate is in hand, and
+    # the taxable base cannot be reconstructed where the fee columns are missing.
+    # Filling those gaps with a blended or borrowed rate is how a wrong number gets
+    # published, so those rows stay AS RECORDED and are flagged unloaded. Refusing
+    # to model is the correct behaviour, not a shortfall.
+    STATUTORY_TAX = {"CA": {"sl_tax": 0.03, "stamping_fee": 0.0018}}
+    d["_taxbase"] = d["_prem"] + d["_policy_fee"]
     has_tax = d["_sl_tax"] > 0
-    if has_tax.any():
-        r_tax = float((d.loc[has_tax, "_sl_tax"] / d.loc[has_tax, "_prem"]).median())
-        r_stamp = float((d.loc[has_tax, "_stamping_fee"] / d.loc[has_tax, "_prem"]).median())
-    else:
-        r_tax = r_stamp = 0.0
-    modelled = (~has_tax) * d["_prem"] * (r_tax + r_stamp)
-    d["_total"] = d["_total_recorded"] + modelled
+    d["_loaded"] = has_tax.copy()
+    d["_modelled_tax"] = 0.0
+    modelled_states, observed = {}, {}
+    if "state" in d:
+        for state_code, grp in d.groupby(d["state"]):
+            rec = grp[grp["_sl_tax"] > 0]
+            # Report what this state's own rows imply, as an observation only. It is
+            # deliberately NOT used to model anything.
+            if len(rec):
+                observed[state_code] = {
+                    "recorded_rows": int(len(rec)),
+                    "observed_sl_tax_pct_of_premium": round(
+                        100 * float((rec["_sl_tax"] / rec["_prem"]).median()), 3),
+                    "observed_stamping_pct_of_premium": round(
+                        100 * float((rec["_stamping_fee"] / rec["_prem"]).median()), 3),
+                    "used_to_model": False,
+                    "caveat": "base not reconcilable; needs the state's statutory rate",
+                }
+            if state_code in STATUTORY_TAX:
+                r = STATUTORY_TAX[state_code]
+                rate = r["sl_tax"] + r["stamping_fee"]
+                fill = grp.index[grp["_sl_tax"] <= 0]
+                d.loc[fill, "_modelled_tax"] = d.loc[fill, "_taxbase"] * rate
+                d.loc[fill, "_loaded"] = True
+                modelled_states[state_code] = {
+                    "sl_tax_pct": round(100 * r["sl_tax"], 4),
+                    "stamping_fee_pct": round(100 * r["stamping_fee"], 4),
+                    "applied_to": "premium + policy fee",
+                    "rows_modelled": int(len(fill)),
+                    "source": "statutory rate supplied by Aaron, 13 Aug 2026",
+                }
+                if state_code in observed:
+                    observed[state_code]["used_to_model"] = "no — statutory rate used"
+    d["_total"] = d["_total_recorded"] + d["_modelled_tax"]
     tax_model = {
+        "method": ("statutory rate per state, applied only to states where that rate is "
+                   "known, on a base of premium + policy fee"),
+        "base_verification": ("On 250 CA rows carrying TaxableAmount, tax/TaxableAmount = "
+                              "3.0000% and stamping/TaxableAmount = 0.1800%, matching the "
+                              "statutory rates exactly; TaxableAmount = 117.86% of premium."),
+        "states_modelled": modelled_states,
+        "observed_ratios_not_used": observed,
         "rows_with_recorded_tax": int(has_tax.sum()),
-        "rows_with_modelled_tax": int((~has_tax).sum()),
-        "measured_sl_tax_pct_of_premium": round(100 * r_tax, 3),
-        "measured_stamping_fee_pct_of_premium": round(100 * r_stamp, 3),
-        "note": ("`total` loads surplus lines tax and stamping fee onto rows whose layout "
-                 "omitted those columns, at the median rate measured on the rows that "
-                 "recorded them. `total_recorded` is the unloaded figure. Use `total` for "
-                 "any comparison against FEMA policyCost, which is fully loaded."),
+        "rows_modelled": int((d["_modelled_tax"] > 0).sum()),
+        "rows_left_unloaded": int((~d["_loaded"]).sum()),
+        "note": ("Surplus lines tax and stamping fees are set state by state — some states "
+                 "levy both, some one, some neither — so no rate is ever averaged across "
+                 "states or carried from California to anywhere else. Only states with a "
+                 "known statutory rate are loaded. Rows in every other state are left AS "
+                 "RECORDED and marked unloaded. `loaded_pct` on each cell gives the share "
+                 "carrying tax; only a cell at loaded_pct 100 is comparable to FEMA "
+                 "policyCost, and a multi-state cell must not be compared at all."),
     }
     d["_bldg"] = n("bldg_limit")
 
@@ -418,9 +501,6 @@ def main():
         d["_year"] = pd.to_datetime(d["eff_date"], errors="coerce").dt.year
 
     d = d[d["_prem"] > 0]
-    if "state" in d:
-        st = d["state"].astype(str).str.strip().str.upper()
-        d["state"] = st.map(lambda x: STATE_MAP.get(x, x))
     if a.state.upper() != "ALL" and "state" in d:
         d = d[d["state"] == a.state.upper()]
     if carrier is not None:
@@ -441,6 +521,12 @@ def main():
         rec = g["_total_recorded"].dropna()
         if len(rec):
             out["total_recorded_median"] = round(float(rec.median()), 2)
+        # What share of this cell carries surplus lines tax, recorded or modelled
+        # from its own state's rate. Anything below 100 is NOT comparable to FEMA
+        # policyCost, and the number travels with the cell so that cannot be
+        # overlooked.
+        if "_loaded" in g:
+            out["loaded_pct"] = round(100 * float(g["_loaded"].mean()), 1)
         if len(p) >= min_n:
             out.update({"per100k_p25": round(float(p.quantile(.25)), 2),
                         "per100k_median": round(float(p.median()), 2),

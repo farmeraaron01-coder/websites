@@ -33,19 +33,23 @@ equivalent.
 
 | | n | median | IQR |
 |---|---|---|---|
-| **California** | **3,645** | **$824** | **$770 – $891** |
-| Owner-occupied | 2,467 | $828 | $770 – $889 |
-| Rental / non-owner-occupied | 1,139 | $822 | $780 – $894 |
+| **California** | **3,645** | **$822** | **$769 – $888** |
+| Owner-occupied | 2,467 | $826 | — |
+| Rental / non-owner-occupied | 1,139 | $820 | — |
 
-**34 California counties** clear the n≥10 floor at benchmark terms; 49 clear it
-on the unrestricted cut. Largest cells: Marin 370, Orange 366, Los Angeles 342,
-Santa Clara 314, San Diego 248.
+California figures are **100% tax-loaded** and so are directly comparable to
+FEMA's `policyCost`. **34 California counties** clear the n≥10 floor at
+benchmark terms; 49 clear it on the unrestricted cut. Largest cells: Marin 370,
+Orange 366, Los Angeles 342, Santa Clara 314, San Diego 248.
 
-Pooled across all terms: California median **$796** (IQR $637–$866), **$337 per
+Pooled across all terms: California median **$794** (IQR $637–$864), **$337 per
 $100,000** of building coverage.
 
-Other states, benchmark terms: WA $815 (n=317), OR $841 (n=177), AZ $843
-(n=132), CT $1,130 (n=45), MA $949 (n=30).
+Other states at benchmark terms are **as-recorded and NOT tax-loaded** — see the
+surplus lines section below. WA $789 (n=317, 5% loaded), OR $813 (n=177, 4%),
+AZ $816 (n=132, 9%), CT $1,092 (n=45, 24%), MA $918 (n=30, 17%), TX $579
+(n=11, 73%). None of these may be compared against `policyCost`, and the
+all-states pooled figure is only 77% loaded, so it must not be either.
 
 **Prices are drifting down**, not up: California medians run $810 (2023), $806
 (2024), $785 (2025), $706 (2026).
@@ -78,18 +82,43 @@ refs there repeat, some four times. Two September Hiscox files are byte-identica
 Summing them would have inflated every count by an eighth with nothing visible
 to show it had happened.
 
-**3. Surplus lines tax is modelled, from this book's own recorded rate.** No
-legacy carrier layout has a tax column at all — only the Instanda-era files
-carry `surpluslinestax` / `stampingfee`. Measured on the 595 rows that do record
-them: surplus lines tax runs **3.59% of premium** (above the 3% statutory rate
-because the taxable base includes the policy fee) and the stamping fee **0.21%**.
-Those rates are applied to the rows whose layout omitted the columns. `total` is
-the loaded figure, `total_recorded` the unloaded one — the unloaded California
-median is $770 against $796 loaded.
+**3. Surplus lines tax is loaded for California only, at the statutory rate —
+never blended across states.** No legacy carrier layout has a tax column at all;
+only the Instanda-era files carry `surpluslinestax` / `stampingfee`, so 595 rows
+of 7,732 record it.
 
-This matters because FEMA's `policyCost` is fully loaded. Comparing an unloaded
-private total against it flatters the private side, which is the same error as
-comparing a bare premium to `policyCost`, just smaller.
+The first version of this run got the method wrong. It measured one book-wide
+rate (3.59% of premium) and applied it to every row. Aaron caught it: **surplus
+lines tax and stamping fees are set state by state — some states levy both, some
+one, some neither.** Because the rows that record tax are overwhelmingly
+Californian, that "average" was really California's rate imposed on Washington,
+Arizona, Oregon and Texas. It inflated those states by roughly 3.2% each: WA
+benchmark read $815 when the correct as-recorded figure is $789.
+
+The method now:
+
+- **California** is loaded at the statutory **3% surplus lines tax + 0.18%
+  stamping fee**, applied to the taxable base of premium + policy fee.
+- **Every other state is left exactly as recorded** and flagged unloaded. No rate
+  is borrowed from California or averaged across states.
+
+The base is verified rather than assumed. On the 250 CA rows carrying a
+`TaxableAmount` column, `tax / TaxableAmount` is **3.0000%** and
+`stamping / TaxableAmount` is **0.1800%** — the statutory pair exactly — and
+`TaxableAmount` is **117.86% of premium**. That ~17.9% of extra charges is why
+measuring against premium alone read 3.56% instead of 3%, and it is what the
+legacy layouts record as `Policy Fee`. So premium + policy fee is the right base.
+
+Each state's own observed ratio is still reported in `_meta.tax_model
+.observed_ratios_not_used`, marked `used_to_model: false`. They are not usable:
+they span 2.4% (WA) to 7.4% (SC) on as few as one row, and the taxable base
+cannot be reconstructed where the fee columns are missing. Getting those states
+right needs each state's statutory rate, not more arithmetic on this book.
+
+Every cell now carries **`loaded_pct`**. Only a cell at 100 is comparable to
+FEMA's `policyCost`; comparing an unloaded private total against it flatters the
+private side, which is the same error as comparing a bare premium to
+`policyCost`, just smaller.
 
 **4. County and city cells use risk-location rows only.** The legacy layouts
 carry `City`/`County` for the risk. The Instanda layout carries only
@@ -194,6 +223,11 @@ per-carrier medians in this run are a parse check, not publishable content.
 
 1. **FEMA comparator at benchmark terms** — `policyCost` for $250,000/$5,000 by
    California county, owner vs non-primary, so the two sides are like-for-like.
+   California only, because California is the only state whose cells are fully
+   tax-loaded.
+1b. **Get the statutory surplus lines tax and stamping fee for WA, OR and AZ**
+   (the three states with enough volume to matter) so their cells can be loaded
+   and compared too. Until then the statewide brand has as-recorded figures only.
 2. **Geocode risk addresses against FEMA NFHL** to derive zone. This is the
    critical path for the zone cut and has to run locally against the bordereaux.
 3. **Verify FEMA's owner/rental field** before publishing that cut — the earlier
