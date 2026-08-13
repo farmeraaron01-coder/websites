@@ -123,14 +123,46 @@ the customer's blind spot.
 **This is the strongest thing on the page and it needs no data at all.** It should
 be written and shipped ahead of any premium table.
 
-### One claim to verify before it ships
+### "My lender requires the NFIP" — verified, and it is not true
 
-The obvious objection is *"my lender requires the NFIP."* My understanding is that
-federal regulators require lenders to accept a private flood policy that meets the
-regulatory definition — which would remove the objection entirely. **Do not publish
-that until the rule is checked and cited**, same standard as the claims statistic.
-If it holds, it is the natural companion to this section: you have a choice, and
-your lender has to take it.
+Checked against the regulators rather than taken on trust. Five federal agencies
+issued a joint final rule implementing the private-flood provisions of the
+**Biggert-Waters Flood Insurance Reform Act of 2012**, effective **1 July 2019**.
+It **requires** regulated lending institutions to accept a private flood policy
+that meets the statutory definition of private flood insurance, and separately
+permits them to accept policies that do not meet it, at their discretion, if
+certain criteria are met.
+
+Sources: [FDIC FIL-19-2019](https://www.fdic.gov/news/financial-institution-letters/2019/fil19008.html),
+[OCC Bulletin 2019-8](https://www.occ.gov/news-issuances/bulletins/2019/bulletin-2019-8.html),
+[Federal Reserve](https://www.federalreserve.gov/newsevents/pressreleases/bcreg20190212a.htm),
+[Federal Register, 20 Feb 2019](https://www.federalregister.gov/documents/2019/02/20/2019-02650/loans-in-areas-having-special-flood-hazards).
+
+**The practical detail worth more than the rule itself.** The final rule contains a
+*compliance aid* provision: a lender may conclude a policy qualifies **without
+reviewing it further** if the policy or an endorsement carries the statement
+
+> "This policy meets the definition of private flood insurance contained in
+> 42 U.S.C. 4012a(b)(7) and the corresponding regulation."
+
+That is the answer to Aaron's stragglers — the lenders, loan officers and agents
+who still assume the NFIP is the only option. The objection is not argued with, it
+is resolved by pointing at a line already printed on the policy. Worth saying on
+the page in exactly those terms, because it converts a stalled closing into a
+five-minute phone call.
+
+**Still to check before quoting it:** Aaron's point that the statutory definition
+requires private coverage to be *"at least as broad as"* an SFIP. That phrasing is
+part of the definition at 42 U.S.C. 4012a(b)(7) but the regulators' summaries did
+not quote it, so confirm against the statute or the regulation text before putting
+those words on the page. The mandatory-acceptance substance above is confirmed and
+can be used now.
+
+Note how well this pairs with the loss-of-use argument: the law's floor is that
+private must be **at least as broad** as the federal policy, and the coverage that
+actually distinguishes them — loss of use — is something the federal policy does
+not offer at all. "At least as broad, and often broader" is a defensible sentence,
+and the second half is the reason to care.
 
 Loss of use belongs **next to the price**, not in a features table further down.
 The price section is where a reader decides whether the private option is worth
