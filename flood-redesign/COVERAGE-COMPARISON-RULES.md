@@ -151,6 +151,24 @@ is resolved by pointing at a line already printed on the policy. Worth saying on
 the page in exactly those terms, because it converts a stalled closing into a
 five-minute phone call.
 
+**Aaron, 13 Aug: every policy this agency places already carries that line.** So
+this stops being a legal argument and becomes a promise the page can make in the
+first person:
+
+> Every private flood policy we place carries the statement that lets your lender
+> accept it without reviewing the policy at all. If anyone tells you they cannot
+> take it, that sentence is on the declarations page and it is the end of the
+> conversation.
+
+That is concrete, verifiable by the customer the moment they hold the policy, and
+it defuses the single biggest reason people default to the NFIP without ever asking
+what else exists. It belongs next to the "you were never offered a choice"
+section — the objection and its answer in the same breath.
+
+Write it as **our** practice, which is what Aaron confirmed. Do not generalise it
+into a claim about every private carrier in the market; we have not checked that
+and it is not the claim we need.
+
 **Still to check before quoting it:** Aaron's point that the statutory definition
 requires private coverage to be *"at least as broad as"* an SFIP. That phrasing is
 part of the definition at 42 U.S.C. 4012a(b)(7) but the regulators' summaries did
