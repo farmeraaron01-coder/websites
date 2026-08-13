@@ -41,14 +41,19 @@ what fraction of rows carried each component under `fee_coverage`; any published
 figure has to be labelled with that, because a partly-loaded private total
 understates private cost and therefore FLATTERS the private-vs-NFIP gap.
 
-The missing tax is therefore added back — but PER STATE, never blended. Surplus
-lines tax and stamping fees are set state by state; some states levy both, some
-one, some neither. A single book-wide average silently inflates the low-tax states
-and deflates the high-tax ones, and since the recorded rows are not spread evenly
-it amounts to imposing the dominant state's rate on everybody else. Each state's
-rate is measured from its own recorded rows, and a state with too few is left as
-recorded and flagged rather than filled from a borrowed rate. Every cell carries
-`loaded_pct`; only a cell at 100 is comparable to FEMA's `policyCost`.
+The missing tax is therefore added back — but PER STATE, from each state's own
+STATUTORY rate, never blended and never inferred from this book. Surplus lines tax
+and stamping fees are set state by state; some states levy both, some one, some
+neither, and one of them (Oregon) charges a flat dollar fee rather than a
+percentage. A single book-wide average silently inflates the low-tax states and
+deflates the high-tax ones, and since the recorded rows are not spread evenly it
+amounts to imposing the dominant state's rate on everybody else — which is exactly
+what an earlier version of this script did.
+
+Rates live in statutory_tax(), one state at a time, each with a primary source. A
+state that is not listed there is left AS RECORDED and flagged, because inventing
+a rate for an unverified state is how a wrong number reaches a page. Every cell
+carries `loaded_pct`; only a cell at 100 is comparable to FEMA's `policyCost`.
 
 THE SELECTION EFFECT, AND WHY IT IS A FEATURE
 Aaron: "we write the policies that generally have the lowest premium, so if NFIP
@@ -170,6 +175,78 @@ STATE_MAP = {
 
 COVERAGE_BANDS = [(0, 250_000, "up to $250k"), (250_000, 500_000, "$250k-500k"),
                   (500_000, 1_000_000, "$500k-1M"), (1_000_000, 10**12, "$1M+")]
+
+
+def statutory_tax(state, year):
+    """Statutory surplus lines tax for a state, as (pct_of_taxable_base, flat_dollars).
+
+    Returns None for any state whose rate has not been verified — those rows are
+    left as recorded rather than filled with a borrowed rate. Adding a state here
+    is the ONLY way to make its cells comparable to FEMA policyCost, and it
+    requires a primary source, not an inference from this book.
+
+    THE TAXABLE BASE IS PREMIUM PLUS FEES, NOT PREMIUM ALONE, and every source
+    below says so independently:
+      CA — measured: on 250 rows carrying TaxableAmount, tax/TaxableAmount is
+           exactly 3.0000% and stamping/TaxableAmount exactly 0.1800%, with
+           TaxableAmount at 117.86% of premium.
+      WA — Surplus Line Association of Washington, verbatim: "State tax and
+           stamping fee are based on the sum of all premiums and fees, including
+           but not limited to policy, broker and/or inspection fees."
+      OR — Surplus Line Association of Oregon: premium tax "2% of premium and
+           fees/charges", fire marshal tax "0.3% of premium and fees/charges".
+      AZ — A.R.S. 20-416: "three percent of the gross premiums, including policy
+           fees other than stamping fees".
+
+    Each state's observed ratio against premium alone lands at almost exactly the
+    statutory rate x 1.20, which is the policy fee as a share of premium — CA 3.59%
+    against 3%, WA 2.41% against 2%, OR 2.42% against 2%. Three states agreeing on
+    the same uplift is what makes the base credible rather than fitted.
+    """
+    if state == "CA":
+        # 3% surplus lines tax + 0.18% stamping fee (Aaron, 13 Aug 2026).
+        return 0.03 + 0.0018, 0.0
+    if state == "WA":
+        # 2% state tax, plus a stamping fee that DEPENDS ON POLICY INCEPTION DATE:
+        # the WSLA board raised it from 0.10% to 0.30% effective 1 Jan 2025, and
+        # later transactions keep the rate from the original inception date. This
+        # book spans 2023-2026, so roughly half of it predates the increase and a
+        # single rate would be wrong for one half or the other.
+        #
+        # Where the year is unknown the newer, higher rate is used: that overstates
+        # private cost slightly, and overstating our own side is the safe direction
+        # for a savings claim.
+        stamping = 0.0030 if (year is None or year >= 2025) else 0.0010
+        return 0.02 + stamping, 0.0
+    if state == "OR":
+        # 2% premium tax + 0.3% fire marshal tax, both on premium and fees, plus a
+        # FLAT $10 Surplus Lines Service Charge per policy — not a percentage. The
+        # book agrees: Oregon's recorded stamping fees have a median of exactly
+        # $10.00. The charge applies to new and renewal transactions and not to
+        # endorsements, which is automatically satisfied here because endorsements
+        # were dropped before this point.
+        return 0.02 + 0.003, 10.00
+    if state == "AZ":
+        # 3% of gross premiums including policy fees (A.R.S. 20-416), plus a 0.20%
+        # stamping fee. The 3% is statutory and verified; the stamping figure comes
+        # from a secondary source and is worth ~$1.60 on a $800 policy, so it moves
+        # nothing material either way — flagged rather than relied upon.
+        return 0.03 + 0.0020, 0.0
+    return None
+
+
+TAX_SOURCES = {
+    "CA": "3% SL tax + 0.18% stamping (Aaron, 13 Aug 2026); base confirmed against "
+          "the TaxableAmount column at exactly 3.0000%/0.1800%",
+    "WA": "2% state tax + stamping 0.10% pre-2025 / 0.30% from 1 Jan 2025 (Surplus "
+          "Line Association of Washington); base is premiums plus policy, broker "
+          "and inspection fees, per WSLA verbatim",
+    "OR": "2% premium tax + 0.3% fire marshal tax on premium and fees, plus a flat "
+          "$10 Surplus Lines Service Charge per policy (Surplus Line Association "
+          "of Oregon)",
+    "AZ": "3% of gross premiums including policy fees (A.R.S. 20-416); 0.20% "
+          "stamping fee is from a secondary source and is immaterial (~$1.60)",
+}
 
 
 def squash(s):
@@ -361,6 +438,13 @@ def main():
     d["_total_recorded"] = (d["_prem"] + d["_policy_fee"] + d["_sl_tax"]
                             + d["_stamping_fee"] + d["_fire_tax"])
 
+    # Year has to exist before the tax model, because Washington's stamping fee
+    # depends on the policy inception date.
+    if "eff_date" in d:
+        d["_year"] = pd.to_datetime(d["eff_date"], errors="coerce").dt.year
+    else:
+        d["_year"] = np.nan
+
     # State has to be normalised BEFORE the tax model, because the tax model is
     # per-state. "CALIFORNIA" and "CA" are the same jurisdiction and must share a
     # measured rate.
@@ -407,7 +491,6 @@ def main():
     # Filling those gaps with a blended or borrowed rate is how a wrong number gets
     # published, so those rows stay AS RECORDED and are flagged unloaded. Refusing
     # to model is the correct behaviour, not a shortfall.
-    STATUTORY_TAX = {"CA": {"sl_tax": 0.03, "stamping_fee": 0.0018}}
     d["_taxbase"] = d["_prem"] + d["_policy_fee"]
     has_tax = d["_sl_tax"] > 0
     d["_loaded"] = has_tax.copy()
@@ -416,8 +499,11 @@ def main():
     if "state" in d:
         for state_code, grp in d.groupby(d["state"]):
             rec = grp[grp["_sl_tax"] > 0]
-            # Report what this state's own rows imply, as an observation only. It is
-            # deliberately NOT used to model anything.
+            # Report what this state's own rows imply, as a CROSS-CHECK on the
+            # statutory rate — not as the thing driving the model. Where a state is
+            # modelled, the observed figure should land near the statutory rate
+            # times ~1.20 (the policy fee as a share of premium); if it does not,
+            # the base or the rate is wrong and this is where that shows up.
             if len(rec):
                 observed[state_code] = {
                     "recorded_rows": int(len(rec)),
@@ -425,24 +511,41 @@ def main():
                         100 * float((rec["_sl_tax"] / rec["_prem"]).median()), 3),
                     "observed_stamping_pct_of_premium": round(
                         100 * float((rec["_stamping_fee"] / rec["_prem"]).median()), 3),
+                    "observed_median_stamping_dollars": round(
+                        float(rec["_stamping_fee"].median()), 2),
                     "used_to_model": False,
-                    "caveat": "base not reconcilable; needs the state's statutory rate",
                 }
-            if state_code in STATUTORY_TAX:
-                r = STATUTORY_TAX[state_code]
-                rate = r["sl_tax"] + r["stamping_fee"]
-                fill = grp.index[grp["_sl_tax"] <= 0]
-                d.loc[fill, "_modelled_tax"] = d.loc[fill, "_taxbase"] * rate
-                d.loc[fill, "_loaded"] = True
+            # Model row by row, because Washington's stamping rate depends on the
+            # policy's own inception year.
+            fill = grp.index[grp["_sl_tax"] <= 0]
+            if not len(fill):
+                continue
+            rates = {}
+            for idx in fill:
+                yr = d.at[idx, "_year"]
+                yr = None if pd.isna(yr) else int(yr)
+                st_rate = statutory_tax(state_code, yr)
+                if st_rate is None:
+                    continue
+                pct, flat = st_rate
+                d.at[idx, "_modelled_tax"] = d.at[idx, "_taxbase"] * pct + flat
+                d.at[idx, "_loaded"] = True
+                rates.setdefault((round(100 * pct, 4), flat), 0)
+                rates[(round(100 * pct, 4), flat)] += 1
+            if rates:
                 modelled_states[state_code] = {
-                    "sl_tax_pct": round(100 * r["sl_tax"], 4),
-                    "stamping_fee_pct": round(100 * r["stamping_fee"], 4),
+                    "rows_modelled": int(sum(rates.values())),
+                    "rates_applied": [
+                        {"total_pct_of_taxable_base": pct,
+                         "flat_dollars_per_policy": flat, "rows": n}
+                        for (pct, flat), n in sorted(rates.items())
+                    ],
                     "applied_to": "premium + policy fee",
-                    "rows_modelled": int(len(fill)),
-                    "source": "statutory rate supplied by Aaron, 13 Aug 2026",
+                    "source": TAX_SOURCES.get(state_code, "see statutory_tax()"),
                 }
                 if state_code in observed:
-                    observed[state_code]["used_to_model"] = "no — statutory rate used"
+                    observed[state_code]["used_to_model"] = (
+                        "no — statutory rate used; this is the cross-check")
     d["_total"] = d["_total_recorded"] + d["_modelled_tax"]
     tax_model = {
         "method": ("statutory rate per state, applied only to states where that rate is "
@@ -451,7 +554,7 @@ def main():
                               "3.0000% and stamping/TaxableAmount = 0.1800%, matching the "
                               "statutory rates exactly; TaxableAmount = 117.86% of premium."),
         "states_modelled": modelled_states,
-        "observed_ratios_not_used": observed,
+        "observed_ratios_as_cross_check": observed,
         "rows_with_recorded_tax": int(has_tax.sum()),
         "rows_modelled": int((d["_modelled_tax"] > 0).sum()),
         "rows_left_unloaded": int((~d["_loaded"]).sum()),
@@ -497,8 +600,8 @@ def main():
             lambda v: OCC_GROUP.get(squash(v)))
     d["_per100k"] = np.where(d["_bldg"] > 0, d["_total"] / (d["_bldg"] / 100_000), np.nan)
     d["_band"] = d["_bldg"].apply(band)
-    if "eff_date" in d:
-        d["_year"] = pd.to_datetime(d["eff_date"], errors="coerce").dt.year
+    # `_year` is already set, above the tax model — Washington's stamping rate
+    # depends on it, so it cannot be computed here.
 
     d = d[d["_prem"] > 0]
     if a.state.upper() != "ALL" and "state" in d:

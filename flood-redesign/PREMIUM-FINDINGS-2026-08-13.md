@@ -110,10 +110,48 @@ measuring against premium alone read 3.56% instead of 3%, and it is what the
 legacy layouts record as `Policy Fee`. So premium + policy fee is the right base.
 
 Each state's own observed ratio is still reported in `_meta.tax_model
-.observed_ratios_not_used`, marked `used_to_model: false`. They are not usable:
-they span 2.4% (WA) to 7.4% (SC) on as few as one row, and the taxable base
-cannot be reconstructed where the fee columns are missing. Getting those states
-right needs each state's statutory rate, not more arithmetic on this book.
+.observed_ratios_as_cross_check`, marked `used_to_model: false`. It is a check on
+the statutory rate, not a substitute for it: a modelled state's observed figure
+should land near its statutory rate × ~1.20 (the policy fee as a share of
+premium), and if it does not, the rate or the base is wrong.
+
+### WA, OR and AZ rates — verified, in code, awaiting a regeneration
+
+`statutory_tax()` now carries four states, each with a primary source:
+
+| | rate on premium + policy fee | flat | source |
+|---|---|---|---|
+| **CA** | 3% SL tax + 0.18% stamping | — | Aaron; base confirmed at exactly 3.0000%/0.1800% against `TaxableAmount` |
+| **WA** | 2% state tax + stamping **0.10% pre-2025 / 0.30% from 1 Jan 2025** | — | Surplus Line Association of Washington |
+| **OR** | 2% premium tax + 0.3% fire marshal tax | **$10** | Surplus Line Association of Oregon |
+| **AZ** | 3% + 0.20% stamping | — | A.R.S. 20-416 (the 3% is statutory; the 0.20% is secondary-sourced and worth ~$1.60) |
+
+Two details that a single blended rate could never have captured, and which are
+the concrete proof that Aaron's objection was right rather than merely tidier:
+
+- **Washington's stamping fee depends on the policy's inception date.** The WSLA
+  board raised it from 0.10% to 0.30% effective 1 Jan 2025, and later
+  transactions keep the original inception date's rate. This book spans
+  2023–2026, so roughly half of it sits either side of that change. The model
+  therefore resolves the rate row by row, from each policy's own year.
+- **Oregon's charge is a flat $10, not a percentage.** The book agrees
+  independently: Oregon's recorded stamping fees have a median of exactly $10.00.
+
+Three states also independently corroborate the taxable base. Washington states it
+verbatim — *"State tax and stamping fee are based on the sum of all premiums and
+fees, including but not limited to policy, broker and/or inspection fees"* — and
+Oregon applies both its taxes to *"premium and fees/charges"*. Each state's
+observed ratio against premium alone comes to almost exactly its statutory rate ×
+1.20: CA 3.59% against 3%, WA 2.41% against 2%, OR 2.42% against 2%.
+
+**The committed `all-states/aggregates.json` predates these three states.** It is
+not wrong — WA, OR and AZ carry `loaded_pct` of 5.4, 4.0 and 9.1 with as-recorded
+medians, exactly as labelled — but it is not yet loaded. Regenerating it requires
+another full pass over the bordereaux. Expected effect, so the change holds no
+surprises: WA ≈ $789 → **~$806**, OR ≈ $813 → **~$842**, AZ ≈ $816 → **~$842**.
+Those are arithmetic estimates pending the run, not results. **California is
+unaffected** — its rate and base are unchanged — so every California figure on
+this page stands as published.
 
 Every cell now carries **`loaded_pct`**. Only a cell at 100 is comparable to
 FEMA's `policyCost`; comparing an unloaded private total against it flatters the
@@ -225,7 +263,7 @@ per-carrier medians in this run are a parse check, not publishable content.
    California county, owner vs non-primary, so the two sides are like-for-like.
    California only, because California is the only state whose cells are fully
    tax-loaded.
-1b. **Get the statutory surplus lines tax and stamping fee for WA, OR and AZ**
+1b. **DONE — WA, OR and AZ statutory rates are in `statutory_tax()`.** Regenerate `all-states/aggregates.json`
    (the three states with enough volume to matter) so their cells can be loaded
    and compared too. Until then the statewide brand has as-recorded figures only.
 2. **Geocode risk addresses against FEMA NFHL** to derive zone. This is the
