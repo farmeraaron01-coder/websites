@@ -356,6 +356,10 @@ require_once get_stylesheet_directory() . '/inc/tags.php';
 /* FAQPage JSON-LD, read off the existing Q&A markup — see inc/schema.php for why. */
 require_once get_stylesheet_directory() . '/inc/schema.php';
 
+/* 301s for the retired /mobile/ subsite — /mobile/contact.php still ranks 1.1 on a
+   head term and serves a 404. See inc/legacy-redirects.php for the query data. */
+require_once get_stylesheet_directory() . '/inc/legacy-redirects.php';
+
 /**
  * tokens.css is inlined into the page rather than enqueued as a file.
  *
