@@ -215,6 +215,23 @@ execution order with the commands; this table is only the index. Items 11, 15 an
 | 36 | Ask InMotion to set the static-asset cache header in **nginx** — the theme cannot, because Apache never sees those requests. |
 | 37 | ~~Upload theme 1.5.8 to both installs~~ **CLOSED 10 Aug — 1.5.8 live and verified on both, with a forced cache bypass.** |
 | 38 | ~~Export the Search Console URL lists~~ **DONE 10 Aug, all three read and every URL tested live. Root cause found — see below.** |
+### Search Console access — closed 13 Aug, with two users removed
+
+Service account `sc-domain-californiafloodinsur@fluted-reporter-499120-j4` reads three properties, read-only:
+the California Domain property (9 days of data only) and both `https://` URL-prefix properties (468 days each).
+Pull with `tools/gsc-pull.py`; the key lives in Dropbox and is fetched to disk via a temporary download URL, never
+into a transcript.
+
+**The user audit that fell out of it — both now removed by Aaron:**
+
+- `ayazyaqoob211@gmail.com` held **Full** on `https://californiafloodinsurance.com/` — could submit sitemaps and
+  request URL removals.
+- `gillotti@gmail.com` held **Owner (Verified)** on `https://statewidefloodinsurance.com/` — an Owner can add and
+  remove users, including Aaron.
+
+**Worth repeating as a habit: read the user list every time you open a property's Settings.** Neither of these
+would have surfaced from any other task, and the Owner one could have locked Aaron out of his own property.
+
 | 39 | ~~CALIFORNIA SERVES DIRECTORY LISTINGS~~ **CLOSED 10 Aug — listings off on the live docroot, purged and verified. 290 of 529 URLs now correct.** Original note kept for the folder trap: **CALIFORNIA SERVED DIRECTORY LISTINGS AND STATEWIDE DID NOT.** cPanel -> Advanced -> Indexes -> **`new.californiafloodinsurance.com`** -> No Indexing. **The live docroot is the `new.`-named folder; the domain-named folder is the dead Divi install.** The first attempt on 10 Aug hit the dead folder, reported success, and changed nothing. This is the whole fix for 69 live URLs, stops Google finding more, and closes a version-disclosure hole. Full detail and the two optional follow-ups in `california-hardening.conf`. |
 | 40 | Theme **1.5.9** — fixes the `inc/htaccess.php` version-gate bug AND auto-installs the readme/license deny (step 3 of `california-hardening.conf`), so that step needs no manual .htaccess edit on either site. |
 | 41 | **Step 2** of `california-hardening.conf` — the only remaining manual server change. Deliberately not automated: it rewrites `/wp-includes/**.php` to 404, which interacts with WordPress's own rewrite block and needs the `wp-tinymce.php` exception. **Todoist, due 18 Aug.** |
