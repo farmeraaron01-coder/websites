@@ -130,14 +130,72 @@ a tool that could not have reported anything else.
 
 1. ~~GA4 hostname report~~ **Dropped — GA4 cannot see pre-redirect hostnames. See above.**
 2. **GBP website field** — **DONE 13 Aug.** One edit, and the largest single share on this list.
-3. **Search Console `www` property → Performance.** The only cheap read that can actually quantify what is
-   left. If clicks on `www` are negligible, stop here and close the item.
+3. **Search Console `www` property → Performance.** **DONE 13 Aug — quantified, and the answer is "small and
+   already handled." See below.**
 4. **Signatures** — 41 files. Repo fix is one command; redeploying across ~40 mail clients is the real cost, so
    fold it into the next signature refresh rather than doing it for this alone.
 5. **Ads** — only if Search Console shows meaningful `www` traffic that GBP does not explain, and only knowing
    that editing an ad's final URL resets that ad's stats and learning.
 6. **Re-run PSI on `https://statewidefloodinsurance.com/`** for a real baseline. Note in `PERFORMANCE.md` that
    no score is comparable to the 12 Aug `www` run.
+
+## Quantified — the Search Console `www` property, 90 days to 12 Aug
+
+| | |
+|---|---|
+| Clicks | **185** |
+| Impressions | **15,479** |
+| CTR | 1.2% |
+| Average position | 7.63 |
+| **Pages** | **exactly one — the homepage** |
+
+**Scale: ~62 clicks/month, against ~863/month of Google organic in GA4. So `www` is roughly 7% of organic
+clicks.** Real, worth having fixed, and nowhere near worth chasing through the ad accounts.
+
+**It is current, not historical.** Post-flip days still show activity, so this is live behaviour rather than a
+pre-flip residue:
+
+```
+2026-08-06  clicks=0  impressions=126
+2026-08-07  clicks=3  impressions=134
+2026-08-08  clicks=1  impressions=101
+2026-08-09  clicks=1  impressions=116
+2026-08-10  clicks=2  impressions=178
+```
+
+### What it actually means, and why the GBP edit may be the whole fix
+
+A URL-prefix property reports performance under **the canonical URL Google itself chose**. So Google has been
+treating `http://www.californiafloodinsurance.com/` as a canonical for the homepage — *despite* a working 301
+and an apex canonical tag. And the exposure is **only the homepage**; no interior page appears.
+
+The likely reason is the signal we just removed: **the Google Business Profile website field said
+`http://www.californiafloodinsurance.com/`.** GBP is a strong, Google-owned, external statement about which URL
+represents the business — plausibly enough to keep the homepage's chosen canonical on `www` against the site's
+own instructions. Changing it on 13 Aug removes that. **Stated as the plausible cause, not proven** — the honest
+test is whether impressions on this property trend to zero over the coming weeks.
+
+**So there is nothing further to build.** The redirect is right, the canonical is right, and the one external
+signal contradicting them is now fixed. This is a wait-and-recheck item, not a work item.
+
+### Recommended: add a Domain property and stop reading split data
+
+Reporting for this site is currently spread across at least four URL-prefix properties (`http`/`https` ×
+`www`/apex), which is why no single view showed the whole picture and why the `www` share was invisible until
+someone exported one property on its own.
+
+**A Domain property (`sc-domain:californiafloodinsurance.com`) covers every hostname and protocol in one view.**
+Verification is a DNS TXT record. **Do not touch the existing `google-site-verification` TXT records when adding
+it** — add, never replace.
+
+### One opportunity spotted in passing, for the content thread rather than this one
+
+`flood insurance california` — **4,076 impressions, 24 clicks, average position 10.6.** High-volume head term
+sitting just off the first page. That is a ranking problem, not a `www` problem, but it is the largest single
+impression pool in the export and worth remembering when the California content work resumes.
+
+Also worth knowing: **mobile ranks far better than desktop** on this property — position 3.03 on mobile against
+8.64 on desktop, from 2,492 and 12,760 impressions respectively.
 
 ## Other findings from the GA4 run, which was useful for everything except `www`
 
