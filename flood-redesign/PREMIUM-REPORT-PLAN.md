@@ -336,3 +336,67 @@ That reframing is better on every axis:
    decline while the NFIP cannot, that this makes the two books different populations, and that stratification
    reduces but does not eliminate the difference. **Saying this is what makes the rest credible** — and no
    competitor's marketing page will ever say it.
+
+---
+
+# FIRST REAL RESULT — 13 Aug 2026. Both halves computed, same unit.
+
+## The comparator works
+
+| Source | Median per $100k of building coverage | n |
+|---|---|---|
+| **NFIP** — OpenFEMA, California, Jan–Feb 2025 effective | **$414.00** | 7,413 |
+| **Private** — QBE bordereau, August 2025 | **$286.00** | 200 |
+
+**Private is 31% lower at the median.** The homepage claims "Save 30–50%." That claim, presumably made on
+instinct, lands at the bottom edge of the measured range.
+
+Sanity check on the NFIP side: median NFIP premium **$994** against the roughly **$942** California average
+LendingTree ranks with. Close enough to confirm the public data and the aggregator agree.
+
+## NFIP cost per $100k by rated flood zone, California
+
+| Zone | n | Median per $100k |
+|---|---|---|
+| X | 2,974 | $414.40 |
+| A99 | 1,721 | $316.80 |
+| AE | 1,196 | $576.80 |
+| AO | 567 | $461.34 |
+| A | 526 | $574.60 |
+| AH | 232 | $582.80 |
+| VE | 72 | $679.20 |
+| C | 58 | $288.48 |
+| D | 32 | $549.69 |
+
+**This table alone is publishable and I have not found anyone publishing it.** Note zone **X at $414 costs more
+per $100k than A99 at $317** — counterintuitive, and counterintuitive facts backed by 74 million records are what
+get cited.
+
+## Four caveats, and the third is the critical path
+
+1. **The private figure is one carrier, one month, n=200.** Directional only. The full pipeline across three
+   carriers and nine years replaces it.
+2. **The NFIP figure covers Jan–Feb 2025 effective dates**, because the API pull stopped early. Trivially
+   extended.
+3. **⚠ THE 31% IS NOT YET STRATIFIED, so it is not yet a price difference.** Per Aaron's selection-bias point,
+   and compounded by mix: if the private book skews toward zone X at $414 while NFIP carries proportionally more
+   AE at $577, part of that gap is *which properties*, not *what price*. **Stratifying by zone requires a flood
+   zone on the private book, and the carrier bordereaux do not carry one** — only `Intermap score`. So the
+   critical path is deriving zone for the private policies by geocoding their addresses against FEMA's National
+   Flood Hazard Layer. Until that exists, the honest published number is per-zone NFIP data plus an
+   *unstratified, disclosed* private comparison.
+4. **The owner-versus-rental mapping is wrong and needs redoing.** NFIP `tenantIndicator` returns n=15 against
+   7,398 owner-occupied, which is implausible for rentals — it evidently flags a tenant who bought contents-only
+   cover, not a landlord-owned property. Aaron's Tenant/Owner split means landlord versus owner-occupied, so the
+   NFIP equivalent is likely `rentalPropertyIndicator` or an `occupancyType` code. Do not publish this cut until
+   the mapping is verified against FEMA's data dictionary.
+
+## The "win rate" thesis needs a different dataset
+
+The strongest framing — *"we quote both on every policy; here is how often each wins"* — **cannot be computed from
+these two sources.** Bordereaux record what was **bound**; FEMA records what was **written**. Neither contains a
+quote pair on the same property.
+
+That needs Aaron's **quote** records — both prices for the same risk on the same day, which is what Instanda or
+NowCerts may hold. **Worth asking for, because it is the difference between a good report and a unique one.**
+Absent it, a zone-and-coverage-matched comparison is the closest honest proxy.
