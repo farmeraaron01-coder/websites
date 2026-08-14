@@ -93,10 +93,76 @@ Two constraints on that paragraph when it is written:
   the reader multiply. An invented duration is the sort of error that ends up
   quoted back at us.
 
-## What is NOT blocked on Grok
+## The displacement costing — RESEARCH IS IN, 14 Aug 2026
 
-Corrections 1, 2 and 3 are all verified now and can ship immediately. The
-displacement pricing is the only part waiting.
+`research-2026-08-13/job3-displacement-and-fema-ia.md`. Nothing is blocked now.
+
+### Write the monthly cost, never a total
+
+There is **no reliable published median displacement duration** for California
+residential floods. The studies measure incompatible things — evacuation orders,
+neighbourhood reentry, time living elsewhere, repair completion — and the
+distribution has a long tail (NIST Lumberton: mean 86 days against a median of 7,
+and that excludes households still displaced at survey).
+
+So the page states a **monthly** figure and lets the reader multiply. Inventing a
+"typical six months" is exactly the kind of number that gets quoted back at us.
+
+FY2026 HUD Fair Market Rents, effective 1 Oct 2025, 40th-percentile gross rent:
+
+| County | 2BR | 3BR |
+|---|---:|---:|
+| San Joaquin (Stockton) | $1,742 | $2,423 |
+| Sacramento | $2,255 | $3,002 |
+| Monterey (Pajaro/Salinas) | $2,684 | $3,623 |
+| Sonoma (Santa Rosa) | $2,827 | $3,887 |
+| Los Angeles | $2,903 | $3,681 |
+| San Diego | $3,001 | $3,998 |
+| Orange | $3,236 | $4,393 |
+| Santa Clara | $3,483 | $4,602 |
+
+**Do not claim these are conservative.** I assumed they would be and asked a
+leading question; the check says otherwise. Zillow's county index sits above the
+2BR figure in only three of eight counties and below the 3BR figure in all eight,
+because HUD and Zillow measure different rental populations with different utility
+and unit-size assumptions. Present HUD as the official baseline, dated, full stop.
+
+**No furnished-housing premium may be published.** No government or university
+source establishes a California figure; the 10-30% and 40-75% numbers circulating
+are industry marketing. If we want to show furnished costs more, use dated local
+listings.
+
+### The FEMA question — it does not sink us, but it changes the wording
+
+The honest answer to "doesn't FEMA cover this?" is that FEMA sometimes does, and
+we must stop short of saying otherwise.
+
+**Verified directly against OpenFEMA:** in the ten years to Aug 2026, California
+had 13 major disaster declarations carrying Individual Assistance. **Eight were
+wildfires.** One was COVID-19. **Only four mention flooding at all** — DR-4353,
+DR-4683, DR-4699 and DR-4758 — and DR-4758 designated a single county. The Feb
+2019 Guerneville/Russian River flood (DR-4434) records Individual Assistance as
+**"not requested."**
+
+Also true, and it must not be got wrong: FEMA rental assistance carries **no
+annual dollar cap** (the $43,600 IHP maximum applies to repair/replacement and
+other needs, not rental assistance), normally runs up to 18 months, and starts as
+a two-month award requiring re-documentation to continue.
+
+**Never write "FEMA gives you nothing."** It is false and one counterexample
+destroys the page's credibility. Write instead:
+
+> "The NFIP does not cover additional living expenses. FEMA rental assistance may
+> be available after certain presidentially declared disasters — but it is not
+> automatic, it requires your area to be designated for Individual Assistance, and
+> in the last ten years only four California disasters involving flooding
+> qualified at all."
+
+That is stronger than the overstatement, because it survives scrutiny.
+
+## What is NOT blocked
+
+Everything. Corrections 1-3 and the displacement section are all verified.
 
 ## Sequencing
 

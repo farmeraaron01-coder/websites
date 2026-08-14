@@ -11,6 +11,7 @@ turns out to be wrong: an error pattern in one batch says nothing about the othe
 | `task3-fema-claims-statistic.md` | `KIMI-BRIEF-cost-page.md` task 3 | Kimi |
 | `job1-statutory-definition.md` | `KIMI-BRIEF-2-lender-and-loss-of-use.md` job 1 | **Grok 4.6** |
 | `job2-loss-of-use-survey.md` | `KIMI-BRIEF-2-lender-and-loss-of-use.md` job 2 | **Grok 4.6** |
+| `job3-displacement-and-fema-ia.md` | `BRIEF-3-california-displacement-cost.md` | **Grok 4.6** |
 
 The second brief is named `KIMI-BRIEF-2-…` because it was written for Kimi. It was
 answered by Grok 4.6. The filename is left alone so it still matches the references
@@ -35,3 +36,24 @@ Nothing in either batch was accepted on the model's say-so.
 
 The standing rule from both briefs holds: a model's finding is a lead, not a source.
 Anything published gets checked against the primary document first.
+
+## Brief 3, 14 Aug 2026 — the best report of the three
+
+Grok's job 3 did two things worth recording as a standard.
+
+**It refused a leading question.** My brief asked for market rents "so I can show
+the official figure is conservative." That assumed the answer. Grok checked and
+reported that Zillow sits above the 2BR FMR in only three of eight counties and
+below the 3BR FMR in all eight, so the claim is not supportable. The brief was at
+fault, not the finding.
+
+**It corrected a fact I would have got wrong.** I assumed FEMA's IHP annual
+maximum ($43,600) capped rental assistance. It does not — rental assistance,
+lodging reimbursement and direct housing carry no financial maximum; the cap
+applies to repair/replacement and other needs. Publishing that cap against rental
+assistance would have been a straightforward factual error.
+
+**Verified independently:** the four-declaration count was re-derived from
+OpenFEMA directly and matches exactly. See the CFI VERIFICATION section of the
+report.
+
