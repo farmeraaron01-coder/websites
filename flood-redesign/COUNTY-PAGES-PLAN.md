@@ -414,3 +414,93 @@ So the honest Sacramento position is:
 
 Marin remains the first build — deepest data, empty SERP, and a price argument that
 actually holds at $2,102.
+
+---
+
+# SEARCH CONSOLE DATA — 14 Aug 2026. The county tier is dead.
+
+Pulled directly (service-account key retrieved from Dropbox, never printed).
+Domain property, 12 months to 2026-08-11: **1,589 queries, 12,301 impressions.**
+
+## Finding 1 — county demand does not exist for us
+
+Every place name we could build a page for, summed over twelve months:
+
+| place | impressions | clicks | top query | position |
+|---|---:|---:|---|---:|
+| San Diego | 286 | 3 | "525 b street san diego fema flood zone" | 9 |
+| San Jose | 238 | 0 | "55 south market street san jose fema flood zone" | 9 |
+| Los Angeles | 233 | 0 | "700 wilshire los angeles fema flood zone" | 9 |
+| Fresno | 61 | 0 | "414 w bedford fresno fema flood zone" | 5 |
+| Sacramento | 45 | 0 | "flood insurance sacramento" | **31** |
+| Stockton | 35 | 0 | "3807 coronado avenue stockton flood zone" | 10 |
+| Riverside | 14 | 0 | "flood insurance riverside" | 2 |
+
+**Marin: zero.** Santa Clara, Sonoma, Napa, Monterey, Ventura, Santa Cruz, San
+Mateo, Alameda, Contra Costa, Solano, Butte: **all zero.**
+
+Place names account for **913 impressions of 12,301 — 7.4%** — and the largest
+components are not insurance shopping at all. They are **address-level flood-zone
+lookups**: someone typing a street address to find out what zone it is in.
+
+This kills the county tier on evidence. It also confirms the second review's
+Google Trends reading (no county name in the top-20 related queries statewide) and
+overrides my own worry about Sacramento: there is no Sacramento demand to lose,
+because there is no county demand at all. Marin, the county both reviews and I
+converged on building first, has **zero impressions in twelve months.**
+
+## Finding 2 — the cost cluster is the opportunity, and it is large
+
+| intent cluster | queries | impressions | share | clicks |
+|---|---:|---:|---:|---:|
+| flood-zone lookup | 469 | 3,863 | **31.4%** | 6 |
+| — of which address-level | 72 | 718 | 5.8% | 0 |
+| cost / price / quote | 291 | 3,303 | **26.9%** | 6 |
+
+Cost queries and their positions:
+
+| query | impressions | position |
+|---|---:|---:|
+| flood insurance cost | 245 | 25.4 |
+| how much is flood insurance | 181 | 23.3 |
+| flood insurance rates | 160 | 34.6 |
+| cost of flood insurance | 116 | 35.3 |
+| how much does flood insurance cost | 113 | 20.8 |
+
+**3,303 impressions, six clicks, everything on page two or worse.** That is the
+flagship rebuild's case, made from our own data rather than assumed. It is the
+single clearest opportunity on the site.
+
+## Finding 3 — the head term is already page one
+
+`flood insurance california`: homepage at **position 3.8**, 445 impressions, 10
+clicks. `california flood insurance`: homepage at **position 1.1**. Both better
+than my notes claimed.
+
+## Finding 4 — cannibalization is real but small, and two suspects are cleared
+
+25 URLs surface for `flood insurance california` and 27 for `california flood
+insurance`, which is genuine signal spread, but almost all are single-digit
+impressions. The one that matters:
+
+- **`/contact-us/` ranks 4.4 on "california flood insurance" with 130 impressions
+  and zero clicks.** Still worth fixing, still the same problem.
+
+Cleared on checking rather than assumed:
+
+- `http://www.californiafloodinsurance.com/` shows 290 impressions at position 8.7
+  — but all four host variants **301 correctly to the canonical**, verified live.
+  Those rows are historical within the twelve-month window, not a live split. I was
+  about to file this as a canonicalization defect and it is not one.
+- `/mobile/contact.php` likewise 301s correctly; its 82 impressions predate the fix.
+
+## What this changes
+
+1. **County pages: dropped.** Not deferred pending better data — dropped. Both
+   reviews argued about which counties to build; the answer is none.
+2. **Flagship cost-page rebuild: confirmed as the priority**, now with 3,303
+   impressions of evidence behind it.
+3. **The flood-zone cluster is bigger than the cost cluster** and is a different
+   intent, dominated by address lookups. That points at the FEMA NFHL geocoding
+   work as a *tool*, not at more articles. Worth its own plan.
+4. **The `/contact-us/` title fix is now evidenced**, not asserted.
