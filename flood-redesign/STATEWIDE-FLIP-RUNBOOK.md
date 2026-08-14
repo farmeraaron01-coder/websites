@@ -440,11 +440,31 @@ Both deliberate noindexes verified intact afterwards: the 6 category archives at
 
 ### 5. Install the redirects
 
-### ⚠⚠ THE LIVE DOCROOT IS THE `staging.`-NAMED FOLDER. Write there, nowhere else.
+### ⚠⚠ THIS SECTION IS HISTORICAL — THE FOLDER RENAME IS DONE (confirmed 14 Aug 2026)
+
+**Current state.** `/home/mrtaco5/` contains a single `statewidefloodinsurance.com`
+directory and no `staging.`-named one. Phase 3 completed, so:
 
 ```
-/home/mrtaco5/staging.statewidefloodinsurance.com/.htaccess      ← LIVE. Write here.
-/home/mrtaco5/statewidefloodinsurance.com/.htaccess              ← DORMANT old Divi copy.
+/home/mrtaco5/statewidefloodinsurance.com/.htaccess     ← LIVE. This is the one.
+```
+
+The Divi original is now `Archive-divi-statewide-2026/` (do not delete before ~6 Sept).
+
+**Everything below described the window between Phase 1 and Phase 3**, when the apex
+pointed at a `staging.`-named directory. It is kept because the failure it records is
+still instructive — an agent wrote 15,441 bytes to the wrong file, verified it
+byte-for-byte, and changed nothing on the live site — but **do not follow its paths.**
+I quoted them as current on 14 Aug and sent Aaron to a directory that no longer
+exists; he corrected me from the actual cPanel listing.
+
+The durable lesson is the verification method, not the path: confirm the live file by
+what is *inside* it (`# BEGIN CFI static asset cache`) rather than by its name.
+
+```
+HISTORICAL, Phase 1 to Phase 3 only:
+/home/mrtaco5/staging.statewidefloodinsurance.com/.htaccess      ← was LIVE
+/home/mrtaco5/statewidefloodinsurance.com/.htaccess              ← was dormant
 ```
 
 Phase 1 step 2 pointed the apex **at the staging directory**; it did not move files into the directory
