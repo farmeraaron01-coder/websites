@@ -368,3 +368,49 @@ Review one said build Sacramento on public data. Review two agrees but adds that
 Marin should be built *first*, because it pairs our deepest data with an empty SERP.
 Both agree Sacramento carries no private median. **Adopted: Marin first as the
 proof of concept, Sacramento as the volume play on public data.**
+
+## CORRECTION from Aaron, 14 Aug — the private/NFIP ratio is a misleading metric
+
+> "my book is all over the country. if you took california only it would be spread
+> out, that 42 is only in that one area"
+
+Both halves check out, and together they invalidate how the second review framed
+Sacramento.
+
+**Our book was never built to saturate a county.** It is 7,692 policies across
+**20 states**; California is 73% of it, spread over **49 county cells with the top
+five accounting for only 43%**. There is no county where we are concentrated,
+because we write where the quote wins rather than farming a territory. So the
+review's "0.8 private policies per 1,000 NFIP contracts in Sacramento, against 84
+in Marin" reads as a 100x failure in Sacramento when it is mostly a statement
+about what kind of book this is. **Drop that ratio. It measures the wrong thing.**
+
+**And the 42,334 is not a market of 42,334 shoppers.** Sacramento's SFHA
+penetration is **81.13%**, against Marin's 38.01%. That is a saturated,
+lender-compelled pool behind the levees — nearly everyone who must carry cover
+already does. Demand there is compelled, not curious.
+
+### What that changes — and the counterweight in our own data
+
+The compelled reading actually makes Sacramento *more* interesting, not less: it is
+42,334 households who are required to carry flood insurance, most of whom have
+never been told private exists or that loss of use is only available there. That is
+the site's whole thesis at maximum scale.
+
+**But our own in-force pull is the check on that enthusiasm.** Sacramento's median
+NFIP cost at benchmark terms is **$780 — the lowest of any large California
+county**, against Marin's $2,102. Sacramento is the hardest county in the state to
+beat on price, because heavy CRS discounts and levee accreditation have already made
+the federal product cheap there.
+
+So the honest Sacramento position is:
+
+- **Not** a price argument. We will usually lose it, and saying otherwise would be
+  the kind of claim that gets checked.
+- **A coverage argument.** 42,334 compelled households, none of whom can buy loss of
+  use at any price from the federal programme. Same for the $250,000 building cap.
+- Written on public data, with **no private median**, because n=32 is n=32
+  regardless of why.
+
+Marin remains the first build — deepest data, empty SERP, and a price argument that
+actually holds at $2,102.
