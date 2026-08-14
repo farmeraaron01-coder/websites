@@ -68,6 +68,45 @@ UA = ("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 "
 START, END = "2025-08-14", "2026-08-11"
 
 
+_SVC = {}
+
+
+def _service():
+    if "s" not in _SVC:
+        creds = service_account.Credentials.from_service_account_file(
+            KEY, scopes=["https://www.googleapis.com/auth/webmasters.readonly"])
+        _SVC["s"] = build("searchconsole", "v1", credentials=creds,
+                          cache_discovery=False)
+    return _SVC["s"]
+
+
+def _queries(site, page):
+    """The queries a single URL ranks for, as {query: impressions}."""
+    rows = _service().searchanalytics().query(siteUrl=site, body={
+        "startDate": START, "endDate": END, "dimensions": ["query"],
+        "rowLimit": 5000,
+        "dimensionFilterGroups": [{"filters": [
+            {"dimension": "page", "operator": "equals", "expression": page}]}],
+    }).execute().get("rows", [])
+    return {r["keys"][0]: r["impressions"] for r in rows}
+
+
+def topical_overlap(site, source, target):
+    """Share of the SOURCE's impressions sitting on queries the TARGET also ranks
+    for. None when the source has no query rows to compare.
+
+    This is the check that total impressions cannot make. A consolidation is only
+    sound if the destination answers what the origin was being found for."""
+    src = _queries(site, source)
+    if not src:
+        return None
+    tgt = set(_queries(site, target))
+    total = sum(src.values())
+    if not total:
+        return None
+    return sum(v for q, v in src.items() if q in tgt) / total
+
+
 def gsc(site):
     creds = service_account.Credentials.from_service_account_file(
         KEY, scopes=["https://www.googleapis.com/auth/webmasters.readonly"])
@@ -175,6 +214,20 @@ def main():
             continue
         ti = imp.get(loc, 0)
         print(f"     -> {loc.replace(site.rstrip('/'), '')}   target impr={ti}")
+
+        # TOTAL IMPRESSIONS ARE NOT THE TEST, and reading them as one produced a
+        # wrong verdict on californiafloodinsurance.com's Hiscox rule: the target
+        # carries 11,546 impressions against the source's 1,746, so it was passed
+        # as a good consolidation. But the target ranks for nothing the source
+        # ranks for -- it is simply a strong page on a different subject, and the
+        # Hiscox demand was landing nowhere. A big target can hide a total miss.
+        #
+        # The real question is whether the target serves the SOURCE'S queries, so
+        # compare the query sets and report the overlap.
+        shared = topical_overlap(site, u, loc)
+        if shared is not None:
+            print(f"     query overlap with target: {shared:.0%} of the source's "
+                  f"impressions are on queries the target also ranks for")
         if ti < r["impressions"]:
             flagged += 1
             verdict = ("RESCUE -- source already ranks"
@@ -182,9 +235,13 @@ def main():
                        "source outranks target, but never ranked well itself; "
                        "this is a content gap, not a redirect fix")
             print(f"     *** {verdict}")
+        elif shared is not None and shared < 0.25:
+            flagged += 1
+            print("     *** TARGET IS STRONG BUT OFF-TOPIC -- it outranks the "
+                  "source overall while serving almost none of its queries")
         else:
             keep += 1
-            print("     ok -- target is stronger, this consolidation worked")
+            print("     ok -- target is stronger and topically aligned")
         print()
 
     print(f"{flagged} redirects to fix, {keep} correct, {gone} dead ends, "
