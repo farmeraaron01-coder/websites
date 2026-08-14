@@ -79,30 +79,69 @@ def gsc(site):
 
 
 def probe(url):
-    """HEAD it and report the FIRST non-200 status, plus where it points.
+    """HEAD it and report the ORIGIN's status, plus where it points.
 
-    The first status is the one that matters: a 301 that eventually reaches a 200
-    is still a 301, and reporting the final 200 would hide every rule we are
-    looking for. x-redirect-by tells you which layer owns it -- WordPress sets it,
-    Apache's Redirect directive does not."""
+    The origin's own status is the one that matters: a 301 that eventually reaches
+    a 200 is still a 301, and reporting the final 200 would hide every rule this
+    tool exists to find. x-redirect-by tells you which layer owns it -- WordPress
+    sets it, Apache's Redirect directive does not.
+
+    THE PROXY LINE IS NOT A STATUS. An outbound HTTP proxy prepends its own
+    `HTTP/1.1 200 Connection Established` to the response, so the first status line
+    in curl's output belongs to the proxy, not the site. An earlier version of this
+    function took the first line it saw and reported every redirect on
+    californiafloodinsurance.com as a clean 200 -- "0 redirects to fix" across 137
+    URLs, which read as good news and was a parsing bug.
+
+    It was caught by checking two URLs already known to be 301s. A zero-finding
+    result from a checker is indistinguishable from a broken checker unless you
+    have a positive control, which is why SELF_TEST below is not optional."""
     out = subprocess.run(["curl", "-sSI", "-A", UA, url],
                          capture_output=True, text=True, timeout=45).stdout
     code, loc, by = "", "", ""
     for line in out.splitlines():
         l = line.strip()
         low = l.lower()
-        if low.startswith(("http/2 ", "http/1.1 ")):
-            c = l.split()[1]
-            # Skip the proxy's own "200 Connection Established".
-            if not code and c != "200":
-                code = c
-            elif not code:
-                code = c
-        if low.startswith("location:"):
+        if low.startswith(("http/2 ", "http/1.1 ", "http/1.0 ")):
+            # CONNECT tunnel handshake, not the origin's answer.
+            if "connection established" in low:
+                continue
+            if not code:
+                code = l.split()[1]
+        elif low.startswith("location:"):
             loc = l.split(":", 1)[1].strip()
-        if low.startswith("x-redirect-by"):
+        elif low.startswith("x-redirect-by"):
             by = l.split(":", 1)[1].strip()
     return code or "?", loc, by
+
+
+# Positive controls: URLs that must come back as redirects. If a site's controls
+# report 200, the parser is broken and every "clean" result below is meaningless.
+SELF_TEST = {
+    "californiafloodinsurance.com": [
+        ("https://californiafloodinsurance.com/mobile/contact.php", "301"),
+        ("https://californiafloodinsurance.com/flood-insurance-rates/", "301"),
+    ],
+    "statewidefloodinsurance.com": [
+        ("https://statewidefloodinsurance.com/master-flood-policies-hoas/", "301"),
+    ],
+}
+
+
+def self_test(site):
+    """Refuse to report anything until a known redirect reads as a redirect."""
+    controls = next((v for k, v in SELF_TEST.items() if k in site), [])
+    if not controls:
+        print("no positive control for this site -- a clean result cannot be "
+              "trusted. Add one to SELF_TEST.\n", file=sys.stderr)
+        return
+    for url, want in controls:
+        got = probe(url)[0]
+        if got != want:
+            raise SystemExit(
+                f"SELF-TEST FAILED: {url} should report {want}, got {got}. "
+                "The probe is broken; results would be false. Fix it first.")
+    print(f"self-test ok ({len(controls)} control redirect(s) detected)\n")
 
 
 def main():
@@ -111,6 +150,7 @@ def main():
         print("\nusage:  redirect-audit.py https://example.com/")
         return 1
     site = sys.argv[1]
+    self_test(site)
     pages = gsc(site)
     print(f"{len(pages)} URLs with impressions, {START} to {END}\n")
 

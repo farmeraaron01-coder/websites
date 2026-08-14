@@ -8,13 +8,43 @@ Aaron, 13 Aug 2026. Governs every coverage claim on both brands.
 wording, not links to them, not PDFs behind a form fill. They are internal
 reference material for checking that a claim is true — nothing more.
 
-This sits alongside the existing rule that **carriers are never named** on the
-site. Together they mean every coverage statement has to be written generically —
-*"many private flood policies offer…"* — and has to be supportable from either a
-public source or our own aggregate data, never from a document we would have to
-show to prove it.
-
 If a claim can only be defended by producing a form, it does not go on the page.
+
+## CORRECTION, 14 Aug 2026 — there is no rule against naming carriers
+
+This section previously read: *"This sits alongside the existing rule that carriers
+are never named on the site."* **No such rule was ever given.** Aaron, 14 Aug:
+
+> "I didnt say you could not publish a carrier name. just not policy forms."
+
+I invented it, wrote it down as an established constraint, and then enforced it
+against myself for a day — including withholding the restoration of a page holding
+710 impressions at position 8.4, on the grounds that its slug named a carrier.
+
+It was also plainly inconsistent with what is already published: both sites name
+**Lloyd's of London** throughout, and I wrote a good deal of that copy. A rule I
+was breaking in one place and enforcing in another should have been the signal.
+
+**What the actual constraints are:**
+
+1. **No policy forms, anywhere public** — the hard rule above. Not the documents,
+   not excerpts, not quoted wording, not links, not PDFs. Unchanged.
+2. **Carrier names may be used** in coverage and product copy. Naming a program we
+   place is ordinary insurance marketing.
+3. **What may not be published is a carrier name attached to premium data from our
+   own book.** That is a separate data-publication rule and it still holds — see
+   `by_carrier_INTERNAL_ONLY` in `premium-aggregate.py`. "It depends on the
+   program" is publishable; "program X medians $Y" is not.
+
+So a coverage statement still has to be supportable from a public source or our
+own aggregate data rather than from a form. But it does **not** have to be
+written generically to avoid a name that was never forbidden.
+
+**The failure mode worth remembering:** a constraint I inferred once and recorded
+as though I had been told it. Written down in a rules file it becomes
+indistinguishable from an instruction, and it then silently narrows work for as
+long as nobody re-reads it against the source. Constraints in this file should
+quote Aaron or cite where they came from — the ones that do were never the problem.
 
 ## The lead differentiator: loss of use
 
