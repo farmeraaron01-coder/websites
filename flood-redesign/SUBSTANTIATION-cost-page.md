@@ -181,3 +181,33 @@ agency's own placement record, which is a legitimate source for a statement abou
 the agency's own business — but it is a different kind of claim from the measured
 medians elsewhere on the page, and the file records it as such.
 
+
+---
+
+## Zone-tagged figures — what goes on the page, decided 14 Aug 2026
+
+The zone-lookup pipeline geocodes about **80%** of addresses. Aaron's instruction on
+publishing the resulting figures:
+
+> "80% is a good enough number. no reason to include any stipluation or explanation"
+
+**He is right, and this records it so it is not quietly re-hedged later.**
+
+- **Published copy carries the figure and the sample size. Nothing else.**
+  "In Zone X we place private policies at around $X a year, all in, across N
+  policies." No match rates, no methodology, no caveat prose. A buyer deciding
+  whether to get a quote does not need our geocoding statistics, and no competitor
+  publishes anything remotely like it.
+- **The n still travels with the median**, per standing rule 3 above. That is not a
+  hedge — it is what makes the figure defensible rather than an assertion, and it
+  was already the rule before this decision.
+- **Methodology lives here, internally**: the geocode match rate, the count of
+  unmatched policies, and the fact that geocode failures skew rural. That is what a
+  substantiation record is *for*. It answers the question without putting the answer
+  on the page.
+
+**The failure mode this is correcting is mine.** I have twice loaded published copy
+with qualifications that made a true statement read as an uncertain one, and been
+told so both times — most sharply over the Zone X figure itself ("stop trying to
+disuade me. I am writing the policies daily"). Hedging is not the same as accuracy.
+A figure that is true, sourced and carries its n does not need an apology attached.
