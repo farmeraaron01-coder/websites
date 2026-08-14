@@ -835,6 +835,14 @@ def main():
         # turns CA into "Ca" and AE into "Ae". Everything else (county, city,
         # occupancy) reads better title-cased.
         key = key.str.upper() if col in ("state", "zone") else key.str.title()
+        # Carriers write the same county two ways -- "Marin" and "Marin County" --
+        # and untreated they become two cells. Measured 14 Aug 2026: EIGHT
+        # California counties were split this way, so every affected median was
+        # computed on part of its data, and a county sitting just under the
+        # suppression floor could be wrongly withheld. Strip the suffix so the
+        # two spellings collapse into one county.
+        if col == "county":
+            key = key.str.replace(r"\s+County$", "", regex=True).str.strip()
         for name, grp in src.groupby(key):
             if name in ("", "Nan", "None"):
                 continue
