@@ -433,3 +433,61 @@ GTM tags I previously implied they were. They are a separate cleanup with no per
 **`GTM-PJQ72VK`** (statewide). Not audited here. It carries no Google tag today, which is exactly why
 statewide still scores 60 on Divi. **Audit it before statewide's cutover**, because the moment it gets
 a Google tag it inherits this entire problem.
+
+---
+
+# Published as Version 10, 14 Aug 2026 — measured, and the estimate was optimistic
+
+8 tags and 7 triggers deleted: 19 (duplicate Conversion Linker), 23/25/34 (Divi
+button-click), 36 (scroll depth), 38/40/42 (1/2/5-min timers), plus their listeners.
+No forms submitted. Container now 13 tags, 15 triggers, 26 variables.
+
+## The byte saving was ~7 KiB, not 15–35
+
+| | gzipped |
+|---|---|
+| `gtm.js` before | 158.8 KiB |
+| `gtm.js` after Version 10 | **152.0 KiB** |
+
+This file estimated **15–35 KiB** and flagged it as unverifiable without a publish.
+The publish happened; the estimate was optimistic by roughly a factor of three.
+Removing 11 of 39 tags cut 4% of the container, not 10–20% — most of `gtm.js` is
+GTM's own runtime, which does not shrink when you delete tags. **Do not use
+tag-count ratios to estimate container size again.**
+
+As predicted, no TBT movement: the timers never fired inside a Lighthouse run.
+
+## Two corrections to this document
+
+**1. The listener trigger IDs here were wrong.** This file named listeners **72–75**
+for the scroll and timer triggers. The live IDs were **35, 37, 39, 41**. The agent
+doing the work deleted by name and verified zero tag references before each
+deletion rather than trusting the numbers, which is why nothing was lost. Had it
+deleted by ID it would have removed four unrelated triggers.
+
+**2. `gtm.timer` in `gtm.js` is not evidence a timer trigger survives.** It appears
+seven times inside GTM's runtime timer *implementation* (`function JK(a)`), which
+ships in every container. The test for a live timer trigger is the container config:
+`"interval"` and `"limit"`, both **0** after the prune. A substring match against
+minified vendor code proves nothing.
+
+## Independently confirmed: tags 23, 25 and 34 were dead
+
+Tag Assistant captured no fire data in the preview session, so the verdict initially
+rested on config/site mismatch. Verified separately by fetching five live pages —
+homepage, `/get-a-quote/`, the cost page, `/residential/`,
+`/commercial-flood-insurance/` — and grepping for the exact trigger strings
+"INSTANT ONLINE QUOTE", "Get Quote Now" and "See More Reviews". **None appears
+anywhere.** Current copy is "Start my quote". The triggers were structurally unable
+to fire.
+
+## What is left, and it is not in GTM
+
+Clarity remains the only material win: **72.8 KB** for `clarity.js` plus six
+requests across three origins, none starting before 1.6 s. Measured 14 Aug on the
+live chain — `bat.js` → `action/5318858.js` → `clarity.ms/tag/uet/5318858?insights=1`
+→ `scripts.clarity.ms/0.8.69/clarity.js`, running past 5.8 s.
+
+Switched off only in **Microsoft Advertising**, on UET tag 5318858. Aaron runs
+Microsoft Ads, so `bat.js` itself stays — this disables the insights layer hanging
+off it, nothing else.
