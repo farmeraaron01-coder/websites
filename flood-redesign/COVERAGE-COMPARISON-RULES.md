@@ -202,7 +202,9 @@ concedes the argument to whichever competitor shows a lower number.
 
 # Verified 13 Aug 2026 — the statute, and where the loss-of-use gap actually is
 
-Kimi's Jobs 1 and 2, archived in `research-2026-08-13/`.
+Jobs 1 and 2, archived in `research-2026-08-13/`. Aaron ran these two through
+**Grok 4.6**, not Kimi — the brief was written for Kimi but answered by Grok, so
+the provenance differs from the three earlier reports the same day.
 
 ## The statute says exactly what Aaron said
 
@@ -230,7 +232,7 @@ the rule.
 
 ## The loss-of-use gap: documented everywhere, monetised almost nowhere
 
-Kimi surveyed 44 unique ranking pages across five queries. **41 mention loss of
+Grok 4.6 surveyed 44 unique ranking pages across five queries. **41 mention loss of
 use.** The fact is not a secret. But:
 
 - Only about **six** pages make it the headline argument — and **four of those six
