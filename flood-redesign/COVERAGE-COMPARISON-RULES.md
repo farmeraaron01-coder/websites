@@ -303,3 +303,54 @@ Verify the 24-month provision against the Insurance Code before publishing; it
 appeared in two secondary sources here, not a primary one. If it holds, the
 sentence writes itself: California protects you for two years on your homeowners
 policy and not one day on your federal flood policy.
+
+---
+
+# Our own book cannot measure loss of use — checked 14 Aug 2026
+
+Aaron says every policy we write carries the loss-of-use line. I went looking for
+it in the data so we could publish a median limit, which no competitor does.
+
+**It is not there.** I pulled the April 2024 bordereaux for all three carriers and
+read the header rows:
+
+- QBE — 36 columns
+- Hiscox — 34 columns
+- Brit — 35 columns
+
+Every one of them carries Building Limit, Contents Limit, Property Deductible,
+Content Deductible, Gross Premium, Policy Fee. **None carries a loss-of-use,
+additional-living-expense, temporary-housing or relocation column** — not under
+any spelling. The workbooks were shredded after reading; only the header names
+above left them.
+
+## What that means
+
+The bordereau is a **premium and TIV reporting file for London**. It reports what
+the syndicate needs to book the risk. Loss of use rides on the policy form, so it
+never appears as a rated line item in the bordereau.
+
+So the limit is a **property of the form, not of the individual policy**, which is
+consistent with Aaron's "all our policies have that line attached." That is a
+better fact for us than a distribution would have been — it is a flat statement
+rather than an average — but it has consequences:
+
+1. **We cannot publish a measured median loss-of-use limit.** There is no
+   measurement to make. Any number has to come from the carrier's own documented
+   limit, not from our book.
+2. **The limit must be sourced from the underwriting rules**, per carrier, and
+   cited internally — Hiscox, QBE and Brit will not agree with each other.
+3. **The no-forms rule still binds.** We can state a limit as a fact about what we
+   can arrange. We cannot publish, excerpt, quote or link the form that contains it.
+
+## The consequence for the page
+
+The argument stays: the NFIP offers this coverage **at zero limit**, and that is
+FEMA's own published position, so the comparison does not need a number from us to
+land. What a number would add is scale — "$X of temporary housing" against "none."
+
+Getting that number is now a carrier-documentation task, not a data task. Until
+someone has read the current limit out of each carrier's underwriting rules and
+written it down with a date, **the page says the NFIP covers none of it and stops
+there.** No estimated limit, no "up to" figure carried over from a competitor's
+page.
