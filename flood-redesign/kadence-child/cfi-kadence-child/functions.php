@@ -360,6 +360,12 @@ require_once get_stylesheet_directory() . '/inc/schema.php';
    head term and serves a 404. See inc/legacy-redirects.php for the query data. */
 require_once get_stylesheet_directory() . '/inc/legacy-redirects.php';
 
+/* [cfi_flood_zone_lookup] — address to FEMA flood zone, run in the visitor's
+   browser. Lives in a shortcode rather than page content because wpautop injects
+   <p> tags inside <script> and wptexturize turns && into &#038;&#038;, which broke
+   the tool silently when it was pasted into the page. See inc/zone-lookup.php. */
+require_once get_stylesheet_directory() . '/inc/zone-lookup.php';
+
 /**
  * tokens.css is inlined into the page rather than enqueued as a file.
  *
