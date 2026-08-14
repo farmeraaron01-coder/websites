@@ -38,14 +38,27 @@ import urllib.parse
 import urllib.request
 
 BASE = "https://www.fema.gov/api/open/v2/FimaNfipPolicies"
+# IN-FORCE SNAPSHOT, not a transaction dump. Learned the hard way 14 Aug 2026:
+# the first version of this pull returned five years of policyEffectiveDate
+# (2021-2026) for the same benchmark. FEMA's policy file is TRANSACTIONAL -- an
+# annual policy renewing five times is five rows, so the same house was counted
+# five times, and those years straddle the Risk Rating 2.0 phase-in. Averaging
+# them blends rate regimes into a median that never described any actual year.
+#
+# A policy is in force at REF if it had started and had not yet ended:
+#     policyEffectiveDate <= REF < policyTerminationDate
+REF = "2026-08-14"
 BENCH = ("propertyState eq 'CA' and totalBuildingInsuranceCoverage eq 250000 "
-         "and buildingDeductibleCode eq '5' and occupancyType eq 11")
+         "and buildingDeductibleCode eq '5' and occupancyType eq 11 "
+         f"and policyEffectiveDate le '{REF}' "
+         f"and policyTerminationDate gt '{REF}' "
+         "and cancellationDateOfFloodPolicy eq null")
 SEL = ("ratedFloodZone,policyCost,primaryResidenceIndicator,hfiaaSurcharge,"
-       "countyCode,policyEffectiveDate")
+       "countyCode,policyEffectiveDate,policyTerminationDate,policyCount")
 PAGE = 1000          # 5000 is a proven 503; do not raise this
 CEILING = 20000      # skip ceiling per county
 PAUSE = 2.0          # be polite between successful pages
-OUT = "nfip_county"
+OUT = "nfip_county"   # snapshot dir; REF is baked into the data, record it
 FIPS = "/home/user/websites/flood-redesign/reference/ca-county-fips.tsv"
 
 

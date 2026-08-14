@@ -87,7 +87,7 @@ single blended average as the headline. Segment, or publish no number.
 Build only where **both** conditions hold: real search demand (to be confirmed)
 **and** benchmark n≥50, so the private figure is defensible.
 
-On current data that shortlist is about **twelve counties**: Marin, Orange, Los
+On current data that shortlist is **sixteen counties**: Marin, Orange, Los
 Angeles, Santa Clara, San Diego, Santa Cruz, Contra Costa, San Mateo, Lake, San
 Bernardino, Alameda, Riverside, Ventura, Solano, Butte, Santa Barbara.
 
@@ -95,7 +95,7 @@ Each page must carry something only we have:
 
 1. Private premium at benchmark terms for that county, with n disclosed
 2. The NFIP figure at identical terms — the like-for-like comparison
-3. HUD rent for that county — what displacement actually costs there
+3. HUD rent for that county — an official long-term unfurnished benchmark, NOT a displacement quote
 4. Local flood history and geography, written not generated
 
 If a county page would be items 1–3 with the numbers swapped and nothing else, it
@@ -142,3 +142,124 @@ links, then flagship, then counties.**
    figure and a strong NFIP figure, or whether that is a page we should not write.
 3. **Cannibalization sequencing** — whether consolidating the five near-duplicates
    means merging, redirecting, or deliberately differentiating them.
+
+---
+
+# RED-TEAM REVIEW — accepted and rejected, 14 Aug 2026
+
+First independent review returned. Verdict: *"directionally sound as a staged
+test, but not yet safe as a publication methodology."* That is a fair reading and
+most of it is accepted. Recorded here so the plan is not quietly rewritten.
+
+## ACCEPTED — and one of them was a live defect
+
+### 1. The NFIP data was wrong, and I had already pulled hours of it
+
+The reviewer said FEMA's policy file is transactional and that renewals create
+separate records. **Verified and correct.** My first pull returned
+policyEffectiveDate spanning 2021-2026 for an annual product — the same house
+counted once per renewal, across the Risk Rating 2.0 phase-in.
+
+Measured on Alameda:
+
+| | rows |
+|---|---:|
+| original transactional pull | **2,073** |
+| policies actually in force at 2026-08-14 | **388** |
+
+A **5.3x overstatement** of the county's policy count, and a median blended
+across five rate regimes that described no actual year. The pull now filters
+`policyEffectiveDate <= REF < policyTerminationDate` with cancelled policies
+excluded, and REF is recorded with the data. All previously pulled data was
+discarded rather than kept.
+
+This is the single most valuable thing the review produced.
+
+### 2. "Median of our book" is not "average cost in the county"
+
+Accepted without reservation. Sample size reduces noise; it does nothing about
+selection bias. We place private only when it wins, so our book records the
+outcome of shopping, not a market price.
+
+**Standing label for any published private figure:**
+
+> Median premium among qualifying policies placed by our agency, for the stated
+> coverage, deductible and period.
+
+Never "average cost of flood insurance in Marin County."
+
+### 3. n>=10 is a confidentiality floor, not a reliability standard
+
+Accepted. These are two different questions and I had one number doing both jobs.
+CMS suppresses below 11; our floor was one observation *looser* than that.
+
+New rule: **n>=11 to publish anything** (aligns with the common convention), and
+**n>=30 minimum for a standalone county point estimate**, n>=50 preferred. Always
+with n, period, and interquartile range shown.
+
+### 4. HUD FMR is not "what displacement actually costs"
+
+Accepted, and this one had already reached the live page. The loss-of-use page
+said a furnished month-to-month rental "generally costs more than these figures"
+— an unsourced directional claim, which is the same error as publishing a
+percentage premium, just softer. **Fixed on the live page**: it now states that
+HUD measures unfurnished long-term rent, that displaced families need a different
+market, and that we have no reliable published comparison, so the table is a floor
+for planning rather than a quote.
+
+### 5. Cannibalization is asserted, not evidenced
+
+Accepted. "Five pages get impressions" and "the contact page outranked the
+homepage" are consistent with cannibalization but do not establish it — a contact
+page can legitimately win navigational intent. Internal-link repair is low risk
+and proceeds. **Merging or redirecting the five pages is on hold** until we have
+query-level evidence: exact query, ranking URL by date, whether URLs alternate.
+
+### 6. Sacramento should not be skipped for lacking our data
+
+Accepted, and this corrects the plan's logic. Letting our book decide which
+counties deserve a page optimises for where we happened to write business rather
+than where readers need information. Sacramento gets a page built on public data,
+local levee and map context, and the NFIP comparison — **with no private median**
+until the sample supports one.
+
+### 7. Missing methodology governance
+
+Accepted in full: observation window, snapshot date, dispersion, a stable
+methodology URL, versioned tables, and a corrections policy. None of this was in
+the plan. Nothing publishes without it.
+
+### 8. Sixteen counties, not twelve
+
+Plain arithmetic error in my own shortlist. Corrected above.
+
+## NOTED, NOT YET ACTED ON
+
+- **Cal. Ins. Code 790.03(b)** on untrue or misleading statements — cited as
+  making claim wording a regulatory control rather than an SEO detail. Plausible
+  and consistent with the direction we were already going, but **I have not read
+  the section myself**, and it should be verified before being relied on.
+- **The "like-for-like" comparison needs more controls** than coverage and
+  deductible — contents, occupancy, primary vs secondary, new vs renewal, fee
+  treatment. Correct in principle; needs working through against what both
+  datasets actually carry.
+
+## REJECTED / QUALIFIED
+
+- **"Over-correcting from one bad experience" on page shape.** Partly fair, and
+  the examples given (NerdWallet, ValuePenguin, EnergySage) do show large location
+  sets working. But those are national brands with domain authority we do not
+  have, and the reviewer also concedes the opposite shape works (Bankrate's
+  single-state page, GAO's county interactive). The staged sequence — flagship
+  first, prove demand, then build — already resolves this without committing
+  either way. **No change.**
+- **Traffic claims for those example page sets were explicitly "not verified"**
+  by the reviewer, so they are illustrative, not evidence.
+
+## What this changes about timing
+
+The plan was already gated on Search Console data. It is now additionally gated on
+rewriting the methodology. **Neither the flagship nor any county page publishes a
+number until both are done.** The internal-link repair is unaffected and remains
+the first thing to do.
+
