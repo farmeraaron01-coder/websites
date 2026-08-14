@@ -143,3 +143,41 @@ DR-4758. Eight of the thirteen are wildfires; one is COVID-19.
   business" is satisfied has not been confirmed, and there is a standing
   instruction not to publish the Escondido mailing address. Resolve deliberately.
 - Record-retention period for this substantiation file.
+
+---
+
+## The Zone X figure — sourced to the agency, not to the aggregate
+
+**Published:** "In Zone X we typically place private policies at around $450 a
+year, all in."
+
+**Source: Aaron Farmer, CA Lic. #0L75450, as the Lloyd's coverholder placing the
+business.** This is a statement about what this agency writes, made by the person
+who writes it. It is not derived from the aggregate and must not be presented as
+a measured median.
+
+**Why it is not backed by an aggregate median.** Only 21 rows in the book carry a
+flood zone at all (X n=11 at $564, AE n=10 at $491) — at or below the publishing
+floor. The Intermap risk score was tested as a proxy and does not work: low-risk
+scores still median $668–$780, though their p25 runs $417–$556.
+
+**What the aggregate does independently corroborate:**
+
+- p10 all-in of the whole book is **$441**
+- **10.5%** of placements land in that band
+- the jump from p10 to p25 is **$294** — a minimum-premium cliff, not a tail
+- the mechanism reconciles arithmetically: $350 premium + $95 policy fee +
+  California's 3.18% surplus lines tax and stamping fee = **$459**
+
+**Why the statewide median is higher and does not contradict it.** The $794 book
+median and the $822 benchmark median blend A/V zone homes, where cover is
+mandatory, with X zone homes where it is optional. Segmenting is the whole point —
+publishing a blended median as though it described an X-zone buyer is the error
+this project has been correcting all along, and it applies to our own figures too.
+
+**What would make it measurable at scale:** zone-tagging the book by geocoding
+risk addresses against the FEMA NFHL. Until then this figure stands on the
+agency's own placement record, which is a legitimate source for a statement about
+the agency's own business — but it is a different kind of claim from the measured
+medians elsewhere on the page, and the file records it as such.
+
