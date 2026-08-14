@@ -263,3 +263,108 @@ rewriting the methodology. **Neither the flagship nor any county page publishes 
 number until both are done.** The internal-link repair is unaffected and remains
 the first thing to do.
 
+
+---
+
+# SECOND RED-TEAM REVIEW — 14 Aug 2026
+
+Independent second read, five reports. Verified its load-bearing number directly
+against OpenFEMA: **Sacramento 42,334 residential NFIP contracts in force, 30.1%
+of California's entire residential book, 9.55% penetration, 81.13% inside SFHA.**
+Exact match. Los Angeles 10,584; Santa Clara 8,141; Marin 4,542.
+
+## THE FINDING NEITHER REVIEW MADE — our benchmark is not neutral across counties
+
+Joining the second review's penetration data to my own in-force pull exposes a
+defect in the comparison itself, not in the page plan:
+
+| county | policies at our benchmark terms | all residential NFIP | benchmark as share of county book |
+|---|---:|---:|---:|
+| Santa Clara | 1,932 | 8,141 | **23.7%** |
+| Marin | 666 | 4,542 | 14.7% |
+| San Mateo | 452 | 3,346 | 13.5% |
+| Alameda | 388 | 3,420 | 11.3% |
+| Orange | 747 | 7,994 | 9.3% |
+| Los Angeles | 654 | 10,584 | 6.2% |
+| San Joaquin | 220 | 3,840 | 5.7% |
+| **Sacramento** | **758** | **42,334** | **1.8%** |
+
+**$250,000 is the NFIP's maximum building coverage.** Our benchmark therefore
+selects the top-coverage tier — and the share of a county's market that sits there
+varies more than thirteenfold. In Santa Clara nearly a quarter of buyers max out.
+In Sacramento fewer than one in fifty do.
+
+So a county-by-county table at benchmark terms would compare **the top 1.8% of
+Sacramento's market against the top 23.7% of Santa Clara's** and present the result
+as a like-for-like county comparison. It is like-for-like on the policy and wildly
+un-like on the buyer. That is not a caveat to footnote; it is a reason not to build
+that table in that form.
+
+**Consequence for the flagship page:** the county table cannot be benchmark-only.
+Either report each county on its own whole book (descriptive, and what NerdWallet
+does — total written premium divided by policies in force), or keep benchmark terms
+for the private-vs-NFIP comparison at **statewide** level where the mix effect is
+bounded, and say plainly which is which. Probably both, clearly separated.
+
+## ACCEPTED FROM REVIEW TWO
+
+1. **My stated reason for avoiding 58 pages was the wrong policy.** The on-point
+   one is doorway abuse, quoted verbatim from Google: *"Having multiple domain names
+   or pages targeted at specific regions or cities that funnel users to one page"*
+   and *"Creating substantially similar pages that are closer to search results than
+   a clearly defined, browseable hierarchy."* Fifty-eight county pages funnelling to
+   one quote form is that example almost literally, regardless of data richness.
+   There is **no data-differentiation safe harbour** anywhere in Google's docs.
+
+2. **The market already settled this for flood specifically.** NerdWallet runs 121
+   location pages for auto insurance and **zero** county flood pages — it puts a
+   county lookup on one page. ValuePenguin: ~11 state flood pages, no city ones.
+   Insurify and LendingTree rank for county-modified flood queries with single
+   *state* pages carrying full county tables. Our conclusion was right; the
+   reasoning now has evidence behind it rather than one bad experience.
+
+3. **County selection was backwards, and the correction is counter-intuitive.**
+   Marin, Santa Clara County and San Joaquin County returned **zero dedicated broker
+   pages** in their top-10. Sacramento has the densest commercial SERP in the state —
+   three local agencies, city and county government, and a sitting member of
+   Congress. So the highest-ROI pages are the data-rich, competition-empty coastal
+   counties, not the famous flood county.
+
+4. **We already run city pages.** San Diego, Fresno, Stockton and San Jose all
+   surface in these SERPs. The plan was written as though county pages would be a
+   new departure. They would not be — which raises the prior question of whether the
+   existing city pages are working, before adding more.
+
+5. **Query ambiguity is a real tactical trap.** "flood insurance orange county"
+   currently returns Orange County, **Florida**. "Santa Clara County" splits between
+   the county, the city, and the Santa Clara River in Ventura. Use city slugs where
+   the county term is contaminated — San Jose over Santa Clara County, Stockton over
+   San Joaquin County.
+
+6. **n≥10 stands as a floor but needs a precision test.** There is no recognised
+   standard for publishing a median: NCHS states its standards "were not developed
+   to apply to other estimators, such as percentiles or means." Census publishes ACS
+   medians at n=3. So we are already stricter than the closest federal precedent.
+   Add an ACS-style test — suppress if the margin of error exceeds the estimate —
+   and reserve n≥20–30 for any headline or county-to-county comparison. At n=10 the
+   exact 95% interval spans the 2nd to the 9th of ten observations.
+
+7. **Sacramento's claims history undercuts the intuition.** 42,334 policies have
+   produced 3,863 lifetime claims and $38.7M paid. Sonoma has paid **$131.8M** on
+   7,402 claims. Sacramento is a levee-protected, mandatory-purchase, rarely-floods
+   market. The page should say so — it is more interesting than the cliché.
+
+8. **Missing from the plan entirely:** a compliance/disclaimer architecture, the
+   loss-of-use argument integrated into the cost page rather than siloed, a
+   conversion baseline and call tracking before anything is built, and an off-site
+   citation strategy — a linkable asset needs outreach, not just internal links.
+
+9. **Sequencing should be parallel, not serial.** The internal-link repair is a
+   week; the flagship is a month. Do not let the first gate the second.
+
+## Where the two reviews disagree
+
+Review one said build Sacramento on public data. Review two agrees but adds that
+Marin should be built *first*, because it pairs our deepest data with an empty SERP.
+Both agree Sacramento carries no private median. **Adopted: Marin first as the
+proof of concept, Sacramento as the volume play on public data.**
