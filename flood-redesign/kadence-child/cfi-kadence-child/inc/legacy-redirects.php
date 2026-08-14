@@ -126,6 +126,23 @@ function cfi_merged_redirect_map() {
 		'californiafloodinsurance.com' => array(
 			'/flood-insurance-rates' => '/how-much-does-flood-insurance-cost/',
 		),
+		'statewidefloodinsurance.com' => array(
+			// The exclusions page moved from /flood-coverage-gaps/ onto the URL that
+			// was already ranking for the question it answers. /what-does-flood-
+			// insurance-not-cover/ held 491 impressions against the page's own 3, and
+			// "what does flood insurance not cover" alone is 339 of them -- an
+			// exact-match URL pointed by .htaccess at a page whose answer to that
+			// question sat in a footer FAQ.
+			//
+			// WHY THIS IS HERE RATHER THAN LEFT TO WORDPRESS. Renaming a slug normally
+			// leaves WordPress to 301 the old URL via _wp_old_slug. Measured on this
+			// site after the rename: /flood-coverage-gaps/ returned 404, not a
+			// redirect, uncached and with a cache-buster. Rather than keep guessing at
+			// why wp_old_slug_redirect() did not fire, the redirect is stated
+			// explicitly here -- deterministic, version-controlled, and visible to the
+			// next person instead of depending on post meta nobody can see.
+			'/flood-coverage-gaps' => '/what-does-flood-insurance-not-cover/',
+		),
 	);
 	foreach ( $maps as $brand => $map ) {
 		if ( false !== strpos( $host, $brand ) ) {
