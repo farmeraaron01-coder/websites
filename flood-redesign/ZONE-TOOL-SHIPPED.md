@@ -98,3 +98,59 @@ Statewide's `/navigating-flood-zone-x/` holds **14,961 impressions at position
 holds 2,563 impressions at position 6.5. The shortcode is already deployed there;
 it needs a page and the statewide-appropriate copy. **This is the largest single
 opportunity found today.**
+
+---
+
+## AI retrieval — the gap Aaron caught, 14 Aug 2026
+
+> "did you write seo content or aiseo content for the flood zone look up tool?"
+
+**Traditional SEO only.** Keyword-targeted sections, internal links, title and
+meta description. Nothing written for retrieval by an assistant. Audited the live
+page and confirmed it: `Article`, `WebPage`, `InsuranceAgency`, `BreadcrumbList` —
+**no FAQPage, no WebApplication, no HowTo** — and every H2 opened with narrative
+rather than an extractable answer.
+
+That gap matters more here than on a typical site. The Search Console work found
+this site carrying large impression counts with almost no clicks, and AI Overviews
+absorbing the answer is the standing explanation. Being the source an assistant
+quotes is the same problem, approached from the other end.
+
+### What changed
+
+**Direct answers first.** Every H2 now opens with a declarative sentence that
+stands alone if lifted out of context:
+
+- *"To find the flood zone for any U.S. address, enter it below."*
+- *"Use the lookup above: it returns the base flood elevation whenever FEMA
+  publishes one for that zone."*
+- *"Flood zones change when FEMA revises a map, and a property can move in either
+  direction."*
+- *"Your flood zone determines whether flood insurance is mandatory. It does not
+  determine your premium."*
+
+**A table instead of a list** for base flood elevation by zone. Tables extract
+cleanly; prose lists do not. It also surfaces the fact most guides omit — Zone A
+has **no** determined BFE, which is why it needs a surveyor.
+
+**Seven FAQ pairs**, which the theme's existing generator turned into **FAQPage
+schema automatically** — verified live, all seven questions present. They are
+written as the questions people actually ask, not keyword variants: how do I find
+my zone, is this the zone my lender uses, can my zone change, why does my address
+show no zone.
+
+**WebApplication schema** (v1.6.5). The page already declared itself an Article.
+Nothing said *this is a tool*, which is exactly what an assistant needs when
+someone asks how to check a flood zone. It now declares a free WebApplication with
+a feature list and cites the FEMA NFHL as its data source. Emitted from PHP, not
+page content — JSON-LD in the editor goes through the same filters that destroyed
+the JavaScript.
+
+### Still not done
+
+- No `HowTo` schema. Arguably applicable, but the honest answer to "how do I find
+  my flood zone" on this page is "type it in the box," and a HowTo with one step is
+  schema for its own sake.
+- No `Speakable`. Low value here.
+- The same treatment has not been applied to the cost page or the loss-of-use page,
+  both of which carry quotable measured figures and would benefit more.

@@ -52,6 +52,50 @@
 
 defined( 'ABSPATH' ) || exit;
 
+/**
+ * WebApplication schema for the lookup itself.
+ *
+ * The page already emits Article, WebPage and InsuranceAgency, and the FAQ pairs
+ * generate FAQPage through inc/schema.php. None of that says THIS PAGE IS A TOOL,
+ * which is the thing an assistant needs when someone asks how to check a flood
+ * zone. Declaring it as a free WebApplication is what makes the page eligible to
+ * be surfaced as the answer rather than as another article about flood zones.
+ *
+ * Emitted from PHP rather than page content because JSON-LD pasted into the
+ * editor goes through the same wpautop and wptexturize filters that destroyed the
+ * tool's JavaScript.
+ */
+function cfi_zone_lookup_schema() {
+	if ( ! is_page() || ! has_shortcode( get_post_field( 'post_content', get_the_ID() ), 'cfi_flood_zone_lookup' ) ) {
+		return;
+	}
+	$d = array(
+		'@context'    => 'https://schema.org',
+		'@type'       => 'WebApplication',
+		'name'        => 'Flood Zone Lookup by Address',
+		'url'         => get_permalink(),
+		'applicationCategory' => 'BusinessApplication',
+		'operatingSystem'     => 'Any',
+		'browserRequirements' => 'Requires JavaScript',
+		'description' => 'Check any address against FEMA\'s National Flood Hazard Layer. Returns the flood zone, whether the property is in a Special Flood Hazard Area, and the base flood elevation where FEMA publishes one.',
+		'offers'      => array( '@type' => 'Offer', 'price' => '0', 'priceCurrency' => 'USD' ),
+		'isAccessibleForFree' => true,
+		'featureList' => array(
+			'FEMA flood zone by street address',
+			'Special Flood Hazard Area determination',
+			'Base flood elevation where published',
+			'Mandatory purchase requirement for federally backed mortgages',
+		),
+		'citation'    => array(
+			'@type' => 'Dataset',
+			'name'  => 'FEMA National Flood Hazard Layer',
+			'url'   => 'https://www.fema.gov/flood-maps/national-flood-hazard-layer',
+		),
+	);
+	echo '<script type="application/ld+json">' . wp_json_encode( $d ) . '</script>' . "\n";
+}
+add_action( 'wp_footer', 'cfi_zone_lookup_schema' );
+
 function cfi_flood_zone_lookup_shortcode() {
 	ob_start();
 	?>
