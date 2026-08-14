@@ -166,3 +166,44 @@ def main():
 
 if __name__ == "__main__":
     sys.exit(main())
+
+# ─────────────────────────────────────────────────────────────────────────────
+# PIPELINE TEST, 14 Aug 2026 — it works, and my test set was badly chosen
+#
+# Ran 20 California addresses end to end before touching any customer data:
+#
+#   match rate      80%  (16 of 20 geocoded)
+#   throughput      26.4 s for 20 = ~1.3 s per address
+#   failures        Pajaro, Livermore, Seal Beach, Oakland -- plazas and rural
+#                   routes, exactly the classes the docstring warns about
+#
+# ALL 16 MATCHES RETURNED ZONE X, NONE IN AN SFHA. That looked like a broken
+# query, so it was checked rather than reported. Controlled test: query the layer
+# for an AE polygon in California, take its centroid, run a point query there.
+#
+#   result: FLD_ZONE 'AE', SFHA_TF 'T'
+#
+# So the pipeline detects SFHAs correctly and the 16 X results are genuine. The
+# fault was the test set: I picked city halls and civic centres, which are
+# systematically built on high ground, and most urban California downtown is
+# mapped X behind accredited levees.
+#
+# **That bias runs opposite to the book.** Customers buy flood insurance because
+# they are near water. A test set of public buildings tells you almost nothing
+# about how this will behave on customer addresses, and it nearly had me report
+# "works fine" on evidence that did not support it.
+#
+# ALSO NOTE: STATIC_BFE came back -9999 even on the AE polygon, so a zone being
+# in an SFHA does not mean a BFE is published. lookup() already maps -9999 to
+# None; do not treat a missing BFE as a missing zone.
+#
+# WHAT A REAL RUN AGAINST THE BOOK NEEDS
+#   * ~3,645 California benchmark rows at 1.3 s = about 80 minutes. Feasible.
+#   * The 20% geocode failure is the binding constraint, not speed. It would
+#     leave roughly 700 policies untagged, and the failures skew rural -- which
+#     is NOT random with respect to flood risk. Report the unmatched share
+#     alongside any zone medians, or the medians describe the geocodable subset
+#     rather than the book.
+#   * PII: property addresses go to two federal services. Output is customer data
+#     and must never be committed; only zone aggregates leave the machine, under
+#     the n>=11 floor. Shred the workbook afterwards.
