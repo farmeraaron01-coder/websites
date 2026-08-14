@@ -608,3 +608,80 @@ viewport — above the fold, the first thing a visitor sees on the page carrying
 Delaying it trades conversions for a score. Measured, then rejected.
 
 **No hiding tags from Lighthouse.** See 1.5.2 above.
+
+---
+
+# Measured again 14 Aug 2026 — the remaining deficit is entirely third-party tags
+
+Lighthouse 13.4.1, mobile, local Chromium, both apexes.
+
+| | mobile score | TBT | TTI | LCP | CLS |
+|---|---|---|---|---|---|
+| californiafloodinsurance.com | **75** | 620 ms | 9.9 s | 3.2 s | 0 |
+| statewidefloodinsurance.com | **77** | 530 ms | 9.7 s | 3.2 s | 0 |
+
+## The site itself is not the problem, and the numbers say so plainly
+
+- **Server response: 100 ms.** Full marks.
+- **Total page weight: 757 KiB / 767 KiB.** Passing, score 1.
+- **Own JavaScript: 33 ms of scripting** on both. Effectively nothing.
+- **CLS: 0.** Perfect on both.
+
+The theme and build work already succeeded. What is left is not ours.
+
+## Where the 620 ms of blocking actually comes from
+
+California, JS execution by origin:
+
+| script | total | scripting |
+|---|---|---|
+| googletagmanager.com/gtm.js | 353 ms | 299 ms |
+| googletagmanager.com GA4 (G-3YMN51H7LE) | 309 ms | 259 ms |
+| googletagmanager.com Ads destination (AW-1012143191) | 236 ms | 164 ms |
+| scripts.clarity.ms/clarity.js | 226 ms | 205 ms |
+| **third-party scripting total** | | **~927 ms** |
+| californiafloodinsurance.com (own) | 787 ms | **33 ms** |
+
+Statewide is the same shape at ~743 ms of third-party scripting.
+
+## The controlled proof
+
+A 7 August run against the same URL with the tags absent — `lh-cfi-notags.json`:
+
+```
+score 95    TBT 0 ms    TTI 2.9 s    third parties: NONE
+```
+
+Against today's 75 / 620 ms / 9.9 s with them. **Twenty points, all of the blocking
+time and seven seconds of time-to-interactive are Google Tag Manager, GA4, Google
+Ads and Microsoft Clarity.** No amount of further theme work moves this number; the
+work is done and the tags are sitting on top of it.
+
+## Options, in order of value against risk — and this is a business call
+
+1. **Microsoft Clarity: 226 ms (CFI) / 186 ms (SW) of main thread.** Session
+   recording is diagnostic, not revenue. It is the cheapest points available and the
+   only item here whose removal costs no attribution.
+2. **Delay GTM until first user interaction** (scroll, tap, keypress) with a timeout
+   fallback. Standard pattern, and it should preserve conversion tracking, because a
+   form submission *is* an interaction and cannot occur before one. **The real cost
+   is GA4 pageviews for visitors who bounce without interacting** — those go
+   unrecorded, so session counts drop and bounce rate shifts. That is a measurement
+   change, not a measurement error, but it will look like a traffic drop in GA4 and
+   needs to be expected rather than discovered.
+3. **Server-side GTM.** The correct fix: tags execute off the visitor's device
+   entirely. Real project, real cost, no attribution loss.
+
+**Do not simply remove the Ads tag.** AW-1012143191 fires live conversions and
+removing it blinds ad spend — a far more expensive problem than 236 ms.
+
+## Standing note
+
+Do not re-measure with PageSpeed Insights' public API and expect a number; the
+keyless daily quota was exhausted on the first four calls today. Run Lighthouse
+locally against the pre-installed Chromium instead:
+
+```
+lighthouse https://site/ --only-categories=performance --form-factor=mobile \
+  --screenEmulation.mobile --chrome-flags="--headless=new --no-sandbox"
+```
