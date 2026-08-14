@@ -134,13 +134,30 @@ function cfi_merged_redirect_map() {
 			// exact-match URL pointed by .htaccess at a page whose answer to that
 			// question sat in a footer FAQ.
 			//
-			// WHY THIS IS HERE RATHER THAN LEFT TO WORDPRESS. Renaming a slug normally
-			// leaves WordPress to 301 the old URL via _wp_old_slug. Measured on this
-			// site after the rename: /flood-coverage-gaps/ returned 404, not a
-			// redirect, uncached and with a cache-buster. Rather than keep guessing at
-			// why wp_old_slug_redirect() did not fire, the redirect is stated
-			// explicitly here -- deterministic, version-controlled, and visible to the
-			// next person instead of depending on post meta nobody can see.
+			// THIS ENTRY IS REDUNDANT, AND THE REASON IS WORTH KEEPING.
+			//
+			// I added it believing WordPress's built-in old-slug redirect had failed:
+			// immediately after the rename, /flood-coverage-gaps/ returned 404 rather
+			// than a 301, and it still 404'd with a cache-buster, so I concluded
+			// wp_old_slug_redirect() was not firing and wrote an explicit rule.
+			//
+			// It was firing. It just needed the rewrite/cache state flushed. Once the
+			// site cache was purged the old URL 301'd correctly to the new slug --
+			// verified while the theme on disk was still 1.6.6, i.e. with this entry
+			// absent, and the response carried `x-redirect-by: WordPress`, which is
+			// _wp_old_slug's own signature and not this map's.
+			//
+			// The lesson is about the evidence, not WordPress: a 404 read seconds after
+			// a slug change is not proof of anything, and `no-cache` response headers
+			// do not mean no caching happened upstream. Wait and re-check before
+			// building a workaround.
+			//
+			// Kept deliberately rather than reverted. It is harmless (identical target
+			// to what WordPress does natively), it survives _wp_old_slug being cleared
+			// -- that meta is not permanent and a later rename of any page can evict
+			// it -- and the alternative is a silent 404 on a URL that 34 internal links
+			// and every state page once pointed at. Do not treat its presence as
+			// evidence that the native mechanism is broken.
 			'/flood-coverage-gaps' => '/what-does-flood-insurance-not-cover/',
 		),
 	);
