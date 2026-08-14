@@ -148,3 +148,27 @@ days, set the canonical by hand in Rank Math as an interim.
 Delete the entry from `cfi_merged_redirect_map()` and the page returns
 immediately. The pre-merge content is backed up session-locally; the figure
 corrections should stand regardless, since they were wrong on their own terms.
+
+## VERIFIED LIVE after upload of 1.6.2 — 14 Aug 2026
+
+| check | result |
+|---|---|
+| `/flood-insurance-rates/` | **301 → /how-much-does-flood-insurance-cost/** |
+| same without trailing slash | **301 → same target** |
+| cost page itself | 200, zero redirects — no loop |
+| 15 other pages (with trailing slash) | **all 200** |
+| `/mobile/contact.php` (the older 404 map) | still 301 → `/` |
+| a genuine missing URL | still 404 |
+| the four repointed pages | all now link to the cost page |
+
+**The check that actually mattered** was not the redirect — it was the fifteen
+other pages. The new hook matches on the request path *before* the 404 test, so a
+mistake in the map would take a working page down with no error anywhere. All
+fifteen return 200, and the pre-existing 404-based map is untouched.
+
+One thing worth recording so it is not misread later: probing those paths *without*
+a trailing slash returns 301 for every one of them. That is WordPress's own
+`redirect_canonical` adding the slash, not our redirect. Testing without the slash
+and reading the 301s as collateral damage would have been an easy false alarm.
+
+Merge complete.
