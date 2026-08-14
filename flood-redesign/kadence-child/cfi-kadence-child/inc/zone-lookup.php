@@ -96,6 +96,48 @@ function cfi_zone_lookup_schema() {
 }
 add_action( 'wp_footer', 'cfi_zone_lookup_schema' );
 
+/**
+ * Which zone guides exist ON THIS SITE.
+ *
+ * The two brands share this theme but not their content. California has a page
+ * for every zone; statewide has none of them -- /flood-zone-ae/, /flood-zone-a/,
+ * /flood-zone-ah-and-ao/ and /flood-zone-v-and-ve/ all 404 there. A hard-coded
+ * link list would therefore have shipped dead links on statewide, so this resolves
+ * each path against the database and the JS only offers what is really there.
+ *
+ * Self-maintaining on purpose: add a zone page to either brand and the link starts
+ * appearing without touching this file.
+ */
+function cfi_zone_guide_links() {
+	$candidates = array(
+		'x'        => array( 'navigating-flood-zone-x', 'flood-zone-x' ),
+		'ae'       => array( 'flood-zone-ae' ),
+		'a'        => array( 'flood-zone-a' ),
+		'ah'       => array( 'flood-zone-ah-and-ao' ),
+		'v'        => array( 'flood-zone-v-and-ve' ),
+		'required' => array( 'which-flood-zone-requires-flood-insurance' ),
+	);
+	$labels = array(
+		'x'        => 'What Zone X actually means',
+		'ae'       => 'What Zone AE means',
+		'a'        => 'What Zone A means',
+		'ah'       => 'What Zones AH and AO mean',
+		'v'        => 'What Zones V and VE mean',
+		'required' => 'Which zones require flood insurance',
+	);
+	$out = array();
+	foreach ( $candidates as $key => $slugs ) {
+		foreach ( $slugs as $slug ) {
+			$post = get_page_by_path( $slug, OBJECT, array( 'page', 'post' ) );
+			if ( $post && 'publish' === $post->post_status ) {
+				$out[ $key ] = array( 'u' => '/' . $slug . '/', 't' => $labels[ $key ] );
+				break;
+			}
+		}
+	}
+	return $out;
+}
+
 function cfi_flood_zone_lookup_shortcode() {
 	ob_start();
 	?>
@@ -154,14 +196,18 @@ function cfi_flood_zone_lookup_shortcode() {
 	function say(m){ elS.textContent=m; }
 	/* Send each zone on to the page that already ranks for it. The tool feeds those
 	   pages rather than competing with them. */
+	/* Only pages that exist on this site -- see cfi_zone_guide_links(). */
+	var GUIDES=<?php echo wp_json_encode( cfi_zone_guide_links() ); ?>;
 	function guide(z){
 		z=(z||"").toUpperCase();
-		if(z.indexOf("X")===0||z==="B"||z==="C"){ return {u:"/navigating-flood-zone-x/",t:"What Zone X actually means"}; }
-		if(z==="AE"||/^A\d/.test(z)){ return {u:"/flood-zone-ae/",t:"What Zone AE means"}; }
-		if(z==="AH"||z==="AO"){ return {u:"/flood-zone-ah-and-ao/",t:"What Zones AH and AO mean"}; }
-		if(z.indexOf("V")===0){ return {u:"/flood-zone-v-and-ve/",t:"What Zones V and VE mean"}; }
-		if(z==="A"||z==="A99"||z==="AR"){ return {u:"/flood-zone-a/",t:"What Zone A means"}; }
-		return {u:"/which-flood-zone-requires-flood-insurance/",t:"Which zones require flood insurance"};
+		var k=null;
+		if(z.indexOf("X")===0||z==="B"||z==="C"){ k="x"; }
+		else if(z==="AE"||/^A\d/.test(z)){ k="ae"; }
+		else if(z==="AH"||z==="AO"){ k="ah"; }
+		else if(z.indexOf("V")===0){ k="v"; }
+		else if(z==="A"||z==="A99"||z==="AR"){ k="a"; }
+		if(k && GUIDES[k]){ return GUIDES[k]; }
+		return GUIDES.required || GUIDES.x || null;
 	}
 	function shell(band,cls,body){
 		elR.innerHTML='<div class="zt-res"><div class="zt-band '+cls+'">'+band+'<\/div><div class="zt-body">'+body+'<\/div><\/div>';
