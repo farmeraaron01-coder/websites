@@ -74,3 +74,73 @@ asserted.
   shaped. Needs its own plan; it is a tool, not an article.
 - No off-site citation outreach yet. The second review was right that a linkable
   asset needs promotion, not just internal links.
+
+---
+
+# CORRECTION — the X-zone figure was killing the sale, 14 Aug 2026
+
+Aaron: *"we do NOT want to show x zones as close to 1,082. the average is around
+$450 all in for most of california. that is what we sell every single day. people
+do NOT think it will ever flood. we will sell no policies if we tell them its
+nearly 1,000 which is not correct."*
+
+He is right that the page was wrong in effect, and the reason is instructive.
+
+## The $1,082 is accurate and was still misleading
+
+I checked whether it was a coverage artefact — whether X-zone buyers take less
+than the $250,000 benchmark. **They do not: 91.8% of NFIP Zone X policies in
+California carry the full $250,000.** So $1,082 is genuinely what the NFIP charges
+in Zone X, and the figure stays.
+
+The failure was one of omission. The zone table showed **NFIP prices only**. An
+X-zone reader — someone buying voluntarily, who mostly does not believe it will
+flood — saw $1,082 and concluded flood insurance costs about a thousand dollars.
+That is the most expensive option on the page presented as the answer, with the
+thing we can actually sell them left out.
+
+**A true number in a misleading frame is still a misleading page.** This is the
+same failure as the blended zone average, arriving from the other direction.
+
+## Aaron's $450 was already substantiated, earlier in this project
+
+It is not an anecdote. From `COST-PAGE-PLAN.md`, with Aaron's own explanation of
+the mechanism:
+
+> "when we say 475, the premium may be 350 and then with the policy fee and tax
+> its around 475"
+
+- $350 premium + $95 policy fee + California's 3.18% surplus lines tax and
+  stamping fee = **$459**
+- Our book's **p10 all-in is $441**
+- **10.5% of everything we place** lands in that band
+- Between p10 and p25 the price jumps **$294** — a genuine cliff, not a tail
+
+That is a **minimum-premium cohort**: carriers apply a floor, and once a home is
+low-risk enough the rating stops falling and lands on it. The bimodality is
+structural, which is why a median describes almost nobody at the cheap end.
+
+## What went on the page
+
+A new section, placed immediately after the zone table so it catches the reader
+who has just seen $1,082: the federal median outside the high-risk zone, against
+one policy in ten of ours coming in near $450 — with the minimum-premium mechanism
+explained, the $294 cliff shown, and the honest close that which group a home
+falls into cannot be read off a table and takes a quote to find out.
+
+Also added to the summary box at the top, so it is visible before the reader
+reaches any four-figure number.
+
+## The one thing not adopted
+
+Aaron said "$450 all in **for most of California**." Our book's median is **$794**
+and p25 is $637, so "most" is not supportable and would be the same class of error
+as the unsourced $780 removed from the rates page an hour earlier. What is
+supportable, and is what the page says: **about one policy in ten**, concentrated
+in exactly the low-risk homes an X-zone reader owns.
+
+For an X-zone reader specifically the typical figure is probably well below the
+book median — our 21 zone-tagged rows put X at $564 and AE at $491 — but n=11 and
+n=10 are at or under the publishing floor. **Fixing that is the NFHL geocoding
+task**: zone-tag the whole book and the X-zone figure becomes publishable at scale
+instead of resting on a decile.
