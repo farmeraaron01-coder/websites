@@ -306,51 +306,69 @@ policy and not one day on your federal flood policy.
 
 ---
 
-# Our own book cannot measure loss of use — checked 14 Aug 2026
+# Loss of use, measured — 14 Aug 2026
 
-Aaron says every policy we write carries the loss-of-use line. I went looking for
-it in the data so we could publish a median limit, which no competitor does.
+**Correction first.** Earlier today I wrote that the bordereaux carry no
+loss-of-use column and that the limit therefore could not be measured. That was
+wrong, and wrong in a way worth naming: I read the header rows of three
+**RBIA-era** files (QBE, Hiscox and Brit, April 2024), found nothing, and
+generalised to the whole book without checking the **Instanda-era** layout — which
+is the current one, and which carries `LossOfUseLimit` as column 52 of 55. The
+earlier note above claiming the column exists was right; my correction to it was
+the error. That section has been removed rather than left standing.
 
-**It is not there.** I pulled the April 2024 bordereaux for all three carriers and
-read the header rows:
+## What the column actually shows
 
-- QBE — 36 columns
-- Hiscox — 34 columns
-- Brit — 35 columns
+Measured on the Aug 1–9 2026 Instanda file, 114 non-endorsement rows, 68 of them
+California. **Take-up is not universal.** Aaron's understanding was that every
+policy carries the line. At the policy level it does not:
 
-Every one of them carries Building Limit, Contents Limit, Property Deductible,
-Content Deductible, Gross Premium, Policy Fee. **None carries a loss-of-use,
-additional-living-expense, temporary-housing or relocation column** — not under
-any spelling. The workbooks were shredded after reading; only the header names
-above left them.
+| | share of rows |
+|---|---|
+| No loss-of-use limit (0) | **49%** |
+| $5,000 | 24% |
+| $50,000 | 11% |
+| everything else ($10k–$146k) | 16% |
 
-## What that means
+And the split is **not random — it tracks the programme**:
 
-The bordereau is a **premium and TIV reporting file for London**. It reports what
-the syndicate needs to book the risk. Loss of use rides on the policy form, so it
-never appears as a rated line item in the bordereau.
+| programme | rows | written with no loss of use |
+|---|---|---|
+| Hiscox Custom | 23 | **0%** |
+| Hiscox Full Value | 4 | 0% |
+| Brit MVP | 15 | 27% |
+| Brit | 13 | 77% |
+| QBE | 58 | **71%** |
 
-So the limit is a **property of the form, not of the individual policy**, which is
-consistent with Aaron's "all our policies have that line attached." That is a
-better fact for us than a distribution would have been — it is a flat statement
-rather than an average — but it has consequences:
+QBE is the largest part of the book and mostly writes without it. Hiscox Custom
+always writes with it. So the honest statement is not "our policies include loss
+of use" — it is **"loss of use is available, and which programme you end up in
+determines whether you get it."** That is still a far stronger position than the
+NFIP's, which is zero at any price, on any programme, for every applicant.
 
-1. **We cannot publish a measured median loss-of-use limit.** There is no
-   measurement to make. Any number has to come from the carrier's own documented
-   limit, not from our book.
-2. **The limit must be sourced from the underwriting rules**, per carrier, and
-   cited internally — Hiscox, QBE and Brit will not agree with each other.
-3. **The no-forms rule still binds.** We can state a limit as a fact about what we
-   can arrange. We cannot publish, excerpt, quote or link the form that contains it.
+## What this changes
 
-## The consequence for the page
+1. **Do not write "all our policies include loss of use."** It is not true of the
+   book and it is the kind of claim that is trivially disproved by one customer's
+   declarations page.
+2. **The safe published form** is that the cover is commonly available on private
+   policies and unavailable on the NFIP at any price — with the second half being
+   the load-bearing part, and FEMA's own material being the source for it.
+3. **A measured number is now possible** but not yet earned. What I have is nine
+   days of one file. `by_loss_of_use` is wired into `premium-aggregate.py` and will
+   report take-up and the limit distribution across the whole book on the next run,
+   with the denominator restricted to layouts that actually carry the column — the
+   older files' silence must never be counted as "no cover."
+4. **Report the range, not a median.** The limits are bimodal — a $5,000 cluster
+   and a $50,000 cluster — so a single median describes nobody. Same failure as the
+   blended flood-zone average.
+5. **Carrier-level take-up is internal only.** It is emitted under
+   `by_carrier_INTERNAL_ONLY` so we can say "it depends on the programme" without
+   naming programmes.
 
-The argument stays: the NFIP offers this coverage **at zero limit**, and that is
-FEMA's own published position, so the comparison does not need a number from us to
-land. What a number would add is scale — "$X of temporary housing" against "none."
+## The sales point hiding in this
 
-Getting that number is now a carrier-documentation task, not a data task. Until
-someone has read the current limit out of each carrier's underwriting rules and
-written it down with a date, **the page says the NFIP covers none of it and stops
-there.** No estimated limit, no "up to" figure carried over from a competitor's
-page.
+Half our own customers are in a programme that does not include the cover. Some of
+them presumably could have had it. That is the same "nobody told them" problem we
+identified for private flood as a whole, one level down — and it is an argument for
+the quote conversation existing at all, which is exactly what the site is for.

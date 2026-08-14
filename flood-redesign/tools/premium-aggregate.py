@@ -102,6 +102,13 @@ ALIASES = {
     "bldg_limit":   ["buildinglimit", "bdxbuilidngtiv", "bdxbuildingtiv",
                      "buildingtiv", "buildingcoverage", "coveragea"],
     "cont_limit":   ["contentslimit", "contentstiv", "contentscoverage", "coveragec"],
+    # Instanda-era layouts ONLY. The RBIA-era carrier bordereaux (QBE, Hiscox and
+    # Brit through Feb 2026) have no loss-of-use column at all -- verified by
+    # reading their header rows. So absence here means "this layout does not
+    # report it", never "this policy has no loss of use," and the two must not be
+    # pooled. See loss_of_use below.
+    "loss_of_use":  ["lossofuselimit", "lossofuse", "additionallivingexpense",
+                     "alelimit", "lossofuseamount"],
     "bldg_deduct":  ["propertydeductible", "buildingdeductible", "deductible"],
     "cont_deduct":  ["contentdeductible", "contentsdeductible"],
     "state":        ["state", "insuredmailingaddressstate", "riskstate", "propertystate"],
@@ -600,6 +607,20 @@ def main():
             lambda v: OCC_GROUP.get(squash(v)))
     d["_per100k"] = np.where(d["_bldg"] > 0, d["_total"] / (d["_bldg"] / 100_000), np.nan)
     d["_band"] = d["_bldg"].apply(band)
+    # Loss of use is reported as a LIMIT, and 0 is a real, meaningful value --
+    # it means the policy was written without the cover, not that the field was
+    # left blank. Blank means the layout does not carry the column at all. Those
+    # two are different facts and collapsing them would manufacture a take-up
+    # rate out of the older files' silence.
+    if "loss_of_use" in d:
+        lou = n("loss_of_use")
+        d["_lou"] = lou
+        d["_lou_reported"] = lou.notna()
+        d["_lou_has"] = lou.fillna(0) > 0
+    else:
+        d["_lou"] = np.nan
+        d["_lou_reported"] = False
+        d["_lou_has"] = False
     # `_year` is already set, above the tax model — Washington's stamping rate
     # depends on it, so it cannot be computed here.
 
@@ -732,6 +753,64 @@ def main():
                         "figure is a median with an interquartile range, never a mean.",
     }}
     results["overall"] = stats(d, a.min_n)
+
+    # ── LOSS OF USE ────────────────────────────────────────────────────────
+    # The NFIP does not offer this cover at any price, so it is the strongest
+    # coverage argument we have. It is also the one most easily overstated.
+    #
+    # Measured on the Aug 1-9 2026 file before writing this: take-up is NOT
+    # universal and it is NOT random -- it tracks the programme. Hiscox Custom
+    # and Full Value carried a limit on every row; QBE carried none on 71%.
+    # So "all our policies include loss of use" is false as a claim about
+    # policies and roughly true as a claim about certain programmes. Anything
+    # published has to say which.
+    #
+    # Denominator is rows whose layout REPORTS the field. Older carrier
+    # bordereaux have no such column, and counting their silence as "no cover"
+    # would halve the take-up rate for free.
+    rep = d[d["_lou_reported"]]
+    lou_block = {
+        "rows_reporting": int(len(rep)),
+        "rows_not_reporting": int(len(d) - len(rep)),
+        "coverage_note": ("Denominator is rows from layouts that carry a loss-of-use "
+                          "column. The RBIA-era carrier bordereaux do not, and their "
+                          "absence is not evidence of no cover."),
+        "publishable": bool(len(rep) >= a.min_n),
+    }
+    if len(rep):
+        withc = rep[rep["_lou_has"]]
+        lou_block["with_cover_n"] = int(len(withc))
+        lou_block["with_cover_pct"] = round(100 * len(withc) / len(rep), 1)
+        if len(withc) >= a.min_n:
+            lv = withc["_lou"]
+            lou_block["limit_when_present"] = {
+                "median": round(float(lv.median()), 2),
+                "p25": round(float(lv.quantile(0.25)), 2),
+                "p75": round(float(lv.quantile(0.75)), 2),
+                "min": round(float(lv.min()), 2),
+                "max": round(float(lv.max()), 2),
+                "distinct_values": int(lv.nunique()),
+            }
+        # By carrier, because the take-up rate is a property of the programme
+        # rather than of the customer. A pooled percentage hides that entirely.
+        if "carrier" in rep:
+            bycar = {}
+            for name, grp in rep.groupby(rep["carrier"].astype(str).str.strip().str.title()):
+                if name in ("", "Nan", "None") or len(grp) < a.min_n:
+                    continue
+                g = grp[grp["_lou_has"]]
+                bycar[name] = {
+                    "n": int(len(grp)),
+                    "with_cover_pct": round(100 * len(g) / len(grp), 1),
+                    "median_limit_when_present": (round(float(g["_lou"].median()), 2)
+                                                  if len(g) >= a.min_n else None),
+                }
+            lou_block["by_carrier_INTERNAL_ONLY"] = bycar
+            lou_block["carrier_note"] = ("Carrier names are never published. This cut "
+                                         "exists to show that take-up is programme-driven, "
+                                         "so the site says 'depends on the programme' "
+                                         "rather than quoting one blended percentage.")
+    results["loss_of_use"] = lou_block
 
     # City and county come only from risk-location rows. Everything else may use
     # the whole frame.
