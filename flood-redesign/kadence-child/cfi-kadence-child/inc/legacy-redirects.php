@@ -86,6 +86,63 @@ function cfi_legacy_redirect_map() {
  * this — which is harmless, because a paginated front page matches nothing in the
  * map and would be skipped anyway.
  */
+/**
+ * URLs merged into another page, where the ORIGINAL STILL EXISTS.
+ *
+ * Different from the map above, and the difference matters. Those paths 404 —
+ * nothing serves them, so redirecting on `is_404()` is safe and self-limiting.
+ * A merged page is still published, so it never 404s and that rule would never
+ * fire. These have to be matched on the path itself.
+ *
+ * WHY MERGE RATHER THAN LEAVE BOTH
+ * `/flood-insurance-rates/` and `/how-much-does-flood-insurance-cost/` were two
+ * pages answering one question. Measured over twelve months in Search Console:
+ * 102 of the rates page's 132 queries also ranked on the cost page, and on
+ * nearly every shared query the cost page ranked better — "cost of flood
+ * insurance" sat at position 70 on rates against 21 on cost. Only 30 queries
+ * were unique to the rates page, worth 52 impressions in a year.
+ *
+ * The two pages also disagreed. The rates page published "about $780 per year"
+ * as the California average and "as low as roughly $350" for Zone X, neither
+ * sourced. The cost page publishes a measured NFIP median of $1,244. Two live
+ * pages contradicting each other on price is a worse problem than the ranking
+ * split, given we are publishing premium figures as a licensed agency.
+ *
+ * KEEP THIS LIST SHORT. Every entry makes a published page unreachable, which
+ * is easy to do by accident and invisible afterwards. Remove the entry and the
+ * page comes straight back — that is the intended undo.
+ */
+function cfi_merged_redirect_map() {
+	return array(
+		'/flood-insurance-rates' => '/how-much-does-flood-insurance-cost/',
+	);
+}
+
+add_action( 'template_redirect', function () {
+	$path = wp_parse_url( $_SERVER['REQUEST_URI'] ?? '', PHP_URL_PATH );
+	if ( ! is_string( $path ) || '' === $path ) {
+		return;
+	}
+	$path = strtolower( rtrim( $path, '/' ) );
+	if ( '' === $path ) {
+		return;
+	}
+
+	$target = cfi_merged_redirect_map()[ $path ] ?? null;
+	if ( null === $target ) {
+		return;
+	}
+
+	// Never redirect a path to itself. Cheap guard against a typo in the map
+	// turning into a loop that takes the page down with no obvious cause.
+	if ( rtrim( $target, '/' ) === $path ) {
+		return;
+	}
+
+	wp_safe_redirect( home_url( $target ), 301 );
+	exit;
+}, 1 );
+
 add_action( 'template_redirect', function () {
 	// Only ever act on something WordPress has already resolved to a 404. This is
 	// what makes the rule safe to leave in place permanently.
