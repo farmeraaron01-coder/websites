@@ -173,3 +173,44 @@ Everything. Corrections 1-3 and the displacement section are all verified.
 
 Steps 1–3 are edits to a live ranking page and need Aaron's go-ahead before they
 are made.
+
+---
+
+# SHIPPED — 14 Aug 2026
+
+All four changes are live on post 93. Backup of the pre-edit content is session
+local, not committed (it contains nothing sensitive, but it is a duplicate of
+public content and not worth versioning).
+
+| change | result |
+|---|---|
+| "Roughly 1 in 4" → "More than 1 in 4 — 29%" | live, 1 occurrence |
+| body "10% to 20% of dwelling" guidance | removed, replaced with varies-by-program |
+| FAQ "10% to 20%" answer | removed; **FAQPage schema updated with it** |
+| displacement costing + FEMA section | added, two new H2s |
+
+**The FAQ schema updated itself.** `inc/schema.php` generates FAQPage structured
+data from the page content, so editing the answer paragraph fixed the visible text
+and the structured data in one move. Verified in the rendered `ld+json`. Worth
+remembering: on these sites the content IS the schema source, so a content fix
+cannot leave stale structured data behind — and equally, a careless content edit
+changes what we assert to Google.
+
+## Two extra fixes made in the same pass
+
+Both were the same class of error as correction 2 — an unsourced figure stated as
+typical — and both sat in the sentences being edited:
+
+- FAQ said repairs take "typically several months for a California flood."
+- A list item said repairs "commonly take several months, not weeks."
+
+There is no published median displacement duration for California floods, so both
+are now framed as a range from days to more than a year, which is what the
+research actually supports.
+
+## Also caught: British spellings
+
+"programme" and "judgement" went live briefly in my copy and were corrected to US
+spellings on a second pass. Worth a proofread pass on anything I draft — the site
+is American and I default to British forms.
+
