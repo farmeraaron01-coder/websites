@@ -82,3 +82,69 @@ geocoding work was always pointing at.
 - wp-includes PHP 404 hardening rule, due 18 Aug.
 - Sober living start-here page.
 - Softaculous install records on statewide.
+
+---
+
+# MERGE EXECUTED — `/flood-insurance-rates/` → cost page, 14 Aug 2026
+
+## The evidence that justified it
+
+Twelve months of Search Console, query-level:
+
+- Rates page ranked for **132 queries**; cost page for **220**.
+- **102 of the rates page's 132 queries also ranked on the cost page** — a 77%
+  overlap of the same intent across two URLs.
+- On nearly every shared query the cost page ranked **better**:
+
+| query | rates page | cost page |
+|---|---:|---:|
+| cost of flood insurance | p70.0 | **p21** |
+| how much does flood insurance cost per year | p72.4 | **p16** |
+| flood insurance rates | p46.6 | **p27** |
+| zone ae flood insurance rates | p58.0 | **p37** |
+
+- Queries unique to the rates page: **30, worth 52 impressions in a year.**
+
+So the rates page was not holding ground the cost page could not take. It was
+ranking worse on the same terms and contributing almost nothing of its own.
+
+## The reason it became urgent
+
+The rates page was publishing figures that **contradicted the rebuilt cost page**:
+
+| rates page claimed | cost page measures |
+|---|---|
+| "California overall average: about $780 per year" | NFIP median **$1,244** |
+| Zone X "as low as roughly $350 per year" | X/B/C median **$1,082** |
+
+Neither of the rates figures was sourced. Two live pages disagreeing about price,
+on a site publishing premium data under a licence, is a worse problem than the
+ranking split — and it is the exact failure mode § 790.03(b) describes.
+
+## What was done
+
+1. **Theme redirect, v1.6.2.** A second `template_redirect` hook, because the
+   existing one fires only on `is_404()` and a published page never 404s. Carries
+   a self-redirect guard. **Requires Aaron to upload the theme.**
+2. **Contradicting figures removed from the live rates page immediately**, without
+   waiting for the upload — the $780 and $350 claims are gone and the page now
+   cites the measured medians. Verified live.
+3. **Four internal body links repointed** to the cost page, so they do not route
+   users through a redirect: `/excess-flood-insurance/`, `/residential/`,
+   `/resources/`, `/before-a-flood/`. Verified at 0 remaining references in raw
+   content.
+4. **Menu items checked: none.** The remaining on-page links come from dynamically
+   generated related-guides lists, which the 301 will handle.
+
+## Not done, and deliberately
+
+The `rank_math_canonical_url` meta did not store — it is not a registered REST
+field. Left alone rather than worked around, because the 301 supersedes a
+canonical entirely once the theme ships. If the upload is delayed more than a few
+days, set the canonical by hand in Rank Math as an interim.
+
+## Rollback
+
+Delete the entry from `cfi_merged_redirect_map()` and the page returns
+immediately. The pre-merge content is backed up session-locally; the figure
+corrections should stand regardless, since they were wrong on their own terms.
