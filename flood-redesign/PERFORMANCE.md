@@ -685,3 +685,56 @@ locally against the pre-installed Chromium instead:
 lighthouse https://site/ --only-categories=performance --form-factor=mobile \
   --screenEmulation.mobile --chrome-flags="--headless=new --no-sandbox"
 ```
+
+---
+
+# Stale sitemap XML, 14 Aug 2026 — four dead ends, and the answer is the host
+
+**Symptom.** Ten pages published on 14 Aug do not appear in either site's
+`post-sitemap.xml`. Statewide shows 8 posts (should be 14), California 20 (should
+be 22).
+
+**It is a cache above WordPress, and the lastmod dates prove it.** Statewide's
+newest entry is `2026-07-30T23:22:34`; California's `2026-08-11T03:06:45`. Post 130
+was edited on 14 Aug at 10:02 and WordPress records that in `modified`, yet the
+sitemap still carries its 30 July date. Every entry in each file predates its
+snapshot date — that is a frozen copy, not a sitemap that is excluding anything.
+
+**Do not repeat these. All four were tried and all four failed:**
+
+1. **Rank Math → Remove transients.** No change. Sitemap cache is not in transients
+   in this version.
+2. **The Uncategorized category.** New posts were `categories:[1]`, included posts
+   `[8]`. Moved post 266 to category 8 and re-fetched: no change. Not the cause.
+3. **nginx Bypass URL rules** (`.*sitemap.*\.xml` and `/robots\.txt`, added via
+   cPanel Cache Manager on both sites, then purged). California's newest lastmod
+   moved 5 Aug → 11 Aug, so it did *something*, but neither site picked up the new
+   posts. Keep the rules — they are correct and harmless — but they are not the fix.
+4. **Rank Math → Sitemap Settings → Save Changes** (the usual way to force a
+   rebuild when no cache toggle is exposed). No change.
+
+**Also ruled out by inspection:** Rank Math's `Exclude Posts` and `Exclude Terms`
+are both empty, `Links Per Sitemap` is 200 so there is no pagination cutoff, and
+the response carries `cache-control: no-cache, no-store` — which is WordPress's own
+header, added *before* something upstream cached the output anyway. That header is
+what misled the diagnosis for an hour: **`no-cache` on a response is not evidence
+that no caching occurred.**
+
+**Conclusion: InMotion's nginx/page cache is holding the XML on a TTL that neither
+the cPanel purge nor any WordPress-side control clears.** A support ticket is the
+route if it ever matters.
+
+## Why it was not worth the hour it took
+
+It costs discovery *speed* on five low-value pages and nothing else:
+
+- All ten pages return 200 with `follow, index` and correct self-canonicals.
+- Every one is linked from pages Google crawls constantly — the loss-of-use page is
+  linked from all 28 state pages, which is a stronger discovery path than a sitemap
+  entry.
+- The three carrying real position were submitted directly via URL Inspection.
+- Google fetched statewide's sitemap unprompted on 10 Aug, so it checks on its own.
+
+Google indexed and ranked every page on both sites for years before these sitemaps
+existed. **Next time this appears: check the lastmod dates first, conclude "host
+cache", and move on.**
