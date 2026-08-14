@@ -55,15 +55,48 @@ defined( 'ABSPATH' ) || exit;
 function cfi_flood_zone_lookup_shortcode() {
 	ob_start();
 	?>
-<div id="cfi-zt" style="margin:1.5rem 0;padding:1.25rem;border:1px solid #d6dbe1;border-radius:10px;background:#f8fafc">
-	<label for="cfi-zt-addr" style="display:block;font-weight:600;margin-bottom:.4rem">Property address</label>
-	<input id="cfi-zt-addr" type="text" autocomplete="street-address" placeholder="915 I Street, Sacramento, CA 95814"
-		style="width:100%;padding:.7rem .8rem;font-size:1rem;border:1px solid #b9c2cc;border-radius:6px;box-sizing:border-box">
-	<button id="cfi-zt-go" type="button"
-		style="margin-top:.7rem;padding:.7rem 1.4rem;font-size:1rem;font-weight:600;border:0;border-radius:6px;background:#0b5cab;color:#fff;cursor:pointer">Look up my flood zone</button>
-	<p id="cfi-zt-status" role="status" aria-live="polite" style="margin:.7rem 0 0;font-size:.95rem;color:#4a5560"></p>
-	<div id="cfi-zt-result" style="margin-top:1rem"></div>
-	<p style="margin:.9rem 0 0;font-size:.85rem;color:#6b7580">Runs in your browser against the U.S. Census geocoder and FEMA's flood map. Your address is not sent to us.</p>
+<style>
+#cfi-zt{--zt-line:#d6dbe1;--zt-ink:#1f2933;--zt-mute:#6b7580;margin:1.75rem 0;font-synthesis:none}
+#cfi-zt *{box-sizing:border-box}
+.zt-card{border:1px solid var(--zt-line);border-radius:14px;background:linear-gradient(180deg,#fbfdff,#f4f7fa);padding:1.4rem;box-shadow:0 1px 2px rgba(16,24,40,.04)}
+.zt-h{font-weight:700;font-size:1.05rem;margin:0 0 .2rem;color:var(--zt-ink)}
+.zt-sub{margin:0 0 .9rem;font-size:.92rem;color:var(--zt-mute)}
+.zt-row{display:flex;gap:.6rem;flex-wrap:wrap}
+.zt-row input{flex:1 1 16rem;min-width:0;padding:.85rem .9rem;font-size:1rem;border:1px solid #b9c2cc;border-radius:9px;background:#fff}
+.zt-row input:focus{outline:2px solid #0b5cab;outline-offset:1px;border-color:#0b5cab}
+.zt-btn{flex:0 0 auto;padding:.85rem 1.5rem;font-size:1rem;font-weight:650;border:0;border-radius:9px;background:#0b5cab;color:#fff;cursor:pointer;transition:background .15s}
+.zt-btn:hover{background:#094a8c}.zt-btn:disabled{background:#8fa6bd;cursor:progress}
+.zt-status{margin:.75rem 0 0;font-size:.93rem;color:var(--zt-mute);min-height:1.2em}
+.zt-priv{margin:.8rem 0 0;font-size:.82rem;color:var(--zt-mute)}
+.zt-out{margin-top:1rem}
+.zt-res{border-radius:12px;overflow:hidden;border:1px solid var(--zt-line);background:#fff}
+.zt-band{padding:.55rem 1.1rem;font-size:.8rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:#fff}
+.zt-band.hi{background:#b3261e}.zt-band.lo{background:#1b6b3a}.zt-band.un{background:#5a6672}
+.zt-body{padding:1.1rem}
+.zt-addr{margin:0 0 .35rem;font-size:.85rem;color:var(--zt-mute)}
+.zt-zone{margin:0;font-size:2.1rem;line-height:1.1;font-weight:750;color:var(--zt-ink)}
+.zt-desc{margin:.3rem 0 0;color:#4a5560}
+.zt-note{margin:.85rem 0 0}
+.zt-facts{margin:.9rem 0 0;padding:.75rem .9rem;background:#f6f8fb;border-radius:9px;font-size:.93rem}
+.zt-facts div{display:flex;justify-content:space-between;gap:1rem;padding:.15rem 0}
+.zt-facts span:last-child{font-weight:650;color:var(--zt-ink)}
+.zt-cta{display:inline-block;margin:1rem .5rem 0 0;padding:.8rem 1.35rem;border-radius:9px;background:#0b5cab;color:#fff !important;font-weight:650;text-decoration:none}
+.zt-cta.alt{background:#fff;color:#0b5cab !important;border:1.5px solid #0b5cab}
+.zt-stale{margin:.9rem 0 0;font-size:.84rem;color:var(--zt-mute);border-top:1px solid var(--zt-line);padding-top:.7rem}
+@media(max-width:560px){.zt-btn{flex:1 1 100%}.zt-zone{font-size:1.7rem}}
+</style>
+<div id="cfi-zt">
+	<div class="zt-card">
+		<p class="zt-h"><label for="cfi-zt-addr">What flood zone is this address in?</label></p>
+		<p class="zt-sub">Checked live against FEMA&rsquo;s National Flood Hazard Layer &mdash; the map lenders and insurers use.</p>
+		<div class="zt-row">
+			<input id="cfi-zt-addr" type="text" autocomplete="street-address" placeholder="915 I Street, Sacramento, CA 95814">
+			<button id="cfi-zt-go" class="zt-btn" type="button">Check this address</button>
+		</div>
+		<p id="cfi-zt-status" class="zt-status" role="status" aria-live="polite"></p>
+		<div id="cfi-zt-result" class="zt-out"></div>
+		<p class="zt-priv">Runs in your browser and talks straight to the U.S. Census geocoder and FEMA. Your address is never sent to us.</p>
+	</div>
 </div>
 <script>
 (function(){
@@ -75,9 +108,19 @@ function cfi_flood_zone_lookup_shortcode() {
 		elR=document.getElementById("cfi-zt-result");
 	if(!elA||!elB) return;
 	function say(m){ elS.textContent=m; }
-	function box(html,tone){
-		var c = tone==="high" ? "#b3261e" : (tone==="low" ? "#1b6b3a" : "#4a5560");
-		elR.innerHTML='<div style="border-left:4px solid '+c+';padding:.9rem 1rem;background:#fff;border-radius:6px">'+html+'<\/div>';
+	/* Send each zone on to the page that already ranks for it. The tool feeds those
+	   pages rather than competing with them. */
+	function guide(z){
+		z=(z||"").toUpperCase();
+		if(z.indexOf("X")===0||z==="B"||z==="C"){ return {u:"/navigating-flood-zone-x/",t:"What Zone X actually means"}; }
+		if(z==="AE"||/^A\d/.test(z)){ return {u:"/flood-zone-ae/",t:"What Zone AE means"}; }
+		if(z==="AH"||z==="AO"){ return {u:"/flood-zone-ah-and-ao/",t:"What Zones AH and AO mean"}; }
+		if(z.indexOf("V")===0){ return {u:"/flood-zone-v-and-ve/",t:"What Zones V and VE mean"}; }
+		if(z==="A"||z==="A99"||z==="AR"){ return {u:"/flood-zone-a/",t:"What Zone A means"}; }
+		return {u:"/which-flood-zone-requires-flood-insurance/",t:"Which zones require flood insurance"};
+	}
+	function shell(band,cls,body){
+		elR.innerHTML='<div class="zt-res"><div class="zt-band '+cls+'">'+band+'<\/div><div class="zt-body">'+body+'<\/div><\/div>';
 	}
 	function geocode(addr,cb){
 		var name="cfiZt"+Date.now(), s=document.createElement("script"), done=false;
@@ -99,46 +142,55 @@ function cfi_flood_zone_lookup_shortcode() {
 	}
 	function render(matched,z){
 		if(!z){
-			box("<strong>FEMA has no mapped flood zone for this location.<\/strong>"
-				+"<p style='margin:.5rem 0 0'>Parts of California are not covered by a current flood map. That is not the same as being low risk — it means the hazard has not been mapped. We can check what a carrier will do with an unmapped address.<\/p>"
-				+"<p style='margin:.7rem 0 0'><a href='/get-a-quote/'>Ask us about this address<\/a><\/p>");
+			shell("Not mapped","un",
+				"<p class='zt-zone' style='font-size:1.35rem'>FEMA has no mapped zone here<\/p>"
+				+"<p class='zt-note'>Parts of California have never been mapped. That is <strong>not<\/strong> the same as low risk &mdash; it means the hazard was never studied, and carriers treat unmapped addresses differently from one another.<\/p>"
+				+"<a class='zt-cta' href='/get-a-quote/'>Have us check this address<\/a>");
 			return;
 		}
-		var zone=z.FLD_ZONE||"unknown",
-			sfha=(z.SFHA_TF==="T"),
-			sub=z.ZONE_SUBTY||"",
+		var zone=z.FLD_ZONE||"unknown", sfha=(z.SFHA_TF==="T"), sub=z.ZONE_SUBTY||"",
 			bfe=(z.STATIC_BFE && z.STATIC_BFE!==-9999) ? z.STATIC_BFE : null,
-			h="<p style='margin:0 0 .4rem;font-size:.9rem;color:#6b7580'>"+matched+"<\/p>";
-		h+="<p style='margin:0;font-size:1.5rem;font-weight:700'>Flood zone "+zone+"<\/p>";
-		if(sub){ h+="<p style='margin:.2rem 0 0;color:#4a5560'>"+sub+"<\/p>"; }
-		h+= sfha
-			? "<p style='margin:.7rem 0 0'><strong>This is a Special Flood Hazard Area.<\/strong> If the property has a federally backed mortgage, your lender is required to make you carry flood insurance.<\/p>"
-			: "<p style='margin:.7rem 0 0'><strong>This is outside the Special Flood Hazard Area.<\/strong> Flood insurance is not federally required here — it is your choice. It is also usually much cheaper, and 29% of NFIP flood claims come from areas like this one.<\/p>";
-		if(bfe!==null){ h+="<p style='margin:.5rem 0 0'>Base flood elevation on the current map: <strong>"+bfe+" feet<\/strong>.<\/p>"; }
-		h+="<p style='margin:.9rem 0 0;font-size:.9rem;color:#6b7580'>Per FEMA's National Flood Hazard Layer as it stands today. Maps get revised and zones change — see below.<\/p>";
-		h+="<p style='margin:.9rem 0 0'><a href='/get-a-quote/' style='font-weight:600'>See what cover costs for this address<\/a><\/p>";
-		box(h, sfha ? "high" : "low");
+			g=guide(zone), h="";
+		h+="<p class='zt-addr'>"+matched+"<\/p>";
+		h+="<p class='zt-zone'>Zone "+zone+"<\/p>";
+		if(sub){ h+="<p class='zt-desc'>"+sub.toLowerCase().replace(/^./,function(c){return c.toUpperCase();})+"<\/p>"; }
+		h+="<div class='zt-facts'>";
+		h+="<div><span>Special Flood Hazard Area<\/span><span>"+(sfha?"Yes":"No")+"<\/span><\/div>";
+		h+="<div><span>Insurance required by a federally backed lender<\/span><span>"+(sfha?"Yes":"No")+"<\/span><\/div>";
+		h+="<div><span>Base flood elevation on the current map<\/span><span>"+(bfe!==null?(bfe+" ft"):"Not published for this zone")+"<\/span><\/div>";
+		h+="<\/div>";
+		if(sfha){
+			h+="<p class='zt-note'><strong>Your lender will require flood insurance here.<\/strong> That is not a choice, but <em>who you buy it from<\/em> is. We quote the federal program and the private market side by side and place whichever is better for the building &mdash; and private policies can also cover temporary housing, which the federal policy never does.<\/p>";
+			h+="<a class='zt-cta' href='/get-a-quote/'>Quote both markets for this address<\/a>";
+		}else{
+			h+="<p class='zt-note'><strong>Nobody is going to make you buy this &mdash; which is exactly why it is worth a minute.<\/strong> Outside the high-risk zone cover is optional and it is cheap: in Zone X we typically place private policies around <strong>$450 a year<\/strong>, all in. And <strong>29%<\/strong> of federal flood claims come from areas rated moderate to low risk, like this one.<\/p>";
+			h+="<a class='zt-cta' href='/get-a-quote/'>See the price for this address<\/a>";
+		}
+		if(g){ h+="<a class='zt-cta alt' href='"+g.u+"'>"+g.t+"<\/a>"; }
+		h+="<p class='zt-stale'>This is the FEMA map in effect today. Zones change when FEMA revises a map, and a single property can be redrawn on its own by a Letter of Map Amendment. If a lender or an escrow deadline is riding on this, confirm it at the point of purchase.<\/p>";
+		shell(sfha?"High-risk zone &mdash; cover mandatory":"Outside the high-risk zone &mdash; cover optional", sfha?"hi":"lo", h);
 	}
 	function run(){
 		var a=(elA.value||"").trim();
 		elR.innerHTML="";
 		if(a.length<8){ say("Enter a full street address, including the city and state."); return; }
-		elB.disabled=true; say("Looking up the address…");
+		elB.disabled=true; say("Locating the address…");
 		geocode(a,function(err,d){
-			if(err){ elB.disabled=false; say("Could not reach the address service. Please try again, or call us and we will check it for you."); return; }
+			if(err){ elB.disabled=false; say("Could not reach the address service. Try again in a moment, or call us and we will look it up for you."); return; }
 			var m=(d && d.result && d.result.addressMatches) || [];
 			if(!m.length){
 				elB.disabled=false; say("");
-				box("<strong>That address could not be matched.<\/strong>"
-					+"<p style='margin:.5rem 0 0'>This happens with new construction, rural routes and PO boxes — it does not mean anything about your flood risk. Try including the ZIP code, or ask us and we will look it up directly.<\/p>"
-					+"<p style='margin:.7rem 0 0'><a href='/get-a-quote/'>Have us check it<\/a><\/p>");
+				shell("No match","un",
+					"<p class='zt-zone' style='font-size:1.35rem'>That address could not be matched<\/p>"
+					+"<p class='zt-note'>This is common with new construction, rural routes and PO boxes, and it says nothing about your flood risk. Try adding the ZIP code &mdash; or let us look it up directly.<\/p>"
+					+"<a class='zt-cta' href='/get-a-quote/'>Have us check it<\/a>");
 				return;
 			}
 			var c=m[0].coordinates;
-			say("Checking FEMA's flood map…");
+			say("Reading FEMA’s flood map…");
 			zoneAt(c.x,c.y,function(err2,z){
 				elB.disabled=false;
-				if(err2){ say("FEMA's map service did not respond. It has short outages — please try again shortly."); return; }
+				if(err2){ say("FEMA’s map service did not respond. It has short outages — please try again shortly."); return; }
 				say(""); render(m[0].matchedAddress,z);
 			});
 		});

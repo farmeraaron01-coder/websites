@@ -113,9 +113,26 @@ function cfi_legacy_redirect_map() {
  * page comes straight back — that is the intended undo.
  */
 function cfi_merged_redirect_map() {
-	return array(
-		'/flood-insurance-rates' => '/how-much-does-flood-insurance-cost/',
+	// HOST-GATED ON PURPOSE. Both brands share this child theme, so an entry here
+	// applies to every site running it. The rates/cost merge was decided on
+	// California's Search Console data -- 102 of 132 overlapping queries, the cost
+	// page ranking better on nearly all of them -- and none of that evidence says
+	// anything about statewide. Uploading 1.6.3 to both sites duly turned statewide's
+	// /flood-insurance-rates/ into a two-hop chain through a page that itself
+	// redirects. No traffic was lost (both had zero impressions in twelve months),
+	// but a decision made for one brand should not quietly bind the other.
+	$host = strtolower( wp_parse_url( home_url(), PHP_URL_HOST ) ?? '' );
+	$maps = array(
+		'californiafloodinsurance.com' => array(
+			'/flood-insurance-rates' => '/how-much-does-flood-insurance-cost/',
+		),
 	);
+	foreach ( $maps as $brand => $map ) {
+		if ( false !== strpos( $host, $brand ) ) {
+			return $map;
+		}
+	}
+	return array();
 }
 
 add_action( 'template_redirect', function () {
