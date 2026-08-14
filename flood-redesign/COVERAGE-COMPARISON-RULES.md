@@ -372,3 +372,50 @@ Half our own customers are in a programme that does not include the cover. Some 
 them presumably could have had it. That is the same "nobody told them" problem we
 identified for private flood as a whole, one level down — and it is an argument for
 the quote conversation existing at all, which is exactly what the site is for.
+
+## Why half the book has no loss of use — it is the quote default, 14 Aug 2026
+
+I recorded the take-up split as "programme-driven," which was mechanically true
+and causally wrong. Aaron's explanation:
+
+> "hiscox often offers it automatically in the quote and QBE someone must actually
+> click to include it in the online quote and most dont... they are typically
+> believing it will never flood and opt for the cheapest cost."
+
+**The data confirms it exactly.** Limits actually written, Aug 1-9 2026:
+
+| programme | with cover | distinct limit values | pattern |
+|---|---|---|---|
+| QBE | 17 of 58 | **1** — every one exactly $5,000 | opt-in checkbox, flat amount |
+| Hiscox Custom | 23 of 23 | **10** — $30,000 to $146,400 | automatic, scaled to dwelling |
+
+One distinct value across seventeen QBE policies is not seventeen people choosing
+$5,000. It is a fixed checkbox. And Hiscox's odd values — $44,200, $47,200,
+$146,400 — are percentages of the building limit ($146,400 is 20% of $732,000),
+which is a system calculating a limit rather than a customer picking one.
+
+So the 49% with no cover did not weigh it and decline. **They were shown a cheaper
+number and a box they did not tick.**
+
+### This is the site's whole thesis, one level down
+
+We argue that most NFIP customers were never told private existed. The same
+mechanism operates inside our own book: the default decides the outcome, not the
+customer's preference. That makes the argument more honest, not less — we are not
+claiming our customers are better informed, we are describing how insurance
+actually gets bought.
+
+### The business consequence, which is Aaron's call and not a website matter
+
+41 QBE customers in nine days have no loss-of-use cover. If the flood that
+displaces them happens, that gap is real money and they never knowingly declined
+it. Whether QBE quotes should default it on, or the quote should present both
+numbers side by side, is an operational decision — but the measurement says the
+current default is making it for them.
+
+### What it changes on the page
+
+The "10% to 20% of dwelling" guidance I removed was in fact roughly right **for
+Hiscox** and badly wrong for QBE. The replacement wording — limits vary widely and
+are set by the program rather than chosen — remains correct and is now better
+supported. Do not reinstate a percentage.
