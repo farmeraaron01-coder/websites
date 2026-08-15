@@ -1,0 +1,54 @@
+{
+  "summary": {
+    "total_policies": 299,
+    "matched": 291,
+    "unmapped": 0,
+    "no_geocode": 8
+  },
+  "zones": {
+    "A": {
+      "count": 31,
+      "total_premium": 18651.9,
+      "median_premium": 625.0,
+      "mean_premium": 601.674193548387
+    },
+    "A99": {
+      "count": 4,
+      "total_premium": 2197.0,
+      "median_premium": 548.125,
+      "mean_premium": 549.25
+    },
+    "AE": {
+      "count": 142,
+      "total_premium": 91279.04999999999,
+      "median_premium": 650.0,
+      "mean_premium": 642.8102112676056
+    },
+    "AH": {
+      "count": 10,
+      "total_premium": 7102.08,
+      "median_premium": 700.0,
+      "mean_premium": 710.208
+    },
+    "AO": {
+      "count": 40,
+      "total_premium": 22935.100000000002,
+      "median_premium": 625.0,
+      "mean_premium": 573.3775
+    },
+    "D": {
+      "count": 3,
+      "total_premium": 2575.0,
+      "median_premium": 725.0,
+      "mean_premium": 858.3333333333334
+    },
+    "X": {
+      "count": 61,
+      "total_premium": 39178.5672,
+      "median_premium": 647.5,
+      "mean_premium": 642.2715934426229
+    }
+  },
+  "timestamp": "2026-08-15",
+  "note": "California flood insurance policy book zone tagging (299 unique new business policies, 2020-2026)"
+}
