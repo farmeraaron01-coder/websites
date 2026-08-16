@@ -15,11 +15,21 @@ Host: InMotion, cPanel account **`mrtaco5`** (`secure234.inmotionhosting.com`).
 | Folder | What it is |
 |---|---|
 | `/home/mrtaco5/`**`new.californiafloodinsurance.com`**`/` | **LIVE PRODUCTION.** Serves `californiafloodinsurance.com`. |
-| `/home/mrtaco5/`**`californiafloodinsurance.com`**`/` | **OLD Divi site — uninstalled 16 Aug 2026** after backup. Was dormant; no hostname routed to it. |
+| `/home/mrtaco5/`**`californiafloodinsurance.com`**`/` | **GONE.** Was the old Divi site; uninstalled 16 Aug 2026 after backup. Softaculous's Uninstall removed the directory itself, so this path no longer exists. |
 
-The directory named after the live domain is the **dead** one. On 6 Aug 2026 the
-domain's document root was pointed at the staging folder, and that folder became
-production. The names were never swapped.
+On 6 Aug 2026 the domain's document root was pointed at the staging folder and
+that folder became production. The names were never swapped, so **the live site
+lives in a directory named `new.californiafloodinsurance.com`** — every other
+site on this account has a directory matching its domain; this one is the sole
+exception.
+
+Until 16 Aug 2026 a second directory named `californiafloodinsurance.com` also
+existed, holding the old Divi site, and the misleading pair cost about two days
+of debugging. That directory is now gone. Do **not** rename the live directory
+to fill the gap: it is the vhost document root for `californiafloodinsurance.com`,
+`new.`, `ipv6.`, and `californiafloodinsurance.mrtacoshop.com`, so renaming it
+takes the site down until every docroot is repointed, and Wordfence stores
+absolute paths that break on a move. Verify docroots in cPanel → Domains.
 
 Live install facts:
 - DB: `mrtaco5_wp441`
