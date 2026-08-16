@@ -1,5 +1,14 @@
 # SEO audit — Risk Rating 2.0, Hiscox FloodPlus, Flood Zone X
 
+> **Second pass completed 16 Aug 2026 — see [`FIXES.md`](FIXES.md) for the
+> paste-ready find-and-replace blocks.** This README holds the analysis; FIXES.md
+> holds the edits. The NFIP comparison in the section below was recomputed after
+> Aaron clarified that `HiscoxNFIPPurePremium` is a fixed $250k/$100k reference
+> quote, not a customer's NFIP price — the matched-terms figures in FIXES.md
+> ($773 vs $1,244, n=1,121) come from the OpenFEMA cut instead and are the ones
+> to publish.
+
+
 Audited 16 Aug 2026, after the cost-by-zone engagement. All three pages checked
 against the live HTML and against the quote-book analysis in
 `../california-flood-insurance-cost-by-zone/data-analysis.md`.
