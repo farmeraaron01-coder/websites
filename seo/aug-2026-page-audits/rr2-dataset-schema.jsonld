@@ -1,0 +1,54 @@
+{
+  "@context": "https://schema.org",
+  "@type": "Dataset",
+  "@id": "https://californiafloodinsurance.com/how-risk-rating-2-0-affects-federal-flood-insurance-policy-holders/#dataset",
+  "name": "NFIP median annual cost under Risk Rating 2.0, California in-force policies at matched terms",
+  "description": "Median annual all-in NFIP cost for California properties under Risk Rating 2.0, measured across 10,545 in-force policies at identical terms: $250,000 building coverage, $5,000 deductible, single-family residential. Broken out by rated zone family and by county. All-in includes premium plus the reserve fund assessment, federal policy fee and HFIAA surcharge.",
+  "url": "https://californiafloodinsurance.com/how-risk-rating-2-0-affects-federal-flood-insurance-policy-holders/",
+  "isAccessibleForFree": true,
+  "inLanguage": "en-US",
+  "spatialCoverage": {
+    "@type": "State",
+    "name": "California",
+    "address": {
+      "@type": "PostalAddress",
+      "addressRegion": "CA",
+      "addressCountry": "US"
+    }
+  },
+  "creator": { "@id": "https://californiafloodinsurance.com/#organization" },
+  "publisher": { "@id": "https://californiafloodinsurance.com/#organization" },
+  "isBasedOn": {
+    "@type": "Dataset",
+    "name": "OpenFEMA NFIP policy file",
+    "url": "https://www.fema.gov/openfema-data-page/fima-nfip-redacted-policies-v2",
+    "creator": { "@type": "GovernmentOrganization", "name": "Federal Emergency Management Agency" }
+  },
+  "measurementTechnique": "Median of all-in annual cost across NFIP policies in force in California, restricted to identical terms ($250,000 building coverage, $5,000 deductible, single-family residential) so that policies compare like with like. All-in includes premium plus reserve fund assessment, federal policy fee and HFIAA surcharge.",
+  "variableMeasured": [
+    {
+      "@type": "PropertyValue",
+      "name": "Rated zone family",
+      "description": "Grouping of FEMA flood zone designations: A zones (high risk inland), X/B/C zones (moderate to low risk), V zones (high risk coastal)."
+    },
+    {
+      "@type": "PropertyValue",
+      "name": "Median annual all-in NFIP cost",
+      "description": "Median annual cost including premium, reserve fund assessment, federal policy fee and HFIAA surcharge.",
+      "unitText": "USD per year"
+    },
+    {
+      "@type": "PropertyValue",
+      "name": "Policies measured",
+      "description": "Number of in-force California policies in the sample at the stated matched terms."
+    }
+  ],
+  "hasPart": [
+    { "@type": "PropertyValue", "name": "All matched policies", "value": 1244, "unitCode": "USD", "description": "Median all-in cost across 10,545 in-force California policies. Middle half $845-$2,007; tenth percentile $623, ninetieth $2,836." },
+    { "@type": "PropertyValue", "name": "A zones (high risk, inland)", "value": 1246, "unitCode": "USD", "description": "9,810 policies measured." },
+    { "@type": "PropertyValue", "name": "X, B and C zones (moderate to low risk)", "value": 1082, "unitCode": "USD", "description": "572 policies measured." },
+    { "@type": "PropertyValue", "name": "V zones (high risk, coastal)", "value": 2849, "unitCode": "USD", "description": "118 policies measured." },
+    { "@type": "PropertyValue", "name": "Primary residences", "value": 1205, "unitCode": "USD", "description": "HFIAA surcharge $25 on a primary residence." },
+    { "@type": "PropertyValue", "name": "Non-primary residences", "value": 1438, "unitCode": "USD", "description": "HFIAA surcharge $250 on a non-primary residence, a flat charge rather than a risk-based one." }
+  ]
+}
