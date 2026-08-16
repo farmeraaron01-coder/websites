@@ -15,7 +15,7 @@ Host: InMotion, cPanel account **`mrtaco5`** (`secure234.inmotionhosting.com`).
 | Folder | What it is |
 |---|---|
 | `/home/mrtaco5/`**`new.californiafloodinsurance.com`**`/` | **LIVE PRODUCTION.** Serves `californiafloodinsurance.com`. |
-| `/home/mrtaco5/`**`californiafloodinsurance.com`**`/` | **OLD Divi site.** Dormant, kept for rollback. No hostname routes to it. |
+| `/home/mrtaco5/`**`californiafloodinsurance.com`**`/` | **OLD Divi site — uninstalled 16 Aug 2026** after backup. Was dormant; no hostname routed to it. |
 
 The directory named after the live domain is the **dead** one. On 6 Aug 2026 the
 domain's document root was pointed at the staging folder, and that folder became
@@ -56,6 +56,10 @@ is production.
   .*sitemap.*
   /robots.txt
   ```
+  **Status:** applied 16 Aug 2026 to both `californiafloodinsurance.com` and
+  `new.californiafloodinsurance.com`. Sitemap and robots responses now return
+  `x-proxy-cache: BYPASS`. If that header ever reads `HIT` again, the rules were
+  lost — re-add them.
 - Nginx Helper's "Purge Entire Cache" button returns a privileges error on this
   install. Purge from cPanel → Cache Manager → Purge Cache instead.
 - **Logged-in requests bypass the cache.** Always verify sitemaps and robots in
