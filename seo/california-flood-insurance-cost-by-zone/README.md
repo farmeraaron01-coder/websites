@@ -199,9 +199,11 @@ schema said `foundingDate: 2012-01-01`, Aaron's user bio said flood
 specialization since 2012, and the site description says "Est. 2012". Checked
 across the site: 1989 appeared on **this page only** — not the homepage, not
 `/aaron-farmer/`, not any other page — so it was a one-off line rather than a
-brand claim. Aaron decided to drop it. Replaced with "Specializing in
-California flood insurance since 2012", which the three other sources
-corroborate.
+brand claim. Aaron decided to drop it. The clause is removed rather than
+rewritten: the sitewide header already reads "CA Lic. #0L75450 · Independent
+agency specializing in flood since 2012", so a 2012 restatement in the body
+would duplicate it on the same page, and the byline carries the license number
+a third time.
 
 **D. The sitewide `aggregateRating: 4.9 / 900 reviews`.** This sits on the
 Organization node on every page. Self-serving aggregate ratings about your own
