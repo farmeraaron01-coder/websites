@@ -48,20 +48,38 @@ current book prices AE and X somewhat higher, AO/A somewhat lower.
 median of 4 policies is noise); drop or footnote A99 (none in the current
 system); fold numbered A-zones into Zone A or footnote them.
 
-## 2. "We beat the NFIP" — now quantifiable
+## 2. NFIP comparison — CORRECTED after Aaron's clarification
 
-On CA bound rows where both a best-private premium and the NFIP-equivalent
-premium were returned (n=1,625):
+`HiscoxNFIPPurePremium` is **not** the customer's NFIP price. Per Aaron
+(16 Aug 2026): it's a reference quote at the old NFIP Preferred Risk Policy
+structure — a fixed **$250k building / $100k contents** — kept for customers
+who remember that product (discontinued under Risk Rating 2.0).
 
-- Best private market beat the NFIP-equivalent in **78% of cases**
-- Median saving when private won: **$473/yr**
-- Median difference across all cases: $256/yr
+That kills the first-pass stat ("private cheaper 78%, median saving $473"):
+77% of the CA bound book is **building-only ($0 contents)**, so that comparison
+pitted real building-only policies against a reference carrying $100k of
+contents the customer never buys. Retracted; do not publish it.
 
-The page currently claims clients "save $300–600/year against the federal
-policy alone" — the $473 median lands inside that range, so the claim survives
-**if** `HiscoxNFIPPurePremium` is what it appears to be (the NFIP-equivalent
-premium from the rater). **Aaron must confirm that field's meaning before
-publishing any NFIP-comparison stat.**
+Honest versions, from the same data:
+
+| Comparison | n | Private cheaper | Median saving when it wins |
+|---|---|---|---|
+| True like-for-like ($250k/$100k both sides) | 90 | **48%** | **$1,380/yr** |
+| $250k building, contents ≥ $50k | 185 | 65% | $849/yr |
+
+The defensible claim is not "private is cheaper" — it's **"you can't know
+which side wins without quoting both, and when the private side wins, it wins
+big."** Coin-flip odds, fat-tailed payoff.
+
+The page's existing "clients save $300–600/yr against the federal policy"
+claim **cannot be verified from this export** — it contains no real NFIP
+quotes, only the fixed-structure reference. It stands as Aaron's
+experience-based claim from actual NFIP quoting; left on the page, flagged
+here for awareness.
+
+Also checked: the "NFIP caps building at $250k" angle is weak in this book —
+only 7% of CA bound properties carry building limits above $250k, and 70% sit
+at exactly $250k.
 
 ## 3. No single market wins — the case for shopping
 
@@ -106,18 +124,17 @@ that didn't bind is a warm lead, not a lost one).
   City = insured mailing city, which for homeowners ≈ property city; flag if a
   large mailing-elsewhere segment exists.
 
-## Decisions needed from Aaron before the page changes
+## Decisions — resolved 16 Aug 2026
 
-1. **Date window / provenance.** This system's data starts Feb 2025, so the
-   page cannot honestly say "2020–2026" using these numbers. Options: (a)
-   publish the new table as "policies bound 2025–2026" (recommended — fresher
-   rates, defensible provenance, replaces the 299-vs-291 problem entirely with
-   n=763); or (b) keep the old table and window. Mixing the two datasets in one
-   table is not recommended.
-2. **Confirm `HiscoxNFIPPurePremium`** = NFIP-equivalent premium.
-3. Zone D / A99 rows: drop, footnote, or keep from old data (labeled).
-4. The "all-in" definition sentence must change to match surplus-lines
-   reality (premium + policy fee + taxes), not NFIP fee components.
+1. **Date window:** Aaron approved publishing as "policies bound 2025–2026",
+   n=763. Applied to `post-body.revised.html`. The 299-vs-291 question is moot.
+2. **`HiscoxNFIPPurePremium`:** clarified — fixed $250k/$100k PRP-style
+   reference, not the customer's NFIP price. Section 2 corrected accordingly.
+3. **Zone D / A99 / V-VE rows:** dropped from the table; covered by a single
+   "too few bound to publish" note that links the V/VE page.
+4. **"All-in" definition:** rewritten to premium + policy fee + surplus lines
+   taxes and fees. Aaron confirmed the NFIP carries its own federal fees that
+   private policies don't (private has our policy fee instead).
 
 ## Files
 

@@ -95,18 +95,17 @@ median annual cost* rather than as a loose number.
 
 ---
 
-## Decisions you need to confirm
+## Decisions — resolved 16 Aug 2026 via quote-book analysis
 
-### The 299 / 291 discrepancy
+See `data-analysis.md` for the full findings. The patch now uses the real
+numbers computed from the quoting-system export, approved by Aaron.
 
-The page said *"across **299** new business policies"*, but the table's own
-Policies Quoted column sums to **291** (142 + 61 + 40 + 31 + 10 + 3 + 4).
+### The 299 / 291 discrepancy — moot
 
-**The patch uses 291**, because that number is internally consistent with the
-table by construction. If 299 is the true figure, the table is missing 8
-policies and the rows need updating instead — in which case change the two
-places the patch writes 291 (the methodology paragraph and the table caption)
-and add the missing rows.
+The old hand-counted table is replaced entirely. The table now reports **763
+California new-business policies bound Feb 2025 – Aug 2026**, deduplicated to
+one per property, with medians and 25th–75th percentile ranges per zone from
+`data/zone-medians-ca-bound-nb.csv`.
 
 ### The FAQ answer text changed — keep the schema in sync
 
@@ -115,39 +114,48 @@ answer. That page's `FAQPage` JSON-LD is a **separate, hand-maintained block** �
 it does not auto-generate from the post body. Structured data must match visible
 content, so update that question's `acceptedAnswer.text` to the new wording:
 
-> Yes, for most California homeowners. At $465/year, it's an affordable way to
-> cover a real risk — and FEMA's own data shows 29% of NFIP claims from 2014 to
-> 2024 came from outside high-risk zones. We've filed claims on Zone X properties
-> in every region of California — the official map is conservative. The question
-> isn't "Do I need it?" but "Can I afford NOT to have it?"
+> Yes, for most California homeowners. At a median of $509/year in our current
+> book, it's an affordable way to cover a real risk — and FEMA's own data shows
+> 29% of NFIP claims from 2014 to 2024 came from outside high-risk zones. We've
+> filed claims on Zone X properties in every region of California — the official
+> map is conservative. The question isn't "Do I need it?" but "Can I afford NOT
+> to have it?"
 
-If you'd rather not touch the schema, revert just that FAQ sentence — the body
-paragraph carries the citation either way.
+(The "What's the difference between Zone A, AE, and AO?" answer also changed —
+copy its new text from `post-body.revised.html` the same way.)
 
-### The 2024-2026 / 2020-2026 discrepancy
+### The date window — resolved: 2025-2026
 
-The intro said the medians came from *"policies written in **2024-2026**"*,
-while the methodology sentence two paragraphs later said *"299 new business
-policies from **2020-2026**"*. The title tag and the H2 both said 2024-2026.
+The quote-book export showed the current system's data begins Feb 2025, so
+neither of the page's old windows (2024-2026, 2020-2026) matched any dataset.
+Aaron approved publishing the honest window: **bound Feb 2025 - Aug 2026**.
 
-**The patch standardizes on 2020-2026**, on the reasoning that the methodology
-sentence is the specific technical claim and the other mentions are marketing
-framing. This means:
+Applied in the patch:
 
-- The H2 now reads *"California Flood Insurance Costs by Zone (2020-2026)"*
-  and its anchor ID changed from `...-2024-2026` to `...-2020-2026`. The
-  on-page table of contents generates from heading text, so it will follow
-  automatically — but **spot-check the TOC links after saving**.
-- The intro no longer states a window at all; it says the medians come from
-  policies written and in force.
-- **The `<title>` tag and meta description still say "2024-2026" and are not
-  changed by this patch.** Changing the title is the single highest-risk edit
-  on a page a day old, so it's yours to make. Recommended: *"California Flood
-  Insurance Costs by Zone — Median Rates by FEMA Zone"*, dropping the year
-  range entirely so it never goes stale.
+- H2 now reads *"California Flood Insurance Costs by Zone (2025-2026)"*; its
+  anchor ID is `...-2025-2026`. The TOC generates from headings and will
+  follow — **spot-check the TOC links after saving**.
+- All dependent numbers updated: Zone X mentions are now $509 (was $465), the
+  FEMA average-claim comparison recomputed (~160 years of premium), the FAQ
+  zone-difference answer uses the new medians, the deductible list matches the
+  real book ($1,000 / $2,000 / $5,000 / $10,000 - 91% choose $5,000).
 
-If the data window really is 2024-2026, invert the decision: keep the title,
-change the methodology sentence, and recount.
+**The `<title>` tag and meta description now REQUIRE updating** - they cite
+"2024-2026" and the old $650/$465 figures, which no longer appear on the page.
+Recommended:
+
+> Title: California Flood Insurance Costs by Zone - Median Rates 2025-2026
+> Meta: Real median flood insurance costs by FEMA zone, from 763 California
+> policies we bound in 2025-2026. Zone AE $722, Zone X $509. Free quote.
+
+The **FAQPage JSON-LD** must also sync to the two revised FAQ answers ("Is
+Zone X flood insurance worth it?" and "What's the difference between Zone A,
+AE, and AO?") - copy the new visible text from `post-body.revised.html` into
+the matching `acceptedAnswer.text` fields.
+
+The **table anchor changed** (`...-2020-2026` was never live; the live page
+still has `...-2024-2026`) - after pasting, verify the "On this page" links
+resolve. The Dataset schema's `contentUrl` fragment matches the new anchor.
 
 ---
 
