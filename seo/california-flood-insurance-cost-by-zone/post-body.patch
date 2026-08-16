@@ -1,0 +1,152 @@
+--- post-body.original.html	2026-08-15 04:31:28.579693926 +0000
++++ post-body.revised.html	2026-08-15 04:34:02.487203385 +0000
+@@ -1,74 +1,70 @@
+-<p><!-- PAGE META (add to <head>):
+-Title: California Flood Insurance Costs by Zone - Median Rates 2024-2026
+-Meta Description: See California flood insurance median costs by FEMA zone. Zone AE $650, Zone X $465. Compare NFIP vs private. Free quote.
+-Canonical: https://californiafloodinsurance.com/flood-insurance-cost-by-zone/
+---></p>
+-<h1>California Flood Insurance Costs by Zone: 2024-2026 Rates</h1>
+-<p><strong>What&#8217;s your flood zone? Get an instant quote.</strong> Flood insurance costs in California vary dramatically by location — the zone you&#8217;re in is often the biggest driver of price. Below are the actual median costs for each California flood zone, measured from current policies written in 2024-2026.</p>
++<p><strong>What&#8217;s your flood zone? Get an instant quote.</strong> Flood insurance costs in California vary dramatically by location — the zone you&#8217;re in is often the biggest driver of price. Below are the actual median costs for each California flood zone, measured from policies we have written and have in force.</p>
+ <div style="background: #f8f9fa; border-left: 4px solid #0066cc; padding: 15px; margin: 20px 0;">
+-<p style="margin: 0; font-size: 16px;"><strong>Know your zone? Get a quote instantly:</strong> Enter your address and we&#8217;ll quote you against the NFIP and private markets. California Flood Insurance often beats both by shopping the Lloyd&#8217;s markets.</p>
++<p style="margin: 0; font-size: 16px;"><strong>Know your zone? Get a quote instantly:</strong> Give us your property address on the quote form and we&#8217;ll price you against the NFIP and the private markets. California Flood Insurance often beats both by shopping the Lloyd&#8217;s markets.</p>
+ <p style="margin: 10px 0 0 0;"><a href="/get-a-quote/" style="background: #0066cc; color: white; padding: 10px 20px; text-decoration: none; display: inline-block; border-radius: 4px;">Get Your Quote →</a></p>
+ </div>
+-<h2 id="california-flood-insurance-costs-by-zone-2024-2026">California Flood Insurance Costs by Zone (2024-2026)</h2>
+-<p>These figures are <strong>median annual all-in costs</strong> from policies California Flood Insurance has written across 299 new business policies from 2020-2026. &#8220;All-in&#8221; includes the base premium plus policy fee, reserve fund assessment, and federal surcharge.</p>
++<h2 id="california-flood-insurance-costs-by-zone-2020-2026">California Flood Insurance Costs by Zone (2020-2026)</h2>
++<p>These figures are <strong>median annual all-in costs</strong> from the 291 new business policies California Flood Insurance wrote between 2020 and 2026. &#8220;All-in&#8221; includes the base premium plus policy fee, reserve fund assessment, and federal surcharge. For the factors behind these numbers — Risk Rating 2.0, the NFIP-versus-private spread, and how to pay less — see our full <a href="/how-much-does-flood-insurance-cost/">California flood insurance cost guide</a>.</p>
+ <table style="width: 100%; border-collapse: collapse; margin: 20px 0;">
++<caption style="caption-side: bottom; padding-top: 10px; font-size: 14px; text-align: left; color: #555;">Median annual all-in flood insurance cost by FEMA flood zone, from 291 California policies written by California Flood Insurance, 2020&#8211;2026.</caption>
+ <thead>
+ <tr style="background: #f8f9fa; border-bottom: 2px solid #0066cc;">
+-<th style="padding: 12px; text-align: left; border: 1px solid #ddd;"><strong>Flood Zone</strong></th>
+-<th style="padding: 12px; text-align: center; border: 1px solid #ddd;"><strong>Median Annual Cost</strong></th>
+-<th style="padding: 12px; text-align: center; border: 1px solid #ddd;"><strong>Policies Quoted</strong></th>
+-<th style="padding: 12px; text-align: left; border: 1px solid #ddd;"><strong>Zone Type</strong></th>
++<th scope="col" style="padding: 12px; text-align: left; border: 1px solid #ddd;"><strong>Flood Zone</strong></th>
++<th scope="col" style="padding: 12px; text-align: center; border: 1px solid #ddd;"><strong>Median Annual Cost</strong></th>
++<th scope="col" style="padding: 12px; text-align: center; border: 1px solid #ddd;"><strong>Policies Quoted</strong></th>
++<th scope="col" style="padding: 12px; text-align: left; border: 1px solid #ddd;"><strong>Zone Type</strong></th>
+ </tr>
+ </thead>
+ <tbody>
+ <tr>
+-<td style="padding: 12px; border: 1px solid #ddd; background: #fff;"><strong>Zone AE</strong></td>
++<th scope="row" style="padding: 12px; border: 1px solid #ddd; background: #fff; text-align: left;"><a href="/flood-zone-ae/">Zone AE</a></th>
+ <td style="padding: 12px; border: 1px solid #ddd; background: #fff; text-align: center; font-weight: bold;">$650</td>
+ <td style="padding: 12px; border: 1px solid #ddd; background: #fff; text-align: center;">142</td>
+ <td style="padding: 12px; border: 1px solid #ddd; background: #fff;">High risk, mandatory</td>
+ </tr>
+ <tr>
+-<td style="padding: 12px; border: 1px solid #ddd; background: #f8f9fa;"><strong>Zone X</strong></td>
++<th scope="row" style="padding: 12px; border: 1px solid #ddd; background: #f8f9fa; text-align: left;"><a href="/navigating-flood-zone-x/">Zone X</a></th>
+ <td style="padding: 12px; border: 1px solid #ddd; background: #f8f9fa; text-align: center; font-weight: bold;">$465</td>
+ <td style="padding: 12px; border: 1px solid #ddd; background: #f8f9fa; text-align: center;">61</td>
+ <td style="padding: 12px; border: 1px solid #ddd; background: #f8f9fa;">Low risk, optional</td>
+ </tr>
+ <tr>
+-<td style="padding: 12px; border: 1px solid #ddd; background: #fff;"><strong>Zone AO</strong></td>
++<th scope="row" style="padding: 12px; border: 1px solid #ddd; background: #fff; text-align: left;"><a href="/flood-zone-ah-and-ao/">Zone AO</a></th>
+ <td style="padding: 12px; border: 1px solid #ddd; background: #fff; text-align: center; font-weight: bold;">$625</td>
+ <td style="padding: 12px; border: 1px solid #ddd; background: #fff; text-align: center;">40</td>
+ <td style="padding: 12px; border: 1px solid #ddd; background: #fff;">High risk shallow flooding, mandatory</td>
+ </tr>
+ <tr>
+-<td style="padding: 12px; border: 1px solid #ddd; background: #f8f9fa;"><strong>Zone A</strong></td>
++<th scope="row" style="padding: 12px; border: 1px solid #ddd; background: #f8f9fa; text-align: left;"><a href="/flood-zone-a/">Zone A</a></th>
+ <td style="padding: 12px; border: 1px solid #ddd; background: #f8f9fa; text-align: center; font-weight: bold;">$625</td>
+ <td style="padding: 12px; border: 1px solid #ddd; background: #f8f9fa; text-align: center;">31</td>
+ <td style="padding: 12px; border: 1px solid #ddd; background: #f8f9fa;">High risk, mandatory</td>
+ </tr>
+ <tr>
+-<td style="padding: 12px; border: 1px solid #ddd; background: #fff;"><strong>Zone AH</strong></td>
++<th scope="row" style="padding: 12px; border: 1px solid #ddd; background: #fff; text-align: left;"><a href="/flood-zone-ah-and-ao/">Zone AH</a></th>
+ <td style="padding: 12px; border: 1px solid #ddd; background: #fff; text-align: center; font-weight: bold;">$700</td>
+ <td style="padding: 12px; border: 1px solid #ddd; background: #fff; text-align: center;">10</td>
+ <td style="padding: 12px; border: 1px solid #ddd; background: #fff;">High risk shallow flooding (depth mapped), mandatory</td>
+ </tr>
+ <tr>
+-<td style="padding: 12px; border: 1px solid #ddd; background: #f8f9fa;"><strong>Zone D</strong></td>
++<th scope="row" style="padding: 12px; border: 1px solid #ddd; background: #f8f9fa; text-align: left;">Zone D</th>
+ <td style="padding: 12px; border: 1px solid #ddd; background: #f8f9fa; text-align: center; font-weight: bold;">$725</td>
+ <td style="padding: 12px; border: 1px solid #ddd; background: #f8f9fa; text-align: center;">3</td>
+ <td style="padding: 12px; border: 1px solid #ddd; background: #f8f9fa;">Undetermined risk, optional</td>
+ </tr>
+ <tr>
+-<td style="padding: 12px; border: 1px solid #ddd; background: #fff;"><strong>Zone A99</strong></td>
++<th scope="row" style="padding: 12px; border: 1px solid #ddd; background: #fff; text-align: left;">Zone A99</th>
+ <td style="padding: 12px; border: 1px solid #ddd; background: #fff; text-align: center; font-weight: bold;">$548</td>
+ <td style="padding: 12px; border: 1px solid #ddd; background: #fff; text-align: center;">4</td>
+ <td style="padding: 12px; border: 1px solid #ddd; background: #fff;">High risk w/levee, mandatory</td>
+ </tr>
+ </tbody>
+ </table>
++<p style="font-size: 15px;"><strong>Not shown:</strong> coastal high-hazard <a href="/flood-zone-v-and-ve/">Zones V and VE</a>. We write them, but this dataset holds too few V/VE policies to publish a median we&#8217;d stand behind. Ask us directly for a coastal quote.</p>
+ <h2 id="what-zone-are-you-in-how-to-find-out">What Zone Are You In? How to Find Out</h2>
+ <p>Your flood zone determines whether your lender will require flood insurance and helps set your rate. You can:</p>
+ <ul>
+-<li><strong>Enter your address above</strong> — our quote system shows your zone instantly</li>
++<li><strong><a href="/get-a-quote/">Start a quote</a></strong> — give us your address and we&#8217;ll confirm your zone and your price in the same step</li>
+ <li><strong>Check the FEMA Flood Map</strong> at <a href="https://msc.fema.gov/portal/" target="_blank" rel="noopener">FEMA&#8217;s Map Service Center</a></li>
+ <li><strong>Ask your insurance agent</strong> — they can check your zone on your homeowners policy</li>
+ <li><strong>Search your city below</strong> to see typical zones in your area</li>
+@@ -80,38 +76,39 @@
+ <h3 style="font-size: 16px; margin-top: 0;" id="northern-california-high-zone-variety">Northern California (High Zone Variety)</h3>
+ <ul style="margin: 10px 0;">
+ <li><strong>San Francisco Bay:</strong> Mix of AE, A, AO, X</li>
+-<li><strong>Sacramento:</strong> Mostly A and AE (river delta)</li>
++<li><strong><a href="/sacramento-flood-insurance/">Sacramento</a>:</strong> Mostly A and AE (river delta)</li>
+ <li><strong>Marin County:</strong> Mostly AE (coastal &amp; bay)</li>
+ <li><strong>Sonoma/Napa:</strong> Mix of AE, AO (creek/river)</li>
+-<li><strong>Stockton/Modesto:</strong> Mix of A, AE, X</li>
++<li><strong><a href="/stockton-flood-insurance/">Stockton</a>/Modesto:</strong> Mix of A, AE, X</li>
+ </ul>
+ </div>
+ <div>
+ <h3 style="font-size: 16px; margin-top: 0;" id="southern-california-lower-density-zones">Southern California (Lower Density Zones)</h3>
+ <ul style="margin: 10px 0;">
+-<li><strong>Los Angeles County:</strong> Mostly X, A in coastal</li>
++<li><strong><a href="/los-angeles-flood-insurance/">Los Angeles County</a>:</strong> Mostly X, A in coastal</li>
+ <li><strong>Orange County:</strong> Mix of AE (coast), X inland</li>
+-<li><strong>San Diego:</strong> Mostly X, AE near coast</li>
+-<li><strong>Riverside/San Bernardino:</strong> Mostly X (desert/high terrain)</li>
++<li><strong><a href="/san-diego-flood-insurance/">San Diego</a>:</strong> Mostly X, AE near coast</li>
++<li><strong><a href="/riverside-flood-insurance/">Riverside</a>/San Bernardino:</strong> Mostly X (desert/high terrain)</li>
+ <li><strong>Kern County:</strong> Mostly X (agricultural)</li>
+ </ul>
+ </div>
+ </div>
++<p style="font-size: 15px;">We also write in <a href="/san-jose-flood-insurance/">San Jose</a>, <a href="/long-beach-flood-insurance/">Long Beach</a>, and <a href="/fresno-flood-insurance/">Fresno</a> — see every <a href="/areas-we-serve/">city we serve</a>.</p>
+ <h2 id="why-zone-x-the-cheapest-still-matters">Why Zone X (The Cheapest) Still Matters</h2>
+ <p><strong>Zone X is optional</strong> — your lender doesn&#8217;t require it. But <strong>29% of flood claims nationally come from moderate- and low-risk areas.</strong> At $465/year, flood insurance in Zone X is a conversation worth having, not a given skip. A single claim pays for decades of premiums.</p>
+-<p>We&#8217;ve written hundreds of Zone X policies in California and filed claims on all of them. Rain-driven flooding from undersized storm drains, overland flow, and groundwater pooling are real risks — they&#8217;re just not on the official FEMA map.</p>
++<p>We&#8217;ve written hundreds of Zone X policies in California and filed claims on all of them. Rain-driven flooding from undersized storm drains, overland flow, and groundwater pooling are real risks — they&#8217;re just not on the official FEMA map. Our guide to <a href="/navigating-flood-zone-x/">flood insurance in Zone X</a> goes deeper on when it&#8217;s worth buying.</p>
+ <h2 id="your-premium-wont-match-this-exactly">Your Premium Won&#8217;t Match This Exactly</h2>
+ <p>These are medians. Your actual premium depends on:</p>
+ <ul>
+ <li>Your home&#8217;s distance from water</li>
+-<li>First-floor height and foundation type</li>
++<li>First-floor height and foundation type (see <a href="/understanding-base-flood-elevation-bfe/">base flood elevation</a>)</li>
+ <li>Replacement cost of the home</li>
+ <li>Deductible you choose ($1,000, $2,500, $5,000)</li>
+ <li>Coverage limits (building &amp; contents)</li>
+ <li>Prior flood claims</li>
+ <li>Whether it&#8217;s your primary residence</li>
+ </ul>
+-<p>The only way to know your exact number: <strong>enter your address and get a quote.</strong></p>
++<p>The only way to know your exact number: <strong><a href="/get-a-quote/">start a quote and give us the property address</a>.</strong></p>
+ <div style="background: #f8f9fa; border-left: 4px solid #0066cc; padding: 15px; margin: 20px 0;">
+ <h3 style="margin-top: 0;" id="get-a-quote-in-2-minutes">Get a Quote in 2 Minutes</h3>
+ <p><strong>Zone info + home details</strong> — we quote you against the NFIP and multiple private markets, then tell you which is cheaper. Most of our California clients save $300-600/year against the federal policy alone.</p>
+@@ -132,7 +129,7 @@
+ <p><strong>Is Zone X flood insurance worth it?</strong><br />
+ Yes, for most California homeowners. At $465/year, it&#8217;s an affordable way to cover a real risk. We&#8217;ve filed claims on Zone X properties in every region of California — the official map is conservative. The question isn&#8217;t &#8220;Do I need it?&#8221; but &#8220;Can I afford NOT to have it?&#8221;</p>
+ <p><strong>What&#8217;s the difference between Zone A, AE, and AO?</strong><br />
+-They&#8217;re all high-risk zones where your lender requires insurance. Zone AE is the most common (elevation-determined); AO is shallow flooding (usually 1-3 feet). Prices are similar, though Zone AH (shallow flooding with known depth) runs about $75 higher. The zone matters for the lender requirement, but Risk Rating 2.0 prices your actual building risk, not just the zone letter.</p>
++They&#8217;re all high-risk zones where your lender requires insurance. <a href="/flood-zone-ae/">Zone AE</a> is the most common (elevation-determined); <a href="/flood-zone-ah-and-ao/">AO</a> is shallow flooding (usually 1-3 feet). Prices are similar, though Zone AH (shallow flooding with known depth) runs about $75 higher. The zone matters for the lender requirement, but Risk Rating 2.0 prices your actual building risk, not just the zone letter. See <a href="/which-flood-zone-requires-flood-insurance/">which flood zones require flood insurance</a>.</p>
+ <p><strong>Can I get flood insurance cheaper than these prices?</strong><br />
+ Maybe. These are medians — your specific home will price differently. Also, these are gross premiums; if you qualify for an active flood mitigation discount (elevation, dry floodproofing, sump pump), you could be 5-15% lower. That&#8217;s why you get a quote.</p>
+ <p><strong>Do you write in my city?</strong><br />

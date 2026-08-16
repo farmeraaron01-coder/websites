@@ -1,0 +1,51 @@
+Theme fix: author byline image is missing alt text
+===================================================
+
+File: cfi-kadence-child theme, the template part that renders <div class="cfi-byline">
+      (search the child theme for: assets/img/aaron.jpg)
+
+The one image on the page that carries an E-E-A-T signal ships with an empty alt
+attribute. Everything else in the byline block is correct; only the alt changes.
+
+--- a/cfi-byline.php
++++ b/cfi-byline.php
+@@
+ <div class="cfi-byline">
+ 	<img src="https://californiafloodinsurance.com/wp-content/themes/cfi-kadence-child/assets/img/aaron.jpg"
+-	     alt="" width="80" height="100" loading="lazy" decoding="async">
++	     alt="Aaron J. Farmer, licensed California flood insurance specialist"
++	     width="80" height="100" loading="lazy" decoding="async">
+ 	<p>
+ 		Reviewed by <b>Aaron J. Farmer</b>, licensed flood specialist
+ 		<span>CA License #0L75450 &middot; Last reviewed August 14, 2026</span>
+ 	</p>
+ </div>
+
+Note: the diff above is illustrative — the byline may be emitted from
+single.php, a template part, or a shortcode. The change itself is a single
+attribute, so apply it wherever aaron.jpg is rendered.
+
+Related, same author-identity problem in structured data
+--------------------------------------------------------
+
+The Person node in the page's JSON-LD points its image at a Gravatar
+*default* avatar (the generic silhouette), not at Aaron's photo:
+
+    "image": {
+      "@type": "ImageObject",
+      "url": "https://secure.gravatar.com/avatar/e3cc...?s=96&d=mm&r=g"
+    }
+
+The "d=mm" parameter is Gravatar's mystery-man fallback, which means no
+Gravatar is registered for the account email. Two ways to fix, either is fine:
+
+  1. Register a Gravatar for the WordPress user account's email address using
+     the same headshot as assets/img/aaron.jpg. Rank Math will then emit a
+     real image URL with no code change.
+
+  2. Set a local avatar for the user (Rank Math and most avatar plugins allow
+     this) so the Person.image resolves to
+     /wp-content/themes/cfi-kadence-child/assets/img/aaron.jpg
+
+Option 1 is less code; option 2 keeps the asset first-party and avoids a
+third-party request. Either resolves the signal.

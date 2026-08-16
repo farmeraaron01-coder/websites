@@ -1,0 +1,10 @@
+--- llms.original.txt	2026-08-15 04:33:00.205365218 +0000
++++ llms.revised.txt	2026-08-15 04:33:00.215653795 +0000
+@@ -24,6 +24,7 @@
+ ## Cost and coverage
+ 
+ - [How Much Does Flood Insurance Cost?](https://californiafloodinsurance.com/how-much-does-flood-insurance-cost/): California flood insurance pricing factors and typical ranges.
++- [California Flood Insurance Costs by Zone](https://californiafloodinsurance.com/california-flood-insurance-cost-by-zone/): Median annual all-in premiums by FEMA flood zone, from 291 policies we wrote in California, 2020-2026.
+ - [Flood Insurance Rates](https://californiafloodinsurance.com/flood-insurance-rates/): How NFIP and private flood rates are set.
+ - [Cheap Flood Insurance in California](https://californiafloodinsurance.com/cheap-flood-insurance-california/): Legitimate ways to lower a California flood premium.
+ - [How Much Flood Insurance Do I Need?](https://californiafloodinsurance.com/how-much-flood-insurance-do-i-need/): Choosing building and contents coverage amounts.

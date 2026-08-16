@@ -1,0 +1,56 @@
+{
+  "@context": "https://schema.org",
+  "@type": "Dataset",
+  "@id": "https://californiafloodinsurance.com/california-flood-insurance-cost-by-zone/#dataset",
+  "name": "California flood insurance median annual cost by FEMA flood zone (2020-2026)",
+  "description": "Median annual all-in flood insurance cost for California residential properties, broken out by FEMA flood zone. Derived from 291 new business policies written by California Flood Insurance between 2020 and 2026. All-in cost includes base premium, policy fee, reserve fund assessment, and federal surcharge.",
+  "url": "https://californiafloodinsurance.com/california-flood-insurance-cost-by-zone/",
+  "isAccessibleForFree": true,
+  "inLanguage": "en-US",
+  "temporalCoverage": "2020/2026",
+  "spatialCoverage": {
+    "@type": "State",
+    "name": "California",
+    "address": {
+      "@type": "PostalAddress",
+      "addressRegion": "CA",
+      "addressCountry": "US"
+    }
+  },
+  "creator": { "@id": "https://californiafloodinsurance.com/#organization" },
+  "publisher": { "@id": "https://californiafloodinsurance.com/#organization" },
+  "isPartOf": { "@id": "https://californiafloodinsurance.com/california-flood-insurance-cost-by-zone/#webpage" },
+  "measurementTechnique": "Median of all-in annual premium across new business policies bound by California Flood Insurance, grouped by the FEMA flood zone recorded on each policy.",
+  "variableMeasured": [
+    {
+      "@type": "PropertyValue",
+      "name": "FEMA flood zone",
+      "description": "FEMA Flood Insurance Rate Map zone designation recorded on the policy."
+    },
+    {
+      "@type": "PropertyValue",
+      "name": "Median annual all-in cost",
+      "description": "Median annual premium including base premium, policy fee, reserve fund assessment, and federal surcharge.",
+      "unitText": "USD per year"
+    },
+    {
+      "@type": "PropertyValue",
+      "name": "Policies quoted",
+      "description": "Number of new business policies in the sample for that zone."
+    }
+  ],
+  "distribution": {
+    "@type": "DataDownload",
+    "encodingFormat": "text/html",
+    "contentUrl": "https://californiafloodinsurance.com/california-flood-insurance-cost-by-zone/#california-flood-insurance-costs-by-zone-2020-2026"
+  },
+  "hasPart": [
+    { "@type": "PropertyValue", "name": "Zone AE",  "value": 650, "unitCode": "USD", "description": "High risk, mandatory. 142 policies." },
+    { "@type": "PropertyValue", "name": "Zone X",   "value": 465, "unitCode": "USD", "description": "Low risk, optional. 61 policies." },
+    { "@type": "PropertyValue", "name": "Zone AO",  "value": 625, "unitCode": "USD", "description": "High risk shallow flooding, mandatory. 40 policies." },
+    { "@type": "PropertyValue", "name": "Zone A",   "value": 625, "unitCode": "USD", "description": "High risk, mandatory. 31 policies." },
+    { "@type": "PropertyValue", "name": "Zone AH",  "value": 700, "unitCode": "USD", "description": "High risk shallow flooding, depth mapped, mandatory. 10 policies." },
+    { "@type": "PropertyValue", "name": "Zone D",   "value": 725, "unitCode": "USD", "description": "Undetermined risk, optional. 3 policies." },
+    { "@type": "PropertyValue", "name": "Zone A99", "value": 548, "unitCode": "USD", "description": "High risk with levee, mandatory. 4 policies." }
+  ]
+}
