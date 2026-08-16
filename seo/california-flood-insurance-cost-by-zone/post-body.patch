@@ -1,5 +1,5 @@
---- post-body.original.html	2026-08-16 15:56:04.607042399 +0000
-+++ post-body.revised.html	2026-08-16 18:40:07.003296674 +0000
+--- seo/california-flood-insurance-cost-by-zone/post-body.original.html	2026-08-16 15:56:04.607042399 +0000
++++ seo/california-flood-insurance-cost-by-zone/post-body.revised.html	2026-08-16 19:59:51.142420564 +0000
 @@ -1,74 +1,71 @@
 -<p><!-- PAGE META (add to <head>):
 -Title: California Flood Insurance Costs by Zone - Median Rates 2024-2026
@@ -114,7 +114,7 @@
  <li><strong>Check the FEMA Flood Map</strong> at <a href="https://msc.fema.gov/portal/" target="_blank" rel="noopener">FEMA&#8217;s Map Service Center</a></li>
  <li><strong>Ask your insurance agent</strong> — they can check your zone on your homeowners policy</li>
  <li><strong>Search your city below</strong> to see typical zones in your area</li>
-@@ -80,45 +77,46 @@
+@@ -80,59 +77,60 @@
  <h3 style="font-size: 16px; margin-top: 0;" id="northern-california-high-zone-variety">Northern California (High Zone Variety)</h3>
  <ul style="margin: 10px 0;">
  <li><strong>San Francisco Bay:</strong> Mix of AE, A, AO, X</li>
@@ -172,7 +172,12 @@
  <ul>
  <li><strong>Going direct to the NFIP</strong> — you can&#8217;t shop. You get one quote.</li>
  <li><strong>Calling five different agents</strong> — we&#8217;ve already done it; we tell you who wins.</li>
-@@ -130,9 +128,9 @@
+ <li><strong>Online aggregators</strong> — most don&#8217;t include private programs or require you to give your data to ten different companies.</li>
+ </ul>
+-<p><strong>Free quotes. No obligation. Licensed in California since 1989.</strong></p>
++<p><strong>Free quotes. No obligation. Specializing in California flood insurance since 2012.</strong></p>
+ <div style="background: #fffbf0; border-left: 4px solid #ff9900; padding: 15px; margin: 20px 0;">
+ <p style="margin: 0;"><strong>Zone X Not Required? Don&#8217;t Assume It&#8217;s Safe.</strong> We&#8217;ve paid six-figure claims on Zone X properties. Your home&#8217;s actual elevation, distance to water, and local drainage matter far more than the map zone. Get a quote and make an informed decision.</p>
  </div>
  <h2 id="frequently-asked-questions">Frequently Asked Questions</h2>
  <p><strong>Is Zone X flood insurance worth it?</strong><br />

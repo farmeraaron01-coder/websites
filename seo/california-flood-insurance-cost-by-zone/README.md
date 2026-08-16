@@ -193,10 +193,15 @@ the discontinued Preferred Risk Policy; ~40% appears in 2026 news coverage as
 expert commentary, not a published FEMA statistic. 29% is the number FEMA itself
 currently publishes — use it for anything compliance-sensitive.
 
-**C. "Licensed in California since 1989" vs `foundingDate: 2012-01-01`.** The
-body copy and the Organization schema disagree. Likely both are true of
-different things (Aaron's licensure vs. the entity's founding) — if so, say
-which is which. Left unchanged because only you know the answer.
+**C. The 1989 claim — RESOLVED 16 Aug 2026, removed.**
+The page said "Licensed in California since 1989" while the Organization
+schema said `foundingDate: 2012-01-01`, Aaron's user bio said flood
+specialization since 2012, and the site description says "Est. 2012". Checked
+across the site: 1989 appeared on **this page only** — not the homepage, not
+`/aaron-farmer/`, not any other page — so it was a one-off line rather than a
+brand claim. Aaron decided to drop it. Replaced with "Specializing in
+California flood insurance since 2012", which the three other sources
+corroborate.
 
 **D. The sitewide `aggregateRating: 4.9 / 900 reviews`.** This sits on the
 Organization node on every page. Self-serving aggregate ratings about your own
