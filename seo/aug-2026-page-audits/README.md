@@ -102,6 +102,12 @@ sources are a positive signal, and their total absence is unusual.
 Minimum additions: FloodSmart (above, covers all three), OpenFEMA on the Risk
 Rating 2.0 page, and FEMA's NFIP coverage-limits page on Hiscox.
 
+**Verify the fema.gov URLs in a browser before adding them.** The FloodSmart
+link was confirmed live (HTTP 200), but every `www.fema.gov` URL returns 403 to
+this environment — fema.gov blocks datacenter traffic, so I can't distinguish a
+live page from a dead one there. That includes the OpenFEMA URL used in
+`rr2-dataset-schema.jsonld`; check it loads before publishing that schema.
+
 ---
 
 ## 🟢 The big opportunity — you can now prove the NFIP comparison
