@@ -91,8 +91,18 @@ three days old while the other sites on the account had run within 24 hours.
   `new.californiafloodinsurance.com`. Sitemap and robots responses now return
   `x-proxy-cache: BYPASS`. If that header ever reads `HIT` again, the rules were
   lost — re-add them.
-- Nginx Helper's "Purge Entire Cache" button returns a privileges error on this
-  install. Purge from cPanel → Cache Manager → Purge Cache instead.
+- **Cache purging does not work on this account — assume you cannot purge.**
+  Nginx Helper's "Purge Entire Cache" returns a privileges error; cPanel →
+  Cache Manager's single-URL purge and "Purge Full Cache" both complete
+  silently with no effect (verified 16 Aug 2026 across several attempts, with
+  a cached object still serving a three-day-old `last-modified`). Design around
+  it: put anything that must be fresh into the Bypass URL list rather than
+  relying on a purge. HTML pages self-heal on the 4-hour Default Refresh Time.
+  Worth an InMotion ticket — a site you cannot purge is a problem waiting for
+  the next urgent edit.
+- **A new Bypass URL rule is not applied immediately.** Adding `/llms.txt` took
+  several minutes to start returning `BYPASS`; it saved and persisted the whole
+  time. Wait and re-check before concluding a rule failed.
 - **Logged-in requests bypass the cache.** Always verify sitemaps and robots in
   an incognito window or via curl. Checking while logged into wp-admin shows you
   what WordPress thinks, not what Googlebot receives.
