@@ -17,20 +17,28 @@ unified diff you can apply by hand.
 | `post-body.original.html` | The page's current post content, exactly as served (inner HTML of `div.cfi-prose`) | reference / rollback |
 | `post-body.revised.html` | The corrected post content | paste into the post's Code editor |
 | `post-body.patch` | Unified diff between the two | review before applying |
-| `dataset-schema.jsonld` | `Dataset` schema for the rate table | Rank Math → post → Schema → Custom Schema, or a `wp_head` snippet on post 460 |
+| `dataset-schema.jsonld` | `Dataset` schema for the rate table | **Not recommended — see below.** Kept for reference |
 | `llms.txt.patch` | One-line addition to `/llms.txt` | apply to the live `llms.txt` |
 | `theme-byline-alt.patch` | Author photo `alt` fix + Gravatar note | `cfi-kadence-child` theme |
 
 ## Apply order
 
-1. **Regenerate the sitemap first.** This is the critical finding and nothing
-   else matters until it's done — see *Not patched, item A* below.
-2. Post body (`post-body.revised.html`), then re-save the post.
-3. `dataset-schema.jsonld`.
-4. `llms.txt.patch`.
-5. `theme-byline-alt.patch`.
-6. Validate: Rich Results Test on the URL, then GSC → URL Inspection → Request
-   Indexing.
+**Status 16 Aug 2026: steps 1-4 are DONE and verified live.** Remaining: the
+WordPress post title (step 5) and the byline alt (step 6).
+
+1. ~~Sitemap~~ ✅ done — see *item A* below.
+2. ~~Post body~~ ✅ applied; FAQ schema auto-synced with it.
+3. ~~Title + meta description in Rank Math~~ ✅ applied.
+4. ~~`llms.txt.patch`~~ ✅ applied (**purge the page cache** — `/llms.txt` is
+   not in the bypass rules, so anonymous requests still get the old copy).
+5. **WordPress post title** — still reads "Median Rates 2024-2026", which is
+   the visible `<h1>` and the breadcrumb. Separate field from the Rank Math SEO
+   title. Change to "California Flood Insurance Costs by Zone – Median Rates
+   2025-2026". **Do not change the slug.**
+6. `theme-byline-alt.patch`.
+7. Validate: Rich Results Test, then GSC → URL Inspection → Request Indexing.
+
+`dataset-schema.jsonld` is **not** in this list — see *Dataset schema* below.
 
 ---
 
@@ -107,22 +115,20 @@ California new-business policies bound Feb 2025 – Aug 2026**, deduplicated to
 one per property, with medians and 25th–75th percentile ranges per zone from
 `data/zone-medians-ca-bound-nb.csv`.
 
-### The FAQ answer text changed — keep the schema in sync
+### The FAQ schema auto-syncs — CORRECTED 16 Aug 2026
 
-The patch adds the FEMA citation to the "Is Zone X flood insurance worth it?"
-answer. That page's `FAQPage` JSON-LD is a **separate, hand-maintained block** —
-it does not auto-generate from the post body. Structured data must match visible
-content, so update that question's `acceptedAnswer.text` to the new wording:
+**This README previously claimed the `FAQPage` JSON-LD was hand-maintained and
+had to be edited separately. That was wrong.** Verified after the patch went
+live: the FAQPage block regenerates from the post body on save. Both revised
+answers ("Is Zone X flood insurance worth it?" → contains $509 and the FEMA
+citation; "What's the difference between Zone A, AE, and AO?" → contains $722)
+appeared in the schema automatically with no manual edit.
 
-> Yes, for most California homeowners. At a median of $509/year in our current
-> book, it's an affordable way to cover a real risk — and FEMA's own data shows
-> 29% of NFIP claims from 2014 to 2024 came from outside high-risk zones. We've
-> filed claims on Zone X properties in every region of California — the official
-> map is conservative. The question isn't "Do I need it?" but "Can I afford NOT
-> to have it?"
+The generated answers include the trailing link sentence that the visible text
+carries. Leave it — schema matching visible text is the actual requirement, and
+it does.
 
-(The "What's the difference between Zone A, AE, and AO?" answer also changed —
-copy its new text from `post-body.revised.html` the same way.)
+**No manual FAQ schema step is needed.** Ignore any instruction saying otherwise.
 
 ### The date window — resolved: 2025-2026
 
@@ -148,10 +154,6 @@ Recommended:
 > Meta: Real median flood insurance costs by FEMA zone, from 763 California
 > policies we bound in 2025-2026. Zone AE $722, Zone X $509. Free quote.
 
-The **FAQPage JSON-LD** must also sync to the two revised FAQ answers ("Is
-Zone X flood insurance worth it?" and "What's the difference between Zone A,
-AE, and AO?") - copy the new visible text from `post-body.revised.html` into
-the matching `acceptedAnswer.text` fields.
 
 The **table anchor changed** (`...-2020-2026` was never live; the live page
 still has `...-2024-2026`) - after pasting, verify the "On this page" links
@@ -161,20 +163,15 @@ resolve. The Dataset schema's `contentUrl` fragment matches the new anchor.
 
 ## Not patched — needs your facts, not mine
 
-**A. The page is missing from the XML sitemap. This is the critical item.**
-`post-sitemap.xml` holds 20 URLs, newest `lastmod` `2026-08-11`. This page
-published `2026-08-14` and is absent. `sitemap_index.xml` still reports
-`2026-08-07`. Rank Math auto-appends new posts, so this is a stale sitemap
-cache or a per-post exclusion.
-
-Fix: Rank Math → Sitemap Settings → clear cache. Then verify:
-
-```
-curl -s https://californiafloodinsurance.com/post-sitemap.xml | grep cost-by-zone
-```
-
-If that still returns nothing, check the post's own "Exclude from sitemap"
-toggle and Rank Math → Sitemap → Posts.
+**A. Sitemap — RESOLVED 16 Aug 2026. Do not act on this item.**
+This was the critical finding at audit time and it is fixed. Two separate
+caches were stale: Rank Math's internal sitemap cache (cleared by saving
+Sitemap Settings with a genuinely changed value — see `../../CLAUDE.md`), and
+the host's nginx page cache, which was serving Googlebot a frozen copy even
+after Rank Math was fixed (cleared by adding `.*sitemap.*` and `/robots.txt`
+bypass rules in cPanel → Cache Manager on **both** the apex and `new.`
+domains). Verified anonymously: `post-sitemap.xml` returns 23 URLs with
+`x-proxy-cache: BYPASS` and contains this page.
 
 **B. The 29% statistic — RESOLVED, now patched.** Verified 16 Aug 2026 against
 the primary source. FloodSmart.gov (the NFIP's official consumer site) states
@@ -247,3 +244,27 @@ cost guide), not three.
 - **GSC → Links**: the five zone pages should pick up internal-link counts from
   this URL. If their impressions don't move within six weeks, the links weren't
   their constraint and their own content depth is the thing to look at.
+
+
+---
+
+## Dataset schema — dropped, and why
+
+I originally recommended adding `Dataset` markup and cited AI citability as a
+benefit. **That benefit was speculative and I should not have stated it as
+fact.** Reviewing it properly:
+
+- `Dataset` feeds Google Dataset Search, a separate vertical. It produces no
+  rich result and no ranking signal in ordinary web search, so the upside for
+  "california flood insurance cost by zone" is close to zero.
+- The spec fit is poor. The medians come from a proprietary book nobody can
+  download; there is no real `distribution` to point at.
+- The machine-readability job it would notionally do is already done by the
+  table's `<caption>`, `scope="col"` and `<th scope="row">` markup, which is
+  what actually lets an extractor bind "$722" to Zone AE.
+- The install is Rank Math **Free**, where custom schema is paywalled — so it
+  cannot be added without a code change nobody authorised.
+
+**Revisit only if** the underlying CSV gets published at a real URL and you
+want it cited as a source. Then `Dataset` becomes legitimate and worth having.
+The file stays in this folder for that day.
