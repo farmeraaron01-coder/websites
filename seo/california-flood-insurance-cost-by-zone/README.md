@@ -108,6 +108,22 @@ policies and the rows need updating instead — in which case change the two
 places the patch writes 291 (the methodology paragraph and the table caption)
 and add the missing rows.
 
+### The FAQ answer text changed — keep the schema in sync
+
+The patch adds the FEMA citation to the "Is Zone X flood insurance worth it?"
+answer. That page's `FAQPage` JSON-LD is a **separate, hand-maintained block** —
+it does not auto-generate from the post body. Structured data must match visible
+content, so update that question's `acceptedAnswer.text` to the new wording:
+
+> Yes, for most California homeowners. At $465/year, it's an affordable way to
+> cover a real risk — and FEMA's own data shows 29% of NFIP claims from 2014 to
+> 2024 came from outside high-risk zones. We've filed claims on Zone X properties
+> in every region of California — the official map is conservative. The question
+> isn't "Do I need it?" but "Can I afford NOT to have it?"
+
+If you'd rather not touch the schema, revert just that FAQ sentence — the body
+paragraph carries the citation either way.
+
 ### The 2024-2026 / 2020-2026 discrepancy
 
 The intro said the medians came from *"policies written in **2024-2026**"*,
@@ -152,15 +168,25 @@ curl -s https://californiafloodinsurance.com/post-sitemap.xml | grep cost-by-zon
 If that still returns nothing, check the post's own "Exclude from sitemap"
 toggle and Rank Math → Sitemap → Posts.
 
-**B. The 29% statistic is uncited.** The page states *"29% of flood claims
-nationally come from moderate- and low-risk areas."* FEMA's widely published
-figure is different (FloodSmart currently cites "over 25%"; older FEMA material
-says "more than 40%"). 29% may well be right for a specific NFIP dataset or
-year — but it's an uncited third-party statistic on a YMYL page making a
-financial recommendation. Left unchanged in the patch because guessing at a
-source would be worse than the current state. Either cite it inline with source
-and year, or restate it as your own book's experience, which you can stand
-behind directly.
+**B. The 29% statistic — RESOLVED, now patched.** Verified 16 Aug 2026 against
+the primary source. FloodSmart.gov (the NFIP's official consumer site) states
+verbatim: *"Over the past 10 years (2014 - 2024), nearly one-third of NFIP flood
+insurance claims (29%) came from areas located outside of current high-risk
+flood areas."* Source:
+<https://www.floodsmart.gov/flood-zones-and-maps/what-is-my-flood-risk>
+
+The patch now cites it inline and tightens the wording, which was imprecise in
+three ways: it said "flood claims" (the figure is NFIP claims specifically),
+gave no date window (it's a rolling 2014–2024 measure), and said "moderate- and
+low-risk areas" (FEMA's own framing is "outside current high-risk flood areas",
+i.e. Zones B, C and X). The patch also adds FEMA's average claim payment of
+$82,614 (2020–2024) from the same page, which replaces the previously
+unsupported "a single claim pays for decades of premiums."
+
+Note on other figures in circulation: FEMA's older FAQ says ~25% and is tied to
+the discontinued Preferred Risk Policy; ~40% appears in 2026 news coverage as
+expert commentary, not a published FEMA statistic. 29% is the number FEMA itself
+currently publishes — use it for anything compliance-sensitive.
 
 **C. "Licensed in California since 1989" vs `foundingDate: 2012-01-01`.** The
 body copy and the Organization schema disagree. Likely both are true of
