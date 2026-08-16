@@ -51,6 +51,27 @@ cannot distinguish them. Only **Website Path** can. WP Toolkit lists only one of
 them and labels it "California Flood Insurance - Staging", which is wrong — that
 is production.
 
+### Backups live in Dropbox, not on the server
+
+UpdraftPlus runs on the live install with **Dropbox as a remote destination and
+local copies deleted after upload**. So `wp-content/updraft/` holds only logs and
+config — that is normal, not a missing backup. A server-side search will find
+nothing; look in Dropbox:
+
+`/Aaron Farmer/Apps/UpdraftPlus.Com/`
+
+Filenames are `backup_<date>-<time>_California_Flood_Insurance_<hash>-{db.gz,uploads.zip,plugins.zip,themes.zip,others.zip}`.
+
+**Telling the old Divi site from the current one by size:** pre-cutover sets have
+a ~101 MB uploads archive and ~92 MB plugins; post-cutover sets are ~16 MB and
+~34 MB. The live site's media library holds only 21 items, which is what the
+small archives reflect. The **2026-08-06** set is the last Divi backup and is the
+rollback for the pre-cutover site — the server directory it came from was deleted
+16 Aug 2026, so that archive is the only copy.
+
+Check the backup cadence periodically. As of 16 Aug 2026 CFI's newest set was
+three days old while the other sites on the account had run within 24 hours.
+
 ### Caching: two layers, both have bitten us
 
 **1. nginx page cache** (cPanel → Cache Manager, and the Nginx Helper plugin).
