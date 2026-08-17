@@ -10,7 +10,58 @@ done, it was in another session and isn't recorded here — this is the first.
 
 ---
 
-## The headline correction
+> ## ⚠️ REVISED 16 Aug 2026 — read this before the sections below
+>
+> The analysis below counts **bound policies only**, and on that basis concluded
+> the book is too thin outside California to support much. Aaron pointed out the
+> obvious gap: quotes carry zones and premiums too, and Texas and Florida hold
+> the most flood policies in the country regardless of how many we bind there.
+>
+> He was right, and it changes the conclusion substantially.
+>
+> | Threshold | Viable states on **bound** | Viable states on **quoted** |
+> |---|---|---|
+> | n ≥ 30 | 16 | **28** |
+> | n ≥ 50 | 7 | **27** |
+> | n ≥ 100 | 3 | **18** |
+>
+> **The selection effect is small enough to publish through.** Comparing quoted
+> against bound medians in every state where both are measurable, the median gap
+> is **+$20** — quoted runs marginally higher, as expected when people bind at
+> prices they accept. Where the bound sample is large enough to trust, the gap
+> nearly vanishes: CA −$3, AZ $0, OH $0, PA $0, TX −$9, MI +$3. The wild deltas
+> (NJ +$240, MS +$187, NM −$212) all sit on bound samples under 25, so they are
+> small-n noise on the *bound* side, not evidence against the quotes.
+>
+> **Texas and Florida now carry real zone tables:**
+>
+> | | Zone X | Zone AE | Zone A | Zone AH |
+> |---|---|---|---|---|
+> | **Texas** (367 properties) | $614 (212) | $892 (108) | $582 (32) | — |
+> | **Florida** (342 properties) | $617 (198) | $895 (103) | $562 (24) | $824 (13) |
+>
+> Both are X-dominant, which fits their geography, and both price AE around $890
+> — well above California's $765. That is a publishable contrast.
+>
+> Also newly viable: SC (197), NC (168), NY (167), GA (152), NJ (134).
+> **27 states now carry a zone table**, against 7 on bound data.
+>
+> **Publishing rules this creates:**
+> - Label them **"median quoted premium"**, never "what our customers pay".
+>   The California pages say "bound" and must keep saying it.
+> - State the sample as *properties quoted*, deduplicated one per property.
+> - Where both exist and bound n ≥ 30, prefer bound — it is the stronger claim.
+>   Use quoted to reach the states bound cannot.
+> - Say plainly that quoted medians run slightly above bound. It costs nothing
+>   and pre-empts the obvious objection.
+>
+> New files: `data/state-medians-quoted.csv` (27 states),
+> `data/state-zone-medians-quoted.csv` (81 state-zone rows).
+>
+> The bound-only analysis below stays as written — it remains the right basis
+> for anything phrased as "what our customers actually pay", and for California.
+
+## The bound-only picture (still true, but not the whole story)
 
 The book is **thinner outside California than it looks**, and the plan has to be
 built around that rather than around the raw quote count.
