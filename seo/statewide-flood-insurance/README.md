@@ -258,11 +258,47 @@ cap, and the link graph reads as geography rather than as a scheme.
 
 | File | Words | Internal links | Status |
 |---|---|---|---|
-| `hub-cost-by-state.html` | — | 24 + CFI | replaces the hub's cost section |
+| `hub-cost-table.html` | — | 24 + CFI | **ADDITION** — a second table placed after the existing NFIP table. Does not replace anything |
 | `pages/arizona-flood-insurance.html` | 771 | 3 | **new page**, none exists |
 | `pages/oklahoma-flood-insurance.html` | 761 | 3 | **new page**, none exists |
 | `pages/texas-cost-section.html` | 470 | 1 | **section only** — replaces one H2 on the existing page |
 | `pages/florida-cost-section.html` | 507 | 1 | **section only** — replaces one H2 on the existing page |
+
+`hub-cost-table.html` is the only hub file. An earlier fragment, `hub-table.html`,
+was deleted on 17 Aug — it held bare `<tr>` rows with no H2 and no framing
+paragraph, and having two candidates on disk while this table named a third,
+non-existent file (`hub-cost-by-state.html`) is the likeliest reason the hub
+edit did not land on the first attempt.
+
+## Published status — verified anonymously 17 Aug 2026
+
+Every check below was run with `curl` against the live site, not in wp-admin.
+All five URLs returned `x-proxy-cache: MISS`, so these are freshly generated
+responses, not stale cached copies.
+
+| Deliverable | Live state |
+|---|---|
+| `pages/arizona-flood-insurance.html` | ✅ **applied.** 200, exactly one H1, title carries $547, table has `<caption>` + 8 `scope` attributes, FloodSmart citation and CFI link present |
+| `pages/oklahoma-flood-insurance.html` | ✅ **applied.** 200, one H1, title carries $465, caption + 7 `scope`, FloodSmart and CFI links present |
+| `pages/texas-cost-section.html` | ✅ **applied.** All figures live — 367 properties, $670 median, $509–$970 IQR, AE $892, X $614, 16% above the NFIP cap. Caption, `scope`, FloodSmart and CFI links present. Following sections intact |
+| `pages/florida-cost-section.html` | ❌ **not applied.** The page still serves the original risk-profile table (~$400–$1,200 / ~$700–$1,363 / ~$2,000–$15,000+). None of 342, $681, $895, $617, $492, $984, 21% or $1,643 appear anywhere on the page. No `<caption>`, no `scope`, no FloodSmart citation |
+| `hub-cost-table.html` | ❌ **not applied.** The hub has one table, not two. $681, $670, $465 and $547 appear nowhere on the page. The `~$700–$1,363` Florida figure that a verification pass may read as confirmation is the **original NFIP table**, which was always there |
+| `llms.txt` | ✅ **applied.** Arizona and Oklahoma both present; file is clean ASCII, so no `euc-jp` corruption from the cPanel editor |
+
+### Also outstanding: Arizona and Oklahoma are in no sitemap
+
+`page-sitemap.xml` carries 62 URLs and lists the hub, Texas and Florida but
+**neither Arizona nor Oklahoma**; `post-sitemap.xml` does not have them either.
+Its `lastmod` is still **2026-08-05**, so it has not regenerated since the pages
+went live. This is the Rank Math sitemap cache described in `CLAUDE.md`, not a
+publishing error — the pages themselves are live, indexable and self-canonical.
+
+Fix: **Sitemap Settings → General → Links Per Sitemap 200 → 199 → Save, then
+199 → 200 → Save.** A save with nothing changed is a no-op.
+
+The sitemap layer itself is healthy — `sitemap_index.xml` returns
+`x-proxy-cache: BYPASS`, so the nginx bypass rules are working on this domain
+as well as on CFI.
 
 All four clear the 600-word location-page minimum, carry no `<h1>` (the theme
 supplies it), have table captions and `scope` attributes, and link hub plus two
