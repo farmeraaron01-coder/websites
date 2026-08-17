@@ -103,34 +103,34 @@ and insert this as a new paragraph **immediately after** it:
 Same defect the cost-by-zone table had. This is what lets a screen reader and an
 AI extractor bind "$1,246" to *A zones* rather than reading it as a loose number.
 
-**Find:**
-```
-<table>
-<thead>
-<tr>
-<th>Rated zone</th>
-<th>Median annual cost</th>
-<th>Policies measured</th>
-</tr>
-</thead>
-```
+**Do this as seven single-line replacements, not one block.** The first attempt
+used a multi-line FIND taken from the rendered page and matched 0 occurrences:
+WordPress stores post content differently from how it renders it (`wpautop`
+normalizes whitespace between tags), so multi-line structural blocks rarely
+match verbatim. Prose matches fine — the other two edits on this page hit first
+time. Line-level finds survive the difference:
 
-**Replace:**
+| Find | Replace |
+|---|---|
+| `<table>` | `<table>` + the caption line below |
+| `<th>Rated zone</th>` | `<th scope="col">Rated zone</th>` |
+| `<th>Median annual cost</th>` | `<th scope="col">Median annual cost</th>` |
+| `<th>Policies measured</th>` | `<th scope="col">Policies measured</th>` |
+| `<td>A zones (high risk, inland)</td>` | `<th scope="row">A zones (high risk, inland)</th>` |
+| `<td>X, B and C zones (moderate to low risk)</td>` | `<th scope="row">X, B and C zones (moderate to low risk)</th>` |
+| `<td>V zones (high risk, coastal)</td>` | `<th scope="row">V zones (high risk, coastal)</th>` |
+
+Caption to insert directly after `<table>`:
+
 ```
-<table>
 <caption style="caption-side: bottom; padding-top: 10px; font-size: 14px; text-align: left; color: #555;">Median annual all-in NFIP cost by rated zone, from 10,545 in-force California policies at $250,000 building coverage, $5,000 deductible, single-family residential. Source: FEMA OpenFEMA NFIP policy file.</caption>
-<thead>
-<tr>
-<th scope="col">Rated zone</th>
-<th scope="col">Median annual cost</th>
-<th scope="col">Policies measured</th>
-</tr>
-</thead>
 ```
 
-Then change each first cell in the body from `<td>A zones (high risk, inland)</td>`
-to `<th scope="row">A zones (high risk, inland)</th>`, and the same for the X/B/C
-and V rows.
+`<table>` occurs once in this post, and `</table>` does not contain that
+substring, so a plain find-and-replace is safe.
+
+This table fix is the **lowest-priority** change on the page — if it resists,
+skip it. The citation and the NFIP comparison carry the value.
 
 ### 4. Link OpenFEMA
 
