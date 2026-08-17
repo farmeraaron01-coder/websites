@@ -9,6 +9,24 @@ Scores held from the first pass: Risk Rating 2.0 **84**, Hiscox **80**, Zone X
 **76**. What the second pass added: quote-book figures none of them carry, and
 three defects that repeat across all three.
 
+> ## ⚠️ Writing FIND strings for WordPress — read before adding any edit here
+>
+> Post content is stored raw and transformed on render. A FIND string copied
+> from the served HTML will often match zero times. Two filters caused exactly
+> that, twice, on 16 Aug 2026:
+>
+> - **`wptexturize`** converts straight apostrophes, quotes, em-dashes and
+>   ellipses into HTML entities at render time. `NFIP's` is stored plain but
+>   served as `NFIP&#8217;s`. **Never put an apostrophe, quote, dash or ellipsis
+>   in a FIND string.**
+> - **`wpautop`** normalizes whitespace and paragraph tags, so multi-line
+>   structural blocks (tables, lists) rarely match verbatim. **Prefer
+>   single-line finds.**
+>
+> Anchor on plain words carrying none of that punctuation, keep the FIND to one
+> line where possible, and put entities only on the REPLACE side. Prose edits
+> written this way matched first time on all three pages.
+
 ## What repeats on all three pages
 
 | Issue | RR2 | Hiscox | Zone X |
@@ -157,14 +175,21 @@ bound properties (7%) carry building limits above $250,000. The largest you
 wrote is **$1.2M**. Understating that is safer than overstating it, and the real
 numbers are more persuasive than the abstract point.
 
-**Find:**
+**This edit also corrects an overstatement the page makes.** The stored
+paragraph continues: *"Private markets including FloodPlus write well above the
+federal cap, which for most of the homes we see is the entire reason the
+conversation starts."* The quote book says the cap binds on **7%** of the
+California book — 116 of 1,665 bound properties. So the replacement fixes the
+claim rather than adding data next to it.
+
+**Find** (no apostrophes — see the rule at the top of this file):
 ```
-The NFIP&#8217;s residential building limit is <strong>$250,000</strong>, and it is statutory — no underwriter can raise it, because Congress sets it. Any home that costs more than that to rebuild is underinsured by construction under a federal policy.
+Private markets including FloodPlus write well above the federal cap, which for most of the homes we see is the entire reason the conversation starts.
 ```
 
 **Replace:**
 ```
-The NFIP&#8217;s residential building limit is <strong>$250,000</strong>, and it is statutory — no underwriter can raise it, because Congress sets it. Any home that costs more than that to rebuild is underinsured by construction under a federal policy. In our own California book that applies to about one property in fourteen, but when it applies it matters enormously: the largest building limit we have placed is <strong>$1.2 million</strong>, nearly five times what a federal policy could have covered.
+Private markets including FloodPlus write well above the federal cap. In our own California book only about one property in fourteen actually needs a building limit above $250,000 &mdash; but when it does, the gap is stark: the largest limit we have placed is <strong>$1.2 million</strong>, nearly five times what a federal policy could have carried.
 ```
 
 ### 2. Add the market-share evidence
