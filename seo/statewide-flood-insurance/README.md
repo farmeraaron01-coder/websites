@@ -261,8 +261,8 @@ cap, and the link graph reads as geography rather than as a scheme.
 | `hub-cost-by-state.html` | — | 24 + CFI | replaces the hub's cost section |
 | `pages/arizona-flood-insurance.html` | 771 | 3 | **new page**, none exists |
 | `pages/oklahoma-flood-insurance.html` | 761 | 3 | **new page**, none exists |
-| `pages/texas-flood-insurance.html` | 828 | 3 | replaces cost section on existing page |
-| `pages/florida-flood-insurance.html` | 851 | 3 | replaces cost section on existing page |
+| `pages/texas-cost-section.html` | 470 | 1 | **section only** — replaces one H2 on the existing page |
+| `pages/florida-cost-section.html` | 507 | 1 | **section only** — replaces one H2 on the existing page |
 
 All four clear the 600-word location-page minimum, carry no `<h1>` (the theme
 supplies it), have table captions and `scope` attributes, and link hub plus two
@@ -283,3 +283,44 @@ Each carries a finding the others cannot:
 
 That state-specific evidence is what keeps these out of doorway-page territory.
 It is not decoration and should not be trimmed for length.
+
+
+---
+
+## Texas and Florida are SECTION replacements, not page replacements
+
+Corrected 16 Aug 2026 after the apply agent stopped on an ambiguous boundary —
+correctly, because the instruction was wrong.
+
+The first drafts were written as standalone pages, like Arizona and Oklahoma.
+But Texas and Florida already exist and are well structured:
+
+```
+H1  [State] Flood Insurance — Private & NFIP Coverage
+H2  What to know
+H2  Why [State] homeowners need flood insurance
+H2  How much does flood insurance cost in [State]?   ← replace ONLY this
+H2  Private flood insurance vs. the NFIP in [State]
+H2  What [State] flood insurance covers
+H2  Which [State] flood zone are you in?
+H2  Get your [State] flood insurance quote
+H2  [State] flood insurance FAQ
+```
+
+A standalone draft duplicated the FAQ, the zone explainer and parts of the
+private-vs-NFIP argument. Pasting it in would have created duplicate content;
+pasting it over everything would have deleted useful sections it does not
+replace.
+
+**The section files are the fix.** Each opens with the existing H2 verbatim —
+`How much does flood insurance cost in [State]?` — so any table of contents or
+anchor pointing at it keeps working, then uses H3 subsections beneath. Nothing
+else on the page is touched. The existing FAQ stays; ours is dropped.
+
+Measured against the live pages, the new sections share **32% (Texas)** and
+**34% (Florida)** of their vocabulary with what is already published — normal
+for prose on the same subject, and far from duplication.
+
+**Lesson for future state work:** check whether the target page exists and how
+it is structured *before* drafting. New pages get standalone drafts; existing
+pages get section replacements anchored on a heading that is already there.
