@@ -193,3 +193,74 @@ than any page edit on this list, and it isn't an SEO problem.
 | `data/state-medians-bound.csv` | 16 states: policies, median, p25, p75, properties quoted, bind rate |
 | `data/state-zone-medians.csv` | Zone medians for the 7 states deep enough to carry one |
 | `data/noncal-city-medians.csv` | The 5 non-CA cities clearing n≥10 |
+
+---
+
+## How California is handled across the two sites
+
+**Decision: keep California in the hub table, link the row to
+californiafloodinsurance.com, and never build a `/california-flood-insurance/`
+page on Statewide.**
+
+Cannibalization happens at the **page** level, not the data level. One row in a
+27-row comparison table is not competing for "california flood insurance cost" —
+it isn't targeting that query, isn't optimized for it, and carries no California
+prose. A dedicated California page on Statewide *would* compete, directly and
+badly. That page is the thing to never build.
+
+Omitting California instead would cost more than it saves. A "cost by state"
+table missing the largest flood market in the country reads as incomplete to a
+human and thin to a crawler, and California is 44% of the underlying sample —
+dropping it weakens the credibility of the whole dataset.
+
+The outbound link is what actually prevents the overlap: it tells both readers
+and Google that the California authority lives on the other domain. **Follow the
+link — do not `nofollow` it.** It is a genuine editorial recommendation between
+related properties; nofollowing your own specialist site passes no useful signal
+and reads as hedging.
+
+Note the two sites publish California on different bases and this is a feature,
+not a conflict: CFI publishes **$722 bound**, the Statewide hub shows **$719
+quoted**. Nearly identical from independent cuts, which is good corroboration —
+but the labels must stay distinct so they never look like two answers to the
+same question.
+
+### The real cross-site risk is duplicated structure, not the California row
+
+The two sites share an address, a phone number, an author and a theme lineage
+(Statewide was the clone source). Google will associate them trivially. That is
+fine — provided the **content** does not duplicate. Which means state pages must
+not be the California page with names swapped.
+
+Each state page carries data no other page has: Arizona's zones separate by only
+$23 where most states spread hundreds; Oklahoma's median building limit is
+$190,000 against $250,000 everywhere else; Texas and Florida are Zone-X-dominant
+while Arizona and Oklahoma are AE-dominant. That state-specific evidence is what
+keeps these pages out of doorway territory, and it is not optional.
+
+## Internal linking: hub-and-spoke, not a mesh
+
+`references/internal-linking.md` caps contextual links at 8–12 even on a pillar
+page, and names "same exact anchor everywhere" as an over-optimization signal.
+Linking all 27 state pages to each other would mean 702 links and 26 near-
+identical anchors per page — the exact doorway pattern the quality gates target.
+
+- **Hub → all 27.** A data table with one row per state is an index, not link
+  stuffing. This is the one page that links widely.
+- **Each state → hub + 2–4 genuine neighbours.** Geographic or hazard-profile
+  adjacency only. Arizona → Nevada, New Mexico. Oklahoma → Texas, Missouri.
+  Texas → Louisiana, Oklahoma. Florida → Georgia, South Carolina.
+
+Every page then clears "minimum 3 outbound, no orphans" without approaching the
+cap, and the link graph reads as geography rather than as a scheme.
+
+## Pages drafted
+
+| File | Words | Internal links | Status |
+|---|---|---|---|
+| `pages/arizona-flood-insurance.html` | 771 | 3 | new page, none exists |
+| `pages/oklahoma-flood-insurance.html` | 761 | 3 | new page, none exists |
+| `hub-cost-by-state.html` | — | 24 + CFI | replaces the hub's cost section |
+
+Both clear the 600-word location-page minimum with 100% state-specific content.
+Texas and Florida drafts to follow.
