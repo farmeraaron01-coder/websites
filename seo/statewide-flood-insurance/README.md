@@ -324,3 +324,53 @@ for prose on the same subject, and far from duplication.
 **Lesson for future state work:** check whether the target page exists and how
 it is structured *before* drafting. New pages get standalone drafts; existing
 pages get section replacements anchored on a heading that is already there.
+
+---
+
+## The hub is an ADDITION, not a replacement
+
+Caught 16 Aug 2026 before publishing — the second time the same mistake nearly
+landed, so the lesson is recorded twice deliberately.
+
+`/flood-insurance-cost-by-state/` is not an empty shell waiting for data. It is
+a coherent editorial piece:
+
+```
+H1  Flood Insurance Cost & Risk by State: 2026 Report
+H2  Key Findings
+H2  Flood insurance cost & risk by state (2026)   ← an NFIP table, 17 states
+H2  The hidden coverage gap
+H2  Why flood insurance costs are rising
+H2  Inland flooding: the overlooked threat
+H2  Methodology & sources                          ← describes those 17 states
+H2  Get your flood insurance quote
+```
+
+The existing table reports **NFIP premiums from public data** across 17
+flood-exposed states, with policy counts and coverage rates. Ours reports
+**private quoted medians from our own book** across 27. Different programmes,
+different measures, different scope.
+
+Replacing one with the other would have left the methodology section describing
+17 states beside a 27-state table, and the coverage-gap and rising-costs
+sections citing NFIP figures no longer shown. Florida would have read
+`~$700–$1,363` in one place and `$681` in another with nothing explaining why.
+
+**`hub-cost-table.html` is therefore a new section to insert after the existing
+table**, opening with its own H2 and stating in its first sentence that the
+table above is NFIP and this one is private. The two complement each other —
+national context, then what the private market actually charges — which is a
+better page than either table alone.
+
+The Methodology section also needs one paragraph describing our dataset. Draft:
+
+> Private-market figures come from Statewide Flood Insurance's own quoting
+> platform: 7,165 properties priced across 27 states between February 2025 and
+> August 2026, deduplicated to one quote per property. Figures are median
+> all-in annual premiums — premium plus policy fee and state surplus lines
+> taxes. States with fewer than 50 quoted properties are excluded.
+
+**The rule, now learned twice:** read the target page's heading structure
+before drafting anything. New pages get standalone drafts. Existing pages get
+either a section replacement anchored on a heading already there, or a clearly
+framed addition — never an unlabelled swap of one dataset for another.
