@@ -288,24 +288,24 @@ Every check below was run with `curl` against the live site, not in wp-admin,
 | `pages/arizona-flood-insurance.html` | ✅ **applied.** 200, exactly one H1, title carries $547, table has `<caption>` + 8 `scope` attributes, FloodSmart citation and CFI link present |
 | `pages/oklahoma-flood-insurance.html` | ✅ **applied.** 200, one H1, title carries $465, caption + 7 `scope`, FloodSmart and CFI links present |
 | `pages/texas-cost-section.html` | ✅ **applied.** All figures live — 367 properties, $670 median, $509–$970 IQR, AE $892, X $614, 16% above the NFIP cap. Caption, `scope`, FloodSmart and CFI links present. Following sections intact |
-| `pages/florida-cost-section.html` | ✅ **applied.** 342, $681, $895, $617, $1,643 all live; caption + 8 `scope`; FloodSmart citation; old risk-profile table gone. One gap: the swap dropped the in-body `/private-flood-insurance-cost/` link, which the revised 6,045-byte file restores |
+| `pages/florida-cost-section.html` | ✅ **applied, final revision.** 342, $681, $895, $617, $492, $984, $1,643 all live; caption + 8 `scope`; FloodSmart citation; old risk-profile table gone; `effectively tied` wording live; exactly one in-body `/private-flood-insurance-cost/` link restored |
 | `hub-cost-table.html` | ✅ **applied.** Two tables live; $681, $670 and $465 all present. Do not re-apply — a second paste duplicates the table |
 | `llms.txt` | ✅ **applied.** Arizona and Oklahoma both present; file is clean ASCII, so no `euc-jp` corruption from the cPanel editor |
 
-### Also outstanding: Arizona and Oklahoma are in no sitemap
+### Sitemap — ✅ resolved
 
-`page-sitemap.xml` carries 62 URLs and lists the hub, Texas and Florida but
-**neither Arizona nor Oklahoma**; `post-sitemap.xml` does not have them either.
-Its `lastmod` is still **2026-08-05**, so it has not regenerated since the pages
-went live. This is the Rank Math sitemap cache described in `CLAUDE.md`, not a
-publishing error — the pages themselves are live, indexable and self-canonical.
+Arizona and Oklahoma were initially in no sitemap: `page-sitemap.xml` held 62
+URLs with a frozen `lastmod` of 2026-08-05. That was the Rank Math sitemap cache
+described in `CLAUDE.md`, not a publishing error.
 
-Fix: **Sitemap Settings → General → Links Per Sitemap 200 → 199 → Save, then
-199 → 200 → Save.** A save with nothing changed is a no-op.
+The **Links Per Sitemap 200 → 199 → Save, then 199 → 200 → Save** fix worked.
+Verified 17 Aug: 65 URLs, all five pages listed with same-day `lastmod` values,
+and the index's `page-sitemap.xml` lastmod now agrees with the child rather than
+trailing it. `sitemap_index.xml` returns `x-proxy-cache: BYPASS`, so the nginx
+bypass rules hold on this domain as they do on CFI.
 
-The sitemap layer itself is healthy — `sitemap_index.xml` returns
-`x-proxy-cache: BYPASS`, so the nginx bypass rules are working on this domain
-as well as on CFI.
+**This is now twice that the two-save trick has been the fix.** Treat a frozen
+Rank Math sitemap as the first hypothesis, not the last.
 
 All four clear the 600-word location-page minimum, carry no `<h1>` (the theme
 supplies it), have table captions and `scope` attributes, and link hub plus two
