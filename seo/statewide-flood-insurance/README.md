@@ -258,9 +258,28 @@ cap, and the link graph reads as geography rather than as a scheme.
 
 | File | Words | Internal links | Status |
 |---|---|---|---|
-| `pages/arizona-flood-insurance.html` | 771 | 3 | new page, none exists |
-| `pages/oklahoma-flood-insurance.html` | 761 | 3 | new page, none exists |
 | `hub-cost-by-state.html` | — | 24 + CFI | replaces the hub's cost section |
+| `pages/arizona-flood-insurance.html` | 771 | 3 | **new page**, none exists |
+| `pages/oklahoma-flood-insurance.html` | 761 | 3 | **new page**, none exists |
+| `pages/texas-flood-insurance.html` | 828 | 3 | replaces cost section on existing page |
+| `pages/florida-flood-insurance.html` | 851 | 3 | replaces cost section on existing page |
 
-Both clear the 600-word location-page minimum with 100% state-specific content.
-Texas and Florida drafts to follow.
+All four clear the 600-word location-page minimum, carry no `<h1>` (the theme
+supplies it), have table captions and `scope` attributes, and link hub plus two
+geographic neighbours — three outbound each, against a minimum of 3 and a cap
+of 10.
+
+**Differentiation check.** Pairwise vocabulary overlap across the four pages
+runs **32–38%**, which is about what four articles on the same subject in
+different states should share. Templated location pages typically run 80%+.
+Each carries a finding the others cannot:
+
+| State | The thing only this page can say |
+|---|---|
+| Arizona | Zones separate by just $23 — AE $581 against X $568 — because monsoon runoff ignores floodplain boundaries |
+| Oklahoma | Cheapest in the book at $465, driven by a $190,000 median building limit; 3.7× spread from 10th to 90th percentile |
+| Texas | 58% of quotes are Zone X — most Texas flood cover is voluntary — yet AE runs $892, a $278 zone gap |
+| Florida | 21% of properties exceed the NFIP's $250,000 statutory cap, the highest anywhere; AE $895 is the most expensive in the book |
+
+That state-specific evidence is what keeps these out of doorway-page territory.
+It is not decoration and should not be trimmed for length.
