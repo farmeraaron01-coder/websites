@@ -310,11 +310,26 @@ logged into wp-admin shows you what WordPress thinks, not what Googlebot
 receives. CFI looked fine to an admin for days while Google was served a
 frozen copy.
 
-Always verify anonymously — incognito, or:
+Always verify anonymously — incognito, or curl.
+
+**And anonymous alone is still not enough.** `x-proxy-cache: MISS` does not
+prove the response came from the origin. On 17 Aug 2026 a plain anonymous curl
+of two pages returned pre-edit content while reporting `MISS`, and the origin
+already had the edits — a confident, wrong "not applied" verdict that cost a
+round trip. Append a unique query string so the request gets a fresh cache key:
+
 ```bash
-curl -sSI https://site.com/sitemap.xml | grep -i x-proxy-cache   # want BYPASS
-curl -sSL https://site.com/sitemap.xml | grep -c "<loc>"
+CB="?cb=$(date +%s%N)"
+curl -sSI "https://site.com/sitemap.xml$CB" | grep -i x-proxy-cache   # want BYPASS
+curl -sSL "https://site.com/page/$CB" | grep -c "<loc>"
+
+# stale-cache check: differing sizes mean the plain URL is lying to you
+curl -sS -o /dev/null -w "plain %{size_download}\n" "https://site.com/page/"
+curl -sS -o /dev/null -w "bust  %{size_download}\n" "https://site.com/page/$CB"
 ```
+
+A query-string URL rules out the **nginx** layer only — both URLs still execute
+PHP, so this tells you what WordPress generates, not what a plugin cached.
 
 ---
 

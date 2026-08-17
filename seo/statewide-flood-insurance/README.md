@@ -270,19 +270,26 @@ paragraph, and having two candidates on disk while this table named a third,
 non-existent file (`hub-cost-by-state.html`) is the likeliest reason the hub
 edit did not land on the first attempt.
 
-## Published status — verified anonymously 17 Aug 2026
+## Published status — verified 17 Aug 2026
 
-Every check below was run with `curl` against the live site, not in wp-admin.
-All five URLs returned `x-proxy-cache: MISS`, so these are freshly generated
-responses, not stale cached copies.
+Every check below was run with `curl` against the live site, not in wp-admin,
+**and with a unique cache-busting query string**.
+
+> **Correction.** The first pass of this table recorded Florida and the hub as
+> "not applied". That was wrong. Those checks were plain anonymous fetches that
+> returned pre-edit content while reporting `x-proxy-cache: MISS` — a header
+> that normally means a fresh origin fetch. Re-fetching with `?cb=<nanoseconds>`
+> showed both edits live all along. **On this account a `MISS` does not prove
+> freshness.** Always cache-bust, and compare byte sizes with and without the
+> query string: 116,011 vs 121,021 on Florida was the tell.
 
 | Deliverable | Live state |
 |---|---|
 | `pages/arizona-flood-insurance.html` | ✅ **applied.** 200, exactly one H1, title carries $547, table has `<caption>` + 8 `scope` attributes, FloodSmart citation and CFI link present |
 | `pages/oklahoma-flood-insurance.html` | ✅ **applied.** 200, one H1, title carries $465, caption + 7 `scope`, FloodSmart and CFI links present |
 | `pages/texas-cost-section.html` | ✅ **applied.** All figures live — 367 properties, $670 median, $509–$970 IQR, AE $892, X $614, 16% above the NFIP cap. Caption, `scope`, FloodSmart and CFI links present. Following sections intact |
-| `pages/florida-cost-section.html` | ❌ **not applied.** The page still serves the original risk-profile table (~$400–$1,200 / ~$700–$1,363 / ~$2,000–$15,000+). None of 342, $681, $895, $617, $492, $984, 21% or $1,643 appear anywhere on the page. No `<caption>`, no `scope`, no FloodSmart citation |
-| `hub-cost-table.html` | ❌ **not applied.** The hub has one table, not two. $681, $670, $465 and $547 appear nowhere on the page. The `~$700–$1,363` Florida figure that a verification pass may read as confirmation is the **original NFIP table**, which was always there |
+| `pages/florida-cost-section.html` | ✅ **applied.** 342, $681, $895, $617, $1,643 all live; caption + 8 `scope`; FloodSmart citation; old risk-profile table gone. One gap: the swap dropped the in-body `/private-flood-insurance-cost/` link, which the revised 6,045-byte file restores |
+| `hub-cost-table.html` | ✅ **applied.** Two tables live; $681, $670 and $465 all present. Do not re-apply — a second paste duplicates the table |
 | `llms.txt` | ✅ **applied.** Arizona and Oklahoma both present; file is clean ASCII, so no `euc-jp` corruption from the cPanel editor |
 
 ### Also outstanding: Arizona and Oklahoma are in no sitemap

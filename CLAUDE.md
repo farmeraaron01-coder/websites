@@ -106,6 +106,16 @@ three days old while the other sites on the account had run within 24 hours.
 - **Logged-in requests bypass the cache.** Always verify sitemaps and robots in
   an incognito window or via curl. Checking while logged into wp-admin shows you
   what WordPress thinks, not what Googlebot receives.
+- **`x-proxy-cache: MISS` does NOT prove you got a fresh response.** On 17 Aug
+  2026 a plain anonymous curl of two statewidefloodinsurance.com pages returned
+  pre-edit content and reported `MISS`, while the origin already had the edits.
+  That produced a confident, wrong "the edit did not apply" verdict.
+  **Append a unique query string to every verification fetch**
+  (`?cb=$(date +%s%N)`). It changes the cache key, so the request reaches PHP.
+  Cross-check by comparing byte sizes with and without the query string — if
+  they differ, the plain URL is serving a stale copy and only the query-string
+  response is real. Remember that a query-string URL rules out the *nginx* layer
+  only; both URLs still execute PHP.
 
 **2. Rank Math's internal sitemap cache.**
 
