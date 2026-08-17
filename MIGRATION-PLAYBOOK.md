@@ -1,12 +1,102 @@
 # Divi → Kadence migration playbook
 
 Written 16 Aug 2026, after the California Flood Insurance migration and the two
-days of debugging that followed it. Next target:
+days of debugging that followed it. Updated 17 Aug 2026 after reading the
+content package and re-checking the live site. Next target:
 **cheapsoberlivinginsurance.com**.
 
 Sources: the CFI cutover (6 Aug 2026) and everything it broke; the
-`cheapsoberlivinginsurance.com` SEO audit of 26 June 2026, in Dropbox at
-`/Aaron Farmer/Claude CoWork Files/cheapsoberlivinginsurance.com-audit/`.
+`cheapsoberlivinginsurance.com` SEO audit of 26 June 2026; the Kadence content
+package of 8 Aug 2026. All three in Dropbox under
+`/Aaron Farmer/Claude CoWork Files/`.
+
+---
+
+# PART 0 — The content package, and what it does not settle
+
+The build spec already exists. It is
+`cheapsoberlivinginsurance.com-build/cheapsoberlivinginsurance-kadence-package.zip`
+(8 Aug 2026), and it is the newest file in that folder — newer than everything
+else in it, including the `site/` prototype. Four things inside:
+
+| File | What it is |
+|---|---|
+| `KADENCE-BUILD-GUIDE.md` | Global settings: palette, type scale, header/footer, six named Kadence patterns, SEO rules, performance rules |
+| `content/PAGE-BLUEPRINTS.md` | Ten pages with final copy, SEO title, meta description, hero image and FAQs |
+| `css/kadence-site.css` | 85 lines of finishing CSS, including a `prefers-reduced-motion` block |
+| `assets/images/` | Ten images with prescribed alt text |
+
+**The `site/` folder beside it is a Next.js prototype**, deployed at
+`sober-living-insurance.farmeraaron01.chatgpt.site`. The build guide is explicit:
+it is a visual reference, **do not import it**. Nothing in `site/` ships.
+
+## The package is good. These are the gaps it leaves.
+
+Six things the blueprints do not resolve. All of them are cheaper to settle now
+than after the pages are built.
+
+### 1. www vs non-www — the package contradicts the live site
+
+The build guide specifies canonicals and `InsuranceAgency` schema on
+`https://www.cheapsoberlivinginsurance.com/`. **The live site is the opposite**:
+verified 17 Aug, `www` returns a 301 to the apex, and the homepage canonical is
+`https://cheapsoberlivinginsurance.com/`. Pick one and make canonical, schema,
+`robots.txt`, the sitemap and WordPress siteurl/home all agree. Changing to www
+means redirecting every existing URL a second time — apex is the cheaper choice
+and the one already earning links.
+
+### 2. `/quote/` is already taken by a redirect
+
+The blueprint puts the quote page at `/quote/`. Live, **`/quote/` already 301s to
+`/quote-now/`**. Build the new page and that redirect either shadows it or loops.
+Delete the old rule and reverse it: `/quote-now/` → `/quote/`.
+
+### 3. The homepage and `/sober-living-home-insurance/` compete with each other
+
+Homepage H1: *"Insurance built for the business of sober living."*
+`/sober-living-home-insurance/` H1: *"Insurance built for the business of sober
+living"* — the same sentence minus the full stop. The SEO titles are near-twins
+too (`Sober Living Home Insurance | Property & Business Coverage` against
+`Sober Living Home Insurance | Specialized Business Coverage`).
+
+Two pages, one query. Give one of them a distinct angle before building, or fold
+the coverage page into the homepage. This is the same cannibalization problem we
+worked to avoid between the California and Statewide sites — cheaper to fix in a
+draft than in a live index.
+
+### 4. The three existing blog posts have nowhere to go
+
+Live and indexed today:
+
+- `/coping-with-challenges-in-sober-living-operations-top-ten-concerns-and-solutions/`
+- `/essential-checklist-to-safeguard-your-sober-living-home-from-liability-claims/`
+- `/why-professional-liability-insurance-is-crucial-for-operators-of-sober-living-homes/`
+
+The blueprint's `/resources/` page lists six resource cards but never says
+whether a card links to one of these posts or to something new. Two cards
+overlap the existing posts almost exactly — "When professional liability becomes
+important" and "Reducing everyday liability exposures". **Decide per card:
+link to the existing post, or rewrite and 301 the old URL to the new one.**
+Building both leaves duplicates.
+
+Note also that `/category/resources/` is live and indexed, and the new page is
+`/resources/`. Noindex the archive (Part 7 says so anyway) so they don't compete.
+
+### 5. Images are heavy and the OG image is enormous
+
+`og.png` is **1.89 MB**; `recovery-residence-exterior.jpg` is 543 KB,
+`communal-kitchen.jpg` 359 KB, `operator-planning.jpg` 297 KB. The build guide
+already says convert to WebP — do it at upload, not later, and get `og.png`
+under 300 KB. Preserve the prescribed alt text; it is written and it is good.
+
+### 6. Facts the blueprint deliberately leaves blank
+
+`PAGE-BLUEPRINTS.md` ends by saying the agency's complete legal name, physical
+address, states served, licences and social profiles must be added before launch
+and **"do not invent these fields."** That instruction is correct and it is
+still outstanding. Same for the contact block: the quote page lists
+`858-295-7242` and `aaron.farmer@jumpins.com` — a jumpins address on a
+cheapsoberliving site. Fine if intended, but it is a decision, not a default.
 
 ---
 
@@ -110,31 +200,73 @@ migration, because titles and descriptions do **not** transfer automatically.
 
 # PART 3 — What the migration fixes for free, and what it does not
 
-The June audit scored the site **32/100** and listed 4 phases of work. Migrating
-to Kadence resolves some of it automatically. Do not re-do those; do not assume
-it resolves the rest.
+The June audit scored the site **32/100**. **Roughly half of that audit is now
+out of date** — the site was partly remediated between June and August, and
+AIOSEO went 4.7.9 → 4.9.10. Everything below was re-verified against the live
+site on **17 Aug 2026**. Do not plan from the June PDF alone.
 
-## Solved by moving to Kadence + Rank Math
+## Already fixed on the live Divi site — nothing to carry forward
 
-| June audit finding | Why it goes away |
+| June audit finding | Verified state, 17 Aug 2026 |
 |---|---|
-| Zero schema markup (0/100) | Rank Math generates Organization, Person, Breadcrumb, Article and FAQPage automatically. CFI emits 7 valid schema items with no manual work. |
-| Viewport blocks zoom (`maximum-scale=1.0`) | A Divi output. Kadence does not do this. |
-| Google Fonts from external CDN | The CFI child theme self-hosts WOFF2 with `<link rel=preload>`. Copy that pattern. |
-| AIOSEO generator tag exposed | Different plugin. Check Rank Math's equivalent setting. |
-| Divi bloat / TTFB 1.0–1.3s | CFI's Kadence build serves one async script and GTM as the only third party. |
+| Title typo "Operartors" | **Gone.** Title is now `Sober Living Home Insurance California \| Cheap Sober Living Insurance` |
+| `/sample-page/` indexed | **Gone.** Returns 404 and is out of the sitemap |
+| Viewport blocks zoom | **Fixed.** `width=device-width, initial-scale=1.0`, no `maximum-scale` |
+| Zero schema markup (0/100) | **No longer zero.** AIOSEO emits 6 types: BreadcrumbList, Organization, WebPage, WebSite, FAQPage, InsuranceAgency/LocalBusiness |
+| Caching disabled, TTFB 1.0–1.3s | nginx page cache now returns `x-proxy-cache: HIT`; TTFB 0.49–0.89s |
+| No `llms.txt` | **Exists**, 1,683 bytes — but see the defect below |
 
-## NOT solved — content migrates with you
+Two defects surfaced while checking the above, both worth carrying into the new
+build rather than inheriting:
 
-| June audit finding | Still true after migration |
+- The `Organization` schema `name` reads **"Cheap Sober Living Insurance for
+  your"** — truncated mid-sentence. Set it deliberately in the new build.
+- `/llms.txt` has every line after the first indented with tabs, so a markdown
+  reader treats the whole file as one preformatted code block. Rewrite it flush
+  left.
+
+## Solved by moving to Kadence
+
+| Finding | Why it goes away |
 |---|---|
-| **Title typo: "Operartors"** | Content. Fix it during the rebuild, not after. |
-| `/sample-page/` indexed and in the sitemap | Delete it before migrating so it never enters the new sitemap. |
-| Blog 2.5 years stale (last post Feb 2024) | Content. The migration is the moment to publish. |
-| 9 of 13 images have empty alt text | Media library carries over. Fix during rebuild. |
-| No About page, no FAQ page | Both are E-E-A-T requirements for a YMYL-adjacent insurance site. |
-| No author bylines with credentials | CFI's byline pattern (name, CA licence #, "last reviewed" date) is worth copying wholesale. |
-| No `llms.txt` | Both CFI and Statewide have one. Write it during the build. |
+| Divi bloat — 280 KB homepage, 5,865 `et_pb_` occurrences | CFI's Kadence build serves one async script and GTM as the only third party |
+| Google Fonts from external CDN | The CFI child theme self-hosts WOFF2 with `<link rel=preload>`. Copy that pattern |
+| AIOSEO generator tag exposed | Different plugin, if you switch to Rank Math. Check its equivalent setting |
+
+## NOT solved — still true today, and content migrates with you
+
+| Finding | Verified state, 17 Aug 2026 |
+|---|---|
+| **Three `<h1>` on the homepage** | "Sober Living Home Insurance", "Reach Us", "Want a Quote? start here". The blueprint gives one H1 per page — build to it |
+| **9 of 13 images have empty alt text** | Unchanged since June. The package ships prescribed alt text for all ten new images; use it |
+| **Blog stale since Feb 2024** | `post-sitemap.xml` lastmod is still 2024-02-20. The migration is the moment to publish |
+| **No About page** | `/about/` 404s. The blueprint has one written and ready |
+| No author bylines with credentials | CFI's byline pattern (name, CA licence #, "last reviewed" date) is worth copying wholesale |
+
+---
+
+# PART 3b — The redirect map
+
+Small site, so this is the whole of it. Every live URL, and where it goes.
+
+| Live URL | Disposition |
+|---|---|
+| `/` | Stays. New homepage |
+| `/quote-now/` | **301 → `/quote/`**, and delete the existing `/quote/` → `/quote-now/` rule first |
+| `/coping-with-challenges-in-sober-living-operations…/` | Keep or 301 into a Resources article — decide, don't leave it orphaned |
+| `/essential-checklist-to-safeguard-your-sober-living-home…/` | Overlaps Resources card 6. Keep or 301 |
+| `/why-professional-liability-insurance-is-crucial…/` | Overlaps Resources card 3. Keep or 301 |
+| `/category/resources/` | Noindex. Do not let it compete with the new `/resources/` page |
+| `/tag/halfway-house-insurance/`, `/tag/sober-insurance/`, `/tag/sober-living-insurance/` | Noindex |
+| `/llms.txt`, `/robots.txt` | Rewrite for the new structure |
+
+New URLs with no predecessor — all ten are net-new except `/` and the quote
+page: `/sober-living-home-insurance/`, `/commercial-property-business-income/`,
+`/general-liability/`, `/professional-liability/`, `/workers-compensation/`,
+`/who-we-insure/`, `/resources/`, `/about/`.
+
+`/quote/` is currently a redirect, so it needs the extra step in the table
+above. Nothing else in the new set collides with a live URL.
 
 ---
 
