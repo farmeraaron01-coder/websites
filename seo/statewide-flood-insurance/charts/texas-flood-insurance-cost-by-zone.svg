@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 246" width="100%" height="auto" role="img" aria-labelledby="t-texas-flood-insurance-cost-by-zone d-texas-flood-insurance-cost-by-zone" style="max-width:720px;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif">
+<title id="t-texas-flood-insurance-cost-by-zone">Texas median annual private flood premium by FEMA flood zone</title>
+<desc id="d-texas-flood-insurance-cost-by-zone">Horizontal bar chart. Zone AE $892 from 108 properties, Zone X $614 from 212, Zone A $582 from 32. Texas median across all zones is $670.</desc>
+<text x="0" y="24" font-size="17" font-weight="700" fill="#12283f">Texas flood insurance cost by zone</text>
+<text x="0" y="45" font-size="13" fill="#4a5a66">Median all-in annual premium, 367 properties quoted Feb 2025 – Aug 2026</text>
+<text x="92" y="86.0" text-anchor="end" font-size="14" font-weight="600" fill="#12283f">Zone AE</text>
+<rect x="104" y="64" width="498.1" height="34" rx="4" fill="#0A9B95"/>
+<text x="612.1" y="82.0" font-size="14" font-weight="700" fill="#12283f">$892</text>
+<text x="612.1" y="96.0" font-size="11.5" fill="#7f8d97">108 quoted</text>
+<text x="92" y="134.0" text-anchor="end" font-size="14" font-weight="600" fill="#12283f">Zone X</text>
+<rect x="104" y="112" width="342.9" height="34" rx="4" fill="#0A9B95"/>
+<text x="456.9" y="130.0" font-size="14" font-weight="700" fill="#12283f">$614</text>
+<text x="456.9" y="144.0" font-size="11.5" fill="#7f8d97">212 quoted</text>
+<text x="92" y="182.0" text-anchor="end" font-size="14" font-weight="600" fill="#12283f">Zone A</text>
+<rect x="104" y="160" width="325.0" height="34" rx="4" fill="#0A9B95"/>
+<text x="439.0" y="178.0" font-size="14" font-weight="700" fill="#12283f">$582</text>
+<text x="439.0" y="192.0" font-size="11.5" fill="#7f8d97">32 quoted</text>
+<line x1="104" y1="56" x2="104" y2="202" stroke="#dfe4e7" stroke-width="1"/>
+<text x="0" y="230" font-size="11.5" fill="#7f8d97">Statewide Flood Insurance · one row per property · all-in = premium, policy fee and surplus lines taxes</text>
+</svg>
