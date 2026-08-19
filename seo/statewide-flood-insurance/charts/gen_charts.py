@@ -68,18 +68,57 @@ def range_chart(rows, fname):
     open(os.path.join(OUT,fname+".svg"),"w").write("\n".join(p))
     return H
 
-bar_chart("Arizona",[("Zone AE",581,107),("Zone X",568,32),("Zone A",558,36),("Zone AO",464,23)],203,
-  "arizona-flood-insurance-cost-by-zone",
-  "Horizontal bar chart. Zone AE $581 from 107 properties, Zone X $568 from 32, Zone A $558 from 36, Zone AO $464 from 23. Arizona median across all zones is $547.")
-bar_chart("Oklahoma",[("Zone AE",519,47),("Zone A",470,20),("Zone X",372,23)],93,
-  "oklahoma-flood-insurance-cost-by-zone",
-  "Horizontal bar chart. Zone AE $519 from 47 properties, Zone A $470 from 20, Zone X $372 from 23. Oklahoma median across all zones is $465.")
-bar_chart("Texas",[("Zone AE",892,108),("Zone X",614,212),("Zone A",582,32)],367,
-  "texas-flood-insurance-cost-by-zone",
-  "Horizontal bar chart. Zone AE $892 from 108 properties, Zone X $614 from 212, Zone A $582 from 32. Texas median across all zones is $670.")
-bar_chart("Florida",[("Zone AE",895,103),("Zone AH",824,13),("Zone X",617,198),("Zone A",562,24)],342,
+
+def dist_chart(state, pts, n_total, fname, desc, note):
+    """pts: [(label, value)] ascending; median flagged by label 'Median'"""
+    W=720; PADL=30; PADR=40; TOP=76; BOT=64
+    H=TOP+150+BOT
+    mx=max(v for _,v in pts)*1.12
+    sc=(W-PADL-PADR)/mx
+    vals=[v for _,v in pts]
+    lo,hi=min(vals),max(vals)
+    med=[v for l,v in pts if l=="Median"][0]
+    p25=[v for l,v in pts if l=="25th"][0]; p75=[v for l,v in pts if l=="75th"][0]
+    p=[]
+    p.append(f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {W} {H}" width="100%" height="auto" '
+             f'role="img" aria-labelledby="t-{fname} d-{fname}" style="max-width:{W}px;font-family:{FONT}">')
+    p.append(f'<title id="t-{fname}">{esc(state)} private flood insurance premium spread</title>')
+    p.append(f'<desc id="d-{fname}">{esc(desc)}</desc>')
+    p.append(f'<text x="0" y="24" font-size="17" font-weight="700" fill="{INK}">What {esc(state)} homeowners actually pay</text>')
+    p.append(f'<text x="0" y="45" font-size="13" fill="{SEC}">All-in annual premium spread, {n_total} properties quoted Feb 2025 – Aug 2026</text>')
+    ybar=TOP+34
+    x_lo=PADL+lo*sc; x_hi=PADL+hi*sc; x25=PADL+p25*sc; x75=PADL+p75*sc; xm=PADL+med*sc
+    p.append(f'<line x1="{x_lo:.1f}" y1="{ybar+13}" x2="{x_hi:.1f}" y2="{ybar+13}" stroke="{TEAL}" stroke-width="3" stroke-linecap="round" opacity="0.3"/>')
+    p.append(f'<rect x="{x25:.1f}" y="{ybar}" width="{x75-x25:.1f}" height="26" rx="4" fill="{TEAL}" opacity="0.55"/>')
+    p.append(f'<rect x="{xm-2:.1f}" y="{ybar-7}" width="4" height="40" rx="2" fill="{INK}"/>')
+    for lab,v in pts:
+        x=PADL+v*sc
+        up = lab in ("Median","10th","90th")
+        ty = ybar-18 if up else ybar+52
+        p.append(f'<text x="{x:.1f}" y="{ty}" text-anchor="middle" font-size="13" font-weight="{"700" if lab=="Median" else "600"}" fill="{INK}">${v:,}</text>')
+        p.append(f'<text x="{x:.1f}" y="{ty+(-15 if up else 15)}" text-anchor="middle" font-size="11" fill="{MUT}">{esc(lab)}</text>')
+    p.append(f'<text x="0" y="{H-34}" font-size="12" fill="{SEC}">{esc(note)}</text>')
+    p.append(f'<text x="0" y="{H-14}" font-size="11.5" fill="{MUT}">Statewide Flood Insurance · one row per property · shaded band = middle half of quotes</text>')
+    p.append('</svg>')
+    open(os.path.join(OUT,fname+".svg"),"w").write(chr(10).join(p))
+
+# Zone charts ONLY where every plotted zone clears n>=50.
+bar_chart("Florida",[("Zone AE",895,103),("Zone X",617,198)],342,
   "florida-flood-insurance-cost-by-zone",
-  "Horizontal bar chart. Zone AE $895 from 103 properties, Zone AH $824 from 13, Zone X $617 from 198, Zone A $562 from 24. Florida median across all zones is $681.")
+  "Horizontal bar chart. Zone AE $895 from 103 properties, Zone X $617 from 198 properties. These are the two Florida zones with enough quoted properties to report a stable median. Florida median across all zones is $681.")
+bar_chart("Texas",[("Zone AE",892,108),("Zone X",614,212)],367,
+  "texas-flood-insurance-cost-by-zone",
+  "Horizontal bar chart. Zone AE $892 from 108 properties, Zone X $614 from 212 properties. These are the two Texas zones with enough quoted properties to report a stable median. Texas median across all zones is $670.")
+
+# Arizona and Oklahoma: zone samples too thin and zone gaps inside the noise -> show the spread.
+dist_chart("Arizona",[("10th",398),("25th",464),("Median",547),("75th",800)],203,
+  "arizona-flood-insurance-premium-spread",
+  "Range chart of Arizona premiums. Tenth percentile $398, twenty-fifth $464, median $547, seventy-fifth $800.",
+  "Arizona zone medians sit within $23 of each other — the zone letter is not what sets the price here.")
+dist_chart("Oklahoma",[("10th",302),("25th",350),("Median",465),("75th",675),("90th",1109)],93,
+  "oklahoma-flood-insurance-premium-spread",
+  "Range chart of Oklahoma premiums. Tenth percentile $302, twenty-fifth $350, median $465, seventy-fifth $675, ninetieth $1,109.",
+  "One Oklahoma property in ten prices above $1,109 — more than double the state median.")
 
 hub=[("Connecticut",869,623,1162,134),("Alabama",782,539,1592,99),("Oregon",760,639,883,219),
 ("New Jersey",748,430,1143,134),("California",719,509,867,3130),("North Carolina",712,486,1069,168),

@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 290" width="100%" height="auto" role="img" aria-labelledby="t-arizona-flood-insurance-premium-spread d-arizona-flood-insurance-premium-spread" style="max-width:720px;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif">
+<title id="t-arizona-flood-insurance-premium-spread">Arizona private flood insurance premium spread</title>
+<desc id="d-arizona-flood-insurance-premium-spread">Range chart of Arizona premiums. Tenth percentile $398, twenty-fifth $464, median $547, seventy-fifth $800.</desc>
+<text x="0" y="24" font-size="17" font-weight="700" fill="#12283f">What Arizona homeowners actually pay</text>
+<text x="0" y="45" font-size="13" fill="#4a5a66">All-in annual premium spread, 203 properties quoted Feb 2025 – Aug 2026</text>
+<line x1="318.7" y1="123" x2="610.4" y2="123" stroke="#0A9B95" stroke-width="3" stroke-linecap="round" opacity="0.3"/>
+<rect x="366.6" y="110" width="243.7" height="26" rx="4" fill="#0A9B95" opacity="0.55"/>
+<rect x="424.8" y="103" width="4" height="40" rx="2" fill="#12283f"/>
+<text x="318.7" y="92" text-anchor="middle" font-size="13" font-weight="600" fill="#12283f">$398</text>
+<text x="318.7" y="77" text-anchor="middle" font-size="11" fill="#7f8d97">10th</text>
+<text x="366.6" y="162" text-anchor="middle" font-size="13" font-weight="600" fill="#12283f">$464</text>
+<text x="366.6" y="177" text-anchor="middle" font-size="11" fill="#7f8d97">25th</text>
+<text x="426.8" y="92" text-anchor="middle" font-size="13" font-weight="700" fill="#12283f">$547</text>
+<text x="426.8" y="77" text-anchor="middle" font-size="11" fill="#7f8d97">Median</text>
+<text x="610.4" y="162" text-anchor="middle" font-size="13" font-weight="600" fill="#12283f">$800</text>
+<text x="610.4" y="177" text-anchor="middle" font-size="11" fill="#7f8d97">75th</text>
+<text x="0" y="256" font-size="12" fill="#4a5a66">Arizona zone medians sit within $23 of each other — the zone letter is not what sets the price here.</text>
+<text x="0" y="276" font-size="11.5" fill="#7f8d97">Statewide Flood Insurance · one row per property · shaded band = middle half of quotes</text>
+</svg>

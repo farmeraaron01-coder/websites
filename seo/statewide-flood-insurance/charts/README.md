@@ -6,10 +6,10 @@ table, so the chart and the table cannot disagree.
 
 | File | Page | Form |
 |---|---|---|
-| `arizona-flood-insurance-cost-by-zone.svg` | `/arizona-flood-insurance/` | Horizontal bar, 4 zones |
-| `oklahoma-flood-insurance-cost-by-zone.svg` | `/oklahoma-flood-insurance/` | Horizontal bar, 3 zones |
-| `texas-flood-insurance-cost-by-zone.svg` | `/texas-flood-insurance/` | Horizontal bar, 3 zones |
-| `florida-flood-insurance-cost-by-zone.svg` | `/florida-flood-insurance/` | Horizontal bar, 4 zones |
+| `florida-flood-insurance-cost-by-zone.svg` | `/florida-flood-insurance/` | Horizontal bar, AE vs X |
+| `texas-flood-insurance-cost-by-zone.svg` | `/texas-flood-insurance/` | Horizontal bar, AE vs X |
+| `arizona-flood-insurance-premium-spread.svg` | `/arizona-flood-insurance/` | Percentile spread |
+| `oklahoma-flood-insurance-premium-spread.svg` | `/oklahoma-flood-insurance/` | Percentile spread |
 | `flood-insurance-cost-by-state-range.svg` | `/flood-insurance-cost-by-state/` | Range plot, 27 states |
 
 ## How to embed
@@ -34,15 +34,49 @@ Wrap each one like this, directly **above** the existing data table:
 The chart goes above the table, not instead of it. The table stays — it is the
 accessible alternative view and the better source for AI extraction.
 
+## Why these do not chart every zone
+
+A first draft charted all four Florida zones and put **Zone X ($617) above Zone
+A ($562)** — low-risk apparently costing more than high-risk. That is backwards
+against everything known about flood zones, and it is an artifact.
+
+Checked across all 81 state-zone rows:
+
+- **Zone X prices below Zone A in 14 of the 17 states** where both are reported.
+  California, our largest book by far, is unambiguous: X $516 from 455
+  properties against A $711 from 480.
+- **It inverts in exactly three states — Florida, Texas and Arizona** — and in
+  all three the Zone A sample is tiny against the Zone X sample: 24 vs 198 in
+  Florida, 32 vs 212 in Texas, 36 vs 32 in Arizona.
+- **Zone AE prices above Zone X in 25 of 25 states.** That comparison is solid
+  everywhere and is what the charts show.
+
+So the rule applied here: **a zone is only charted when it clears 50 quoted
+properties.** That leaves Florida and Texas with a clean AE-vs-X comparison and
+leaves Arizona and Oklahoma with no chartable zone at all.
+
+Arizona would fail on a second count anyway — its zone medians are AE $581, X
+$568, A $558, a $23 total spread on samples of 107, 32 and 36. Those differences
+are inside the noise, and a bar chart would draw visible distinctions that the
+data does not support. Arizona and Oklahoma therefore get a **percentile spread**
+instead, which is well supported at n=203 and n=93 and makes the stronger point:
+the variation within a state dwarfs the variation between zones.
+
+> **Open item for the live pages.** The published tables on Florida, Texas and
+> Arizona still show the inverted Zone A row, and the hub's methodology note sets
+> the reporting threshold at "at least 10 properties" — too low for a figure a
+> reader will treat as a price. Raising that to 50 and dropping the thin rows is
+> a content decision, not a chart fix.
+
 ## Captions
 
-**Arizona** — Arizona zone medians sit within roughly $120 of each other, from
-$464 in Zone AO to $581 in Zone AE. Under Risk Rating 2.0 the zone letter
-determines whether your lender requires cover; it does not determine your price.
+**Arizona** — Half of Arizona quotes land between $464 and $800, against a
+median of $547. Arizona's zone medians sit within $23 of each other, so the zone
+letter tells you whether a lender requires cover — not what you will pay.
 
-**Oklahoma** — Oklahoma Zone X at $372 is the least expensive figure anywhere in
-our national book. The state median is $465, but one property in ten prices
-above $1,109.
+**Oklahoma** — Half of Oklahoma quotes land between $350 and $675, against a
+median of $465. But one property in ten prices above $1,109, which is what a
+flash-flood state looks like in pricing data.
 
 **Texas** — Texas Zone AE at $892 prices $278 above Zone X at $614, one of the
 widest zone gaps in our book — Texas coastal and bayou AE zones carry genuine
