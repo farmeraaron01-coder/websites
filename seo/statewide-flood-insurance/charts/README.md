@@ -71,8 +71,14 @@ the variation within a state dwarfs the variation between zones.
 ## Captions
 
 **Arizona** — Half of Arizona quotes land between $464 and $800, against a
-median of $547. Arizona's zone medians sit within $23 of each other, so the zone
-letter tells you whether a lender requires cover — not what you will pay.
+median of $547. Zone AE, the only Arizona zone with enough quotes to publish,
+sits just $34 above that median.
+
+> The earlier version of this caption said Arizona's zone medians sit within $23
+> of each other. That $23 is derived from the Zone A, X and AO medians which the
+> 50-quote threshold suppresses — we cannot call them too thin to publish and
+> then publish a conclusion drawn from them. It is also wrong: Zone AO is $117
+> below Zone AE, not $23.
 
 **Oklahoma** — Half of Oklahoma quotes land between $350 and $675, against a
 median of $465. But one property in ten prices above $1,109, which is what a

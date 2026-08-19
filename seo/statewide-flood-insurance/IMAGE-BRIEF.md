@@ -77,7 +77,8 @@ Generate at **1600×900**. Re-crop each to **1200×630** for the social image.
 - **Filename:** `arizona-desert-wash-flooding-phoenix.webp`
 - **Title:** Arizona Desert Wash Flooding Near Phoenix Homes
 - **Alt:** Desert wash running behind suburban homes near Phoenix after monsoon rain
-- **Caption:** Most Arizona flood exposure is monsoon flash flooding through desert washes like this one, not river rise. Zone AO — shallow sheet flow — is the least expensive cover we write in the state, at a median of $464 a year.
+- **Caption:** Most Arizona flood exposure is monsoon flash flooding through desert washes like this one, not river rise &mdash; a hazard that regularly reaches homes well outside the mapped floodplain.
+- **Note:** the original version of this caption cited Zone AO at $464. That zone has 23 quoted properties, below the 50 needed to publish a median, so the figure was withdrawn. Do not reinstate it.
 
 ### Oklahoma — `/oklahoma-flood-insurance/`
 - **Filename:** `oklahoma-creek-flooding-after-heavy-rain.webp`
