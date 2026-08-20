@@ -376,6 +376,37 @@ Made this mistake twice in one day. New pages get standalone drafts. Existing
 pages get a **section replacement anchored on a heading already present**, or a
 clearly framed addition — never an unlabelled swap.
 
+## Plan the theme-edit path BEFORE you need it
+
+On the `mrtaco5` account, **WordPress's Theme File Editor reports success and
+does not write.** Cause identified 21 Aug 2026: **Wordfence 9.0.0** intercepts
+theme-file writes posted through wp-admin. The green banner still appears. It is
+not a filesystem problem — `lsattr` is clean, ownership is correct, and the same
+edit lands instantly through cPanel Terminal.
+
+Two hours were lost to this across two sessions before the cause was found.
+
+- **Do not disable Wordfence to get an edit through.** The Terminal path works.
+- Decide the edit path at build time: cPanel Terminal, File Manager or SFTP.
+- Back up first (`cp -p file.php file.php.bak-<date>`), `php -l` after.
+- Write via a base64-piped script that asserts each target string occurs exactly
+  once. No `sed`, no shell-escaping the payload.
+
+## Do not build a recency-ordered related-content rail
+
+The Statewide child theme has a sidebar rail driven by
+`WP_Query( orderby => modified, posts_per_page => 5, post__not_in => [self] )`
+over pages flagged with a `_cfi_badge` meta.
+
+It looks harmless. What it actually does is hand **~70 sitewide internal links
+to whichever pages were edited most recently**, and reshuffle the entire link
+graph every time anyone saves a page. Four pages held 73 inbound links each
+purely because someone touched them a week earlier; 22 state pages had one.
+
+If you want a related-content rail, key it off a **static topical map** so the
+link graph is deterministic. Recency is not relevance, and a self-churning
+internal link structure regenerates the same audit finding after every edit.
+
 ## Other traps
 
 - **The post title and the SEO title are separate fields.** Changing the Rank
@@ -445,6 +476,81 @@ Honest list from this engagement.
    nobody had confirmed where. Verify before the deletion, not after.
 4. **Two find-and-replace blocks were written from rendered HTML.** See Part 6.
 5. **Content was drafted before reading the target page.** Twice.
+6. **A work order was written from memory, not from the live site.** Three of
+   seven tasks in one batch were already done; the operator burned three
+   round-trips confirming no-ops. Re-check state at drafting time, not only at
+   verification time.
+7. **A "fix" was recommended for a measurement never taken.** 66 KB of inline
+   CSS was called a page-speed problem. The pages transfer at 30 KB gzipped, and
+   34 KB of that CSS was a documented child-theme decision citing a real PSI
+   measurement. Measuring uncompressed characters and calling it transfer weight
+   would have reversed a good decision.
+8. **A consolidation was proposed for three pages nobody had read.** Similar
+   titles and lopsided impressions looked like duplication. Measured overlap was
+   19-20% (the templates that genuinely worried us ran 42-46%) and the three
+   pages did different jobs. 301ing them would have destroyed working content.
+9. **Edits were sequenced ahead of the data that made them moot.** Two cost
+   pages were corrected an hour before a Search Console pull said to redirect
+   them away. Pull the data first when the data decides whether the page lives.
 
 The common thread: **verify the current state before acting on a belief about
 it.** Every one of these was cheap to check and expensive to get wrong.
+
+---
+
+# PART 9 — How to run the build with an operator
+
+Most of this week's work was done by another agent driving a browser and a
+terminal while this session wrote the instructions. That split worked, and it
+worked because of a specific contract. Use the same one.
+
+## The contract
+
+Every work order carries:
+
+1. **A before-state to confirm.** Not just "edit page X" — "page X should
+   currently contain A, B and C; if it does not, stop and report." This is the
+   single highest-value line in any batch. It caught a stale caption, a
+   methodology footnote nobody knew about, and a file that had moved on.
+2. **An explicit stop condition.** *"If any task requires a judgement call not
+   written here, STOP and report instead of deciding."* Operators honour this
+   when it is stated and improvise when it is not.
+3. **A verification block with pass conditions**, written so a wrong result is
+   obvious rather than arguable.
+4. **A rollback line** — the backup filename, the SQL, the revert path.
+
+## What it caught
+
+The operator stopped on: a four-byte discrepancy in a patched theme file, a
+plugin the instructions assumed was installed and was not, a documented
+performance decision the instructions would have reversed, a methodology
+footnote that made a renumbering wrong, and three tasks already complete.
+
+Every one of those was an error in the instructions, not the execution.
+
+## The rule that follows
+
+**Write the batch expecting it to be wrong somewhere.** Give the operator the
+means to detect that — before-states, pass conditions, stop authority — rather
+than instructions confident enough to be followed off a cliff. A batch that
+cannot fail visibly is a batch that fails invisibly.
+
+---
+
+# PART 10 — Set the data-publishing threshold before publishing data
+
+Statewide publishes premium medians from a proprietary quote book. Before that
+was disciplined it published a Florida table showing Zone X above Zone A — low
+risk apparently costing more than high risk — because the Zone A figure came
+from 24 properties and the Zone X figure from 198.
+
+The rule adopted: **publish a segment median only where the segment has at least
+50 observations**, the same threshold a state already had to clear to appear at
+all. That dropped 51 of 81 zone rows. It was the correct outcome; those medians
+were never stable enough to publish.
+
+Decide the equivalent number before the first data page goes live, not after a
+reader spots an inversion. And apply it everywhere at once — the same figures
+leak into meta descriptions, chart captions, image captions and `llms.txt`, and
+each is a separate edit. Withdrawing a number from the page body while it still
+sits in the Rank Math snippet is not withdrawing it.
