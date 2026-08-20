@@ -1,5 +1,28 @@
 # Live-site verification — 20 August 2026
 
+> ## Second pass, later the same day — after Kimi's fixes
+>
+> Re-verified against live HTML, cache-busted. **3 of 5 tasks fully done, 1 partial, 1 not started.**
+>
+> | Task | Result |
+> |---|---|
+> | **1. 15 meta descriptions** | ✅ **Done.** All 15 present and **138–155 chars** (were 162–181). No "Palm Desert" in any title or description. `/contact-us/` title now reads "San Diego CA". |
+> | **2. Noindex 8 utility pages** | ❌ **Not started.** All 8 still return 200 with **no robots meta at all**. |
+> | **3. llms.txt** | ✅ **Done.** 658 bytes plain text, "in San Diego, California", zero `palm-desert`, `condo-insurance` and the CheapEarthquakeInsurance cross-link both present. |
+> | **4. Headers + pingback** | ⚠️ **WP half done, server half open.** WPCode snippet is live: `x-content-type-options`, `x-frame-options`, `referrer-policy`, `x-xss-protection`, `permissions-policy` all set, and the xmlrpc pingback is gone from source and headers. Still missing: **`Strict-Transport-Security` (HSTS)** and **`server_tokens off`** (`server: nginx/1.31.1` still disclosed) — both nginx-level, needing server access. |
+> | **5. Trucking H1** | ✅ **Done.** Exactly one `<h1>`: "Trucking & Transportation Insurance in California". |
+>
+> **Regression check — no collateral damage.** Both FAQ posts still intact: earthquake 1 FAQPage
+> block / 4 schema Qs / 4 `h3` / 4 of 4 visible; flood-zones 1 / 5 / 5 / 5 of 5.
+>
+> **Note on caching:** an uncached request is required to see the security headers. A cached hit
+> (`x-proxy-cache: HIT`) can serve a response that predates the snippet — the first check here
+> showed only `referrer-policy` until cache-busted, which was a measurement artifact, not a
+> partial install.
+>
+> **Remaining work:** noindex the 8 utility pages (Yoast, ~30 min), and HSTS + `server_tokens off`
+> at the nginx level.
+
 First check against the live sites rather than the June 23 crawl. Method: raw HTML and headers
 fetched directly (browser UA + Accept header; a bare `curl` UA gets a 406 from the site's bot
 filter), then parsed. Everything below is measured, not inferred.
