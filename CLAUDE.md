@@ -184,6 +184,25 @@ works, is proven, and does not weaken the site to save five minutes.
 the file up first (`cp -p schema.php schema.php.bak-<date>`) and run `php -l`
 after — a syntax error in a shared theme file white-screens both brands at once.
 
+## Rank Math emits the meta description four times — grep the body, not the page
+
+`rank_math_description` is printed as `<meta name="description">`,
+`og:description`, `twitter:description` and the JSON-LD `description`. A whole-
+document grep for a figure therefore returns four head hits before it reaches
+anything in the body, and a verification command written against the whole page
+will report a number as "still present" when only the metadata holds it.
+
+Split the document before counting:
+
+```bash
+sed -n '1,/<\/head>/p'  page.html   # metadata
+sed -n '/<body/,$p'      page.html   # content
+```
+
+Found 21 Aug 2026 when a body edit landed correctly on three cost-rates pages
+and the verification grep still reported the old figures — they were in the
+Rank Math snippet, which is a separate field and a separate edit.
+
 ## CFI's Rank Math Redirections UI is broken
 
 CFI runs an older Rank Math build whose Redirections page never renders the
