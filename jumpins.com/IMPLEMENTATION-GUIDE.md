@@ -11,13 +11,17 @@ jumpins.com/
 │   ├── llms.txt                    ← upload to site root
 │   ├── schema-homepage.json        ← InsuranceAgency JSON-LD for homepage
 │   ├── schema-san-diego.json       ← for /contact-us/san-diego-office/
-│   ├── schema-palm-desert.json     ← for /palm-desert-office/ (fill in street address)
 │   ├── schema-faq-earthquake-example.json ← FAQPage template
 │   ├── meta-descriptions.md        ← copy/paste titles + meta descriptions
 │   ├── functions-snippet.php       ← WPCode snippet (viewport, xmlrpc, security headers)
 │   └── nginx-snippet.conf          ← for hosting admin (redirects, HSTS, caching)
 └── content/blog/                   ← 3 publish-ready posts with checklists
 ```
+
+> **Scope: San Diego only.** Per Aaron's instruction of 6 Aug 2026, jumpins.com content targets
+> San Diego County and does not promote the Palm Desert office — no Coachella Valley geography,
+> no `/palm-desert-office/` links, no Palm Desert schema or local SEO work. Statewide and
+> county-wide framing is fine; it is the second location specifically that stays out.
 
 **Site:** WordPress + Divi 4.27.5 + Yoast SEO (free)
 **Baseline (June 23, 2026 audit):** overall health 43/100 · content 52 · schema 22 · GEO/AI 28 · performance 42
@@ -55,7 +59,7 @@ The homepage and all blog posts render **zero H1/H2 tags** in crawlable HTML (Di
 
 ## FIX 5 — Schema JSON-LD (1.5 hrs) 🟠 HIGH
 
-⚠️ **Before publishing:** replace the `REPLACE-WITH-…` placeholders in the schema files with the real Facebook / LinkedIn / Yelp / Google Business Profile URLs, and the Palm Desert street address + ZIP.
+⚠️ **Before publishing:** replace the `REPLACE-WITH-…` placeholders in the schema files with the real Facebook / LinkedIn / Yelp / Google Business Profile URLs.
 ℹ️ **AggregateRating:** the homepage schema includes the Google review rating (4.9 / 75 reviews, shown on-site via the reviews plugin). Before pasting, update `ratingValue` and `reviewCount` to match the current live Google numbers, and keep them roughly in sync going forward — Google requires the markup to reflect reviews actually displayed on the page. If the reviews plugin already outputs its own AggregateRating schema, remove the block from this file instead so the page doesn't declare it twice.
 
 For each page, add a Divi Code module (or Custom HTML block) at the bottom containing:
@@ -68,7 +72,6 @@ For each page, add a Divi Code module (or Custom HTML block) at the bottom conta
 
 - Homepage → `schema-homepage.json`
 - `/contact-us/san-diego-office/` → `schema-san-diego.json`
-- `/palm-desert-office/` → `schema-palm-desert.json` (also add the street address to the visible page content — it's currently missing)
 
 Also: Yoast SEO → Search Appearance → General → Knowledge Graph: set Organization = Jump Insurance Services, upload logo, add the same social profile URLs.
 
@@ -132,4 +135,4 @@ The posts in `content/blog/` are publish-ready. Each has a header block with slu
 
 ## After this: the content program
 
-See `seo-geo-content-assessment.md` §5 — Q&A restructure of the auto/home/business pages with FAQPage schema, 4 local landing pages (San Diego ×2, Palm Desert ×2), and a 2-posts/month pipeline (SR-22, Mexico auto, FAIR Plan, San Diego flood zones, "what we're seeing in renewals" series).
+See `seo-geo-content-assessment.md` §5 — Q&A restructure of the auto/home/business pages with FAQPage schema, San Diego local landing pages, and a 2-posts/month pipeline ("what we're seeing in renewals" series and the remaining topics; SR-22, Mexico auto, FAIR Plan and San Diego flood zones have since been published).

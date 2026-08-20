@@ -40,7 +40,7 @@ Jump has angles that commodity content sites *cannot* replicate. This is what "s
 1. **Independent agency, real market access** — side-by-side CEA vs. private earthquake carrier comparisons, admitted vs. surplus lines options. NerdWallet can't quote a live market; Jump can.
 2. **California crisis expertise** — non-renewals, FAIR Plan migration, wildfire market exits. Homeowners are desperately searching this and getting national-generic answers.
 3. **Flood / surplus lines depth** — flood zone and lender-requirement content specific to San Diego and Riverside counties.
-4. **Two physical locations** — San Diego + Palm Desert local pages with local specificity (fire zones, quake faults, desert-specific risks) can own local pack + "near me" AI answers.
+4. **A real local footprint** — San Diego County local pages with genuine local specificity (fire zones, quake faults, flood zones by neighborhood) can own local pack + "near me" AI answers. *(Scope note: per Aaron's 6 Aug 2026 instruction, jumpins.com content targets San Diego only — the Palm Desert office is excluded from all content, schema, and local SEO work.)*
 5. **First-person agent observations** — "what we're seeing in 2026 renewals" content is unfakeable E-E-A-T and exactly what AI engines quote.
 
 ## 4. Fastest win: three strong posts are already written and (as of the June audit) unpublished
@@ -58,7 +58,7 @@ Publishing these with author byline + CA license number, visible dates, meta des
 1. **Unblock (Week 1):** remove `Crawl-delay: 30`, fix H1 rendering, deploy the drafted `llms.txt` and meta descriptions (all pre-written in the Dropbox `fixes/` folder).
 2. **Publish the 3 drafted posts** with full E-E-A-T dressing (byline, license #, dates, schema).
 3. **Restructure the 3 money pages** (auto, home, business) around explicit questions with concise answers directly under each H2, marked up with FAQPage schema. Cut filler sections; add California-specific cost ranges and carrier-access proof points.
-4. **Build 4 local landing pages:** `/san-diego/auto-insurance/`, `/san-diego/home-insurance/`, `/palm-desert/home-insurance/`, `/palm-desert/earthquake-insurance/` — 800+ words each of genuinely local content, InsuranceAgency schema.
+4. **Build San Diego local landing pages:** `/san-diego/auto-insurance/`, `/san-diego/home-insurance/`, `/san-diego/earthquake-insurance/` — 800+ words each of genuinely local content, InsuranceAgency schema.
 5. **Pipeline (2 posts/month):** SR-22 California · Mexico auto insurance day trips · FAIR Plan explained · San Diego flood zone maps & lender requirements · condo vs. renters · what a BOP actually covers in California · "what we're seeing in 2026 renewals" (recurring first-person series).
 
 Every piece should follow the same formula: **a question a Californian actually asks + a specific answer with numbers + proof only an independent agent can offer + schema that lets machines quote it.**

@@ -1,5 +1,5 @@
 # Jump Insurance Services
-> Independent insurance agency in San Diego and Palm Desert, California. We help individuals, families, and businesses find the best insurance coverage at the lowest cost from top-rated carriers.
+> Independent insurance agency in San Diego, California. We help individuals, families, and businesses find the best insurance coverage at the lowest cost from top-rated carriers.
 
 ## About
 Jump Insurance Services is a full-service independent insurance agency licensed in California. We represent multiple top-rated carriers to find our clients the best coverage and rates for auto, home, life, and business insurance.
@@ -35,7 +35,6 @@ Jump Insurance Services is a full-service independent insurance agency licensed 
 - https://jumpins.com/about-our-agency/
 - https://jumpins.com/insurance-companies/
 - https://jumpins.com/contact-us/san-diego-office/
-- https://jumpins.com/palm-desert-office/
 
 ### Insights
 - https://jumpins.com/wildfire-insurance-in-california/

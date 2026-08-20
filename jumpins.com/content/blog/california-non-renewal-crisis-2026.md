@@ -64,7 +64,7 @@ The California home insurance crisis isn't fully resolved, but there are more op
 
 If you've received a non-renewal notice, or your renewal premium jumped significantly, [contact Jump Insurance Services](/contact-us/) today. We work with dozens of California carriers and can find coverage options that a single-company agent simply can't offer.
 
-We serve homeowners across California from our [San Diego office](/contact-us/san-diego-office/) and Palm Desert location. Get a free quote — we'll do the shopping for you.
+We serve homeowners across California from our [San Diego office](/contact-us/san-diego-office/). Get a free quote — we'll do the shopping for you.
 
 ---
 *Jump Insurance Services is an independent insurance agency licensed in California. We represent multiple top-rated carriers for [home insurance](/personal-insurance/home-insurance/), [earthquake insurance](/personal-insurance/earthquake-insurance/), and [flood insurance](/personal-insurance/flood-insurance/).*

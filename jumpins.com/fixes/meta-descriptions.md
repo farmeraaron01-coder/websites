@@ -1,6 +1,11 @@
 # Meta Descriptions — Copy/Paste into Yoast SEO
 ## How to apply: Edit each page → Yoast SEO box (bottom of editor) → SEO tab → Meta description field
 
+> **Scope: San Diego only.** Per Aaron's instruction of 6 Aug 2026, jumpins.com content targets
+> San Diego County and does not promote the Palm Desert office. No Coachella Valley geography,
+> no `/palm-desert-office/` links, no Palm Desert phone number. Statewide and county-wide
+> framing is fine — it is the second location specifically that stays out.
+
 ---
 
 ### BUSINESS INSURANCE SECTION
@@ -66,9 +71,9 @@ Protect your family's financial future with life insurance in California. Compar
 ### LOCATION PAGES
 
 **Page: /contact-us/**
-**New Title:** Contact Jump Insurance Services | San Diego & Palm Desert CA | Get a Quote
-**Meta description (144 chars):**
-Contact Jump Insurance Services in San Diego (858-295-7242) or Palm Desert (760-610-6145). Independent insurance agents serving all of California. Get a free quote today.
+**New Title:** Contact Jump Insurance Services | San Diego CA | Get a Free Quote
+**Meta description (148 chars):**
+Contact Jump Insurance Services in San Diego at 858-295-7242. Independent insurance agents serving San Diego County and all of California. Get a free quote today.
 
 ---
 
@@ -76,13 +81,6 @@ Contact Jump Insurance Services in San Diego (858-295-7242) or Palm Desert (760-
 **New Title:** San Diego Insurance Agency | 7960 Silverton Ave | Jump Insurance Services
 **Meta description (155 chars):**
 Visit Jump Insurance's San Diego office at 7960 Silverton Ave STE 202, 92126. Independent agents for auto, home, and business insurance. Call 858-295-7242 for a free quote.
-
----
-
-**Page: /palm-desert-office/**
-**New Title:** Palm Desert Insurance Agency | Coachella Valley | Jump Insurance Services
-**Meta description (154 chars):**
-Jump Insurance serves Palm Desert and the Coachella Valley with independent insurance for auto, home, and business. Call 760-610-6145 for personalized service and free quotes.
 
 ---
 
