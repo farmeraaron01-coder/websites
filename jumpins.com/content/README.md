@@ -43,28 +43,39 @@ available on this topic.
 copy is kept. It carries the FAQ **both ways** — visible `<h3>`/`<p>` pairs *and* JSON-LD mirroring
 them word for word (verified 6 of 6).
 
-Two already-published posts get this wrong, with their Q&As **only** in the JSON-LD:
+Two already-published posts get this wrong, with their Q&As **only** in the JSON-LD.
+**Verified against the live pages on 20 Aug 2026** (raw HTML, not a cached report):
 
-| Live post | Schema Qs | Missing from visible copy |
-|---|---|---|
-| `earthquake-insurance-california-2026` | 4 | 3 |
-| `san-diego-flood-insurance-flood-zones` | 5 | 4 |
+| Live post | Schema Qs | Questions missing from visible copy | Answers missing |
+|---|---|---|---|
+| `earthquake-insurance-california-2026` | 4 | **3 of 4** | **4 of 4** |
+| `san-diego-flood-insurance-flood-zones` | 5 | **5 of 5** | **5 of 5** |
+
+The flood post is worse than previously recorded — the earlier note said 4 of 5 questions were
+missing; the live page shows all 5 are, and neither post has a single answer paragraph rendered.
+The one question that does appear on the earthquake post
+("How much does earthquake insurance cost in California?") matches an existing H2 by coincidence
+of wording, not because a FAQ section exists. Neither post has any `<h3>` at all.
 
 That breaks Google's structured-data policy, which requires marked-up content to be visible to
 users. More importantly, Google retired FAQ rich results on **7 May 2026**, so the value of FAQ
 content now is being quotable by AI Overviews and ChatGPT — and those read rendered text. A
 schema-only Q&A is invisible to the exact thing it is now for.
 
-**Fix:** add a visible FAQ section to each post with the questions as `<h3>` and the answers as
-`<p>`, worded identically to the existing JSON-LD. Do not change the JSON-LD; make the visible copy
-match it.
+**Fix — written and ready to paste:**
 
-**Blocked on:** the live JSON-LD for `earthquake-insurance-california-2026`. The flood post's schema
-is recovered from branch `claude/jumpins-seo-geo-content-d70bek` (5 Q&As, in the post's own markdown
-file). For the earthquake post, `../fixes/schema-faq-earthquake-example.json` has 4 Q&As and the
-counts match, but it has not been confirmed against what is actually deployed — mirroring the wrong
-wording would leave the mismatch in place. Needs either the live `<script type="application/ld+json">`
-block pasted from view-source, or network access to jumpins.com.
+| File | For post | Pairs |
+|---|---|---|
+| `../fixes/faq-visible-earthquake-post.html` | `/earthquake-insurance-california-2026/` | 4 |
+| `../fixes/faq-visible-flood-zones-post.html` | `/san-diego-flood-insurance-flood-zones/` | 5 |
+
+Each was generated directly from the JSON-LD live on that post, so the visible copy matches the
+schema word for word. Paste each as a Divi Text module immediately before the post's closing CTA
+section. **Do not touch the existing JSON-LD** — it is correct; only the visible copy was missing.
+If either side is ever reworded, reword both, or the mismatch returns.
+
+No longer blocked. `../fixes/schema-faq-earthquake-example.json` turned out to match the live
+earthquake schema exactly, but that is now confirmed rather than assumed.
 
 ## Outstanding security item (from Dropbox READ-ME-FIRST, 7 Aug 2026)
 
