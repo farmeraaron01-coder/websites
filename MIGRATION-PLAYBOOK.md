@@ -386,8 +386,27 @@ clearly framed addition — never an unlabelled swap.
 - **Rank Math Free paywalls custom schema.** Do not plan on adding a Dataset or
   custom JSON-LD block through it.
 - **Author schema may point at a noindexed archive.** Rank Math uses the WP
-  user's author archive for `Person.url`. Set the user's Website field to the
-  real About page instead.
+  user's author archive for the Person node's `@id` **and** `url`, and there is
+  no setting in Rank Math Free that changes it. Verified on
+  statewidefloodinsurance.com, 20 Aug 2026: setting the WP user's **Website**
+  field puts that URL in **`sameAs`**, not `url` — useful as an entity signal,
+  but it does not fix the problem. An earlier version of this note said the
+  Website field feeds `Person.url`. It does not.
+
+  What actually works, in two parts:
+  1. **301 the author archive to the real bio** (`/author/<slug>/` →
+     `/aaron-farmer/`) via Rank Math → Redirections. Rank Math's node keeps
+     pointing at the archive URL, but that URL now resolves to an indexable
+     credentials page instead of a thin noindex archive.
+  2. **Fix any hand-coded `Person` block in the theme** to use the bio page as
+     its `@id` and `url`. Statewide has one, appended after the Rank Math graph,
+     carrying the good properties — jobTitle, real social `sameAs`, an uploaded
+     headshot. It shared the archive `@id` with Rank Math's weaker node, so two
+     different Person entities claimed one identifier.
+
+  Check for the second one before assuming the plugin is the whole story: count
+  `application/ld+json` blocks and look for a standalone `Person` outside the
+  `rank-math-schema` block.
 
 ---
 
