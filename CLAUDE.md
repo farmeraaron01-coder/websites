@@ -135,6 +135,69 @@ invalidation never fires.
 
 ---
 
+## The child theme is COPIED between brands, not shared
+
+`cfi-kadence-child` exists as a **separate physical copy** in each docroot —
+verified 20 Aug 2026, regular directories, no symlink. CFI and Statewide run the
+same code, brand-switched by `CFI_BRAND` in `functions.php` (line 18).
+
+**Any theme edit must be applied twice, once per docroot**, and the two copies
+should end byte-identical. After the author-schema edit both were md5
+`342d031906514ca9603fd2e5a0813d45` at 13,920 bytes. Compare md5s after any future
+theme change; a mismatch means one brand was missed.
+
+Docroots, both confirmed via cPanel DomainInfo:
+
+| Site | Docroot |
+|---|---|
+| californiafloodinsurance.com | `/home/mrtaco5/`**`new.californiafloodinsurance.com`**`/` (misleading, see above) |
+| statewidefloodinsurance.com | `/home/mrtaco5/statewidefloodinsurance.com/` (matches its name) |
+
+## WordPress's Theme File Editor silently fails on this account
+
+It returns a green "File edited successfully" banner and **does not write**.
+Proven 20 Aug 2026 by saving a one-line marker comment, hard-reloading, and
+finding the file byte-identical.
+
+It is **not** a filesystem problem — `lsattr` showed `-------------e-----` with
+no immutable flag, ownership was `mrtaco5`, permissions `-rw-r--r--`, and the
+same edit went through immediately via cPanel Terminal. It is WordPress-side.
+
+**Edit theme files through cPanel File Manager, cPanel Terminal or SFTP.** Back
+the file up first (`cp -p schema.php schema.php.bak-<date>`) and run `php -l`
+after — a syntax error in a shared theme file white-screens both brands at once.
+
+## CFI's Rank Math Redirections UI is broken
+
+CFI runs an older Rank Math build whose Redirections page never renders the
+"Add New" form — `&new=1` loads, the click handler fires, no form appears, and
+no CSV import is offered. Statewide's build is fine.
+
+Redirect rows on CFI have to be inserted straight into
+`wphw_rank_math_redirections`, matching the serialized `sources` shape of an
+existing working row. Rows added that way behave normally and will show in the
+UI whenever the form starts rendering again.
+
+## Author entity — how it is wired, both brands
+
+Each page carries **two** `Person` nodes. This is deliberate, not a defect:
+
+| Node | `@id` | Carries |
+|---|---|---|
+| Rank Math, inside `rank-math-schema` | `/author/ajfarmer/` | name, Gravatar, `sameAs` → the bio page |
+| Hand-coded, `inc/schema.php` line 415-417 | `/aaron-farmer/#person` | jobTitle, real social `sameAs`, uploaded headshot |
+
+They previously shared the `/author/ajfarmer/` identifier, so two entities
+claimed one `@id` with conflicting properties. Fixed 20 Aug by pointing the
+hand-coded node at `home_url( '/aaron-farmer/' )`.
+
+Rank Math Free offers no setting to change its own node, so `/author/ajfarmer/`
+now **301s to `/aaron-farmer/`** on both brands instead. Rank Math emits that
+archive URL three times per page — Person `@id`, Person `url`, and
+`WebPage.author.@id` — and all three resolve to the real bio.
+
+Do **not** try to remove Rank Math's node by hand-editing pages; it regenerates.
+
 ## Other WordPress installs on the `mrtaco5` account
 
 `statewidefloodinsurance.com`, `restaurant-insurance.com` (Jump Insurance
