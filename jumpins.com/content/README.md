@@ -14,19 +14,28 @@ Article and Google Business Profile source for Jump Insurance Services.
 | File | What it is | Status |
 |---|---|---|
 | `blog/fair-plan-rate-increase-october-2026.html` | FAIR Plan 29.1% increase, effective 15 Oct 2026 | **PUBLISHED 6 Aug 2026** (post 4553) — do not publish again |
-| `gbp/GBP-POST-fair-plan.txt` | GBP post for the above, 1,494/1,500 chars | **Ready to post — not yet posted** |
-| `gbp/fair-plan-gbp-photo.jpg` | Primary GBP image, 1200×900 | Ready to upload |
-| `gbp/fair-plan-gbp-photo-alt.jpg` | Alternate GBP image, 1200×900 | Spare |
+| `gbp/GBP-POST-fair-plan.txt` | GBP post for the above, 1,494/1,500 chars | **POSTED** — live on the Jump Insurance GBP with the "Learn more" button |
+| `gbp/fair-plan-gbp-photo.jpg` | Primary GBP image, 1200×900 | **Used** on the live post |
+| `gbp/fair-plan-gbp-photo-alt.jpg` | Alternate GBP image, 1200×900 | Spare, unused |
 | `blog/earthquake-insurance-california-2026.md` | Draft; a version is live | Live post needs the FAQ fix below |
 | `blog/california-non-renewal-crisis-2026.md` | Draft | Palm Desert reference removed 20 Aug |
 | `blog/wildfire-home-insurance-california-2026.md` | Draft | — |
 
 ## Time-sensitive
 
-The FAIR Plan increase takes effect **15 October 2026**. The article's own argument is that
-starting in August beats an October renewal comfortably and starting in September is tight — so
-the GBP post is the live item here. Its instructions said to post within a week of the article
-(published 6 Aug); that window has passed but the October deadline has not.
+The FAIR Plan increase takes effect **15 October 2026**. Both the article and the GBP post are
+live, so the launch work is done.
+
+What remains is timing. The article's own argument is that starting in August beats an October
+renewal comfortably while September is tight — which means the current post does its best work
+*now* and progressively less as the deadline nears. GBP posts persist rather than expire, but
+they lose surface prominence as they age, and this one is already several weeks old.
+
+**Worth considering: a second, shorter GBP post in late September** — same link, reframed around
+the closing window ("about three weeks left to test the market before your renewal reprices")
+rather than the announcement. The alternate photo (`fair-plan-gbp-photo-alt.jpg`) is unused and
+would keep it visually distinct from the first. Not required; just the highest-value follow-up
+available on this topic.
 
 ## The FAQ markup rule for this site
 
