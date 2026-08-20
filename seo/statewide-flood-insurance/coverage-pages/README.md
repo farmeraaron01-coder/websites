@@ -125,6 +125,52 @@ handled by Tasks 1–3 and can be dropped from it.
 
 ---
 
+## Scored against the /blog rubric
+
+Run through the 100-point checklist (Content 30 / SEO 25 / E-E-A-T 15 /
+Technical 15 / AI Citation 15). Publish gate is 90 with zero P0.
+
+| Category | HOA | Condo | Commercial | Where the points go |
+|---|---:|---:|---:|---|
+| Content quality | 27 | 27 | 27 | No images costs the engagement point; no original data to publish costs one on originality |
+| SEO | 25 | 25 | 25 | 3&ndash;4 verified external citations each, 4&ndash;5 internal, clean hierarchy |
+| E-E-A-T | 13 | 13 | 13 | Coinsurance and RCV claims are now sourced; the $250k-per-unit and 75%-residential rules are not |
+| Technical | 10 | 10 | 10 | **No images (0/3)**, sitewide inline-CSS drag, no unique og:image |
+| AI citation | 15 | 15 | 15 | Answer-first summary box, captioned tables with `<thead>`, verified sources |
+| **Total** | **90** | **90** | **90** | clears the gate, nothing spare |
+
+**Every citation was verified before use.** `fema.gov` returns 403 to
+non-browser clients, and two FloodSmart paths I intended to use
+(`/what-flood-insurance-covers`, `/how-buy-flood-insurance`) are **404**. The
+four used here all return 200 and were checked for the claim they support:
+
+- `/definitions` &mdash; states outright that *"Coinsurance applies only to
+  building coverage under the Residential Condominium Building Association
+  Policy (RCBAP)"* and defines replacement cost value as excluding depreciation.
+  That is the source for the two load-bearing claims across these pages.
+- `/get-insured/eligibility`, `/get-insured/elevation-certificates`,
+  `/flood-zones-and-maps/what-is-my-flood-zone`,
+  `/know-your-risk/cost-of-flooding`.
+
+**Still uncited, deliberately:** the $250,000-per-unit RCBAP limit and the 75%
+residential floor-area threshold. Both are real NFIP programme rules, but the
+FEMA pages that state them are behind the 403 and I would not link a source I
+could not open. Left as unattributed statutory fact rather than pointed at a URL
+I have not read.
+
+### The 10 points each page is missing are the same 10
+
+All three lose the same technical points, and two of the three causes are
+already queued:
+
+1. **No images (0/3 each).** Biggest single deduction. Same Nano Banana workflow
+   as the state-page photography &mdash; one editorial image per page with
+   descriptive alt.
+2. **Inline-CSS drag (1/2).** Already Task 4 of the current batch.
+3. **No unique og:image (1/2).** Falls out of fixing 1.
+
+Doing those takes all three to roughly 94. They are publishable at 90 now.
+
 ## Verify
 
 ```bash
