@@ -43,39 +43,58 @@ available on this topic.
 copy is kept. It carries the FAQ **both ways** — visible `<h3>`/`<p>` pairs *and* JSON-LD mirroring
 them word for word (verified 6 of 6).
 
-Two already-published posts get this wrong, with their Q&As **only** in the JSON-LD.
-**Verified against the live pages on 20 Aug 2026** (raw HTML, not a cached report):
+### RESOLVED 20 Aug 2026
 
-| Live post | Schema Qs | Questions missing from visible copy | Answers missing |
-|---|---|---|---|
-| `earthquake-insurance-california-2026` | 4 | **3 of 4** | **4 of 4** |
-| `san-diego-flood-insurance-flood-zones` | 5 | **5 of 5** | **5 of 5** |
+Two published posts had their Q&As **only** in the JSON-LD. Both are now fixed and verified
+against the live pages (raw HTML fetched and parsed, not a self-report):
 
-The flood post is worse than previously recorded — the earlier note said 4 of 5 questions were
-missing; the live page shows all 5 are, and neither post has a single answer paragraph rendered.
-The one question that does appear on the earthquake post
-("How much does earthquake insurance cost in California?") matches an existing H2 by coincidence
-of wording, not because a FAQ section exists. Neither post has any `<h3>` at all.
+| Live post | FAQPage blocks | Schema Qs | Visible `h3` | Questions visible | Answers visible | Order matches |
+|---|---|---|---|---|---|---|
+| `earthquake-insurance-california-2026` | 1 | 4 | 4 | 4/4 | 4/4 | yes |
+| `san-diego-flood-insurance-flood-zones` | 1 | 5 | 5 | 5/5 | 5/5 | yes |
+
+Before the fix: earthquake had 3 of 4 questions and 4 of 4 answers missing; flood-zones had all
+5 of each missing. Neither rendered any `<h3>`. The single earthquake question that did appear
+matched an existing H2 by coincidence of wording, not because a FAQ section existed.
+
+Exactly one FAQPage block per post — the pre-existing JSON-LD was left untouched, so there is no
+duplicate schema.
+
+**Known cosmetic difference, deliberately not "fixed":** `wptexturize` converts straight
+apostrophes to curly ones in visible copy, so two strings differ from the schema by one character
+(`CEA’s` vs `CEA's` on earthquake Q3, `don’t` vs `don't` on flood Q3). Leave them. Google's
+requirement is that marked-up content be **present and visible** to users, not byte-identical, and
+typographic variants normalise. Editing live JSON-LD to chase character parity carries real risk
+(a stray character invalidates the block) for no benefit, and wptexturize would reintroduce the
+difference on the next content edit anyway. For AI-citation purposes the engines read rendered
+text, where the apostrophe form is irrelevant.
 
 That breaks Google's structured-data policy, which requires marked-up content to be visible to
 users. More importantly, Google retired FAQ rich results on **7 May 2026**, so the value of FAQ
 content now is being quotable by AI Overviews and ChatGPT — and those read rendered text. A
 schema-only Q&A is invisible to the exact thing it is now for.
 
-**Fix — written and ready to paste:**
+**Applied.** The source blocks are kept for reference:
 
-| File | For post | Pairs |
-|---|---|---|
-| `../fixes/faq-visible-earthquake-post.html` | `/earthquake-insurance-california-2026/` | 4 |
-| `../fixes/faq-visible-flood-zones-post.html` | `/san-diego-flood-insurance-flood-zones/` | 5 |
+| File | For post | Pairs | Status |
+|---|---|---|---|
+| `../fixes/faq-visible-earthquake-post.html` | `/earthquake-insurance-california-2026/` | 4 | **applied 20 Aug** |
+| `../fixes/faq-visible-flood-zones-post.html` | `/san-diego-flood-insurance-flood-zones/` | 5 | **applied 20 Aug** |
 
-Each was generated directly from the JSON-LD live on that post, so the visible copy matches the
-schema word for word. Paste each as a Divi Text module immediately before the post's closing CTA
-section. **Do not touch the existing JSON-LD** — it is correct; only the visible copy was missing.
-If either side is ever reworded, reword both, or the mismatch returns.
+Each was generated directly from the JSON-LD live on that post, so visible copy and schema match
+word for word. Standing rule: **if either side is ever reworded, reword both**, or the mismatch
+returns.
 
-No longer blocked. `../fixes/schema-faq-earthquake-example.json` turned out to match the live
-earthquake schema exactly, but that is now confirmed rather than assumed.
+`../fixes/schema-faq-earthquake-example.json` matches the deployed earthquake schema exactly —
+confirmed against the live page, not assumed.
+
+### Editor note — these posts are NOT Divi Builder
+
+Established while applying the fix: both posts are **classic-editor HTML**, with Divi theming only
+the page shell. Raw `<h2>`/`<h3>` markup renders correctly as-is; no Divi Text or Code module is
+involved. Guidance elsewhere in this repo that says to paste markup "via a Divi Code module"
+applies to **Divi-built pages** (the homepage and service pages), not to posts. Check which kind of
+editor a given URL uses before assuming.
 
 ## Outstanding security item (from Dropbox READ-ME-FIRST, 7 Aug 2026)
 

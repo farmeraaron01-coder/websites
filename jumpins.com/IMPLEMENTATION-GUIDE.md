@@ -64,6 +64,10 @@ The homepage and all blog posts render **zero H1/H2 tags** in crawlable HTML (Di
 
 For each page, add a Divi Code module (or Custom HTML block) at the bottom containing:
 
+> **Check the editor first.** These schema targets are Divi-built *pages*, so a Code module is
+> right for them. **Posts on this site are classic-editor HTML** (established 20 Aug 2026) — for
+> those, paste raw markup directly; no Divi module is involved.
+
 ```html
 <script type="application/ld+json">
 …paste the matching fixes/schema-*.json…
