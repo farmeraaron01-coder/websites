@@ -172,6 +172,14 @@ It is **not** a filesystem problem — `lsattr` showed `-------------e-----` wit
 no immutable flag, ownership was `mrtaco5`, permissions `-rw-r--r--`, and the
 same edit went through immediately via cPanel Terminal. It is WordPress-side.
 
+**Cause identified 21 Aug 2026: Wordfence 9.0.0.** Its WAF is active (34%
+strength) and intercepts theme-file writes posted through wp-admin. The editor
+still returns its green success banner. Reproduced with a one-line comment
+probe: banner shown, file byte-identical on re-read.
+
+Do **not** disable Wordfence to get an edit through. The cPanel Terminal path
+works, is proven, and does not weaken the site to save five minutes.
+
 **Edit theme files through cPanel File Manager, cPanel Terminal or SFTP.** Back
 the file up first (`cp -p schema.php schema.php.bak-<date>`) and run `php -l`
 after — a syntax error in a shared theme file white-screens both brands at once.

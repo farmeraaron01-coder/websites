@@ -166,10 +166,16 @@ already queued:
 1. **No images (0/3 each).** Biggest single deduction. Same Nano Banana workflow
    as the state-page photography &mdash; one editorial image per page with
    descriptive alt.
-2. **Inline-CSS drag (1/2).** Already Task 4 of the current batch.
+2. **Inline-CSS drag (1/2).** **Withdrawn — see below.** The premise was wrong.
 3. **No unique og:image (1/2).** Falls out of fixing 1.
 
-Doing those takes all three to roughly 94. They are publishable at 90 now.
+Doing those takes all three to roughly 92. They are publishable at 90 now.
+
+> **The inline-CSS task has been withdrawn.** I scored these pages down for a
+> "page speed" problem measured in uncompressed characters. The pages transfer
+> at **30 KB gzipped**, not 124 KB. There is no page-speed deduction to recover
+> here, and no functions.php edit worth making for it. Detail in
+> `../INTERNAL-LINKING-BATCH.md` and the session record.
 
 ## Verify
 
