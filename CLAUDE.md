@@ -141,10 +141,19 @@ invalidation never fires.
 verified 20 Aug 2026, regular directories, no symlink. CFI and Statewide run the
 same code, brand-switched by `CFI_BRAND` in `functions.php` (line 18).
 
-**Any theme edit must be applied twice, once per docroot**, and the two copies
-should end byte-identical. After the author-schema edit both were md5
-`342d031906514ca9603fd2e5a0813d45` at 13,920 bytes. Compare md5s after any future
-theme change; a mismatch means one brand was missed.
+**Any theme edit must be applied twice, once per docroot.** Do **not** assume the
+two copies are byte-identical — some files have deliberately diverged. Verified
+21 Aug 2026:
+
+| File | CFI | Statewide | Why |
+|---|---|---|---|
+| `inc/schema.php` | identical | identical | md5 `342d031906514ca9603fd2e5a0813d45` after the author-schema edit |
+| `parts/interior.php` | 5,009 b | 4,993 b | a brand-specific byline `alt` — "licensed California flood insurance specialist" vs "licensed flood insurance agent" |
+
+So the rule is: **diff the two copies before editing**, apply the same splice to
+both, and re-diff afterwards to confirm the only remaining difference is the one
+that was there to begin with. An md5 match is the right check on files that
+should be identical and the wrong check on files that should not.
 
 Docroots, both confirmed via cPanel DomainInfo:
 
