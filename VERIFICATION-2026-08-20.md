@@ -87,8 +87,8 @@ content-quality verdict, not a security problem.
 
 # Priority order from here
 
-1. **Revoke the four WordPress application passwords** — `jumpins.com / Admin` first. Outstanding
-   since 7 Aug and unrelated to anything above. Also rotate the two Dropbox `.env` files.
+1. ~~Revoke the `jumpins.com / Admin` application password~~ — **done 20 Aug 2026.** Three remain
+   (both flood sites), plus the two Dropbox `.env` files still to rotate.
 2. **Re-paste the 15 meta descriptions** (11 pages + 4 posts) from the corrected file, which also
    clears the Palm Desert title on `/contact-us/`. ~1 hr.
 3. **Noindex the 8 utility pages.** ~30 min, pure crawl-budget win.

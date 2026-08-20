@@ -96,10 +96,15 @@ involved. Guidance elsewhere in this repo that says to paste markup "via a Divi 
 applies to **Divi-built pages** (the homepage and service pages), not to posts. Check which kind of
 editor a given URL uses before assuming.
 
-## Outstanding security item (from Dropbox READ-ME-FIRST, 7 Aug 2026)
+## Credential cleanup (from Dropbox READ-ME-FIRST, 7 Aug 2026)
 
-Four WordPress application passwords issued during the August work still need revoking —
-**`jumpins.com` / `Admin` first**, since jumpins is a live production site with no staging in front
-of it. The other three cover the two flood sites. Two Dropbox `.env` files holding live secrets also
-need rotating. Not actioned here; flagged because it is the top item on that list and still open as
-of 20 Aug.
+Four WordPress application passwords were issued during the August work.
+
+- ✅ **`jumpins.com` / `Admin` — REVOKED 20 Aug 2026.** This was the priority one: jumpins is a
+  live production site with no staging in front of it.
+- ⬜ Three remaining, covering the two flood sites.
+- ⬜ Two Dropbox `.env` files holding live secrets still need rotating
+  (`google-ads-project/Google Ads/.env` and `call-intelligence/.env`).
+
+Note: revoking the jumpins password means any future publishing to this site needs a newly issued
+one. Nothing in this repo depends on it — all deliverables here are copy-paste.
