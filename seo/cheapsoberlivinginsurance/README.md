@@ -5,6 +5,7 @@ Working files for the sober living site rebuild. Read in this order.
 | File | What it is | Who acts |
 |---|---|---|
 | `RECON.md` | Live before-state captured 21 Aug 2026, and the six Part 0 decisions adjudicated against it | read first |
+| `PACKAGE-REVIEW.md` | Review of the Dropbox Kadence package: the 10-page map, corrections to make before building, and two of my own recommendations reversed | read before building |
 | `IDENTITY.md` | Licence, address, phone, and the live schema conflict confirming them exposed | read before schema |
 | `STEP-1-STAGING.md` | Operator work order: lock staging out of the index, install Rank Math, reach URL parity, cut over | operator |
 
@@ -35,11 +36,11 @@ All six Part 0 items are closed. Identity fields arrived 21 Aug and are in
 Three Part 0 items resolved differently once the live site was measured. All
 three are argued in `RECON.md`:
 
-- **`/quote/` → keep `/quote-now/`.** The playbook said reverse the redirect.
-  Recon says don't: reversing risks a redirect loop on the only conversion page,
-  and the slug is not a ranking factor.
-- **`/sober-living-home-insurance/` → do not build it.** The homepage already
-  owns the topic. Two URLs, one query, on a five-page site is cannibalization.
+- **`/quote/` → blocked on checking Google Ads final URLs.** Changing the slug
+  could break paid landing pages, which costs money immediately.
+- **`/sober-living-home-insurance/` → build it.** I first said not to; reading
+  the package showed it is the pillar for four coverage spokes. Fix the
+  homepage's title and H1 instead.
 - **Image weight → a package problem, not a live-site one.** The live homepage
   is 1.1 MB across 22 images. The 1.89 MB `og.png` the playbook flags is in the
   new content package.

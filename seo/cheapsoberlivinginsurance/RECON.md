@@ -106,27 +106,26 @@ them outright and reframes two. One still needs you.
 Live site already does this correctly in one hop. Build to apex; correct the
 package's canonicals and schema.
 
-### 2. `/quote/` collision — RECOMMEND: keep `/quote-now/`
-The playbook said to reverse the redirect (`/quote-now/` → `/quote/`). Recon
-argues against it. `/quote-now/` is the indexed URL, it is in the sitemap, and
-`quote` vs `quote-now` is not a ranking factor. Reversing means deleting the
-existing rule and adding its mirror — and if the old rule survives the edit you
-get `/quote/ → /quote-now/ → /quote/`, an infinite loop on the site's only
-conversion page.
+### 2. `/quote/` collision — BLOCKED on one check
+`/quote-now/` is the indexed URL; `/quote/` 301s to it. The package builds at
+`/quote/`.
 
-**Build the new quote page at `/quote-now/`. Leave the existing 301 alone.**
-Nothing to break, nothing to verify.
+**There is a live Google Ads campaign on this site.** If its final URLs point at
+`/quote-now/`, changing the slug breaks paid landing pages, which costs money
+immediately. Check the Ads final URLs, then pick — reasoning and both branches
+are in `PACKAGE-REVIEW.md`.
 
-### 3. Homepage vs `/sober-living-home-insurance/` — RECOMMEND: do not build it
-The conflict is between two pages *in the package*, both of which propose the
-H1 "Insurance built for the business of sober living". Live, `/sober-living-home-insurance/`
-does not exist and the homepage already owns that exact topic with H1
-"Sober Living Home Insurance".
+Whichever wins, do not leave `/quote-now/` returning 404. It is the only quote
+URL Google currently knows.
 
-A site with five real pages and no measurable authority should not split its
-single money query across two URLs. That is the cannibalization we spent last
-week unwinding on Statewide. **Let the homepage be the money page.** Fold the
-package's coverage content into it, and drop the separate URL from the build.
+### 3. Homepage vs `/sober-living-home-insurance/` — CORRECTED: build it
+**I first recommended dropping this page. That was wrong** — I argued it from the
+playbook's summary rather than from the package. `/sober-living-home-insurance/`
+is the pillar for four coverage spokes and the parent of the Coverage nav group;
+deleting it orphans the spokes.
+
+The title and H1 collision with the homepage is real. **Fix the homepage's copy,
+keep the pillar.** Full argument in `PACKAGE-REVIEW.md`.
 
 ### 4. The three blog posts — RECOMMEND: keep and re-template
 They are the only topical depth the site has and the only thing feeding
