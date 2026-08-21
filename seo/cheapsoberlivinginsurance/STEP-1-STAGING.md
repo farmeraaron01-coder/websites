@@ -134,11 +134,69 @@ Option A is available and clean.
 The invariant: **when you finish, no folder is named after a site it does not
 contain.** Write the `READ-ME-WHICH-SITE-IS-THIS.txt` marker file the same hour.
 
+### The folder never stays called "staging"
+
+This is the CFI trap, and it is avoidable here. On CFI the domain's document
+root was *repointed* at the staging folder, so the staging folder became
+production and kept its wrong name. **Do not repoint anything.** Move the
+content instead and leave the document root exactly where cPanel already has it.
+
+Confirm the real docroot first in **cPanel → Domains** — it should be
+`/home/mrtaco5/cheapsoberlivinginsurance.com/`, since CFI is the only site on
+this account whose directory does not match its domain. Verify rather than
+assume.
+
+Then cutover is two renames, back to back, in cPanel Terminal:
+
+```bash
+cd /home/mrtaco5
+mv cheapsoberlivinginsurance.com          ZZ-OLD-divi-csli-2026-08-21
+mv staging.cheapsoberlivinginsurance.com  cheapsoberlivinginsurance.com
+```
+
+Both are same-filesystem renames, so they are instant. Downtime is the gap
+between the two commands — seconds. Afterwards:
+
+- the document root in cPanel is **unchanged**
+- the live site sits in a folder named after the live site
+- there is no folder called `staging.` any more
+- the old Divi site is clearly labelled as old, with a date
+
+Delete the `staging.` **subdomain** in cPanel afterwards, or it will point at a
+path that no longer exists. Keep `ZZ-OLD-…` for 30 days as rollback, then delete
+it — and put that date in the marker file so it is not kept forever or binned
+early.
+
+### 🔴 Basic Auth travels with the folder
+
+cPanel's Directory Privacy writes `AuthType Basic` and an `AuthUserFile` path
+into the `.htaccess` **inside** the protected directory. When you rename that
+directory into the live docroot, the `.htaccess` comes with it — so the live
+site will demand a password the moment it goes up. Worse, `AuthUserFile` holds
+an **absolute path** that no longer exists after the move, which can produce a
+500 rather than a clean login prompt.
+
+**Turn Directory Privacy off before the rename, not after.** Untick it in cPanel
+for the staging directory, confirm the site returns 200 to an anonymous request,
+and only then run the two `mv` commands. Grep the `.htaccess` afterwards to be
+sure nothing is left:
+
+```bash
+grep -iE 'AuthType|AuthUserFile|Require valid-user' /home/mrtaco5/cheapsoberlivinginsurance.com/.htaccess
+# expect no output
+```
+
+The same absolute-path problem applies to **Wordfence** if it is installed on
+staging — it stores absolute paths and they break on a move. Check whether it is
+active there before cutover; if it is, either deactivate it before the rename
+and reactivate after, or do not install it on staging in the first place.
+
 ### The four cutover-day items that are easy to forget
 
-**1. Remove the Basic Auth.** The site will be perfectly built, perfectly
-invisible, and returning 401 to Google. Put this at the top of the cutover
-checklist, not the bottom.
+**1. Remove the Basic Auth — before the rename.** See above: it travels with
+the folder and its `AuthUserFile` path breaks on the move. The site will
+otherwise be perfectly built, perfectly invisible, and returning 401 or 500 to
+Google.
 
 **2. Search-replace the staging URLs out of the database.** The database will be
 full of `staging.cheapsoberlivinginsurance.com`. Use
@@ -179,6 +237,9 @@ form. Clear them before launch so the operator's entry list is clean.
 | organization nodes on homepage | exactly **1**, phone `+1-858-295-7242` |
 | `staging.` in page source or DB | **0 occurrences** |
 | marker file in docroot | present, returns 200 over the public domain |
+| `.htaccess` auth directives | **none** |
+| folder named `staging.` | **gone** |
+| live docroot folder name | matches the domain |
 
 Verify everything anonymously **and** with `?cb=$(date +%s%N)`. On this account a
 plain anonymous curl has returned pre-edit content while reporting
