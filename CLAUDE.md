@@ -241,7 +241,14 @@ Services), `cheapearthquakeinsurance.com`, `cheapsoberlivinginsurance.com`,
 `topdogpetinsurance.com`, `mrtacoshop.com`.
 
 They share the same nginx cache layer, so any running Rank Math has the same
-sitemap-caching exposure. As of Aug 2026, `restaurant-insurance.com` showed a
+sitemap-caching exposure.
+
+`cheapsoberlivinginsurance.com` is the exception worth remembering: as of 21 Aug
+2026 it runs **All in One SEO 4.9.10 on Divi**, not Rank Math on Kadence. Its
+sitemap lives at `/sitemap.xml` and `/sitemap_index.xml` 302s away to it, so
+Rank Math procedures do not apply there until the swap in
+`seo/cheapsoberlivinginsurance/STEP-1-RANKMATH.md` is done. It also has **no
+nginx cache bypass rules** — its sitemap serves `x-proxy-cache: HIT`. As of Aug 2026, `restaurant-insurance.com` showed a
 10.0 security risk and `topdogpetinsurance.com` was several major versions
 behind.
 
