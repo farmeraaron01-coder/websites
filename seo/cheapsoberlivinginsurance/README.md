@@ -5,16 +5,30 @@ Working files for the sober living site rebuild. Read in this order.
 | File | What it is | Who acts |
 |---|---|---|
 | `RECON.md` | Live before-state captured 21 Aug 2026, and the six Part 0 decisions adjudicated against it | read first |
-| `STEP-1-RANKMATH.md` | Operator work order: All in One SEO → Rank Math, as its own change before the theme rebuild | operator, ~1 hour |
+| `IDENTITY.md` | Licence, address, phone, and the live schema conflict confirming them exposed | read before schema |
+| `STEP-1-STAGING.md` | Operator work order: lock staging out of the index, install Rank Math, reach URL parity, cut over | operator |
 
 The migration procedure itself lives in `/MIGRATION-PLAYBOOK.md` at the repo
 root. This folder holds only what is specific to this site.
 
-## What still needs a human decision
+## Approach
 
-**Agency identity fields.** Licence number, physical address and phone. The
-content package leaves them blank; they feed `InsuranceAgency` schema and cannot
-be inferred. Nothing is blocked on them until schema goes in.
+Build fresh on `staging.cheapsoberlivinginsurance.com` with **Rank Math from the
+start** and **never install All in One SEO** on it. No import, no plugin
+reconciliation on a live site, production untouched until cutover.
+
+## 🔴 The one urgent item
+
+**Staging is currently crawlable and indexable.** No `noindex`, no
+`Disallow: /`, `wp-login.php` returns 200. Password-protect the directory before
+any more build work — details in `STEP-1-STAGING.md`. A staging copy that gets
+indexed can outlive the migration, with Google treating the real launch as the
+duplicate.
+
+## Nothing is blocked on a decision any more
+
+All six Part 0 items are closed. Identity fields arrived 21 Aug and are in
+`IDENTITY.md`.
 
 ## What was decided, and why it differs from the playbook
 
