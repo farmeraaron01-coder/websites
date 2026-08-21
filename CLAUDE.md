@@ -243,6 +243,23 @@ Services), `cheapearthquakeinsurance.com`, `cheapsoberlivinginsurance.com`,
 They share the same nginx cache layer, so any running Rank Math has the same
 sitemap-caching exposure.
 
+## Two suites at 7960 Silverton Ave. — both are correct
+
+| Suite | Brands |
+|---|---|
+| **#203** | californiafloodinsurance.com, statewidefloodinsurance.com |
+| **#202** | Cheap Sober Living Insurance, Jump Insurance Services, trucking |
+
+The flood sites publishing `#203` while sober living publishes `#202` is **not**
+a NAP inconsistency to correct. Confirmed by Aaron 21 Aug 2026.
+
+Phone splits the same way: the flood brands share **855-225-3566**; sober living
+has its own line, **858-295-7242**. Licence is shared across all of them:
+**CA License #0L75450**.
+
+Full detail and the live schema defects this uncovered are in
+`seo/cheapsoberlivinginsurance/IDENTITY.md`.
+
 `cheapsoberlivinginsurance.com` is the exception worth remembering: as of 21 Aug
 2026 it runs **All in One SEO 4.9.10 on Divi**, not Rank Math on Kadence. Its
 sitemap lives at `/sitemap.xml` and `/sitemap_index.xml` 302s away to it, so
